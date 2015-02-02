@@ -1,1 +1,2 @@
-Hello everyone. Please make a commit to this file. - Tristan
+Hello everyone. Please make a commit to this file.
+Also make sure to make an edit to the Wiki page. - Tristan

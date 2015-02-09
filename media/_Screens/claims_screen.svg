@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="256.88977"
+   height="531.49603"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="claims_screen.svg">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient7310"
+       osb:paint="solid">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop7312" />
+    </linearGradient>
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect6141"
+       is_visible="true" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect6106"
+       is_visible="true" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="252.88083"
+     inkscape:cy="282.90308"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="mm"
+     width="1mm"
+     inkscape:window-width="1366"
+     inkscape:window-height="709"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-520.86619)">
+    <rect
+       style="fill:#f2f2f2;fill-opacity:1;stroke:#000000;stroke-width:1.00961101;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2987"
+       width="255.88016"
+       height="502.13998"
+       x="0.50480551"
+       y="521.37097" />
+    <rect
+       style="fill:#4d4d4d;fill-opacity:1;stroke:#000000;stroke-width:0.96194762;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect3757"
+       width="255.92781"
+       height="41.557739"
+       x="0.31748584"
+       y="520.78796" />
+    <text
+       xml:space="preserve"
+       style="font-size:24px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.75;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;font-family:Sans"
+       x="10.410156"
+       y="547.42249"
+       id="text3761"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3763"
+         x="10.410156"
+         y="547.42249">Expense Tracker</tspan></text>
+    <g
+       id="g8319">
+      <path
+         transform="translate(2.6090705,524.83584)"
+         d="m 242.43662,6.4070826 c 0,1.2552566 -1.01759,2.2728431 -2.27285,2.2728431 -1.25525,0 -2.27284,-1.0175865 -2.27284,-2.2728431 0,-1.2552566 1.01759,-2.2728432 2.27284,-2.2728432 1.25526,0 2.27285,1.0175866 2.27285,2.2728432 z"
+         sodipodi:ry="2.2728431"
+         sodipodi:rx="2.2728431"
+         sodipodi:cy="6.4070826"
+         sodipodi:cx="240.16377"
+         id="path3765"
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         sodipodi:type="arc" />
+      <path
+         transform="translate(2.6090705,534.83584)"
+         d="m 242.43662,6.4070826 c 0,1.2552566 -1.01759,2.2728431 -2.27285,2.2728431 -1.25525,0 -2.27284,-1.0175865 -2.27284,-2.2728431 0,-1.2552566 1.01759,-2.2728432 2.27284,-2.2728432 1.25526,0 2.27285,1.0175866 2.27285,2.2728432 z"
+         sodipodi:ry="2.2728431"
+         sodipodi:rx="2.2728431"
+         sodipodi:cy="6.4070826"
+         sodipodi:cx="240.16377"
+         id="path3765-1"
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         sodipodi:type="arc" />
+      <path
+         transform="translate(2.6090705,544.83584)"
+         d="m 242.43662,6.4070826 c 0,1.2552566 -1.01759,2.2728431 -2.27285,2.2728431 -1.25525,0 -2.27284,-1.0175865 -2.27284,-2.2728431 0,-1.2552566 1.01759,-2.2728432 2.27284,-2.2728432 1.25526,0 2.27285,1.0175866 2.27285,2.2728432 z"
+         sodipodi:ry="2.2728431"
+         sodipodi:rx="2.2728431"
+         sodipodi:cy="6.4070826"
+         sodipodi:cx="240.16377"
+         id="path3765-7"
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         sodipodi:type="arc" />
+    </g>
+    <g
+       id="g3024"
+       transform="translate(8.0812204,-23.043165)">
+      <path
+         transform="matrix(0.66519721,0,0,0.66519721,71.360598,703.46405)"
+         d="m 242.43661,460.72318 c 0,16.17886 -13.11556,29.29442 -29.29443,29.29442 -16.17886,0 -29.29442,-13.11556 -29.29442,-29.29442 0,-16.17887 13.11556,-29.29443 29.29442,-29.29443 16.17887,0 29.29443,13.11556 29.29443,29.29443 z"
+         sodipodi:ry="29.294424"
+         sodipodi:rx="29.294424"
+         sodipodi:cy="460.72318"
+         sodipodi:cx="213.14218"
+         id="path2998"
+         style="fill:#0000ff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         sodipodi:type="arc" />
+      <path
+         inkscape:connector-curvature="0"
+         id="rect3000"
+         d="m 209.30158,995.47559 c 0,3.7375 0,7.47501 0,11.21251 -3.50896,0 -7.0179,0 -10.52686,0 0,2.1762 0,4.3524 0,6.5285 3.50896,0 7.0179,0 10.52686,0 0,3.8826 0,7.7652 0,11.6478 2.52481,0 5.04963,0 7.57444,0 0,-3.8826 0,-7.7652 0,-11.6478 3.20353,0 6.40706,0 9.61059,0 0,-2.1761 0,-4.3523 0,-6.5285 -3.20353,0 -6.40706,0 -9.61059,0 0,-3.7375 0,-7.47501 0,-11.21251 -2.52481,0 -5.04963,0 -7.57444,0 z"
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.65736604;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    </g>
+    <rect
+       style="fill:#666666;fill-opacity:1;stroke:#000000;stroke-width:0.85635811;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect6098"
+       width="256.03342"
+       height="27.490099"
+       x="0.42817906"
+       y="1024.444" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 39.2355,1033.7756 15,0 c 1.318801,-0.015 2.635664,0.5164 3.573739,1.4435 0.938076,0.9271 1.485468,2.2376 1.485527,3.5565 5.8e-5,1.2943 -0.526159,2.581 -1.433162,3.5044 -0.907003,0.9234 -2.184111,1.4725 -3.478224,1.4956 l -6.737166,0 m 0,-3 0,6 -5,-3 5,-3"
+       id="path6139"
+       inkscape:path-effect="#path-effect6141"
+       inkscape:original-d="m 39.2355,1033.7756 15,0 c 0,0 -1.28975,-1.349 5.059266,5 6.349016,6.349 -4.911386,5 -4.911386,5 l -6.737166,0 m 0,-3 c 0,2.554 -0.188568,3.1035 0,6 l -5,-3 c 2.037317,-1.1762 2.731707,-1.6904 5,-3 z"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccscccccc" />
+    <path
+       id="rect6264"
+       style="fill:none;stroke:#ffffff;stroke-width:0.60735315;stroke-miterlimit:4;stroke-opacity:1"
+       d="m 205.95314,1032.7574 16.11364,0 0,11.2564 -16.11364,0 z m -2.19732,2.6605 16.11364,0 0,11.2564 -16.11364,0 z"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:0.88582677;stroke-miterlimit:4;stroke-opacity:1"
+       d="m 119.28572,1036.6836 11.26845,-6.7857 11.26845,6.7857 0,9.6429 -22.5369,0 z"
+       id="rect6269"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccc" />
+    <g
+       transform="translate(1.1417313,-30.748001)"
+       id="g4751"
+       inkscape:tile-cx="128.44488"
+       inkscape:tile-cy="30.118132"
+       inkscape:tile-w="238.15594"
+       inkscape:tile-h="41.502399"
+       inkscape:tile-x0="9.3669109"
+       inkscape:tile-y0="9.3669321">
+      <rect
+         y="601.09918"
+         x="9.3669109"
+         height="41.502399"
+         width="238.15594"
+         id="rect3212"
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.01728451;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <flowRoot
+         transform="translate(7.6071604,545.38975)"
+         style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         id="flowRoot3232"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3234"><rect
+             y="58.863884"
+             x="8.9285717"
+             height="20.793509"
+             width="222.80945"
+             id="rect3236" /></flowRegion><flowPara
+           id="flowPara4717">Claim Item 1</flowPara><flowPara
+           id="flowPara3240" /></flowRoot>      <flowRoot
+         transform="translate(3.0304576,588.44925)"
+         style="font-size:8px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
+         id="flowRoot4737"
+         xml:space="preserve"><flowRegion
+           id="flowRegion4739"><rect
+             style="fill:#666666"
+             y="31.062542"
+             x="14.142136"
+             height="19.445436"
+             width="226.5267"
+             id="rect4741" /></flowRegion><flowPara
+           id="flowPara7830">Status: In Progress</flowPara><flowPara
+           id="flowPara7843">Date: Feb 2, 2015 - Feb 10, 2015</flowPara></flowRoot>    </g>
+    <g
+       inkscape:tile-y0="9.3669321"
+       inkscape:tile-x0="9.3669109"
+       id="use7812"
+       transform="translate(1.1417313,10.754398)">
+      <rect
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.01728451;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="rect7847"
+         width="238.15594"
+         height="41.502399"
+         x="9.3669109"
+         y="601.09918" />
+      <flowRoot
+         xml:space="preserve"
+         id="flowRoot7849"
+         style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         transform="translate(7.6071604,545.38975)"><flowRegion
+           id="flowRegion7851"><rect
+             id="rect7853"
+             width="222.80945"
+             height="20.793509"
+             x="8.9285717"
+             y="58.863884" /></flowRegion><flowPara
+           id="flowPara7855">Claim Item 2</flowPara><flowPara
+           id="flowPara7857" /></flowRoot>      <flowRoot
+         xml:space="preserve"
+         id="flowRoot7859"
+         style="font-size:8px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
+         transform="translate(3.0304576,588.44925)"><flowRegion
+           id="flowRegion7861"><rect
+             id="rect7863"
+             width="226.5267"
+             height="19.445436"
+             x="14.142136"
+             y="31.062542"
+             style="fill:#666666" /></flowRegion><flowPara
+           id="flowPara7865">Status: In Progress</flowPara><flowPara
+           id="flowPara7867">Date: Feb 2, 2015 - Feb 10, 2015</flowPara></flowRoot>    </g>
+    <g
+       inkscape:tile-y0="9.3669321"
+       inkscape:tile-x0="9.3669109"
+       id="use7814"
+       transform="translate(1.1417313,52.256797)">
+      <rect
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.01728451;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="rect8015"
+         width="238.15594"
+         height="41.502399"
+         x="9.3669109"
+         y="601.09918" />
+      <flowRoot
+         xml:space="preserve"
+         id="flowRoot8017"
+         style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         transform="translate(7.6071604,545.38975)"><flowRegion
+           id="flowRegion8019"><rect
+             id="rect8021"
+             width="222.80945"
+             height="20.793509"
+             x="8.9285717"
+             y="58.863884" /></flowRegion><flowPara
+           id="flowPara8023">Claim Item 3</flowPara><flowPara
+           id="flowPara8025" /></flowRoot>      <flowRoot
+         xml:space="preserve"
+         id="flowRoot8027"
+         style="font-size:8px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
+         transform="translate(3.0304576,588.44925)"><flowRegion
+           id="flowRegion8029"><rect
+             id="rect8031"
+             width="226.5267"
+             height="19.445436"
+             x="14.142136"
+             y="31.062542"
+             style="fill:#666666" /></flowRegion><flowPara
+           id="flowPara8033">Status: In Progress</flowPara><flowPara
+           id="flowPara8035">Date: Feb 2, 2015 - Feb 10, 2015</flowPara></flowRoot>    </g>
+    <g
+       inkscape:tile-y0="9.3669321"
+       inkscape:tile-x0="9.3669109"
+       id="use7816"
+       transform="translate(1.1417313,93.759199)">
+      <rect
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.01728451;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="rect7991"
+         width="238.15594"
+         height="41.502399"
+         x="9.3669109"
+         y="601.09918" />
+      <flowRoot
+         xml:space="preserve"
+         id="flowRoot7993"
+         style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         transform="translate(7.6071604,545.38975)"><flowRegion
+           id="flowRegion7995"><rect
+             id="rect7997"
+             width="222.80945"
+             height="20.793509"
+             x="8.9285717"
+             y="58.863884" /></flowRegion><flowPara
+           id="flowPara7999">Claim Item 4</flowPara><flowPara
+           id="flowPara8001" /></flowRoot>      <flowRoot
+         xml:space="preserve"
+         id="flowRoot8003"
+         style="font-size:8px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
+         transform="translate(3.0304576,588.44925)"><flowRegion
+           id="flowRegion8005"><rect
+             id="rect8007"
+             width="226.5267"
+             height="19.445436"
+             x="14.142136"
+             y="31.062542"
+             style="fill:#666666" /></flowRegion><flowPara
+           id="flowPara8009">Status: In Progress</flowPara><flowPara
+           id="flowPara8011">Date: Feb 2, 2015 - Feb 10, 2015</flowPara></flowRoot>    </g>
+    <g
+       inkscape:tile-y0="9.3669321"
+       inkscape:tile-x0="9.3669109"
+       id="use7818"
+       transform="translate(1.1417313,135.2616)">
+      <rect
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.01728451;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="rect7967"
+         width="238.15594"
+         height="41.502399"
+         x="9.3669109"
+         y="601.09918" />
+      <flowRoot
+         xml:space="preserve"
+         id="flowRoot7969"
+         style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         transform="translate(7.6071604,545.38975)"><flowRegion
+           id="flowRegion7971"><rect
+             id="rect7973"
+             width="222.80945"
+             height="20.793509"
+             x="8.9285717"
+             y="58.863884" /></flowRegion><flowPara
+           id="flowPara7975">Claim Item 5</flowPara><flowPara
+           id="flowPara7977" /></flowRoot>      <flowRoot
+         xml:space="preserve"
+         id="flowRoot7979"
+         style="font-size:8px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
+         transform="translate(3.0304576,588.44925)"><flowRegion
+           id="flowRegion7981"><rect
+             id="rect7983"
+             width="226.5267"
+             height="19.445436"
+             x="14.142136"
+             y="31.062542"
+             style="fill:#666666" /></flowRegion><flowPara
+           id="flowPara7985">Status: In Progress</flowPara><flowPara
+           id="flowPara7987">Date: Feb 2, 2015 - Feb 10, 2015</flowPara></flowRoot>    </g>
+    <g
+       inkscape:tile-y0="9.3669321"
+       inkscape:tile-x0="9.3669109"
+       id="use7820"
+       transform="translate(1.1417313,176.76399)">
+      <rect
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.01728451;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="rect7943"
+         width="238.15594"
+         height="41.502399"
+         x="9.3669109"
+         y="601.09918" />
+      <flowRoot
+         xml:space="preserve"
+         id="flowRoot7945"
+         style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         transform="translate(7.6071604,545.38975)"><flowRegion
+           id="flowRegion7947"><rect
+             id="rect7949"
+             width="222.80945"
+             height="20.793509"
+             x="8.9285717"
+             y="58.863884" /></flowRegion><flowPara
+           id="flowPara7951">Claim Item 6</flowPara><flowPara
+           id="flowPara7953" /></flowRoot>      <flowRoot
+         xml:space="preserve"
+         id="flowRoot7955"
+         style="font-size:8px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
+         transform="translate(3.0304576,588.44925)"><flowRegion
+           id="flowRegion7957"><rect
+             id="rect7959"
+             width="226.5267"
+             height="19.445436"
+             x="14.142136"
+             y="31.062542"
+             style="fill:#666666" /></flowRegion><flowPara
+           id="flowPara7961">Status: In Progress</flowPara><flowPara
+           id="flowPara7963">Date: Feb 2, 2015 - Feb 10, 2015</flowPara></flowRoot>    </g>
+    <g
+       inkscape:tile-y0="9.3669321"
+       inkscape:tile-x0="9.3669109"
+       id="use7822"
+       transform="translate(1.1417313,218.26639)">
+      <rect
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.01728451;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="rect7919"
+         width="238.15594"
+         height="41.502399"
+         x="9.3669109"
+         y="601.09918" />
+      <flowRoot
+         xml:space="preserve"
+         id="flowRoot7921"
+         style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         transform="translate(7.6071604,545.38975)"><flowRegion
+           id="flowRegion7923"><rect
+             id="rect7925"
+             width="222.80945"
+             height="20.793509"
+             x="8.9285717"
+             y="58.863884" /></flowRegion><flowPara
+           id="flowPara7927">Claim Item 7</flowPara><flowPara
+           id="flowPara7929" /></flowRoot>      <flowRoot
+         xml:space="preserve"
+         id="flowRoot7931"
+         style="font-size:8px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
+         transform="translate(3.0304576,588.44925)"><flowRegion
+           id="flowRegion7933"><rect
+             id="rect7935"
+             width="226.5267"
+             height="19.445436"
+             x="14.142136"
+             y="31.062542"
+             style="fill:#666666" /></flowRegion><flowPara
+           id="flowPara7937">Status: In Progress</flowPara><flowPara
+           id="flowPara7939">Date: Feb 2, 2015 - Feb 10, 2015</flowPara></flowRoot>    </g>
+  </g>
+</svg>

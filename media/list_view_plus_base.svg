@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="239.17323"
+   height="416.04129"
+   id="svg3181"
+   version="1.1"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="list_view_plus_base.svg">
+  <defs
+     id="defs3183" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.7"
+     inkscape:cx="-54.841263"
+     inkscape:cy="198.18238"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="mm"
+     height="297mm"
+     width="142mm"
+     inkscape:window-width="1366"
+     inkscape:window-height="709"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <metadata
+     id="metadata3186">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-8.8582687,-600.59054)">
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4721"
+       style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#b3b3b3;fill-opacity:1;stroke:none;font-family:Sans"><flowRegion
+         id="flowRegion4723"><rect
+           id="rect4725"
+           width="220.21326"
+           height="18.182745"
+           x="17.172594"
+           y="29.042236"
+           style="font-size:10px;fill:#b3b3b3" /></flowRegion><flowPara
+         id="flowPara4727" /></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4729"
+       style="font-size:8px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><flowRegion
+         id="flowRegion4731"><rect
+           id="rect4733"
+           width="224.75894"
+           height="19.697975"
+           x="18.435284"
+           y="28.284622"
+           style="font-size:8px" /></flowRegion><flowPara
+         id="flowPara4735" /></flowRoot>    <g
+       id="g4751"
+       inkscape:tile-cx="128.44488"
+       inkscape:tile-cy="30.118132"
+       inkscape:tile-w="238.15594"
+       inkscape:tile-h="41.502399"
+       inkscape:tile-x0="9.3669109"
+       inkscape:tile-y0="9.3669321">
+      <rect
+         y="601.09918"
+         x="9.3669109"
+         height="41.502399"
+         width="238.15594"
+         id="rect3212"
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.01728451;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <flowRoot
+         transform="translate(7.6071604,545.38975)"
+         style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         id="flowRoot3232"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3234"><rect
+             y="58.863884"
+             x="8.9285717"
+             height="20.793509"
+             width="222.80945"
+             id="rect3236" /></flowRegion><flowPara
+           id="flowPara4717">List Item</flowPara><flowPara
+           id="flowPara3240" /></flowRoot>      <flowRoot
+         transform="translate(3.0304576,588.44925)"
+         style="font-size:8px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
+         id="flowRoot4737"
+         xml:space="preserve"><flowRegion
+           id="flowRegion4739"><rect
+             style="fill:#666666"
+             y="31.062542"
+             x="14.142136"
+             height="19.445436"
+             width="226.5267"
+             id="rect4741" /></flowRegion><flowPara
+           id="flowPara4745">Additional Details</flowPara><flowPara
+           id="flowPara4749">Etc.</flowPara></flowRoot>    </g>
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g4751"
+       xlink:href="#g4751"
+       transform="translate(0,41.502399)"
+       id="use5944"
+       width="256.88974"
+       height="460.62991" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g4751"
+       xlink:href="#g4751"
+       transform="translate(0,83.004799)"
+       id="use5946"
+       width="256.88974"
+       height="460.62991" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g4751"
+       xlink:href="#g4751"
+       transform="translate(0,124.5072)"
+       id="use5948"
+       width="256.88974"
+       height="460.62991" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g4751"
+       xlink:href="#g4751"
+       transform="translate(0,166.0096)"
+       id="use5950"
+       width="256.88974"
+       height="460.62991" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g4751"
+       xlink:href="#g4751"
+       transform="translate(0,207.512)"
+       id="use5952"
+       width="256.88974"
+       height="460.62991" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g4751"
+       xlink:href="#g4751"
+       transform="translate(0,249.0144)"
+       id="use5954"
+       width="256.88974"
+       height="460.62991" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g4751"
+       xlink:href="#g4751"
+       transform="translate(0,290.5168)"
+       id="use5956"
+       width="256.88974"
+       height="460.62991" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g4751"
+       xlink:href="#g4751"
+       transform="translate(0,332.0192)"
+       id="use5958"
+       width="256.88974"
+       height="460.62991" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g4751"
+       xlink:href="#g4751"
+       transform="translate(0,373.5216)"
+       id="use5960"
+       width="256.88974"
+       height="460.62991" />
+  </g>
+</svg>

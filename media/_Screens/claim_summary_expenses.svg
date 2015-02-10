@@ -14,7 +14,7 @@
    height="531.49603"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.5 r10040"
+   inkscape:version="0.48.3.1 r9886"
    sodipodi:docname="claim_summary_expenses.svg">
   <defs
      id="defs4">
@@ -42,18 +42,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="87.190933"
-     inkscape:cy="358.01568"
+     inkscape:zoom="1.979899"
+     inkscape:cx="272.5988"
+     inkscape:cy="419.51761"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      units="mm"
      width="1mm"
-     inkscape:window-width="1366"
-     inkscape:window-height="709"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-width="1680"
+     inkscape:window-height="956"
+     inkscape:window-x="0"
+     inkscape:window-y="31"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata7">
@@ -63,7 +63,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -216,27 +216,25 @@
          x="94.196732"
          y="586.95007"
          id="tspan8347">Expenses</tspan></text>
-    <g
-       id="g8947">
-      <rect
-         y="562.35815"
-         x="172.17221"
-         height="38.222454"
-         width="83.763832"
-         id="rect8945"
-         style="fill:#e6e6e6;fill-opacity:1;stroke:#000000;stroke-width:0.73690552;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-      <text
-         sodipodi:linespacing="125%"
-         id="text8351"
-         y="587.35394"
-         x="176.1467"
-         style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         xml:space="preserve"><tspan
-           id="tspan8355"
-           y="587.35394"
-           x="176.1467"
-           sodipodi:role="line">Destinations</tspan></text>
-    </g>
+    <rect
+       style="fill:#e6e6e6;fill-opacity:1;stroke:#000000;stroke-width:0.73690552;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect8945"
+       width="83.763832"
+       height="38.222454"
+       x="172.17221"
+       y="562.35815" />
+    <text
+       xml:space="preserve"
+       style="font-size:13.0154047px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="189.6725"
+       y="546.04639"
+       id="text8351"
+       sodipodi:linespacing="125%"
+       transform="scale(0.92967179,1.0756484)"><tspan
+         sodipodi:role="line"
+         x="189.6725"
+         y="546.04639"
+         id="tspan8355">Destinations</tspan></text>
     <g
        transform="translate(-1.7881393e-7,518.0896)"
        style="display:inline"
@@ -301,8 +299,8 @@
          transform="translate(8.7488917,33.77556)"><flowRegion
            id="flowRegion10126-4"><rect
              id="rect10128-5"
-             width="222.80945"
-             height="20.793509"
+             width="228.3653"
+             height="20.79351"
              x="8.9285717"
              y="58.863884" /></flowRegion><flowPara
            id="flowPara10146-2">Flight to London (round trip)</flowPara><flowPara

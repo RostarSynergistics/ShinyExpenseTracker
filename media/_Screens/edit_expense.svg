@@ -8,16 +8,28 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="256.88977"
    height="531.49603"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.5 r10040"
+   inkscape:version="0.48.3.1 r9886"
    sodipodi:docname="edit_expense.svg">
   <defs
      id="defs4">
+    <linearGradient
+       id="linearGradient4101">
+      <stop
+         style="stop-color:#ffff2a;stop-opacity:1;"
+         offset="0"
+         id="stop4103" />
+      <stop
+         style="stop-color:#2affff;stop-opacity:0;"
+         offset="1"
+         id="stop4105" />
+    </linearGradient>
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4434"
@@ -42,6 +54,16 @@
        effect="spiro"
        id="path-effect6106"
        is_visible="true" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4101"
+       id="linearGradient4115"
+       x1="69.285713"
+       y1="415.06747"
+       x2="71.964287"
+       y2="489.35516"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(4.2857143,517.29476)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -50,18 +72,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="103.98115"
-     inkscape:cy="143.4514"
+     inkscape:zoom="1.4"
+     inkscape:cx="-0.9430626"
+     inkscape:cy="259.73092"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      units="mm"
      width="1mm"
-     inkscape:window-width="1366"
-     inkscape:window-height="709"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-width="1680"
+     inkscape:window-height="956"
+     inkscape:window-x="0"
+     inkscape:window-y="31"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata7">
@@ -71,7 +93,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -143,31 +165,31 @@
          style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
          sodipodi:type="arc" />
     </g>
+    <text
+       sodipodi:linespacing="125%"
+       id="text3627"
+       y="826.44275"
+       x="9.625"
+       style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         y="826.44275"
+         x="9.625"
+         id="tspan3629"
+         sodipodi:role="line">Description</tspan></text>
     <g
-       id="g4505">
+       id="g3314">
       <rect
-         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.98946726;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.8480624;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
          id="rect3633"
          width="238.15594"
-         height="119.24826"
+         height="87.600136"
          x="11.352392"
-         y="892.01099" />
-      <text
-         xml:space="preserve"
-         style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         x="9.625"
-         y="885.83453"
-         id="text3627"
-         sodipodi:linespacing="125%"><tspan
-           sodipodi:role="line"
-           id="tspan3629"
-           x="9.625"
-           y="885.83453">Description</tspan></text>
+         y="832.6192" />
       <flowRoot
          xml:space="preserve"
          id="flowRoot3635"
          style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
-         transform="translate(9.5926417,845.64543)"><flowRegion
+         transform="translate(9.5926417,786.25367)"><flowRegion
            id="flowRegion3637"><rect
              id="rect3639"
              width="225.08229"
@@ -175,8 +197,7 @@
              x="8.9285717"
              y="58.863884"
              style="fill:#666666" /></flowRegion><flowPara
-           id="flowPara3641">Hotel stay for evening after the</flowPara><flowPara
-           id="flowPara4503">flight.</flowPara></flowRoot>    </g>
+           id="flowPara4503">Hotel stay for evening after the flight.</flowPara></flowRoot>    </g>
     <g
        id="g3024"
        transform="translate(8.0812204,-23.043165)">
@@ -353,33 +374,29 @@
              id="flowPara3587">Lodgings</flowPara></flowRoot>      </g>
     </g>
     <g
-       inkscape:tile-y0="47.855429"
-       inkscape:tile-x0="10"
-       id="use3547"
-       transform="translate(0,183.39587)">
+       id="g3245">
       <text
          xml:space="preserve"
          style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
          x="9.625"
-         y="580.17474"
+         y="763.57062"
          id="text3591"
          sodipodi:linespacing="125%"><tspan
            sodipodi:role="line"
            id="tspan3593"
            x="9.625"
-           y="580.17474">Amount Spent</tspan></text>
+           y="763.57062">Amount Spent</tspan></text>
       <g
-         id="g3595"
-         transform="translate(0.84375,-24.00002)">
+         id="g3238">
         <rect
-           y="610.3512"
-           x="10.508642"
-           height="41.502399"
-           width="238.15594"
+           y="769.59973"
+           x="11.204991"
+           height="41.797203"
+           width="119.27752"
            id="rect3597"
-           style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.01728451;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+           style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.72248358;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
         <flowRoot
-           transform="translate(8.7488917,563.98566)"
+           transform="translate(9.5926417,723.38151)"
            style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
            id="flowRoot3599"
            xml:space="preserve"><flowRegion
@@ -392,50 +409,67 @@
                id="rect3603" /></flowRegion><flowPara
              id="flowPara3605">83.20</flowPara></flowRoot>      </g>
     </g>
+    <text
+       sodipodi:linespacing="125%"
+       id="text3609"
+       y="764.03412"
+       x="139.10156"
+       style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         y="764.03412"
+         x="139.10156"
+         id="tspan3611"
+         sodipodi:role="line">Currency</tspan></text>
     <g
-       id="g4436">
-      <text
+       id="g3296">
+      <rect
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.69188488;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="rect3615"
+         width="109.30811"
+         height="41.827797"
+         x="140.34593"
+         y="770.18848" />
+      <flowRoot
          xml:space="preserve"
-         style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         x="9.625"
-         y="824.70258"
-         id="text3609"
-         sodipodi:linespacing="125%"><tspan
-           sodipodi:role="line"
-           id="tspan3611"
-           x="9.625"
-           y="824.70258">Currency</tspan></text>
-      <g
-         id="g3613"
-         transform="translate(0.84375,220.52781)">
-        <rect
-           y="610.3512"
-           x="10.508642"
-           height="41.502399"
-           width="238.15594"
-           id="rect3615"
-           style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.01728451;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-        <flowRoot
-           transform="translate(8.7488917,563.98566)"
-           style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
-           id="flowRoot3617"
-           xml:space="preserve"><flowRegion
-             id="flowRegion3619"><rect
-               style="fill:#666666"
-               y="58.863884"
-               x="8.9285717"
-               height="23.571428"
-               width="238.21428"
-               id="rect3621" /></flowRegion><flowPara
-             id="flowPara3623">EUR</flowPara></flowRoot>      </g>
-      <path
+         id="flowRoot3617"
+         style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
+         transform="translate(139.49219,723.98562)"><flowRegion
+           id="flowRegion3619"><rect
+             id="rect3621"
+             width="238.21428"
+             height="23.571428"
+             x="8.9285717"
+             y="58.863884"
+             style="fill:#666666" /></flowRegion><flowPara
+           id="flowPara3623">EUR</flowPara></flowRoot>      <path
          sodipodi:nodetypes="cccc"
          inkscape:connector-curvature="0"
-         inkscape:original-d="m 220,846.36222 10,13 10,-13 z"
+         inkscape:original-d="m 220,785.83437 10,13 10,-13 z"
          inkscape:path-effect="#path-effect4434"
          id="path4432"
-         d="m 220,846.36222 10,13 10,-13 -20,0"
+         d="m 220,785.83437 10,13 10,-13 -20,0"
          style="fill:#f2f2f2;stroke:#282828;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
+    <g
+       id="g4121">
+      <rect
+         y="929.50507"
+         x="30"
+         height="79.285713"
+         width="87.85714"
+         id="rect3321"
+         style="fill:url(#linearGradient4115);fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4117"
+         y="975.93365"
+         x="45"
+         style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           y="975.93365"
+           x="45"
+           id="tspan4119"
+           sodipodi:role="line">PHOTO</tspan></text>
     </g>
   </g>
 </svg>

@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="edit_claim.svg">
+   sodipodi:docname="edit_destination.svg">
   <defs
      id="defs4">
     <linearGradient
@@ -47,7 +47,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.9899495"
-     inkscape:cx="116.69973"
+     inkscape:cx="-62.602346"
      inkscape:cy="281.48282"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -67,7 +67,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -105,7 +105,7 @@
          sodipodi:role="line"
          id="tspan3763"
          x="35.319443"
-         y="547.42249">Claim</tspan></text>
+         y="547.42249">Destination</tspan></text>
     <g
        id="g8179">
       <path
@@ -178,7 +178,7 @@
            y="592.17474"
            x="8.78125"
            id="tspan3004"
-           sodipodi:role="line">Name</tspan></text>
+           sodipodi:role="line">Destination</tspan></text>
       <g
          transform="translate(0,-8)"
          id="g3120">
@@ -201,85 +201,39 @@
                x="8.9285717"
                y="58.863884"
                style="fill:#666666" /></flowRegion><flowPara
-             id="flowPara3240">Europe Trip</flowPara></flowRoot>      </g>
+             id="flowPara3240">London</flowPara></flowRoot>      </g>
     </g>
-    <g
-       id="g3322"
-       transform="translate(0,-20)">
-      <text
-         xml:space="preserve"
-         style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+    <text
+       sodipodi:linespacing="125%"
+       id="text3139"
+       y="652.17474"
+       x="8.78125"
+       style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         y="652.17474"
          x="8.78125"
-         y="672.17474"
-         id="text3139"
-         sodipodi:linespacing="125%"><tspan
-           sodipodi:role="line"
-           id="tspan3141"
-           x="8.78125"
-           y="672.17474">Start Date</tspan></text>
-      <g
-         transform="translate(0,71.999985)"
-         id="g3143">
-        <rect
-           y="610.3512"
-           x="10.508642"
-           height="41.502399"
-           width="238.15594"
-           id="rect3145"
-           style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.01728451;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-        <flowRoot
-           transform="translate(8.7488917,563.98566)"
-           style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
-           id="flowRoot3147"
-           xml:space="preserve"><flowRegion
-             id="flowRegion3149"><rect
-               style="fill:#666666"
-               y="58.863884"
-               x="8.9285717"
-               height="23.571428"
-               width="238.21428"
-               id="rect3151" /></flowRegion><flowPara
-             id="flowPara3153">Feb 2, 2014</flowPara></flowRoot>      </g>
-    </g>
-    <g
-       id="g3312"
-       transform="translate(0,-30)">
-      <text
-         sodipodi:linespacing="125%"
-         id="text3157"
-         y="752.17474"
-         x="8.78125"
-         style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         xml:space="preserve"><tspan
-           y="752.17474"
-           x="8.78125"
-           id="tspan3159"
-           sodipodi:role="line">End Date</tspan></text>
-      <g
-         transform="translate(0,151.99998)"
-         id="g3161">
-        <rect
-           style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.01728451;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-           id="rect3163"
-           width="238.15594"
-           height="41.502399"
-           x="10.508642"
-           y="610.3512" />
-        <flowRoot
-           xml:space="preserve"
-           id="flowRoot3165"
-           style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
-           transform="translate(8.7488917,563.98566)"><flowRegion
-             id="flowRegion3167"><rect
-               id="rect3169"
-               width="238.21428"
-               height="23.571428"
-               x="8.9285717"
-               y="58.863884"
-               style="fill:#666666" /></flowRegion><flowPara
-             id="flowPara3171">Feb 10, 2014</flowPara></flowRoot>      </g>
-    </g>
-    <path
+         id="tspan3141"
+         sodipodi:role="line">Reason for Travel</tspan></text>
+    <rect
+       y="662.3512"
+       x="10.508642"
+       height="340.79233"
+       width="238.15594"
+       id="rect3145"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <flowRoot
+       transform="translate(8.7488917,615.98565)"
+       style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
+       id="flowRoot3147"
+       xml:space="preserve"><flowRegion
+         id="flowRegion3149"><rect
+           style="fill:#666666"
+           y="58.863884"
+           x="8.9285717"
+           height="23.571428"
+           width="238.21428"
+           id="rect3151" /></flowRegion><flowPara
+         id="flowPara3153">Business Meeting</flowPara></flowRoot>    <path
        style="fill:#ffffff;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 202.29482,542.037 6.9448,6.9448 11.14563,-19.3048 1.81724,3.14756 -12.43477,21.53766 -9.26772,-9.26771 1.79482,-3.05751"
        id="path3223"

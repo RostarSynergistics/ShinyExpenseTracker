@@ -67,7 +67,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -105,7 +105,7 @@
          sodipodi:role="line"
          id="tspan3763"
          x="35.319443"
-         y="547.42249">Manage Tags</tspan></text>
+         y="547.42249">Tags</tspan></text>
     <g
        id="g8179">
       <path

@@ -24,7 +24,6 @@ public class TagTest extends TestCase {
 		Tag tag = tagList.getTag(tag);
 		tag.edit("changed tag");
 		assertTrue("Expected tag = changed tag, tag = tag", tagList.getTag(tag).equals("changed tag");
-		
 	}
 	
 	// corresponds to issue #26
@@ -32,7 +31,6 @@ public class TagTest extends TestCase {
 		tagList.remove("tag");
 		assertTrue("Expected tagList size == 0, tagList size != 1", tagList.size() == 0);
 		assertTrue("Expected tagList doesn't containt 'tag'", tagList.contains("tag"));
-		
 	}
 	
 	// corresponds to issue #23
@@ -55,6 +53,11 @@ public class TagTest extends TestCase {
 		assertTrue("filter incorrect amount of claims", count == 1);
 	}
 	
-	
+	//corresponds to issue #24
+	public void testManageTags() {
+		Adapter adapter = ((ListView) activity.findViewById(R.id.tagsList)).getAdapter();
+		int count = adapter.getCount;
+		assertTrue("TagList not being displayed", count == 1);
+	}
 	
 }

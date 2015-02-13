@@ -46,6 +46,7 @@ public class ExpenseClaimListTest extends TestCase {
 		assertFalse("retrieved claim is not equal to the inserted claim", claim.equals(retrievedClaim));
 	}
 	
+	// Covers use case #7
 	public void testGetNoSubmittedClaims() {
 		ExpenseClaimList expenseClaimList = new ExpenseClaimList();
 		ExpenseClaim claim1 = new ExpenseClaim("in_progress", new Date(123456), new Date(123457));
@@ -58,6 +59,7 @@ public class ExpenseClaimListTest extends TestCase {
 		assertTrue("More claims than expected", retrievedClaims.size() == 0);
 	}
 	
+	// Covers use case #7
 	public void testGetSubmittedClaims() {
 		ExpenseClaimList expenseClaimList = new ExpenseClaimList();
 		ExpenseClaim claim1 = new ExpenseClaim("in_progress", new Date(123456), new Date(123457));

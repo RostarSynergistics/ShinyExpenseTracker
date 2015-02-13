@@ -29,6 +29,7 @@ public class ClaimStatusTest extends TestCase {
 		return claimList.getClaim(claim);
 	}
 
+	// Not in issues; obvious functionality
 	public void testClaimInProgress() {
 		Claim c = makeSubmitAndReviewClaim("my test claim",
 				"2015/2/12", "2015/2/16", ExpenseClaimStatus.IN_PROGRESS);
@@ -36,7 +37,8 @@ public class ClaimStatusTest extends TestCase {
 		assertEquals("New claim not in in progress state", ExpenseClaimStatus.IN_PROGRESS, c.getStatus());
 		assertTrue("Returned claim not editable", c.canEdit());
 	}
-	
+
+	// Issue #31
 	public void testClaimSubmit() {
 		Claim c = makeSubmitAndReviewClaim("my test claim",
 				"2015/2/12", "2015/2/16", ExpenseClaimStatus.SUBMIT);
@@ -45,6 +47,7 @@ public class ClaimStatusTest extends TestCase {
 		assertFalse("Returned claim is editable", c.canEdit());
 	}
 	
+	// Issue #32
 	public void testClaimReturned() {
 		Claim c = makeSubmitAndReviewClaim("my test claim",
 				"2015/2/12", "2015/2/16", ExpenseClaimStatus.RETURNED);
@@ -53,6 +56,7 @@ public class ClaimStatusTest extends TestCase {
 		assertTrue("Returned claim not editable", c.canEdit());
 	}
 	
+	// Issue #33
 	public void testClaimApproved() {
 		Claim c = makeSubmitAndReviewClaim("my test claim",
 				"2015/2/12", "2015/2/16", ExpenseClaimStatus.APPROVED);

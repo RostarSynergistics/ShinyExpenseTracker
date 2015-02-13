@@ -5,12 +5,14 @@ import java.util.Date;
 import junit.framework.TestCase;
 
 public class ExpenseClaimListTest extends TestCase {
+	// Not part of use cases, but an obvious test
 	public void testEmptyClaimList(){
 		ExpenseClaimList expenseClaimList = new ExpenseClaimList();
     	Collection<ExpenseClaim> claims = expenseClaimList.getClaims();
     	assertTrue("Empty Expense Claim List", claims.size() == 0);
 	}
 	
+	// Issues #17, #22
 	public void testAddClaimToClaimList(){
 		ExpenseClaimList expenseClaimList = new ExpenseClaimList();
 		ExpenseClaim claim = new ExpenseClaim("name", new Date(123456), new Date(123457));
@@ -23,6 +25,7 @@ public class ExpenseClaimListTest extends TestCase {
 		assertTrue("retrieved the right claim", claim.equals(retrievedClaim));
 	}
 	
+	// Issues #21, #22
 	public void testRemoveClaimFromList(){
 		ExpenseClaimList expenseClaimList = new ExpenseClaimList();
 		ExpenseClaim claim = new ExpenseClaim("name", new Date(123456), new Date(123457));
@@ -34,19 +37,7 @@ public class ExpenseClaimListTest extends TestCase {
 		assertTrue("Empty Expense Claim List", claims.size() == 0);
 	}
 	
-	public void testEditClaimInList(){
-		ExpenseClaimList expenseClaimList = new ExpenseClaimList();
-		ExpenseClaim claim = new ExpenseClaim("name", new Date(123456), new Date(123457));
-		
-		expenseClaimList.add(claim);
-		
-		ExpenseClaim retrievedClaim = expenseClaimList.get(claim);
-		retrievedClaim.edit();
-		
-		assertFalse("retrieved claim is not equal to the inserted claim", claim.equals(retrievedClaim));
-	}
-	
-	// Covers use case #7
+	// Covers issue #7
 	public void testGetNoSubmittedClaims() {
 		ExpenseClaimList expenseClaimList = new ExpenseClaimList();
 		ExpenseClaim claim1 = new ExpenseClaim("in_progress", new Date(123456), new Date(123457));
@@ -59,7 +50,7 @@ public class ExpenseClaimListTest extends TestCase {
 		assertTrue("More claims than expected", retrievedClaims.size() == 0);
 	}
 	
-	// Covers use case #7
+	// Covers issue #7
 	public void testGetSubmittedClaims() {
 		ExpenseClaimList expenseClaimList = new ExpenseClaimList();
 		ExpenseClaim claim1 = new ExpenseClaim("in_progress", new Date(123456), new Date(123457));

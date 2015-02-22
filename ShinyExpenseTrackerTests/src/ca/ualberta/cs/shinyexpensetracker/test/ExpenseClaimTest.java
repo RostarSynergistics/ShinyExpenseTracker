@@ -6,6 +6,7 @@ import java.util.Date;
 import junit.framework.TestCase;
 
 public class ExpenseClaimTest extends TestCase {
+	// Issue #17
 	public void testCreateClaim(){
 		ExpenseClaim claim = new ExpenseClaim("name", new Date(123456), new Date(123457));
 		
@@ -13,6 +14,7 @@ public class ExpenseClaimTest extends TestCase {
 		assertEquals("created claim is equal to default claim", claim, new ExpenseClaim("name", new Date(123456), new Date(123457)));
 	}
 	
+	// Issue #18
 	public void testAddDestination(){
 		ExpenseClaim claim = new ExpenseClaim("name", new Date(123456), new Date(123457));
 		
@@ -24,6 +26,7 @@ public class ExpenseClaimTest extends TestCase {
 		assertEquals("destination list contains default destination", dests.get(0), new Desination("destination", "reason"));
 	}
 	
+	// Issue #25
 	public void testAddTag(){
 		ExpenseClaim claim = new ExpenseClaim("name", new Date(123456), new Date(123457));
 		claim.attachTag(new Tag("tag"));
@@ -34,6 +37,7 @@ public class ExpenseClaimTest extends TestCase {
 		assertEquals("tag is 'tag'", tags.get(0), new Tag("tag"));
 	}
 	
+	// Issue #5
 	public void testAddExpenseItem(){
 		ExpenseClaim claim = new ExpenseClaim("name", new Date(123456), new Date(123457));
 		claim.attachExpenseItem(new ExpenseItem("Description", "Date", "Category", "Amount Spent", "Unit of Currency"));
@@ -44,6 +48,7 @@ public class ExpenseClaimTest extends TestCase {
 		assertEquals("tag is 'tag'", expenseItems.get(0), new ExpenseItem("Description", "Date", "Category", "Amount Spent", "Unit of Currency"));
 	}
 	
+	// Not part of use cases; here because it is an obvious extended functionality
 	public void testRemoveDestination(){
 		ExpenseClaim claim = new ExpenseClaim("name", new Date(123456), new Date(123457));
 		
@@ -58,6 +63,7 @@ public class ExpenseClaimTest extends TestCase {
 		assertTrue("destination list is null", dests == null);
 	}
 	
+	// Issue #26
 	public void testRemoveTag(){
 		ExpenseClaim claim = new ExpenseClaim("name", new Date(123456), new Date(123457));
 		Tag tag = new Tag("tag")
@@ -70,6 +76,7 @@ public class ExpenseClaimTest extends TestCase {
 		assertTrue("tag list is null", tags == null);
 	}
 	
+	// Issue #14
 	public void testRemoveExpenseItem(){
 		ExpenseClaim claim = new ExpenseClaim("name", new Date(123456), new Date(123457));
 		ExpenseItem item = new ExpenseItem("Description", "Date", "Category", "Amount Spent", "Unit of Currency")
@@ -81,6 +88,7 @@ public class ExpenseClaimTest extends TestCase {
 		
 	}
 	
+	// Issues #10, #11, #12
 	public void testClaimStatus(){
 		ExpenseClaim claim = new ExpenseClaim("name", new Date(123456), new Date(123457));
 		
@@ -89,13 +97,14 @@ public class ExpenseClaimTest extends TestCase {
 		
 		claim.unmarkSubmitted();
 		claim.markReturned();
-		assertTrue("Submitted", claim.isReturned());
+		assertTrue("Returned", claim.isReturned());
 		
 		claim.unmarkReturned();
 		claim.markApproved();
-		assertTrue("Submitted", claim.isApproved());
+		assertTrue("Approved", claim.isApproved());
 	}
 	
+	// Issue #20
 	public void testEditClaim(){
 		ExpenseClaim claim = new ExpenseClaim("name", new Date(123456), new Date(123457));
 		

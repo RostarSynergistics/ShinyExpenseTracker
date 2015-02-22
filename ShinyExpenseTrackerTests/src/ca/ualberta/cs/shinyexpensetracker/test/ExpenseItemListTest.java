@@ -1,3 +1,5 @@
+// Covers Issue #5, 14, 15, 16
+
 package ca.ualberta.cs.shinyexpensetracker.test;
 
 import java.util.Collection;
@@ -51,7 +53,7 @@ public class ExpenseItemListTest extends TestCase {
 	    	
 	    }
 	        
-	    public void testRemoveClaim(){
+	    public void testRemoveExpenseItem(){
 	    	ExpenseItemList expenseItemList = new ExpenseItemList();
 	    	
 	    	// add sample expenseItem

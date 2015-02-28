@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <!--android:orientation="vertical"--> 
+
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@+id/nameEditText"
+        android:text="Name:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/nameEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nameTextView"
+        android:ems="10" />
+    
+	<TextView
+        android:id="@+id/dateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nameEditText"
+        android:labelFor="@+id/dateEditText"
+        android:text="Date:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/dateEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dateTextView"
+        android:ems="10" />
+    
+    <TextView
+        android:id="@+id/categoryTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dateEditText"
+        android:labelFor="@+id/categoryEditText"
+        android:text="Category:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/categoryEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/categoryTextView"
+        android:ems="10" />
+    
+    <TextView
+        android:id="@+id/amountTextView"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/categoryEditText"
+        android:labelFor="@+id/amountEditText"
+        android:text="Amount Spent:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/amountEditText"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/amountTextView"
+        android:ems="10" />
+
+    <TextView
+        android:id="@+id/currencyTextView"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:labelFor="@+id/currencySpinner"
+        android:layout_below="@id/categoryEditText"
+        android:layout_toRightOf="@id/amountTextView"
+        android:text="Currency:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Spinner
+        android:id="@+id/currencySpinner"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/currencyTextView"
+        android:layout_toRightOf="@+id/amountEditText"
+        android:layout_alignRight="@+id/amountEditText" />
+    
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/amountEditText"
+        android:labelFor="@+id/descriptionEditText"
+        android:text="Description:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/descriptionEditText"
+        android:layout_width="320dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/descriptionTextView"
+        android:inputType="textMultiLine"
+        android:ems="10" />
+
+    <ImageButton
+        android:id="@+id/reciptImageButton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/descriptionEditText"
+        android:layout_marginLeft="20dp"
+        android:src="@android:drawable/ic_menu_camera" />
+
+</RelativeLayout>

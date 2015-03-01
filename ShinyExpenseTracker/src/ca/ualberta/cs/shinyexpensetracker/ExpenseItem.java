@@ -6,11 +6,19 @@ import android.graphics.Bitmap;
 
 public class ExpenseItem {
 	
+	public enum Category { 
+		AIR_FARE, GROUND_TRANSPORT, VEHICLE_RENTAL, PRIVATE_AUTOMOBILE, FUEL, PARKING, 
+		REGISTRATION, ACCOMODATION, MEAL, SUPPLIES
+	}
+	public enum Currency {
+		CAD, USD, GBR, EUR, CHF, JPY, CNY
+	}
+	
 	public Date date;
 	public String description;
-	public String category;
+	public Category category;
 	public double amountSpent;
-	public String currency;
+	public Currency currency;
 	public Bitmap reciptPhoto;
 	
 	public void setDate(Date date){
@@ -29,11 +37,11 @@ public class ExpenseItem {
 		return this.description;
 	}
 	
-	public void setCategory(String category){
+	public void setCategory(Category category){
 		this.category = category;
 	}
 
-	public String getCategory(){
+	public Category getCategory(){
 		return this.category;
 	}
 	
@@ -45,11 +53,11 @@ public class ExpenseItem {
 		return this.amountSpent;
 	}
 	
-	public void setCurrency(String currency){
+	public void setCurrency(Currency currency){
 		this.currency = currency;
 	}
 	
-	public String getCurrency(){
+	public Currency getCurrency(){
 		return this.currency;
 	}
 	

@@ -44,12 +44,13 @@
         android:text="Category:"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <EditText
+    <Spinner
         android:id="@+id/categoryEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/categoryTextView"
-        android:ems="10" />
+        android:ems="10"
+        android:entries="@array/expenseItemCategories"/>
     
     <TextView
         android:id="@+id/amountTextView"
@@ -83,7 +84,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/currencyTextView"
         android:layout_toRightOf="@+id/amountEditText"
-        android:layout_alignRight="@+id/amountEditText" />
+        android:layout_alignRight="@+id/amountEditText"
+        android:entires="@array/expenseItemCurrencies" />
     
     <TextView
         android:id="@+id/descriptionTextView"

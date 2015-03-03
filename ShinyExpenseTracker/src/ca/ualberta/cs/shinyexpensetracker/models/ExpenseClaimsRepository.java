@@ -34,7 +34,7 @@ public class ExpenseClaimsRepository {
 		}
 	}
 
-	public ExpenseClaimList loadExpenseClaim() {
+	public ExpenseClaimList loadExpenseClaims() {
 		String travelClaimsListData = getSettings().getString(preferenceKey, "");
 		if (travelClaimsListData.equals("")) {
 			return new ExpenseClaimList();
@@ -43,7 +43,7 @@ public class ExpenseClaimsRepository {
 		}
 	}
 
-	public void saveExpenseClaim(ExpenseClaimList travelClaims) {
+	public void saveExpenseClaims(ExpenseClaimList travelClaims) {
 		Editor editor = getSettings().edit();
 		String travelClaimsString = gson.toJson(travelClaims);
 		editor.putString(preferenceKey, travelClaimsString);

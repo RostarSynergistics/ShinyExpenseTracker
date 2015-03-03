@@ -7,8 +7,8 @@
         android:id="@+id/nameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:labelFor="@+id/nameEditText"
         android:text="Name:"
+        android:labelFor="@+id/nameEditText"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
@@ -16,6 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/nameTextView"
+        android:inputType="textCapWords"
         android:ems="10" />
     
 	<TextView
@@ -23,8 +24,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/nameEditText"
-        android:labelFor="@+id/dateEditText"
         android:text="Date:"
+        android:labelFor="@+id/dateEditText"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
@@ -32,6 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/dateTextView"
+        android:inputType="date"
         android:ems="10" />
     
     <TextView
@@ -39,23 +41,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/dateEditText"
-        android:labelFor="@+id/categoryEditText"
+        android:labelFor="@+id/categorySpinner"
         android:text="Category:"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Spinner
         android:id="@+id/categorySpinner"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_below="@+id/categoryTextView"
         android:ems="10"
-        android:entries="@array/expenseItemCategories"/>
+        android:entries="@array/expenseItemCategories" />
     
     <TextView
         android:id="@+id/amountTextView"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/categoryEditText"
+        android:layout_below="@+id/categorySpinner"
         android:labelFor="@+id/amountEditText"
         android:text="Amount Spent:"
         android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -63,28 +65,29 @@
     <EditText
         android:id="@+id/amountEditText"
         android:layout_width="150dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_below="@+id/amountTextView"
+        android:inputType="numberDecimal"
         android:ems="10" />
 
     <TextView
         android:id="@+id/currencyTextView"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
+        android:layout_below="@id/categorySpinner"
+        android:layout_toEndOf="@id/amountTextView"
         android:labelFor="@+id/currencySpinner"
-        android:layout_below="@id/categoryEditText"
-        android:layout_toRightOf="@id/amountTextView"
         android:text="Currency:"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <Spinner
-        android:id="@+id/currencySpinner"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/currencyTextView"
-        android:layout_toRightOf="@+id/amountEditText"
-        android:layout_alignRight="@+id/amountEditText"
-        android:entries="@array/expenseItemCurrencies" />
+	<Spinner
+	    android:id="@id/currencySpinner"
+	    android:layout_width="150dp" 
+    	android:layout_height="50dp"
+    	android:layout_below="@+id/currencyTextView"
+    	android:layout_toRightOf="@+id/amountEditText"
+    	android:entries="@array/expenseItemCurrencies" />
+
     
     <TextView
         android:id="@+id/descriptionTextView"
@@ -99,16 +102,17 @@
         android:id="@+id/descriptionEditText"
         android:layout_width="320dp"
         android:layout_height="100dp"
+        android:gravity="top"
         android:layout_below="@+id/descriptionTextView"
-        android:inputType="textMultiLine"
-        android:ems="10" />
+        android:ems="10"
+        android:inputType="textMultiLine" />
 
     <ImageButton
         android:id="@+id/reciptImageButton"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_below="@+id/descriptionEditText"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         android:src="@android:drawable/ic_menu_camera" />
 
 </RelativeLayout>

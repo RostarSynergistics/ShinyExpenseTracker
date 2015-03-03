@@ -1,7 +1,9 @@
-package ca.ualberta.cs.shinyexpensetracker;
+package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.ArrayList;
 import java.util.Date;
+
+import ca.ualberta.cs.shinyexpensetracker.IView;
 
 public class ExpenseClaim implements IModel {
 	public enum Status {

@@ -1,4 +1,4 @@
-package ca.ualberta.cs.shinyexpensetracker;
+package ca.ualberta.cs.shinyexpensetracker.models;
 
 public class Destination {
 	private String name;

@@ -1,6 +1,8 @@
-package ca.ualberta.cs.shinyexpensetracker;
+package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.ArrayList;
+
+import ca.ualberta.cs.shinyexpensetracker.IView;
 
 public class TagList implements IModel {
 	private ArrayList<Tag> tags;

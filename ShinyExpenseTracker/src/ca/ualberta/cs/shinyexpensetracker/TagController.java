@@ -1,5 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker;
 
+import ca.ualberta.cs.shinyexpensetracker.models.TagList;
+
 public class TagController {
 	private TagList list;
 	

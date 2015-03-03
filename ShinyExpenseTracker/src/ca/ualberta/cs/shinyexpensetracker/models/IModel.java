@@ -1,4 +1,6 @@
-package ca.ualberta.cs.shinyexpensetracker;
+package ca.ualberta.cs.shinyexpensetracker.models;
+
+import ca.ualberta.cs.shinyexpensetracker.IView;
 
 public interface IModel {
 	// FIXME generic types are evil and cause infinity warnings.

@@ -2,6 +2,9 @@ package ca.ualberta.cs.shinyexpensetracker;
 
 import java.util.ArrayList;
 
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
+
 public class ExpenseClaimController {
 	private ExpenseClaimList claimlist;
 

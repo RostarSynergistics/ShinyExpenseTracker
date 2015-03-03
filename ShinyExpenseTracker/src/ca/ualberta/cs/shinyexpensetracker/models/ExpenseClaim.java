@@ -1,9 +1,11 @@
-package ca.ualberta.cs.shinyexpensetracker;
+package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-public class ExpenseClaim implements IModel {
+import ca.ualberta.cs.shinyexpensetracker.IView;
+
+public class ExpenseClaim implements IModel<IView<ExpenseClaim>> {
 	public enum Status {
 		IN_PROGRESS, SUBMITTED, RETURNED, APPROVED
 	}
@@ -14,7 +16,11 @@ public class ExpenseClaim implements IModel {
 	private Status status;
 	private Tag tag;
 	
-	private ArrayList<IView> views; // FIXME: Not initialized
+	private transient ArrayList<IView<ExpenseClaim>> views;
+	
+	public ExpenseClaim() {
+		this.views = new ArrayList<IView<ExpenseClaim>>();
+	}
 	
 	public String getName() {
 		return name;
@@ -47,16 +53,16 @@ public class ExpenseClaim implements IModel {
 		this.tag = tag;
 	}
 	@Override
-	public void addView(IView<IModel> v) {
+	public void addView(IView<ExpenseClaim> v) {
 		views.add(v);
 	}
 	@Override
-	public void removeView(IView<IModel> v) {
+	public void removeView(IView<ExpenseClaim> v) {
 		views.remove(v);
 	}
 	@Override
 	public void notifyViews() {
-		for (IView v : views) {
+		for (IView<ExpenseClaim> v : views) {
 			v.update(this);
 		}
 	}

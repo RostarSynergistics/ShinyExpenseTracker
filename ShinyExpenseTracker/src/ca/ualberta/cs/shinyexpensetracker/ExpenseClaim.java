@@ -12,6 +12,7 @@ public class ExpenseClaim implements IModel {
 	private Date startDate;
 	private Date endDate;
 	private Status status;
+	private Tag tag;
 	
 	private ArrayList<IView> views; // FIXME: Not initialized
 	
@@ -38,6 +39,12 @@ public class ExpenseClaim implements IModel {
 	}
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+	public Tag getTag() {
+		return tag;
+	}
+	public void setTag(Tag tag) {
+		this.tag = tag;
 	}
 	@Override
 	public void addView(IView<IModel> v) {

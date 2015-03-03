@@ -4,6 +4,7 @@
     <string name="app_name">ShinyExpenseTracker</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
     <string-array name="expenseItemCategories">
         <item>air fare</item>
         <item>ground transport</item>
@@ -25,5 +26,7 @@
         <item>JPY</item>
         <item>CNY</item>
     </string-array>
+
+    <string name="title_activity_expense_item">ExpenseItemActivity</string>
 
 </resources>

@@ -5,7 +5,7 @@ import java.util.Date;
 import android.graphics.Bitmap;
 
 public class ExpenseItem {
-	
+
 	public enum Category { 
 		AIR_FARE, GROUND_TRANSPORT, VEHICLE_RENTAL, PRIVATE_AUTOMOBILE, FUEL, PARKING, 
 		REGISTRATION, ACCOMODATION, MEAL, SUPPLIES
@@ -20,6 +20,16 @@ public class ExpenseItem {
 	public double amountSpent;
 	public Currency currency;
 	public Bitmap reciptPhoto;
+
+	public ExpenseItem (Date date, String description, Category category, 
+			double amountSpent, Currency currency, Bitmap photo){
+		this.date = date;
+		this.description = description;
+		this.category = category;
+		this.amountSpent = amountSpent;
+		this.currency = currency;
+		this.reciptPhoto = photo;
+	}
 	
 	public void setDate(Date date){
 		this.date = date;

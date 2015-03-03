@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    <!--android:orientation="vertical"--> 
 
     <TextView
         android:id="@+id/nameTextView"
@@ -45,7 +44,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Spinner
-        android:id="@+id/categoryEditText"
+        android:id="@+id/categorySpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/categoryTextView"
@@ -85,7 +84,7 @@
         android:layout_below="@+id/currencyTextView"
         android:layout_toRightOf="@+id/amountEditText"
         android:layout_alignRight="@+id/amountEditText"
-        android:entires="@array/expenseItemCurrencies" />
+        android:entries="@array/expenseItemCurrencies" />
     
     <TextView
         android:id="@+id/descriptionTextView"

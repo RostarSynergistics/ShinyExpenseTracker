@@ -27,6 +27,8 @@ public class ExpenseClaimController {
 	
 	// FIXME What does this do? UML doesn't specify what or how.
 	public void saveExpenseClaim(ExpenseClaim claim) {
+		WebServiceExporter exporter = new WebServiceExporter();
+		exporter.export(claim);
 		
 	}
 	

@@ -2,6 +2,8 @@ package ca.ualberta.cs.shinyexpensetracker;
 
 import java.util.ArrayList;
 
+
+
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
@@ -12,14 +14,15 @@ public class ExpenseClaimController {
 		super();
 		this.claimlist = new ExpenseClaimList();
 	}
+	
 	public ExpenseClaimController(ExpenseClaimList claimlist) {
 		super();
 		this.claimlist = claimlist;
 	}
 	
 	// FIXME Where does this come from?
-	public ArrayList<ExpenseClaim> getExpenseClaimList() {
-		return null;
+	public ExpenseClaimList getExpenseClaimList() {
+		return claimlist;
 	}
 	
 	// FIXME What does this do? UML doesn't specify what or how.

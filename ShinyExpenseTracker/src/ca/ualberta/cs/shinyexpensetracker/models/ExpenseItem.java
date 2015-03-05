@@ -1,11 +1,13 @@
-package ca.ualberta.cs.shinyexpensetracker;
+package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.ArrayList;
 import java.util.Date;
 
+import ca.ualberta.cs.shinyexpensetracker.IView;
+
 import android.graphics.Bitmap;
 
-public class ExpenseItem implements IModel {
+public class ExpenseItem implements IModel<IView<ExpenseItem>> {
 	
 	public Date date;
 	public String description;
@@ -14,7 +16,7 @@ public class ExpenseItem implements IModel {
 	public String currency;
 	public Bitmap reciptPhoto;
 	
-	private ArrayList<IView> views;
+	private ArrayList<IView<ExpenseItem>> views;
 	
 	public void setDate(Date date){
 		this.date = date;
@@ -65,18 +67,18 @@ public class ExpenseItem implements IModel {
 	}
 
 	@Override
-	public void addView(IView<IModel> v) {
+	public void addView(IView<ExpenseItem> v) {
 		views.add(v);
 	}
 
 	@Override
-	public void removeView(IView<IModel> v) {
+	public void removeView(IView<ExpenseItem> v) {
 		views.remove(v);
 	}
 
 	@Override
 	public void notifyViews() {
-		for (IView v : views) {
+		for (IView<ExpenseItem> v : views) {
 			v.update(this);
 		}
 	}

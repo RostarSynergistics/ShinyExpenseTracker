@@ -18,7 +18,21 @@ public class ExpenseClaim implements IModel<IView<ExpenseClaim>> {
 	
 	private transient ArrayList<IView<ExpenseClaim>> views;
 	
-	public ExpenseClaim() {
+	/*public ExpenseClaim() {
+		this.views = new ArrayList<IView<ExpenseClaim>>();
+	}*/
+	
+	/* RAMISH: Needed the constructor to handle arguments for the AddExpenseClaimActivity class to make an ExpenseClaim
+	 * which is why I commented out the old constructor and added a new one to handle arguments.Comment out as needed.
+	*/
+	
+	public ExpenseClaim(String name, Date startDate, Date endDate, Status status, Tag tag) {
+		this.name = name;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.status = status;
+		this.tag = tag;
+		
 		this.views = new ArrayList<IView<ExpenseClaim>>();
 	}
 	

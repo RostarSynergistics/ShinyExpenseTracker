@@ -14,6 +14,9 @@ public class ExpenseClaimList implements IModel<IView<ExpenseClaimList>> {
 	 * and that 1 ExpenseClaimList is composed of ? Expense Claims
 	 */
 	
+	public ExpenseClaimList(){
+		claims = new ArrayList<ExpenseClaim>();
+	}
 	// FIXME UML says this takes no args
 	public ExpenseClaim getClaim(int index) {
 		return claims.get(index);

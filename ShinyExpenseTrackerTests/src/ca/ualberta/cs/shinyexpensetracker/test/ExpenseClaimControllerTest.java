@@ -9,8 +9,6 @@ public class ExpenseClaimControllerTest extends TestCase {
 	private ExpenseClaimList claimList;
 	private ExpenseClaimController claimController;
 
-	// TODO Create a proper expense claim when the expense claim constructor is
-	// implemented
 	protected void setUp() throws Exception {
 		super.setUp();
 		claimList = new ExpenseClaimList();
@@ -18,26 +16,27 @@ public class ExpenseClaimControllerTest extends TestCase {
 		claimController = new ExpenseClaimController(claimList);
 	}
 
-	// TODO Change to use .equals if implemented
-	public void testGetExpenseClaim() {
+	
+	public void testGetExpenseClaimList() {
 		assertEquals(claimList, claimController.getExpenseClaimList());
 	}
 
 	// TODO test if retrieval is possible when implemented
 	public void testSaveExpenseClaim() {
-		claimController.saveExpenseClaim(new ExpenseClaim());
+		claimController.saveExpenseClaim(new ExpenseClaim(), new WebServiceExporter());
 		fail();
-
 	}
 
 	public void testAddExpenseClaim(){
 		assertEquals(claimList,claimController.getExpenseClaimList());
 		ExpenseClaim newClaim = new ExpenseClaim();
 		claimController.addExpenseClaim(newClaim);
-		assertEquals(claimController.getExpenseClaimList().getClaim(2) , newClaim);	
+		assertEquals(claimController.getExpenseClaimList().getClaim(1) , newClaim);	
 	}
 
-	public void testEditExpenseClaim() {
-		fail();
+	public void testGetExpenseClaim(){
+		ExpenseClaim claim = new ExpenseClaim();
+		claimController.addExpenseClaim(claim);
+		assertEquals(claimController.getExpenseClaim(1), claim);
 	}
 }

@@ -1,0 +1,85 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity" >
+
+    <EditText
+        android:id="@+id/editTextExpenseClaimName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textViewName"
+        android:ems="10"
+        android:hint="Touch to enter..." >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/textViewName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editTextExpenseClaimName"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="16dp"
+        android:text="Name"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/textViewStartDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editTextExpenseClaimName"
+        android:layout_below="@+id/editTextExpenseClaimName"
+        android:layout_marginTop="25dp"
+        android:text="Start Date"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/editTextStartDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textViewStartDate"
+        android:layout_alignRight="@+id/editTextExpenseClaimName"
+        android:layout_below="@+id/textViewStartDate"
+        android:ems="10"
+        android:hint="Touch to enter..."
+        android:inputType="date" />
+
+    <EditText
+        android:id="@+id/editTextEndDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textViewEndDate"
+        android:layout_alignRight="@+id/editTextStartDate"
+        android:layout_below="@+id/textViewEndDate"
+        android:ems="10"
+        android:hint="Touch to enter..."
+        android:inputType="date" />
+
+    <TextView
+        android:id="@+id/textViewEndDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editTextStartDate"
+        android:layout_below="@+id/editTextStartDate"
+        android:layout_marginTop="20dp"
+        android:text="End Date"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="53dp"
+        android:layout_toRightOf="@+id/textViewStartDate"
+        android:text="Done" />
+
+</RelativeLayout>

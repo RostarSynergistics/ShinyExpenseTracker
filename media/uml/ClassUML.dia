@@ -2962,13 +2962,13 @@ removing an individual tag#</dia:string>
         <dia:point val="20.4661,50.1578"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="20.4161,50.1078;36.4161,55.4078"/>
+        <dia:rectangle val="20.4161,50.1078;43.3461,55.4078"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
         <dia:point val="20.4661,50.1578"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
-        <dia:real val="15.9"/>
+        <dia:real val="22.830000000000002"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
         <dia:real val="5.2000000000000002"/>
@@ -3138,6 +3138,23 @@ removing an individual tag#</dia:string>
                 <dia:enum val="0"/>
               </dia:attribute>
             </dia:composite>
+            <dia:composite type="umlparameter">
+              <dia:attribute name="name">
+                <dia:string>#exporter#</dia:string>
+              </dia:attribute>
+              <dia:attribute name="type">
+                <dia:string>#ClaimDataExplorer#</dia:string>
+              </dia:attribute>
+              <dia:attribute name="value">
+                <dia:string>##</dia:string>
+              </dia:attribute>
+              <dia:attribute name="comment">
+                <dia:string>##</dia:string>
+              </dia:attribute>
+              <dia:attribute name="kind">
+                <dia:enum val="0"/>
+              </dia:attribute>
+            </dia:composite>
           </dia:attribute>
         </dia:composite>
         <dia:composite type="umloperation">
@@ -3190,13 +3207,13 @@ removing an individual tag#</dia:string>
         </dia:composite>
         <dia:composite type="umloperation">
           <dia:attribute name="name">
-            <dia:string>#editExpenseClaimFromList#</dia:string>
+            <dia:string>#getExpenseClaim#</dia:string>
           </dia:attribute>
           <dia:attribute name="stereotype">
             <dia:string>##</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>##</dia:string>
+            <dia:string>#Claim#</dia:string>
           </dia:attribute>
           <dia:attribute name="visibility">
             <dia:enum val="0"/>
@@ -3219,10 +3236,10 @@ removing an individual tag#</dia:string>
           <dia:attribute name="parameters">
             <dia:composite type="umlparameter">
               <dia:attribute name="name">
-                <dia:string>#ExpenseClaim#</dia:string>
+                <dia:string>#index#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>##</dia:string>
+                <dia:string>#Integer#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>
@@ -3244,16 +3261,16 @@ removing an individual tag#</dia:string>
     </dia:object>
     <dia:object type="UML - Note" version="0" id="O21">
       <dia:attribute name="obj_pos">
-        <dia:point val="35.3493,48.0488"/>
+        <dia:point val="39.4993,48.1988"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="35.2993,47.9988;47.4643,51.3988"/>
+        <dia:rectangle val="39.4493,48.1488;51.6143,51.5488"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
-        <dia:point val="35.3493,48.0488"/>
+        <dia:point val="39.4993,48.1988"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
         <dia:real val="12.065000000000001"/>
@@ -3284,7 +3301,7 @@ editing ExpenseClaimList#</dia:string>
             <dia:real val="0.80000000000000004"/>
           </dia:attribute>
           <dia:attribute name="pos">
-            <dia:point val="35.6993,49.2938"/>
+            <dia:point val="39.8493,49.4438"/>
           </dia:attribute>
           <dia:attribute name="color">
             <dia:color val="#000000"/>
@@ -3686,17 +3703,17 @@ reasonForTravel strings#</dia:string>
         <dia:boolean val="true"/>
       </dia:attribute>
       <dia:attribute name="obj_pos">
-        <dia:point val="28.4161,50.1578"/>
+        <dia:point val="31.8811,50.1578"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="14.2553,34.758;29.3511,50.9578"/>
+        <dia:rectangle val="14.2553,34.758;32.8161,50.9578"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
       </dia:attribute>
       <dia:attribute name="orth_points">
-        <dia:point val="28.4161,50.1578"/>
-        <dia:point val="28.4161,44.3424"/>
+        <dia:point val="31.8811,50.1578"/>
+        <dia:point val="31.8811,44.3424"/>
         <dia:point val="15.0553,44.3424"/>
         <dia:point val="15.0553,34.808"/>
       </dia:attribute>
@@ -4808,7 +4825,7 @@ with the claim#</dia:string>
         <dia:point val="-0.7888,64.4538"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="-1.5888,36.8322;57.8466,67.0546"/>
+        <dia:rectangle val="-1.5888,36.5635;57.8466,67.0546"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -4819,8 +4836,8 @@ with the claim#</dia:string>
         <dia:point val="57.7966,67.0046"/>
         <dia:point val="57.7966,47.2659"/>
         <dia:point val="40.8502,47.2659"/>
-        <dia:point val="40.8502,37.9254"/>
-        <dia:point val="40.2765,37.6322"/>
+        <dia:point val="40.8502,37.6322"/>
+        <dia:point val="40.2765,37.3635"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
         <dia:enum val="1"/>

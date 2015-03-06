@@ -1,14 +1,24 @@
 package ca.ualberta.cs.shinyexpensetracker;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
-import android.app.DialogFragment;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,15 +28,23 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.io.File;
+import java.math.BigDecimal;
 
 public class ExpenseItemActivity extends Activity implements OnClickListener{
 
-	 //UI References
+	// DatePickerDialog from: 
+	//  	http://androidopentutorials.com/android-datepickerdialog-on-edittext-click-event/
+	//	On March 2 2015	  
     private EditText date;
-    
-    private DatePickerDialog datePickerDialog;
-    
-    private SimpleDateFormat dateFormatter;
+    private DatePickerDialog datePickerDialog;    
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.CANADA);
+    ImageButton button;
+    Bitmap ourBMP;
+    private Uri imageFileUri;
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     
     private void findViewsById() {
     	date = (EditText) findViewById(R.id.dateEditText);
@@ -52,18 +70,15 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
         
     }
     
-    
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_expense_item);
-		
-		dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
         
         findViewsById();
         
         setDateTimeField();
+        
 	}
 
 	@Override
@@ -92,7 +107,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void createExpenseItem(View v) {
+	public void createExpenseItem(View v) throws ParseException {
 		EditText nameText = (EditText) findViewById(R.id.nameEditText);
 		EditText dateText = (EditText) findViewById(R.id.dateEditText);
 		Spinner categorySpinner = (Spinner) findViewById(R.id.categorySpinner);
@@ -100,13 +115,53 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		Spinner currencySpinner = (Spinner) findViewById(R.id.currencySpinner);
 		EditText descriptionText = (EditText) findViewById(R.id.descriptionEditText);
 		ImageButton reciptPhoto = (ImageButton) findViewById(R.id.reciptImageButton);
+		button = reciptPhoto; //FIXME initialize correctly and spell receipt right.
 		
-		/*ExpenseItem expense = new ExpenseItem(nameText.getText().toString(),
-				dateText.getText().toString(), 
-				categorySpinner.getSelectedItem().toString(),
-				Double.parseDouble(amountText.getText().toString()),
-				currencySpinner.getSelectedItem().toString(),
+		Date date = dateFormatter.parse(dateText.getText().toString());
+
+		BigDecimal amount = new BigDecimal(amountText.getText().toString());
+		
+		ExpenseItem expense = new ExpenseItem(nameText.getText().toString(), date, 
+				(Category) categorySpinner.getSelectedItem(), amount,
+				(Currency) currencySpinner.getSelectedItem(),
 				descriptionText.getText().toString(),
-				reciptPhoto.getDrawingCache()); */
+				reciptPhoto.getDrawingCache()); 
+	}
+	
+	public void takePicture(View V) {
+		// Create a folder to store pictures
+		String folder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/tmp";
+		File folderF = new File(folder);
+		if (!folderF.exists()) {
+			folderF.mkdir();
+		}
+			
+		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+		// Create an URI for the picture file
+		String imageFilePath = folder + "/" + String.valueOf(System.currentTimeMillis()) + ".jpg";
+		File imageFile = new File(imageFilePath);
+		imageFileUri = Uri.fromFile(imageFile);
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);
+				
+		startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		
+		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+			if (resultCode == RESULT_OK) {
+				Toast.makeText(this, "Result: OK!", Toast.LENGTH_SHORT).show();
+				//tv.setText("Result: OK!");
+				assert imageFileUri != null;
+				button.setImageDrawable(Drawable.createFromPath(imageFileUri.getPath()));
+			} else if (resultCode == RESULT_CANCELED) {
+				Toast.makeText(this, "Result: Cancelled", Toast.LENGTH_SHORT).show();
+				//tv.setText("Result: Cancelled");
+			} else {
+				Toast.makeText(this, "Result: ???", Toast.LENGTH_SHORT).show();
+				//tv.setText("Result: ????");
+			}
+		}
 	}
 }

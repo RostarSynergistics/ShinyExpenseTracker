@@ -1,6 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import ca.ualberta.cs.shinyexpensetracker.IView;
@@ -9,15 +10,39 @@ import android.graphics.Bitmap;
 
 public class ExpenseItem implements IModel<IView<ExpenseItem>> {
 	
+	private String text;
+	
+	public enum Category { 
+		AIR_FARE, GROUND_TRANSPORT, VEHICLE_RENTAL, PRIVATE_AUTOMOBILE, FUEL, PARKING, 
+		REGISTRATION, ACCOMODATION, MEAL, SUPPLIES
+
+	}
+	public enum Currency {
+		CAD, USD, GBR, EUR, CHF, JPY, CNY
+		
+	}
+
+	public String name;
 	public Date date;
+	public Category category;
+	public BigDecimal amountSpent;
+	public Currency currency;
 	public String description;
-	public String category;
-	public double amountSpent;	//FIXME doubles are bad for currencies
-	public String currency;
 	public Bitmap reciptPhoto;
 	
 	private ArrayList<IView<ExpenseItem>> views;
 	
+	public ExpenseItem (String name, Date date, Category category, 
+			BigDecimal amountSpent, Currency currency, String description, Bitmap photo){
+		this.name = name;
+		this.date = date;
+		this.category = category;
+		this.amountSpent = amountSpent;
+		this.currency = currency;
+		this.description = description;
+		this.reciptPhoto = photo;
+	}
+
 	public void setDate(Date date){
 		this.date = date;
 	}
@@ -34,27 +59,27 @@ public class ExpenseItem implements IModel<IView<ExpenseItem>> {
 		return this.description;
 	}
 	
-	public void setCategory(String category){
+	public void setCategory(Category category){
 		this.category = category;
 	}
 
-	public String getCategory(){
+	public Category getCategory(){
 		return this.category;
 	}
 	
-	public void setAmountSpent(double amountSpent){
+	public void setAmountSpent(BigDecimal amountSpent){
 		this.amountSpent = amountSpent;
 	}
 	
-	public double getAmountSpent(){
+	public BigDecimal getAmountSpent(){
 		return this.amountSpent;
 	}
 	
-	public void setCurrency(String currency){
+	public void setCurrency(Currency currency){
 		this.currency = currency;
 	}
 	
-	public String getCurrency(){
+	public Currency getCurrency(){
 		return this.currency;
 	}
 	

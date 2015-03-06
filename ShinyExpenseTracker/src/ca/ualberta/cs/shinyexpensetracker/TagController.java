@@ -3,19 +3,16 @@ package ca.ualberta.cs.shinyexpensetracker;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 
 public class TagController {
-	private TagList list;
+	private static TagList list = new TagList();
 	
-	public TagController() {
-		list = new TagList();
-	}
-	public TagController(TagList list) {
-		this.list = list;
-	}
-	
-	public void addTag(String s) {
+	public static void addTag(String s) {
 		list.addTag(s);
 	}
-	public void removeTag(String s) {
+	public static void removeTag(String s) {
 		list.removeTag(s);
+	}
+	
+	public static TagList getTagList(){
+		return list;
 	}
 }

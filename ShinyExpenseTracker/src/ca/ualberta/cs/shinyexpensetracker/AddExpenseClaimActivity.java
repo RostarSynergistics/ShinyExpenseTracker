@@ -1,5 +1,3 @@
-// STILL NEEDS TO BE IMPLEMENTED. DON'T MERGE BRANCH YET
-
 // Source for DatePicker: http://androidopentutorials.com/android-datepickerdialog-on-edittext-click-event/
 
 package ca.ualberta.cs.shinyexpensetracker;
@@ -14,6 +12,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Menu;
@@ -25,12 +24,8 @@ import android.widget.EditText;
 
 public class AddExpenseClaimActivity extends Activity implements OnClickListener {
 	
-    private EditText startDate;
-    private EditText endDate;
-    
-    private DatePickerDialog fromDatePickerDialog;
-    private DatePickerDialog toDatePickerDialog;
-    
+    private EditText startDate, endDate;
+    private DatePickerDialog fromDatePickerDialog, toDatePickerDialog;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.CANADA);
 	
 	@Override
@@ -114,5 +109,14 @@ public class AddExpenseClaimActivity extends Activity implements OnClickListener
         Date endDate = dateFormatter.parse(endDateText.getText().toString());
         
         ExpenseClaim expenseClaim = new ExpenseClaim(name.getText().toString(), startDate, endDate, null, null);
+	}
+
+	// for tests
+	public DatePickerDialog getStartDateDialog() {
+		return fromDatePickerDialog;
+	}
+	
+	public DatePickerDialog getEndDateDialog() {
+		return toDatePickerDialog;  
 	}
 }

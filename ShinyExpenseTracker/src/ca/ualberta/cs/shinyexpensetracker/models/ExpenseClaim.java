@@ -22,7 +22,7 @@ public class ExpenseClaim implements IModel<IView<ExpenseClaim>> {
 		this.views = new ArrayList<IView<ExpenseClaim>>();
 	}*/
 	
-	/* RAMISH: Needed the constructor to handle arguments for the AddExpenseClaimActivity class to make an ExpenseClaim
+	/* FROM RAMISH: Needed the constructor to handle arguments for the AddExpenseClaimActivity class to make an ExpenseClaim
 	 * which is why I commented out the old constructor and added a new one to handle arguments.Comment out as needed.
 	*/
 	

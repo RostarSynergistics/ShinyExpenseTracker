@@ -1,41 +1,48 @@
 package ca.ualberta.cs.shinyexpensetracker;
 
-import java.util.ArrayList;
-
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
+// FIXME #60 - Methods needed for #22 were turned into a static method.
+//			 - #60 is responsible for fixing this.
 public class ExpenseClaimController {
-	private ExpenseClaimList claimlist;
-
-	public ExpenseClaimController() {
+	public static boolean DEBUGGING = false;
+	private static ExpenseClaimList claimlist;
+	
+	// TODO #60 - Can this be removed? Dependency injection?
+	private ExpenseClaimController() {
 		super();
-		this.claimlist = new ExpenseClaimList();
-	}
-	public ExpenseClaimController(ExpenseClaimList claimlist) {
-		super();
-		this.claimlist = claimlist;
+		getExpenseClaimList();
 	}
 	
-	// FIXME Where does this come from?
-	public ArrayList<ExpenseClaim> getExpenseClaimList() {
-		return null;
+	public static ExpenseClaimList injectExpenseClaimList(ExpenseClaimList list) {
+		if (!DEBUGGING) {
+			throw new RuntimeException("Expense Claim Controller not in debug mode");
+		}
+		claimlist = list;
+		return getExpenseClaimList();
 	}
 	
-	// FIXME What does this do? UML doesn't specify what or how.
+	// TODO #60	
+	public static ExpenseClaimList getExpenseClaimList() {
+		if (claimlist == null) {
+			claimlist = new ExpenseClaimList();
+		}
+		return claimlist;
+	}
+	
+	// TODO #60
 	public void saveExpenseClaim(ExpenseClaim claim) {
-		
+		// save to somewhere
 	}
 	
-	// Renamed from "addExpenseClaimToList" ???
-	public void addExpenseClaim(ExpenseClaim claim) {
+	// TODO #60
+	public static void addExpenseClaim(ExpenseClaim claim) {
 		claimlist.addClaim(claim);
 	}
 	
-	// FIXME wtf does "addExpenseClaimToList(ExpenseClaimList)" mean??
-	// How does it use an ExpenseClaimList??
-	// Same with editExpenseClaim(...);
-	
+	// FIXME What does this do? How does it do this?
+	// #60
 	public void editExpenseClaim(ExpenseClaim claim) {
 		claimlist.editClaim(claim);
 	}

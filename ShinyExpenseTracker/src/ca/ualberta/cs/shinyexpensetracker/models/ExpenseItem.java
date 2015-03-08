@@ -10,8 +10,6 @@ import android.graphics.Bitmap;
 
 public class ExpenseItem implements IModel<IView<ExpenseItem>> {
 	
-	private String text;
-	
 	public enum Category { 
 		AIR_FARE, GROUND_TRANSPORT, VEHICLE_RENTAL, PRIVATE_AUTOMOBILE, FUEL, PARKING, 
 		REGISTRATION, ACCOMODATION, MEAL, SUPPLIES

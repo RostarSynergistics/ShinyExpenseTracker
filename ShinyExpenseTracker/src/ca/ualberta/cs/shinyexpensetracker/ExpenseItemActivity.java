@@ -87,6 +87,9 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
         date.requestFocus();
     }
  
+	/**
+	 * Uses a DatePickerDialog to allow user to choose a date
+	 */
     private void setDateTimeField() {
         date.setOnClickListener(this);
         date.setOnClickListener(this);
@@ -105,6 +108,9 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
         
     }
 	
+    /** 
+     * displays a datePickerDialog when expenseItemDateTextView is clicked.
+     */
     @Override
     public void onClick(View view) {
         if(view == date) {
@@ -112,6 +118,11 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
         }
     }
 
+    /** 
+     * Gets inputed data from text fields and spinners, saving them in an expenseItem object.
+     * @param v
+     * @throws ParseException
+     */
 	public void createExpenseItem(View v) throws ParseException {
 		EditText nameText = (EditText) findViewById(R.id.expenseItemNameEditText);
 		EditText dateText = (EditText) findViewById(R.id.expenseItemDateEditText);
@@ -133,6 +144,11 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		//add expense Item to claim
 	}
 	
+	/** 
+	 * Runs on click of the expenseItemImageButton.  Opens Camera app to allow user to take a 
+	 * picture of a receipt.  Saves picture in a temporary file.
+	 * @param V
+	 */
 	public void takePicture(View V) {
 		// Create a folder to store pictures
 		String folder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/tmp";
@@ -152,6 +168,10 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 	}
 	
+	/**
+	 * Runs on return from the camera app.  Displays the image taken in the 
+	 * expenseItemImageButton
+	 */
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
@@ -171,8 +191,21 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		}
 	}
 	
-	// closes the activity to return to previous screen
-	public void doneExpenseItem(View v){
+	/** On click of the expenseItemDoneButton, the activity will close to 
+	 * return to the previous activity (ExpenseItems Summary page)
+	 * @param v
+	 * @throws ParseException 
+	 */
+	public void doneExpenseItem(View v) throws ParseException{
+		createExpenseItem(v);
 		finish();
+	}
+	
+	/** 
+	 * Method to allow for testing of the DatePickerDialog
+	 * @return
+	 */
+	public DatePickerDialog getDialog(){
+		return datePickerDialog;
 	}
 }

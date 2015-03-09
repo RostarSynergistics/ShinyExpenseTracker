@@ -14,4 +14,9 @@ public class Tag {
 	public boolean equals(Tag other) {
 		return this.getValue().equals(other.getValue());
 	}
+	
+	@Override
+	public String toString() {
+		return value;
+	}
 }

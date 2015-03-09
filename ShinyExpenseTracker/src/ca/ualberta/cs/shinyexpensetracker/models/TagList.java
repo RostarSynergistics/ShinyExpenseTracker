@@ -9,6 +9,10 @@ public class TagList implements IModel<IView<TagList>> {
 	
 	private ArrayList<IView<TagList>> views; 
 	
+	public TagList(){
+		tags = new ArrayList<Tag>();
+	}
+	
 	public ArrayList<Tag> getTags() {
 		return tags;
 	}

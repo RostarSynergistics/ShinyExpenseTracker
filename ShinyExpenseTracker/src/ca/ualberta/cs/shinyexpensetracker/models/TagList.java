@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import ca.ualberta.cs.shinyexpensetracker.IView;
 
 public class TagList implements IModel<IView<TagList>> {
-	private ArrayList<Tag> tags;
+	private ArrayList<Tag> tags = new ArrayList<Tag>();
 	
 	private ArrayList<IView<TagList>> views; 
 	
@@ -48,6 +48,14 @@ public class TagList implements IModel<IView<TagList>> {
 		for (IView<TagList> v : views) {
 			v.update(this);
 		}
+	}
+
+	public int getCount() {
+		return tags.size();
+	}
+
+	public Tag getTagById(int i) {
+		return tags.get(i);
 	}
 	
 }

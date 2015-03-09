@@ -25,8 +25,6 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 
 import java.util.Date;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.ListView;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
@@ -71,6 +69,7 @@ public class ViewAllExpenseClaimsActivityTests extends
 				claimsList.addClaim(claim);
 			}
 		});
+		getInstrumentation().waitForIdleSync();
 		return claim;
 	}
 	
@@ -86,6 +85,7 @@ public class ViewAllExpenseClaimsActivityTests extends
 				claimsList.removeClaim(claim);
 			}
 		});
+		getInstrumentation().waitForIdleSync();
 	}
 
 	private ExpenseClaim getClaim(int i) {
@@ -93,7 +93,7 @@ public class ViewAllExpenseClaimsActivityTests extends
 	}
 	
 	/**
-	 * Fake long press to get the dialog that is displayed.
+	 * Tests if the longPressDialog displays correctly.
 	 * 
 	 * ListViews don't seem to expose a performItemLongClick
 	 * function. I can't test UI functionality without this, so
@@ -101,33 +101,22 @@ public class ViewAllExpenseClaimsActivityTests extends
 	 * "askDeleteItemAtPosition" function correctly. That way,
 	 * the unit test only need to test if this function does
 	 * its job, rather than checking the API functionality itself.
-	 * @param position
-	 * @return
-	 */
-	private AlertDialog getLongPressItemDialog(int position) {
-		return activity.askDeleteClaimAt(position);
-	}
-	
-	/**
-	 * Tests if the longPressDialog displays correctly.
+	 * 
+	 * --This test may be removed in future iterations.
 	 */
 	public void testLongPressDialog() {
-		AlertDialog dialog;
-		
 		// Not this test's responsibility to check what was deleted.
-		addClaim(new ExpenseClaim("Test Claim 1"));
-		addClaim(new ExpenseClaim("Test Claim 2"));
+		addClaim(new ExpenseClaim("Test Claim"));
 
-		// Long press and accept
-		dialog = getLongPressItemDialog(0);
-		assertTrue("Dialog not showing", dialog.isShowing());
-		assertTrue("Dialog has no positive button listener", dialog.getButton(Dialog.BUTTON_POSITIVE).performClick());
-		
-		// Long press and cancel
-		dialog = getLongPressItemDialog(1);
-		assertTrue("Dialog not showing", dialog.isShowing());
-		assertTrue("Dialog has no neutral button listener", dialog.getButton(Dialog.BUTTON_NEUTRAL).performClick());
-		
+		// Fake long press
+		//
+		// NOTE: This will probably give a "Window Leaked" warning.
+		// This is because we're kidnapping the dialog from the activity
+		// via return call after the activity closes. Methods that call
+		// askDeleteClaimAt should NEVER keep the value.
+		// In fact, the only reason it's exposed is because ListViews
+		// don't seem to expose performItemLongClick.
+		assertTrue(activity.askDeleteClaimAt(0).isShowing());
 	}
 	
 	/**

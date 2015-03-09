@@ -153,6 +153,7 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					deleteClaim(claimToDelete);
+					dialog.dismiss();
 				}
 			})
 			// If cancel, do nothing

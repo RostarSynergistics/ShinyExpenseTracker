@@ -9,24 +9,32 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
 public class ExpenseClaimController {
 	private ExpenseClaimList claimlist;
+	private static ExpenseClaimController claimController;
 	
 	
-	public ExpenseClaimController() {
+	private ExpenseClaimController() {
 		super();
 		this.claimlist = new ExpenseClaimList();
-		
-	}
+		}
 	
-	public ExpenseClaimController(ExpenseClaimList claimlist) {
+	private ExpenseClaimController(ExpenseClaimList claimlist) {
 		super();
 		this.claimlist = claimlist;
 	}
 	
+	public ExpenseClaimController getInstance(){
+		if(claimController == null){
+			claimController = new ExpenseClaimController();
+			return claimController;
+		}
+		else {
+			return claimController;
+		}
+	}
 	
 	public ExpenseClaimList getExpenseClaimList() {
 		return claimlist;
 	}
-	
 	
 	public void saveExpenseClaim(ExpenseClaim claim, ClaimDataExporter exporter) {
 		exporter.export(claim);	

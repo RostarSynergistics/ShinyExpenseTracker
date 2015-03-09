@@ -7,11 +7,13 @@ import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
+import android.text.format.DateFormat;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 
 public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase2<AddExpenseClaimActivity> {
@@ -92,17 +94,23 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 			@Override
 			public void run() {
 				String name = "URoma Trip";
-				Date startDate = null;
-				Date endDate = null;
+				@SuppressWarnings("deprecation")
+				Date startDate = new Date(2015, 01, 01);
+				@SuppressWarnings("deprecation")
+				Date endDate = new Date(2015, 01, 10);
 				Status status = null;
 				Tag tag = null;
 				ExpenseClaim expenseClaim = new ExpenseClaim(name, startDate, endDate, status, tag);
+				ExpenseClaimList claimList = new ExpenseClaimList();
+				claimList.addClaim(expenseClaim);
 				
 				assertTrue("name is not 'URoma Trip'", expenseClaim.getName().toString() == "URoma Trip");
-				assertTrue("startDate is not 'null'", expenseClaim.getStartDate() == null);
-				assertTrue("endDate is not 'null'", expenseClaim.getEndDate() == null);
+				assertTrue("startDate is not 'null'", expenseClaim.getStartDate().toString() == "2015-01-01");
+				assertTrue("endDate is not 'null'", expenseClaim.getEndDate().toString() == "2015-01-10");
 				assertTrue("Status is not 'null'", expenseClaim.getStatus() == null);
 				assertTrue("Tag is not 'null'", expenseClaim.getTag() == null);
+				
+				assertTrue("ClaimList is empty", claimList.size() == 1);
 			}
 		});
 	}

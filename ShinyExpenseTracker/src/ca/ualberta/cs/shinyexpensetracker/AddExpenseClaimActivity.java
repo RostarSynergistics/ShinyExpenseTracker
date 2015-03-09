@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -109,6 +110,8 @@ public class AddExpenseClaimActivity extends Activity implements OnClickListener
         Date endDate = dateFormatter.parse(endDateText.getText().toString());
         
         ExpenseClaim expenseClaim = new ExpenseClaim(name.getText().toString(), startDate, endDate, null, null);
+        ExpenseClaimList claimList = new ExpenseClaimList();
+        claimList.addClaim(expenseClaim);
 	}
 
 	// for tests

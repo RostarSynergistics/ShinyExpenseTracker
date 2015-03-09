@@ -35,6 +35,14 @@ public class ExpenseClaimList implements IModel<IView<ExpenseClaimList>> {
 	public void removeClaim(ExpenseClaim claim) {
 		claims.remove(claim);
 	}
+	
+	public int size(){
+		return claims.size();
+	}
+	
+	public ArrayList<ExpenseClaim> getClaims(){
+		return claims;
+	}
 
 	@Override
 	public void addView(IView<ExpenseClaimList> v) {

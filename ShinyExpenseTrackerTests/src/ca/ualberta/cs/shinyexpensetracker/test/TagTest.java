@@ -1,5 +1,10 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+import java.io.IOException;
+
+import ca.ualberta.cs.shinyexpensetracker.TagController;
+import ca.ualberta.cs.shinyexpensetracker.models.Tag;
+import junit.framework.Assert;
 import junit.framework.TestCase;
 
 public class TagTest extends TestCase {
@@ -60,4 +65,23 @@ public class TagTest extends TestCase {
 //		assertTrue("TagList not being displayed", count == 1);
 //	}
 //	
+	public void setUp(){
+		TagController.getTagList();
+	}
+	
+	public void testAddAndRemoveTag(){
+		
+		TagController.addTag("q1wert");
+		assertEquals("failed to add a tag", TagController.getTagCount(), 1);
+		assertEquals("added a tag incorrectly", TagController.getTagList().getTagById(0), new Tag("q1wert"));
+		
+		TagController.removeTag("q1wert");
+		assertEquals("failed to remove a tag", TagController.getTagCount(), 0);
+	}
+	
+	
+	public void testAddInvalidTag(){
+		TagController.addTag("!@#$%");
+		assertEquals("should have discarded non-alphanumeric tag", TagController.getTagCount(), 0);
+	}
 }

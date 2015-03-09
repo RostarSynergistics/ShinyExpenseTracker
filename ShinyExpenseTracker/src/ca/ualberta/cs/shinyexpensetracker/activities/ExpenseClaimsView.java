@@ -23,6 +23,9 @@
 
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import java.util.Date;
+import java.util.Random;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -33,9 +36,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import ca.ualberta.cs.shinyexpensetracker.ClaimListAdapter;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.IView;
 import ca.ualberta.cs.shinyexpensetracker.R;
@@ -44,7 +47,8 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
 // TODO #55 ?
 public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimList> {
-	private ArrayAdapter<ExpenseClaim> adapter;
+	private ClaimListAdapter adapter;
+	static int debug_addedID = 0;	// XXX Remove this when #17 is merged
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +69,7 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 		// TODO #61 - adapter should be a custom adapter that can
 		// watch the ExpenseClaimsList object, rather than an
 		// ArrayList object
-		adapter = new ArrayAdapter<ExpenseClaim>(this, R.layout.list_item,
-				claims.getAllClaims());
+		adapter = new ClaimListAdapter(this, claims);
 		claim_list.setAdapter(adapter);
 		
 		// -- Long Press of ListView Item
@@ -99,8 +102,17 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 		switch (id) {
 		case R.id.action_new_claim:
 			// TODO Depends on #17
-			ExpenseClaimController.addExpenseClaim(new ExpenseClaim("Test. Millis = " + System.currentTimeMillis()));
-			Toast.makeText(this, "Added claim", Toast.LENGTH_SHORT).show();
+
+			// Add randomly dated claim
+			Date sd = new Date(System.currentTimeMillis() + new Random().nextInt(2000000000));
+			Date ed = null;
+			if (new Random().nextBoolean()) {
+				ed = new Date(System.currentTimeMillis() + 2000000000  + new Random().nextInt(2000000000));
+			}
+			
+			ExpenseClaimController.addExpenseClaim(
+					new ExpenseClaim("Test ["+debug_addedID++ +"]", sd, ed));
+			
 			return true;
 		case R.id.action_sort:
 		case R.id.action_filter:
@@ -126,7 +138,7 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 	}
 	
 	public AlertDialog askDeleteClaimAt(int position) {
-		// Alert Dialog:
+		// Alert Dialog (Mar 7, 2015):
 		//  http://www.androidhive.info/2011/09/how-to-show-alert-dialog-in-android/
 		//  http://stackoverflow.com/questions/15020878/i-want-to-show-ok-and-cancel-button-in-my-alert-dialog
 		

@@ -19,11 +19,16 @@ public class ExpenseClaim implements IModel<IView<ExpenseClaim>>, Comparable<Exp
 	
 	private transient ArrayList<IView<ExpenseClaim>> views;
 	
-	public ExpenseClaim() {
-		this("");
-	}
 	public ExpenseClaim(String name) {
 		this(name, new Date(), null, Status.IN_PROGRESS, null);
+	}
+
+	public ExpenseClaim(String name, Date startDate) {
+		this(name, startDate, null, Status.IN_PROGRESS, null);
+	}
+	
+	public ExpenseClaim(String name, Date startDate, Date endDate) {
+		this(name, startDate, endDate, Status.IN_PROGRESS, null);
 	}
 	
 	public ExpenseClaim(String name, Date startDate, Date endDate,

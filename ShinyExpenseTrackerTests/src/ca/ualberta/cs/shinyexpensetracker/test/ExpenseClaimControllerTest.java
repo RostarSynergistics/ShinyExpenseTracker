@@ -11,7 +11,7 @@ public class ExpenseClaimControllerTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		claimList = new ExpenseClaimList();
-		claimList.addClaim(new ExpenseClaim());
+		claimList.addClaim(new ExpenseClaim("Test"));
 		ExpenseClaimController.DEBUGGING = true;
 		ExpenseClaimController.injectExpenseClaimList(claimList);
 	}
@@ -23,13 +23,13 @@ public class ExpenseClaimControllerTest extends TestCase {
 
 	// TODO test if retrieval is possible when implemented
 	public void testSaveExpenseClaim() {
-		ExpenseClaimController.saveExpenseClaim(new ExpenseClaim(), new WebServiceExporter());
+		ExpenseClaimController.saveExpenseClaim(new ExpenseClaim("Test"), new WebServiceExporter());
 		fail();
 	}
 
 	public void testAddExpenseClaim(){
 		assertEquals(claimList, ExpenseClaimController.getExpenseClaimList());
-		ExpenseClaim newClaim = new ExpenseClaim();
+		ExpenseClaim newClaim = new ExpenseClaim("Test");
 		ExpenseClaimController.addExpenseClaim(newClaim);
 		assertEquals(ExpenseClaimController.getExpenseClaimList().getClaim(1) , newClaim);	
 	}

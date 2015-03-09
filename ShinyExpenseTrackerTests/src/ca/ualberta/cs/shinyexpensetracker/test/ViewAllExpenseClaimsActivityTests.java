@@ -87,6 +87,10 @@ public class ViewAllExpenseClaimsActivityTests extends
 			}
 		});
 	}
+
+	private ExpenseClaim getClaim(int i) {
+		return (ExpenseClaim) claimListView.getItemAtPosition(i);
+	}
 	
 	/**
 	 * Fake long press to get the dialog that is displayed.
@@ -140,14 +144,72 @@ public class ViewAllExpenseClaimsActivityTests extends
 		assertFalse("Claim List has too many objects", claimListView.getCount() > 1);
 		
 		// Get the expense claim object
-		visibleClaim = (ExpenseClaim) claimListView.getItemAtPosition(lastPosition);
+		visibleClaim = getClaim(lastPosition);
 		assertNotNull("No object found in the list", visibleClaim);
 		
 		// Ensure that the claim that was added to the list
 		// is also the claim in the listview.
 		assertTrue("Claim not visible", visibleClaim.equals(claim));
 	}
+	
+	/* All of the testClaimsSorted check roughly the same thing,
+	 * going through all 6 permutations of {new, mid, old}.
+	 */
+	public void testClaimsSortedA() {
+		ExpenseClaim newClaim = addClaim(new ExpenseClaim("New Claim", new Date(1000000)));
+		ExpenseClaim midClaim = addClaim(new ExpenseClaim("Mid Claim", new Date(300000)));
+		ExpenseClaim oldClaim = addClaim(new ExpenseClaim("Old Claim", new Date(10000)));
 
+		assertEquals("new claim must come first in the list", newClaim, getClaim(0));
+		assertEquals("mid claim must be in the middle of the list", midClaim, getClaim(1));
+		assertEquals("old claim must come last in the list", oldClaim, getClaim(2));
+	}
+	public void testClaimsSortedB() {
+		ExpenseClaim newClaim = addClaim(new ExpenseClaim("New Claim", new Date(1000000)));
+		ExpenseClaim oldClaim = addClaim(new ExpenseClaim("Old Claim", new Date(10000)));
+		ExpenseClaim midClaim = addClaim(new ExpenseClaim("Mid Claim", new Date(300000)));
+
+		assertEquals("new claim must come first in the list", newClaim, getClaim(0));
+		assertEquals("mid claim must be in the middle of the list", midClaim, getClaim(1));
+		assertEquals("old claim must come last in the list", oldClaim, getClaim(2));
+	}
+	public void testClaimsSortedC() {
+		ExpenseClaim midClaim = addClaim(new ExpenseClaim("Mid Claim", new Date(300000)));
+		ExpenseClaim newClaim = addClaim(new ExpenseClaim("New Claim", new Date(1000000)));
+		ExpenseClaim oldClaim = addClaim(new ExpenseClaim("Old Claim", new Date(10000)));
+
+		assertEquals("new claim must come first in the list", newClaim, getClaim(0));
+		assertEquals("mid claim must be in the middle of the list", midClaim, getClaim(1));
+		assertEquals("old claim must come last in the list", oldClaim, getClaim(2));
+	}
+	public void testClaimsSortedD() {
+		ExpenseClaim oldClaim = addClaim(new ExpenseClaim("Old Claim", new Date(10000)));
+		ExpenseClaim newClaim = addClaim(new ExpenseClaim("New Claim", new Date(1000000)));
+		ExpenseClaim midClaim = addClaim(new ExpenseClaim("Mid Claim", new Date(300000)));
+
+		assertEquals("new claim must come first in the list", newClaim, getClaim(0));
+		assertEquals("mid claim must be in the middle of the list", midClaim, getClaim(1));
+		assertEquals("old claim must come last in the list", oldClaim, getClaim(2));
+	}
+	public void testClaimsSortedE() {
+		ExpenseClaim midClaim = addClaim(new ExpenseClaim("Mid Claim", new Date(300000)));
+		ExpenseClaim oldClaim = addClaim(new ExpenseClaim("Old Claim", new Date(10000)));
+		ExpenseClaim newClaim = addClaim(new ExpenseClaim("New Claim", new Date(1000000)));
+
+		assertEquals("new claim must come first in the list", newClaim, getClaim(0));
+		assertEquals("mid claim must be in the middle of the list", midClaim, getClaim(1));
+		assertEquals("old claim must come last in the list", oldClaim, getClaim(2));
+	}
+	public void testClaimsSortedF() {
+		ExpenseClaim oldClaim = addClaim(new ExpenseClaim("Old Claim", new Date(10000)));
+		ExpenseClaim midClaim = addClaim(new ExpenseClaim("Mid Claim", new Date(300000)));
+		ExpenseClaim newClaim = addClaim(new ExpenseClaim("New Claim", new Date(1000000)));
+
+		assertEquals("new claim must come first in the list", newClaim, getClaim(0));
+		assertEquals("mid claim must be in the middle of the list", midClaim, getClaim(1));
+		assertEquals("old claim must come last in the list", oldClaim, getClaim(2));
+	}
+	
 	/**
 	 * Deletes a claim and ensure it isn't visible in the listview.
 	 * Does not test dialogs.
@@ -167,7 +229,7 @@ public class ViewAllExpenseClaimsActivityTests extends
 		assertEquals("Item wasn't deleted", 1, claimListView.getCount());
 		
 		// Check that the right item was deleted.
-		visibleClaim = (ExpenseClaim) claimListView.getItemAtPosition(0);
+		visibleClaim = getClaim(0);
 		assertEquals("Remaining claim isn't claim 1", claim1, visibleClaim);
 
 		// Check that the remaining item is actually deleted

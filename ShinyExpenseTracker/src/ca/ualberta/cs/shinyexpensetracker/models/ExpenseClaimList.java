@@ -1,6 +1,8 @@
 package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import ca.ualberta.cs.shinyexpensetracker.IView;
 
@@ -59,5 +61,18 @@ public class ExpenseClaimList implements IModel<IView<ExpenseClaimList>> {
 	
 	public ArrayList<ExpenseClaim> getAllClaims() {
 		return this.claims;
+	}
+	
+	public int getCount() {
+		return this.claims.size();
+	}
+
+	public void sort() {
+		Comparator<? super ExpenseClaim> reverse_compare = new Comparator<ExpenseClaim>() {
+			public int compare(ExpenseClaim lhs, ExpenseClaim rhs) {
+				return rhs.compareTo(lhs);
+			};
+		};
+		Collections.sort(claims, reverse_compare);
 	}
 }

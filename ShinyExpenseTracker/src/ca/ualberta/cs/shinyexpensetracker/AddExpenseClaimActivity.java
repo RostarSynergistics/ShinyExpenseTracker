@@ -1,4 +1,7 @@
-// Source for DatePicker: http://androidopentutorials.com/android-datepickerdialog-on-edittext-click-event/
+/* Source for DatePicker: http://androidopentutorials.com/android-datepickerdialog-on-edittext-click-event/
+*  AddExpenseClaimActivity: Activity representing the UI for adding/editing an Expense Claim. 
+*  No outstanding issues.
+*/
 
 package ca.ualberta.cs.shinyexpensetracker;
 

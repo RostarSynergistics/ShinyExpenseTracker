@@ -29,6 +29,10 @@
             android:name=".ExpenseItemActivity"
             android:label="@string/title_activity_expense_item" >
         </activity>
+        <activity
+            android:name="ca.ualberta.cs.shinyexpensetracker.AddTagActivity"
+            android:label="@string/title_activity_add_tag" >
+        </activity>
     </application>
 
 </manifest>

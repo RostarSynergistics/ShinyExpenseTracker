@@ -45,7 +45,6 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 // TODO #55 ?
 public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimList> {
 	private ArrayAdapter<ExpenseClaim> adapter;
-	private ExpenseClaimList claims; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +56,7 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 	protected void onStart() {
 		super.onStart();
 		// Get access to the claim list
-		claims = ExpenseClaimController.getExpenseClaimList();
+		ExpenseClaimList claims = ExpenseClaimController.getExpenseClaimList();
 		
 		claims.addView(this);
 		
@@ -119,11 +118,11 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 	}
 	
 	public void addClaim(ExpenseClaim claim) {
-		claims.addClaim(claim);
+		ExpenseClaimController.addExpenseClaim(claim);
 	}
 	
 	public void deleteClaim(ExpenseClaim claim) {
-		claims.removeClaim(claim);
+		ExpenseClaimController.removeExpenseClaim(claim);
 	}
 	
 	public AlertDialog askDeleteClaimAt(int position) {
@@ -132,7 +131,7 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 		//  http://stackoverflow.com/questions/15020878/i-want-to-show-ok-and-cancel-button-in-my-alert-dialog
 		
 		// Get a final copy of the requested claim
-		final ExpenseClaim claimToDelete = claims.getClaim(position);
+		final ExpenseClaim claimToDelete = ExpenseClaimController.getExpenseClaim(position);
 		
 		AlertDialog dialog = new AlertDialog.Builder(this)
 			.setTitle("Delete Claim?")

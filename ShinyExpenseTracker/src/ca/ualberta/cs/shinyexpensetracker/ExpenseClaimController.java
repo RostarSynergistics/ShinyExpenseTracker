@@ -52,4 +52,8 @@ public class ExpenseClaimController {
 	public static ExpenseClaim getExpenseClaim(int index){
 		return claimlist.getClaim(index);
 	}
+
+	public static void removeExpenseClaim(ExpenseClaim claim) {
+		getExpenseClaimList().removeClaim(claim);
+	}
 }

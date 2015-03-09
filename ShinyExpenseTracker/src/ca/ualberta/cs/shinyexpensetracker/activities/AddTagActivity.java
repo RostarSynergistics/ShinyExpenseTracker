@@ -1,6 +1,7 @@
-package ca.ualberta.cs.shinyexpensetracker;
+package ca.ualberta.cs.shinyexpensetracker.activities;
 
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.TagController;
 import ca.ualberta.cs.shinyexpensetracker.R.id;
 import ca.ualberta.cs.shinyexpensetracker.R.layout;
 import ca.ualberta.cs.shinyexpensetracker.R.menu;

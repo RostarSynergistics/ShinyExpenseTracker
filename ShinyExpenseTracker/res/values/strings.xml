@@ -4,6 +4,12 @@
     <string name="app_name">ShinyExpenseTracker</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="action_new_claim">New Claim</string>
+    <string name="action_sort">Sort By&#8230;</string>
+    <string name="action_filter">Filter&#8230;</string>
+    <string name="action_manage_tags">Manage Tags</string>
+
+    <string name="title_activity_expense_claims_view">Expense Claims</string>
     <string name="title_activity_add_tag">AddTagActivity</string>
 
 </resources>

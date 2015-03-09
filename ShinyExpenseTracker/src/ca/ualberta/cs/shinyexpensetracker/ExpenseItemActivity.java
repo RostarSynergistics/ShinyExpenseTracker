@@ -1,3 +1,9 @@
+/**
+ * Displays activity_create_expense_item activity, to give the user an 
+ * interface to add the name, date, category, amount spent, currency, 
+ * description and a photo of a receipt for expense items. 
+ */
+
 package ca.ualberta.cs.shinyexpensetracker;
 
 import java.text.ParseException;
@@ -6,6 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
@@ -27,6 +34,7 @@ import android.view.View.OnClickListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -46,20 +54,19 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
     private Uri imageFileUri;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     
-    
-    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_expense_item);
 		
-		dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.CANADA);
+		dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.CANADA);
         
         findViewsById();
         
         setDateTimeField();
         
-        button = (ImageButton) findViewById(R.id.expenseItemReciptImageButton);
+        button = (ImageButton) findViewById(R.id.expenseItemReceiptImageButton);
+
 	}
 
 	@Override
@@ -105,7 +112,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
             }
  
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-        
+     
     }
 	
     /** 
@@ -131,17 +138,44 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		Spinner currencySpinner = (Spinner) findViewById(R.id.expenseItemCurrencySpinner);
 		EditText descriptionText = (EditText) findViewById(R.id.expesenItemDescriptionEditText);
 		
-		Date date = dateFormatter.parse(dateText.getText().toString());
-
-		BigDecimal amount = new BigDecimal(amountText.getText().toString());
+		String name;
+		if (nameText.getText().length() == 0){
+			name = "name";
+		} else {
+			name = nameText.getText().toString();
+		}
 		
-		ExpenseItem expense = new ExpenseItem(nameText.getText().toString(), date, 
-				(Category) categorySpinner.getSelectedItem(), amount,
-				(Currency) currencySpinner.getSelectedItem(),
-				descriptionText.getText().toString(),
-				button.getDrawingCache()); 
+		Date date;
+		if (dateText.getText().length() == 0) {
+			date = new Date();
+		} else {
+			date = dateFormatter.parse(dateText.getText().toString());
+		}
 		
-		//add expense Item to claim
+		Category category = Category.fromString(categorySpinner.getSelectedItem().toString());
+		
+		// get the amount Spent from the editText, checking if not entered
+		BigDecimal amount;
+		if (amountText.getText().length() == 0) {
+			amount = new BigDecimal("0.00");
+		} else {
+			amount = new BigDecimal(amountText.getText().toString());
+		}
+		
+		Currency currency = Currency.valueOf(currencySpinner.getSelectedItem().toString());
+		
+		String description;
+		if (descriptionText.getText().length() == 0){
+			description = "description";
+		} else {
+			description = descriptionText.getText().toString();
+		}
+		
+		ExpenseItem expense = new ExpenseItem(name, date, category, amount, 
+				currency, description, button.getDrawingCache()); 
+		
+		//Still needs to be implemented
+		//Add expenseItem to claim
 	}
 	
 	/** 

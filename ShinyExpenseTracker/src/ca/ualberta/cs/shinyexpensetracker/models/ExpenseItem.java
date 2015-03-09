@@ -1,3 +1,8 @@
+/**
+ * ExpenseItem hold the name, date, category, amount spent, currency, description
+ * and a photo of a receipt for an expense that is added to a claim.
+ */
+
 package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.ArrayList;
@@ -9,14 +14,43 @@ import ca.ualberta.cs.shinyexpensetracker.IView;
 import android.graphics.Bitmap;
 
 public class ExpenseItem implements IModel<IView<ExpenseItem>> {
-	
-	public enum Category { 
-		AIR_FARE, GROUND_TRANSPORT, VEHICLE_RENTAL, PRIVATE_AUTOMOBILE, FUEL, PARKING, 
-		REGISTRATION, ACCOMODATION, MEAL, SUPPLIES
 
+	public enum Category { 
+		AIR_FARE("air fare"),
+		GROUND_TRANSPORT("ground transport"), 
+		VEHICLE_RENTAL("vehicle rental"), 
+		PRIVATE_AUTOMOBILE("private automobile"), 
+		FUEL("fuel"), 
+		PARKING("parking"), 
+		REGISTRATION("registration"), 
+		ACCOMODATION("accomodation"), 
+		MEAL("meal"), 
+		SUPPLIES("supplies");
+
+		private final String text;
+		
+		private Category(final String text){
+			this.text = text;
+		}
+		
+		public String getText(){
+			return this.text;
+		}
+		
+		public static Category fromString(String text) {
+			if (text != null) {
+				for (Category c : Category.values()) {
+					if (text.equalsIgnoreCase(c.text)) {
+						return c;
+					}
+				}
+			}
+			return null;
+		}
 	}
+		
 	public enum Currency {
-		CAD, USD, GBR, EUR, CHF, JPY, CNY
+		CAD, USD, GBP, EUR, CHF, JPY, CNY
 		
 	}
 
@@ -26,7 +60,7 @@ public class ExpenseItem implements IModel<IView<ExpenseItem>> {
 	public BigDecimal amountSpent;
 	public Currency currency;
 	public String description;
-	public Bitmap reciptPhoto;
+	public Bitmap receiptPhoto;
 	
 	private ArrayList<IView<ExpenseItem>> views;
 	
@@ -38,7 +72,15 @@ public class ExpenseItem implements IModel<IView<ExpenseItem>> {
 		this.amountSpent = amountSpent;
 		this.currency = currency;
 		this.description = description;
-		this.reciptPhoto = photo;
+		this.receiptPhoto = photo;
+	}
+	
+	public void setName(String name){
+		this.name = name;
+	}
+	
+	public String getName(){
+		return this.name;
 	}
 
 	public void setDate(Date date){
@@ -81,12 +123,12 @@ public class ExpenseItem implements IModel<IView<ExpenseItem>> {
 		return this.currency;
 	}
 	
-	public void setReciptPhoto(Bitmap photo) {
-		this.reciptPhoto = photo;
+	public void setReceiptPhoto(Bitmap photo) {
+		this.receiptPhoto = photo;
 	}
 	
-	public Bitmap getReciptPhoto(){
-		return this.reciptPhoto;
+	public Bitmap getReceiptPhoto(){
+		return this.receiptPhoto;
 	}
 
 	@Override

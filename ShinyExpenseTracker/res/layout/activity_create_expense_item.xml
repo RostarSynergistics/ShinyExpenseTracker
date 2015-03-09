@@ -7,6 +7,8 @@
         android:id="@+id/expenseItemNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
         android:labelFor="@+id/expenseItemNameEditText"
         android:text="Name:"
         android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -16,6 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/expenseItemNameTextView"
+        android:layout_marginStart="5dp"
         android:ems="10"
         android:inputType="textCapWords" />
     
@@ -24,6 +27,7 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_below="@+id/expenseItemNameEditText"
+	    android:layout_marginStart="5dp"
 	    android:labelFor="@+id/expenseItemDateEditText"
 	    android:text="Date:"
 	    android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -33,6 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/expenseItemDateTextView"
+        android:layout_marginStart="5dp"
         android:ems="10"
         android:inputType="date" />
     
@@ -41,6 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/expenseItemDateEditText"
+        android:layout_marginStart="5dp"
         android:labelFor="@+id/expenseItemCategorySpinner"
         android:text="Category:"
         android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -50,6 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_below="@+id/expesenItemCategoryTextView"
+        android:layout_marginStart="5dp"
         android:ems="10"
         android:entries="@array/expenseItemCategories" />
     
@@ -58,6 +65,7 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/expenseItemCategorySpinner"
+        android:layout_marginStart="5dp"
         android:labelFor="@+id/expenseItemAmountEditText"
         android:text="Amount Spent:"
         android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -67,6 +75,7 @@
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_below="@+id/expenseItemAmountTextView"
+        android:layout_marginStart="5dp"
         android:ems="10"
         android:inputType="numberDecimal" />
 
@@ -93,6 +102,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/expenseItemAmountEditText"
+        android:layout_marginStart="5dp"
         android:labelFor="@+id/expesenItemDescriptionEditText"
         android:text="Description:"
         android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -102,12 +112,13 @@
         android:layout_width="320dp"
         android:layout_height="100dp"
         android:layout_below="@+id/expesneItemDescriptionTextView"
+        android:layout_marginStart="5dp"
         android:ems="10"
         android:gravity="top"
         android:inputType="textMultiLine" />
 
     <ImageButton
-        android:id="@+id/expenseItemReciptImageButton"
+        android:id="@+id/expenseItemReceiptImageButton"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_below="@+id/expesenItemDescriptionEditText"

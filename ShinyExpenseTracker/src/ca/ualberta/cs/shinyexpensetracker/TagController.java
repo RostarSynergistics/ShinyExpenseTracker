@@ -9,6 +9,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.TagList;
  * TagController object that stores a list
  * of created tags. It is unique for the
  * program
+ * Covers Issue 25
  * @author Oleg Oleynikov
  * @version 1.0
  * @since 2015-03-08

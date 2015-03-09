@@ -11,10 +11,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
+
+/**
+ * Activity that reacts to creation of a new tag
+ * Covers Issue 25
+ * Things to implement: proper navigation back to Manage Tags Activity
+ * @author Oleg Oleynikov
+ * @version 1.0
+ * @since 2015-03-08
+ */
 
 public class AddTagActivity extends Activity {
 
-	//TagController tc = new TagController();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,6 +53,17 @@ public class AddTagActivity extends Activity {
 	{
 		EditText tagNameTextBox = (EditText) findViewById(R.id.tagName);
 		String tagName = tagNameTextBox.getText().toString();
+		int prevSize = TagController.getTagCount();
 		TagController.addTag(tagName);
+		int currSize = TagController.getTagCount();
+		if (currSize == prevSize){
+			Toast.makeText(this, "Tag name has to be an alphanumeric value.\nPlease enter a new name and press Add Tag again", Toast.LENGTH_LONG).show();
+		}
+		else{
+			// Go back to the Manage Tags screen
+			// Not sure how to do that without creating a new activity, though
+			Intent intent = new Intent(AddTagActivity.this, ManageTagActivity.class);
+	    	startActivity(intent);
+		}
 	}
 }

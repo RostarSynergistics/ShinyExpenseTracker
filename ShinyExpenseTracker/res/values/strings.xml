@@ -4,11 +4,8 @@
     <string name="app_name">ShinyExpenseTracker</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-<<<<<<< HEAD
     <string name="title_activity_view_expense_claim">ViewExpenseClaimActivity</string>
     <string name="title_activity_add_expense_claim">AddExpenseClaimActivity</string>
-=======
     <string name="title_activity_add_tag">AddTagActivity</string>
->>>>>>> f19aecc3cb60e511177a463bf1a5d2ee1219e70f
 
 </resources>

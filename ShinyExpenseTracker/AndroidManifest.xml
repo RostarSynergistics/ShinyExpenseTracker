@@ -23,17 +23,14 @@
             </intent-filter>
         </activity>
         <activity
-<<<<<<< HEAD
             android:name=".ViewExpenseClaimActivity"
             android:label="@string/title_activity_view_expense_claim" >
         </activity>
         <activity
             android:name=".AddExpenseClaimActivity"
             android:label="@string/title_activity_add_expense_claim" >
-=======
             android:name="ca.ualberta.cs.shinyexpensetracker.AddTagActivity"
             android:label="@string/title_activity_add_tag" >
->>>>>>> f19aecc3cb60e511177a463bf1a5d2ee1219e70f
         </activity>
     </application>
 

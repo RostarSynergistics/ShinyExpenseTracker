@@ -192,7 +192,7 @@ public class ViewAllExpenseClaimsActivityTests extends
 		// Here, we're checking if the "New Claim" button adds a new faux claim
 		assertEquals("Claim not added", 1, claimListView.getCount());
 		
-		// Fail because this test needs to be updated.
+		// Fail this test because it isn't finished.
 		fail();
 	}
 }

@@ -41,8 +41,9 @@ public class ExpenseClaimController {
 		claimlist.addClaim(claim);
 	}
 	
-	// FIXME What does this do? How does it do this?
-	// #60
+	// TODO #60
+	// This will probably open an activity that's responsible for
+	// editing the claim
 	public void editExpenseClaim(ExpenseClaim claim) {
 		claimlist.editClaim(claim);
 	}

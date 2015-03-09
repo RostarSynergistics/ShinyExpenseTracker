@@ -105,6 +105,7 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 			return true;
 		case R.id.action_sort:
 		case R.id.action_filter:
+		case R.id.action_manage_tags:
 			// TODO #22, #28
 			Toast.makeText(this, "Not Yet Implemented.", Toast.LENGTH_SHORT).show();
 			return false;

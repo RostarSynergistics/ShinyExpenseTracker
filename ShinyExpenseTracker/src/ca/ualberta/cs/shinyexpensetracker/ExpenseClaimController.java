@@ -32,19 +32,24 @@ public class ExpenseClaimController {
 	}
 	
 	// TODO #60
-	public void saveExpenseClaim(ExpenseClaim claim) {
-		// save to somewhere
+	public static void saveExpenseClaim(ExpenseClaim claim, ClaimDataExporter exporter) {
+		exporter.export(claim);	
 	}
 	
 	// TODO #60
+	// Lazy-ish singleton. This is the least ugly I'm willing to make it.
 	public static void addExpenseClaim(ExpenseClaim claim) {
-		claimlist.addClaim(claim);
+		getExpenseClaimList().addClaim(claim);
 	}
 	
 	// TODO #60
 	// This will probably open an activity that's responsible for
 	// editing the claim
 	public void editExpenseClaim(ExpenseClaim claim) {
-		claimlist.editClaim(claim);
+		getExpenseClaimList().editClaim(claim);
+	}
+	
+	public static ExpenseClaim getExpenseClaim(int index){
+		return claimlist.getClaim(index);
 	}
 }

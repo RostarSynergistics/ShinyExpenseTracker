@@ -18,7 +18,7 @@ public class ExpenseClaimList implements IModel<IView<ExpenseClaimList>> {
 		claims = new ArrayList<ExpenseClaim>();
 		views = new ArrayList<IView<ExpenseClaimList>>();
 	}
-	
+
 	// FIXME UML says this takes no args
 	public ExpenseClaim getClaim(int index) {
 		return claims.get(index);

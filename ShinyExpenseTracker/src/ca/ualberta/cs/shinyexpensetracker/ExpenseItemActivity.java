@@ -39,8 +39,11 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -75,6 +78,9 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
     Bitmap ourBMP;
     private Uri imageFileUri;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+    private AlertDialog.Builder adb;
+    public Dialog alertDialog;
+    
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +88,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		setContentView(R.layout.activity_create_expense_item);
 		
 		dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.CANADA);
+		adb = new AlertDialog.Builder(this);
         
         findViewsById();
         
@@ -152,7 +159,8 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
      * @param v
      * @throws ParseException
      */
-	public void createExpenseItem(View v) throws ParseException {
+	public boolean createExpenseItem(View v) throws ParseException {
+		
 		EditText nameText = (EditText) findViewById(R.id.expenseItemNameEditText);
 		EditText dateText = (EditText) findViewById(R.id.expenseItemDateEditText);
 		Spinner categorySpinner = (Spinner) findViewById(R.id.expenseItemCategorySpinner);
@@ -160,16 +168,32 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		Spinner currencySpinner = (Spinner) findViewById(R.id.expenseItemCurrencySpinner);
 		EditText descriptionText = (EditText) findViewById(R.id.expesenItemDescriptionEditText);
 		
-		String name;
+		String name = "";
 		if (nameText.getText().length() == 0){
-			name = "name";
+			adb.setMessage("Expense Item requires a name");
+			adb.setCancelable(true);
+			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) { }
+			});
+			alertDialog = adb.create();
+			alertDialog.show();
+			return false;
 		} else {
 			name = nameText.getText().toString();
 		}
 		
-		Date date;
+		Date date = new Date();
 		if (dateText.getText().length() == 0) {
-			date = new Date();
+			adb.setMessage("Expense Item requires a date");
+			adb.setCancelable(true);
+			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) { }
+			});
+			alertDialog = adb.create();
+			alertDialog.show();
+			return false;
 		} else {
 			date = dateFormatter.parse(dateText.getText().toString());
 		}
@@ -177,9 +201,17 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		Category category = Category.fromString(categorySpinner.getSelectedItem().toString());
 		
 		// get the amount Spent from the editText, checking if not entered
-		BigDecimal amount;
+		BigDecimal amount = new BigDecimal("0.00");
 		if (amountText.getText().length() == 0) {
-			amount = new BigDecimal("0.00");
+			adb.setMessage("Expense Item requires an amount spent");
+			adb.setCancelable(true);
+			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) { }
+			});
+			alertDialog = adb.create();
+			alertDialog.show();
+			return false;
 		} else {
 			amount = new BigDecimal(amountText.getText().toString());
 		}
@@ -188,7 +220,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		
 		String description;
 		if (descriptionText.getText().length() == 0){
-			description = "description";
+			description = "";
 		} else {
 			description = descriptionText.getText().toString();
 		}
@@ -198,6 +230,8 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		
 		//Still needs to be implemented
 		//Add expenseItem to claim
+		
+		return true;
 	}
 	
 	/** 
@@ -233,16 +267,13 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 			if (resultCode == RESULT_OK) {
 				Toast.makeText(this, "Result: OK!", Toast.LENGTH_SHORT).show();
-				//tv.setText("Result: OK!");
 				assert imageFileUri != null;
 				assert button != null;
 				button.setImageDrawable(Drawable.createFromPath(imageFileUri.getPath()));
 			} else if (resultCode == RESULT_CANCELED) {
 				Toast.makeText(this, "Result: Cancelled", Toast.LENGTH_SHORT).show();
-				//tv.setText("Result: Cancelled");
 			} else {
 				Toast.makeText(this, "Result: ???", Toast.LENGTH_SHORT).show();
-				//tv.setText("Result: ????");
 			}
 		}
 	}
@@ -253,8 +284,10 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 	 * @throws ParseException 
 	 */
 	public void doneExpenseItem(View v) throws ParseException{
-		createExpenseItem(v);
-		finish();
+		
+		if (createExpenseItem(v)){
+			finish();
+		}
 	}
 	
 	/** 
@@ -263,5 +296,9 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 	 */
 	public DatePickerDialog getDialog(){
 		return datePickerDialog;
+	}
+	
+	public AlertDialog.Builder getAlertDialog() {
+		return adb;
 	}
 }

@@ -1,10 +1,12 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import ca.ualberta.cs.shinyexpensetracker.AddTagActivity;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
@@ -27,6 +29,7 @@ import android.sax.StartElementListener;
 import android.support.v4.graphics.BitmapCompat;
 import android.test.ActivityInstrumentationTestCase2;
 import android.text.format.DateFormat;
+import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -43,7 +46,7 @@ public class ExpenseItemActivityTest extends
     int year, month, day;
     
 	 Instrumentation instrumentation;
-	 Activity activity;
+	 ExpenseItemActivity activity;
 	 DatePickerDialog datePicker;
 	 EditText nameInput, dateInput, amountInput, descriptionInput;
 	 Spinner currencyInput, categoryInput;
@@ -77,12 +80,10 @@ public class ExpenseItemActivityTest extends
         }
     };
 
-
-    
     protected void setUp() throws Exception {
     	super.setUp();
         instrumentation = getInstrumentation();
-        activity = (ExpenseItemActivity) getActivity();
+        activity = getActivity();
         
         datePicker = new DatePickerDialog(instrumentation.getContext(), dateListener, TARGET_YEAR, TARGET_MONTH, TARGET_DAY);
         
@@ -113,27 +114,85 @@ public class ExpenseItemActivityTest extends
 			public void run() {
 				assertNotNull(doneButton);
 
-				 Calendar newDate = Calendar.getInstance();
 				 SimpleDateFormat sdf = new SimpleDateFormat();
 				 Date date = new Date();
 				 sdf.format(date);
 				 BigDecimal amount = new BigDecimal(10.00);
 				 Bitmap bitmap = null;
 				 
-				ExpenseItem expense = new ExpenseItem("name", date, 
+				 ExpenseItem expense = new ExpenseItem("name", date, 
 						 Category.ACCOMODATION,  amount, Currency.CAD, 
 						 "description", bitmap);
-
-				 assertTrue("name != name", "name" == expense.getName());
-				 assertTrue("date != name", "name" == expense.getName());
-				 assertTrue("category != accomodation", Category.ACCOMODATION == expense.getCategory());
-				 assertTrue("amount != 10.00", amount == expense.getAmountSpent());
-				 assertTrue("currnency != CAD", Currency.CAD == expense.getCurrency());
-				 assertTrue("description != description", "description" == expense.getDescription());
-				 assertTrue("bitmap != bitmap", bitmap == expense.getReceiptPhoto());
+				 
+				 assertEquals("name != name", "name", expense.getName());
+				 assertNotSame("false positive, name", "Wrong Name", expense.getName());
+				 assertEquals("date != date", date, expense.getDate());
+				 assertNotSame("false positive date", "wrong date", expense.getDate());
+				 assertEquals("category != accomodation", Category.ACCOMODATION, expense.getCategory());
+				 assertNotSame("false positive, category", "wrong category", expense.getCategory());
+				 assertEquals("amount != 10.00", amount, expense.getAmountSpent());
+				 assertNotSame("false positive, amount", new BigDecimal(5.00), expense.getAmountSpent()); 
+				 assertEquals("currnency != CAD", Currency.CAD, expense.getCurrency());
+				 assertNotSame("false positive, currency", "wrong currency", expense.getCurrency());
+				 assertEquals("description != description", "description", expense.getDescription());
+				 assertNotSame("false positibe description", "wrong description", expense.getDescription());
+				 assertEquals("bitmap != bitmap", bitmap, expense.getReceiptPhoto());
+				 assertNotSame("false posibive, photo", "not bitmap", expense.getReceiptPhoto());
 			}
 		});
 	}
+	
+	public void testDone() {
+		instrumentation.runOnMainSync(new Runnable() {
+			public void run() {				
+				nameInput.setText("name");
+				doneButton.performClick();
+				activity = getActivity();
+				assertTrue(activity != null);
+				nameInput = (EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemNameEditText);
+				assertNotSame("nameInput == expenseItem.name", "name", nameInput.getText().toString());
+				assertEquals("nameInput == expenseItem.name", "name", nameInput.getText().toString());
+			}
+		});
+		instrumentation.waitForIdleSync();
+	}
+
+	public void testNameDialogs() {
+		instrumentation.runOnMainSync(new Runnable() {
+			@Override
+			public void run() {
+				doneButton.performClick();
+				assertNotNull("no name dialog", activity.alertDialog);
+				assertTrue("Name dialog is not showing", activity.alertDialog.isShowing());
+			}
+		});
+	}
+
+	
+	public void testDateDialogs() {
+		instrumentation.runOnMainSync(new Runnable() {
+			@Override
+			public void run() {
+				doneButton.performClick();
+				assertNotNull("no date dialog", activity.alertDialog);
+				assertTrue("Date dialog is not showing", activity.alertDialog.isShowing());
+			}
+		});
+	}
+	
+
+	public void testAmountDialogs() {
+		instrumentation.runOnMainSync(new Runnable() {
+			@Override
+			public void run() {
+				doneButton.performClick();
+				assertNotNull("no amount spent dialog", activity.alertDialog);
+				assertTrue("Dialog amount spent is not showing", activity.alertDialog.isShowing());
+			}
+		});
+	}
+
+
 	
 	/** test is the camera app is opened when ExpenseItemImageButton is clicked */
 	/*public void testOpenCamera() {

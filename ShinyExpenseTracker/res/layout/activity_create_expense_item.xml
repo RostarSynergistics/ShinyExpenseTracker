@@ -38,6 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/expenseItemDateTextView"
         android:layout_marginStart="5dp"
+        android:focusable="false"
         android:ems="10"
         android:inputType="date" />
     

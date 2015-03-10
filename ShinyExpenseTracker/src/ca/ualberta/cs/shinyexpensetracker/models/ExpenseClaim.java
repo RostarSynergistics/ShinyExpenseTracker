@@ -28,7 +28,7 @@ public class ExpenseClaim implements IModel<IView<ExpenseClaim>>, Comparable<Exp
 	 * which is why I commented out the old constructor and added a new one to handle arguments.Comment out as needed.
 	*/
 	
-	public ExpenseClaim(String name, Date startDate, Date endDate, Status status, Tag tag) {
+	//public ExpenseClaim(String name, Date startDate, Date endDate, Status status, Tag tag) {
 
 	public ExpenseClaim(String name) {
 		this(name, new Date(), null, Status.IN_PROGRESS, null);
@@ -45,16 +45,11 @@ public class ExpenseClaim implements IModel<IView<ExpenseClaim>>, Comparable<Exp
 	public ExpenseClaim(String name, Date startDate, Date endDate,
 			Status status, Tag tag) {
 		super();
-
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.status = status;
 		this.tag = tag;
-
-		
-
-
 		this.views = new ArrayList<IView<ExpenseClaim>>();
 	}
 	

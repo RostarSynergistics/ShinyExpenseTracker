@@ -74,12 +74,13 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/addExpenseClaimDoneButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="53dp"
         android:layout_toRightOf="@+id/textViewStartDate"
+        android:onClick="createExpenseClaim"
         android:text="Done" />
 
 </RelativeLayout>

@@ -28,6 +28,7 @@ import android.hardware.Camera;
 import android.sax.StartElementListener;
 import android.support.v4.graphics.BitmapCompat;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.MoreAsserts;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
@@ -102,10 +103,9 @@ public class ExpenseItemActivityTest extends
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run(){
 				dateInput.performClick();
-				
-				assertTrue("datepicker dialog is showing", ((ExpenseItemActivity) activity).getDialog().isShowing());
 			}
 		});
+		assertTrue("datepicker dialog is showing", ((ExpenseItemActivity) activity).getDialog().isShowing());
 	}
 	
 	/** test if an expense Item is successfully created */
@@ -142,54 +142,69 @@ public class ExpenseItemActivityTest extends
 		});
 	}
 	
+	/** tests if the data entered has been correctly saved to an expenseItem when the Done button is clicked */
 	public void testDone() {
+		
+		//Test not done being implemented, needs to check to see if loaded expenseItem is what was entered
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {				
 				nameInput.setText("name");
 				doneButton.performClick();
 				activity = getActivity();
-				assertTrue(activity != null);
 				nameInput = (EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemNameEditText);
-				assertNotSame("nameInput == expenseItem.name", "name", nameInput.getText().toString());
-				assertEquals("nameInput == expenseItem.name", "name", nameInput.getText().toString());
+				
 			}
 		});
 		instrumentation.waitForIdleSync();
+
+		assertTrue(activity != null);
+		assertEquals("length != 0", 0, nameInput.getText().length());
+		assertEquals("nameInput == expenseItem.name", "name", nameInput.getText().toString());
+		fail();
+		
+		
 	}
 
+	/** tests that a dialog telling the user that they require a name before completing the expense item appears */
 	public void testNameDialogs() {
 		instrumentation.runOnMainSync(new Runnable() {
 			@Override
 			public void run() {
 				doneButton.performClick();
-				assertNotNull("no name dialog", activity.alertDialog);
-				assertTrue("Name dialog is not showing", activity.alertDialog.isShowing());
 			}
 		});
+
+		assertNotNull("no name dialog", activity.alertDialog);
+		assertTrue("Name dialog is not showing", activity.alertDialog.isShowing());
 	}
 
-	
+	/** tests that a dialog telling the user that they require a date before completing the expense item appears */
 	public void testDateDialogs() {
 		instrumentation.runOnMainSync(new Runnable() {
 			@Override
 			public void run() {
 				doneButton.performClick();
-				assertNotNull("no date dialog", activity.alertDialog);
-				assertTrue("Date dialog is not showing", activity.alertDialog.isShowing());
 			}
 		});
+
+		assertNotNull("no date dialog", activity.alertDialog);
+		assertTrue("Date dialog is not showing", activity.alertDialog.isShowing());
 	}
 	
-
+	/** 
+	 * tests that a dialog telling the user that they require an amount spent before completing 
+	 * the expense item appears 
+	*/
 	public void testAmountDialogs() {
 		instrumentation.runOnMainSync(new Runnable() {
 			@Override
 			public void run() {
 				doneButton.performClick();
-				assertNotNull("no amount spent dialog", activity.alertDialog);
-				assertTrue("Dialog amount spent is not showing", activity.alertDialog.isShowing());
 			}
 		});
+
+		assertNotNull("no amount spent dialog", activity.alertDialog);
+		assertTrue("Dialog amount spent is not showing", activity.alertDialog.isShowing());
 	}
 
 

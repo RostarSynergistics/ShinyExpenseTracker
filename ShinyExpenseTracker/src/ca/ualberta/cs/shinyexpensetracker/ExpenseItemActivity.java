@@ -168,8 +168,10 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		Spinner currencySpinner = (Spinner) findViewById(R.id.expenseItemCurrencySpinner);
 		EditText descriptionText = (EditText) findViewById(R.id.expesenItemDescriptionEditText);
 		
+		//get the name of the expense item
 		String name = "";
 		if (nameText.getText().length() == 0){
+			//display dialog if no name entered
 			adb.setMessage("Expense Item requires a name");
 			adb.setCancelable(true);
 			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
@@ -183,8 +185,10 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 			name = nameText.getText().toString();
 		}
 		
+		// get the date of the expense item
 		Date date = new Date();
 		if (dateText.getText().length() == 0) {
+			//display dialog if no date entered
 			adb.setMessage("Expense Item requires a date");
 			adb.setCancelable(true);
 			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
@@ -198,11 +202,13 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 			date = dateFormatter.parse(dateText.getText().toString());
 		}
 		
+		//get the current selection of the category spinner
 		Category category = Category.fromString(categorySpinner.getSelectedItem().toString());
 		
 		// get the amount Spent from the editText, checking if not entered
 		BigDecimal amount = new BigDecimal("0.00");
 		if (amountText.getText().length() == 0) {
+			//display error dialog if no amount spent has been entered
 			adb.setMessage("Expense Item requires an amount spent");
 			adb.setCancelable(true);
 			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
@@ -216,8 +222,10 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 			amount = new BigDecimal(amountText.getText().toString());
 		}
 		
+		//get the current selection of the currencySpinner
 		Currency currency = Currency.valueOf(currencySpinner.getSelectedItem().toString());
 		
+		//get the description entered 
 		String description;
 		if (descriptionText.getText().length() == 0){
 			description = "";
@@ -296,9 +304,5 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 	 */
 	public DatePickerDialog getDialog(){
 		return datePickerDialog;
-	}
-	
-	public AlertDialog.Builder getAlertDialog() {
-		return adb;
 	}
 }

@@ -10,7 +10,8 @@
         android:orderInCategory="100"
         android:showAsAction="always"
        	android:icon="@android:drawable/ic_menu_add"
+       	android:title="@string/add_tag"
        	/>
-        
-    
+       
 </menu>
+ 

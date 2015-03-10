@@ -1,10 +1,16 @@
 package ca.ualberta.cs.shinyexpensetracker;
 
+import java.util.ArrayList;
+
+import ca.ualberta.cs.shinyexpensetracker.models.IModel;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 
-public class TagController {
+public class TagController{
 	private TagList list;
 	private static TagController tagController;
+	
+	private transient ArrayList<IView<TagController>> views;
+	
 
 	private TagController(){
 		list = new TagList();
@@ -30,3 +36,5 @@ public class TagController {
 		return list;
 	}
 }
+
+

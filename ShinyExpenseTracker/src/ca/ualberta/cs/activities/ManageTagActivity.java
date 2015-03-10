@@ -7,20 +7,22 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import ca.ualberta.cs.shinyexpensetracker.IView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.TagController;
+import ca.ualberta.cs.shinyexpensetracker.models.IModel;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 
-public class ManageTagActivity extends Activity {
+public class ManageTagActivity extends Activity implements IView<TagList> {
 	private ListView manageTags;
-	
+	ArrayAdapter<Tag> tagListAdapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_manage_tag);
 		manageTags = (ListView)findViewById(R.id.listViewManageTags);
-		
+		TagController.getInstance().getTagList().addView(this);
 	}
 
 	@Override
@@ -34,7 +36,7 @@ public class ManageTagActivity extends Activity {
 	protected void onResume() {
 		
 		super.onResume();	
-		ArrayAdapter<Tag> tagListAdapter = new ArrayAdapter<Tag>(this, android.R.layout.simple_list_item_1, TagController.getInstance().getTagList().getTags());
+		tagListAdapter = new ArrayAdapter<Tag>(this, android.R.layout.simple_list_item_1, TagController.getInstance().getTagList().getTags());
 		manageTags.setAdapter(tagListAdapter);
 	}
 
@@ -52,6 +54,13 @@ public class ManageTagActivity extends Activity {
 		
 		
 	}
+
+	@Override
+	public void update(TagList m) {
+		// TODO Auto-generated method stub
+		tagListAdapter.notifyDataSetChanged();
+	}
+
 	
 	
 }

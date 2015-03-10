@@ -7,10 +7,11 @@ import ca.ualberta.cs.shinyexpensetracker.IView;
 public class TagList implements IModel<IView<TagList>> {
 	private ArrayList<Tag> tags;
 	
-	private ArrayList<IView<TagList>> views; 
+	private ArrayList<IView<TagList>> views ; 
 	
 	public TagList(){
 		tags = new ArrayList<Tag>();
+		views = new ArrayList<IView<TagList>>();
 	}
 	
 	public ArrayList<Tag> getTags() {
@@ -23,9 +24,11 @@ public class TagList implements IModel<IView<TagList>> {
 	 */
 	public void addTag(Tag t) {
 		tags.add(t);
+		notifyViews();
 	}
 	public void addTag(String s) {
 		tags.add(new Tag(s));
+		notifyViews();
 	}
 	
 	public void removeTag(Tag t) {
@@ -34,6 +37,10 @@ public class TagList implements IModel<IView<TagList>> {
 
 	public void removeTag(String s) {
 		tags.remove(new Tag(s));
+	}
+	
+	public int size(){
+		return tags.size();
 	}
 
 	@Override

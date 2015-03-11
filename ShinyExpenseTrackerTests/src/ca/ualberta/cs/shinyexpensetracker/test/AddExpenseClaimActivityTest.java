@@ -11,21 +11,18 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
-import android.text.format.DateFormat;
+import android.test.UiThreadTest;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
-import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 
 public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase2<AddExpenseClaimActivity> {
 	
@@ -89,16 +86,17 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 	}
 	
 	public void testText() {
+		
 		instrumentation.runOnMainSync(new Runnable() {
 			@Override
 			public void run() {
-				name.setText("URoma Trip");
+				name.setText("URoma");
 				startDate.setText("01-04-2015");
 				endDate.setText("08-04-2015");
 			}
 		});
 		
-		assertEquals("URoma Trip", name.getText().toString());
+		assertEquals("URoma", name.getText().toString());
 		assertEquals("01-04-2015", startDate.getText().toString());
 		assertEquals("08-04-2015", endDate.getText().toString());
 	}
@@ -106,12 +104,11 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 	public void testAddExpenseClaim() {
 		
 		final String nameString = "URoma";
-		SimpleDateFormat sdfFrom = new SimpleDateFormat();
-		SimpleDateFormat sdfTo = new SimpleDateFormat();
+		SimpleDateFormat sdf = new SimpleDateFormat();
 		final Date toDate = new Date();
 		final Date fromDate = new Date();
-		sdfFrom.format(fromDate);
-		sdfTo.format(fromDate);
+		sdf.format(fromDate);
+		sdf.format(toDate);
 		
 		final ExpenseClaim sampleExpenseClaim = new ExpenseClaim(nameString, fromDate, toDate, null, null);
 		final ExpenseClaimList claimList = ExpenseClaimController.getExpenseClaimList();
@@ -135,23 +132,23 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 		assertEquals("endDate != endDate", toDate, sampleExpenseClaim.getEndDate());
 		assertNotSame("false positive, endDate", "Wrong endDate", sampleExpenseClaim.getEndDate());
 }
-	
+	@UiThreadTest
 	public void testDoneButton() throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		final Date toDate = sdf.parse("03/10/2015");
-		final Date fromDate = sdf.parse("03/01/2015");
 		
-		instrumentation.runOnMainSync(new Runnable() {
-			@Override
-			public void run() {
-				name.setText("URoma Trip");
-				startDate.setText(toDate.toString());
-				endDate.setText(fromDate.toString());
-				doneButton.performClick();
-			}
-		});
-		assertEquals("URoma Trip", ExpenseClaimController.getExpenseClaim(0).getName());
-		assertEquals(toDate, ExpenseClaimController.getExpenseClaim(0).getStartDate());
-		assertEquals(fromDate, ExpenseClaimController.getExpenseClaim(0).getEndDate());
-	}
+		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+
+		startDate.setText("01-01-2015");
+		endDate.setText("01-10-2015");
+		name.setText("URoma");
+		Date startDateObject = sdf.parse(startDate.getText().toString());
+		Date endDateObject = sdf.parse(endDate.getText().toString());
+	
+		doneButton.performClick();
+		
+		assertEquals("The two names do not equal each other", "URoma", ExpenseClaimController.getExpenseClaim(1).getName());
+		
+		assertEquals("The two startDates do not equal each other", startDateObject, ExpenseClaimController.getExpenseClaim(1).getStartDate());
+		
+		assertEquals("The two endDates do not equal each other", endDateObject, ExpenseClaimController.getExpenseClaim(1).getEndDate());
+		}
 }

@@ -1,26 +1,19 @@
-package ca.ualberta.cs.shinyexpensetracker;
+package ca.ualberta.cs.shinyexpensetracker.activities;
 
 import java.util.Locale;
 
-import ca.ualberta.cs.shinyexpensetracker.activities.ClaimSummaryFragment;
-import ca.ualberta.cs.shinyexpensetracker.activities.DestinationsListFragment;
-import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemListFragment;
-import android.app.Activity;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
+import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
+import ca.ualberta.cs.shinyexpensetracker.R;
 
 // Source: https://github.com/astuetz/PagerSlidingTabStrip
 // on March 11 2015
@@ -144,7 +137,6 @@ public class TabbedSummaryActivity extends Activity implements
 			default:
 				throw new RuntimeException("No such tab");
 			}
-			
 		}
 
 		@Override

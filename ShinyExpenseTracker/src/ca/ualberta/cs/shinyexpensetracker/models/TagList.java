@@ -2,12 +2,8 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.ArrayList;
 
-import ca.ualberta.cs.shinyexpensetracker.IView;
-
-public class TagList implements IModel<IView<TagList>> {
+public class TagList extends Model<TagList> {
 	private ArrayList<Tag> tags = new ArrayList<Tag>();
-	
-	private ArrayList<IView<TagList>> views; 
 	
 	public ArrayList<Tag> getTags() {
 		return tags;
@@ -32,24 +28,6 @@ public class TagList implements IModel<IView<TagList>> {
 		tags.remove(new Tag(s));
 	}
 
-	@Override
-	public void addView(IView<TagList> v) {
-		views.add(v);
-	}
-
-	@Override
-	public void removeView(IView<TagList> v) {
-		// FIXME May crash if v is not in views
-		views.remove(v);
-	}
-
-	@Override
-	public void notifyViews() {
-		for (IView<TagList> v : views) {
-			v.update(this);
-		}
-	}
-
 	public int getCount() {
 		return tags.size();
 	}
@@ -57,5 +35,4 @@ public class TagList implements IModel<IView<TagList>> {
 	public Tag getTagById(int i) {
 		return tags.get(i);
 	}
-	
 }

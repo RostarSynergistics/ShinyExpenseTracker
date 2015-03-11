@@ -202,35 +202,5 @@ public class ExpenseItemActivityTest extends
 		assertNotNull("no amount spent dialog", activity.alertDialog);
 		assertTrue("Dialog amount spent is not showing", activity.alertDialog.isShowing());
 	}
-
-	/** test is the camera app is opened when ExpenseItemImageButton is clicked */
-	/*public void testOpenCamera() {
-		instrumentation.runOnMainSync(new Runnable(){
-			@Override
-			public void run() {
-				
-				photoInput.performClick();
-				
-				/*
-				* Camera testing taken from: 
-				*	http://developer.android.com/guide/topics/media/camera.html
-				* on March 7 2015
-				
-				//try to create an instance of a camera
-			    Camera camera = null;
-			    try {
-			    	//if this succeeds, camera was not open
-			        camera = Camera.open();
-			        fail("camera is not open");
-			    } catch (RuntimeException e) {
-			    	// runtimeException thrown means that camera was already open
-			    } finally {
-			        if (camera != null) camera.release();
-			    }
-			    
-			}
-		});
-	}*/
 	
-
 }

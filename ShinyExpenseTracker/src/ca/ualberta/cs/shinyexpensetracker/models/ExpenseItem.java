@@ -14,15 +14,11 @@
 
 package ca.ualberta.cs.shinyexpensetracker.models;
 
-import java.util.ArrayList;
 import java.math.BigDecimal;
 import java.util.Date;
-
-import ca.ualberta.cs.shinyexpensetracker.IView;
-
 import android.graphics.Bitmap;
 
-public class ExpenseItem implements IModel<IView<ExpenseItem>> {
+public class ExpenseItem extends Model <ExpenseItem> {
 
 	public enum Category { 
 		AIR_FARE("air fare"),
@@ -70,8 +66,6 @@ public class ExpenseItem implements IModel<IView<ExpenseItem>> {
 	public Currency currency;
 	public String description;
 	public Bitmap receiptPhoto;
-	
-	private ArrayList<IView<ExpenseItem>> views;
 	
 	public ExpenseItem (String name, Date date, Category category, 
 			BigDecimal amountSpent, Currency currency, String description, Bitmap photo){
@@ -139,22 +133,4 @@ public class ExpenseItem implements IModel<IView<ExpenseItem>> {
 	public Bitmap getReceiptPhoto(){
 		return this.receiptPhoto;
 	}
-
-	@Override
-	public void addView(IView<ExpenseItem> v) {
-		views.add(v);
-	}
-
-	@Override
-	public void removeView(IView<ExpenseItem> v) {
-		views.remove(v);
-	}
-
-	@Override
-	public void notifyViews() {
-		for (IView<ExpenseItem> v : views) {
-			v.update(this);
-		}
-	}
-	
 }

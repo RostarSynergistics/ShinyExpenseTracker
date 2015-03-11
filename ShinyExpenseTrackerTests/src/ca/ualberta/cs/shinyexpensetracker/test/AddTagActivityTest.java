@@ -1,8 +1,8 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
-import ca.ualberta.cs.shinyexpensetracker.AddTagActivity;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.TagController;
+import ca.ualberta.cs.shinyexpensetracker.activities.AddTagActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
@@ -10,21 +10,6 @@ import android.widget.EditText;
 
 /**
  * Test suite for adding a tag from the corresponding activity view
- * 
- *  Copyright (C) 2015  github.com/RostarSynergistics
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *  
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * Covers Issue 25
  * Things to implement: proper navigation back to Manage Tags Activity

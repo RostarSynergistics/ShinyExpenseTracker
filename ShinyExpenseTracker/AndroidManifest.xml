@@ -3,6 +3,9 @@
     package="ca.ualberta.cs.shinyexpensetracker"
     android:versionCode="1"
     android:versionName="1.0" >
+    
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <uses-sdk
         android:minSdkVersion="17"
@@ -23,8 +26,13 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ExpenseItemActivity"
+            android:label="@string/title_activity_expense_item" >
+        </activity>
+        <activity
             android:name="ca.ualberta.cs.shinyexpensetracker.AddTagActivity"
             android:label="@string/title_activity_add_tag" >
+ 
         </activity>
     </application>
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import ca.ualberta.cs.shinyexpensetracker.IView;
 
 /**
- * Base class for domain model classes. 
+ * Base class for domain model classes.
  * 
  * Allows management of associated views (adding/removing/notifying of updates).
  *
@@ -12,11 +12,11 @@ import ca.ualberta.cs.shinyexpensetracker.IView;
  */
 public abstract class Model<M> {
 	private transient ArrayList<IView<M>> views;
-	
+
 	public Model() {
 		views = new ArrayList<IView<M>>();
 	}
-	
+
 	/**
 	 * Adds a view for the model to keep track of.
 	 * 
@@ -39,7 +39,7 @@ public abstract class Model<M> {
 	 * Update every view the model is keeping track of.
 	 */
 	public void notifyViews() {
-		for(IView<M> view : views) {
+		for (IView<M> view : views) {
 			view.update();
 		}
 	}

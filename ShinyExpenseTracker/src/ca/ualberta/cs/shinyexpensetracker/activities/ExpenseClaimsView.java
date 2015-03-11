@@ -125,7 +125,7 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 	}
 
 	@Override
-	public void update() {
+	public void update(ExpenseClaimList m) {
 		adapter.notifyDataSetChanged();
 	}
 	

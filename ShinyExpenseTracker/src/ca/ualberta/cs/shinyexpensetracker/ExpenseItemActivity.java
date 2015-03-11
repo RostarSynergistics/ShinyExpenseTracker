@@ -1,19 +1,4 @@
-/**
- *  Copyright (C) 2015  github.com/RostarSynergistics
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *  
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ /** 
  * Covers Issue 5
  * Things to implement: saving of an expenseItem to an expenseClaim
  * @author Sarah Morris
@@ -34,7 +19,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
@@ -45,7 +29,6 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -59,7 +42,6 @@ import android.view.View.OnClickListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -74,8 +56,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
     private EditText date;
     private DatePickerDialog datePickerDialog;    
     private SimpleDateFormat dateFormatter;
-    ImageButton button;
-    Bitmap ourBMP;
+    private ImageButton button;
     private Uri imageFileUri;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private AlertDialog.Builder adb;
@@ -247,6 +228,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 	 * picture of a receipt.  Saves picture in a temporary file.
 	 * @param V
 	 */
+	//Source: https://github.com/saemorris/BogoPicLab/tree/master/CameraTest
 	public void takePicture(View V) {
 		// Create a folder to store pictures
 		String folder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/tmp";

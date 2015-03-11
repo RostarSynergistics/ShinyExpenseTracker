@@ -1,19 +1,4 @@
-/**
- *  Copyright (C) 2015  github.com/RostarSynergistics
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *  
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
+/** 
  * Covers Issue 5
  * Things to implement: saving of an expenseItem to an expenseClaim
  * @author Sarah Morris
@@ -25,37 +10,22 @@
 
 package ca.ualberta.cs.shinyexpensetracker.test;
 
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-
-import ca.ualberta.cs.shinyexpensetracker.AddTagActivity;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
-import android.app.Activity;
-import android.app.ActivityManager;
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
-import android.app.Dialog;
 import android.app.Instrumentation;
-import android.app.WallpaperManager;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.hardware.Camera;
-import android.sax.StartElementListener;
-import android.support.v4.graphics.BitmapCompat;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.MoreAsserts;
-import android.text.format.DateFormat;
-import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -99,8 +69,8 @@ public class ExpenseItemActivityTest extends
 	}
 	
     private OnDateSetListener dateListener = new OnDateSetListener(){
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        	year = year;
+        public void onDateSet(DatePicker view, int Year, int monthOfYear, int dayOfMonth) {
+        	year = Year;
             month = monthOfYear;
             day = dayOfMonth;
         }
@@ -123,7 +93,7 @@ public class ExpenseItemActivityTest extends
         doneButton = (Button) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemDoneButton);
     }
     
-    /** Tests that when the ExpenseItemDateTextView is clicked a DatePickerDialog is shown */
+    /* Tests that when the ExpenseItemDateTextView is clicked a DatePickerDialog is shown */
 	public void testSetDateTimeField() {
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run(){
@@ -133,9 +103,10 @@ public class ExpenseItemActivityTest extends
 		assertTrue("datepicker dialog is showing", ((ExpenseItemActivity) activity).getDialog().isShowing());
 	}
 	
-	/** test if an expense Item is successfully created */
+	/* test if an expense Item is successfully created */
 	public void testCreateExpenseItem() {
 		instrumentation.runOnMainSync(new Runnable(){
+			@SuppressLint("SimpleDateFormat")
 			public void run() {
 				assertNotNull(doneButton);
 
@@ -167,10 +138,10 @@ public class ExpenseItemActivityTest extends
 		});
 	}
 	
-	/** tests if the data entered has been correctly saved to an expenseItem when the Done button is clicked */
+	/* tests if the data entered has been correctly saved to an expenseItem when the Done button is clicked */
 	public void testDone() {
 		
-		//Test not done being implemented, needs to check to see if loaded expenseItem is what was entered
+		//TODO: Test not done being implemented, needs to check to see if loaded expenseItem is what was entered
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {				
 				nameInput.setText("name");
@@ -190,7 +161,7 @@ public class ExpenseItemActivityTest extends
 		
 	}
 
-	/** tests that a dialog telling the user that they require a name before completing the expense item appears */
+	/* tests that a dialog telling the user that they require a name before completing the expense item appears */
 	public void testNameDialogs() {
 		instrumentation.runOnMainSync(new Runnable() {
 			@Override
@@ -203,7 +174,7 @@ public class ExpenseItemActivityTest extends
 		assertTrue("Name dialog is not showing", activity.alertDialog.isShowing());
 	}
 
-	/** tests that a dialog telling the user that they require a date before completing the expense item appears */
+	/* tests that a dialog telling the user that they require a date before completing the expense item appears */
 	public void testDateDialogs() {
 		instrumentation.runOnMainSync(new Runnable() {
 			@Override
@@ -216,7 +187,7 @@ public class ExpenseItemActivityTest extends
 		assertTrue("Date dialog is not showing", activity.alertDialog.isShowing());
 	}
 	
-	/** 
+	/* 
 	 * tests that a dialog telling the user that they require an amount spent before completing 
 	 * the expense item appears 
 	*/
@@ -232,20 +203,19 @@ public class ExpenseItemActivityTest extends
 		assertTrue("Dialog amount spent is not showing", activity.alertDialog.isShowing());
 	}
 
-
-	
 	/** test is the camera app is opened when ExpenseItemImageButton is clicked */
 	/*public void testOpenCamera() {
 		instrumentation.runOnMainSync(new Runnable(){
 			@Override
 			public void run() {
+				
 				photoInput.performClick();
 				
 				/*
 				* Camera testing taken from: 
 				*	http://developer.android.com/guide/topics/media/camera.html
 				* on March 7 2015
-				 
+				
 				//try to create an instance of a camera
 			    Camera camera = null;
 			    try {
@@ -260,7 +230,7 @@ public class ExpenseItemActivityTest extends
 			    
 			}
 		});
-	}
-	*/
+	}*/
+	
 
 }

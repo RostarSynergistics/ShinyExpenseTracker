@@ -1,20 +1,4 @@
-/**
- *  Copyright (C) 2015  github.com/RostarSynergistics
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *  
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * Covers Issue 5
+/** Covers Issue 5
  * Things to implement: saving of an expenseItem to an expenseClaim
  * @author Sarah Morris
  * @version 1.0
@@ -22,6 +6,10 @@
  *
  * ExpenseItem hold the name, date, category, amount spent, currency, description
  * and a photo of a receipt for an expense that is added to a claim.
+ * 
+ * To use:
+ * 	ExpenseItem e = new ExpenseItem(String name, Date date, Category category, BigDecimal amountSpent, 
+ * 							Currency currency, String description, Bitmap photo);
  */
 
 package ca.ualberta.cs.shinyexpensetracker.models;

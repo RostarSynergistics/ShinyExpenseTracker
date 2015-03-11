@@ -14,16 +14,6 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	private Status status;
 	private Tag tag;
 	
-<<<<<<< HEAD
-	private transient ArrayList<IView<ExpenseClaim>> views;
-	
-
-	public ExpenseClaim() {
-		this.views = new ArrayList<IView<ExpenseClaim>>();
-	}
-
-=======
->>>>>>> 30e28fb247e27e7d6f08c6610ef06b7b3fea862b
 	public ExpenseClaim(String name) {
 		this(name, new Date(), null, Status.IN_PROGRESS, null);
 	}

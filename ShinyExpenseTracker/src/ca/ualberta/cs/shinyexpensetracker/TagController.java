@@ -54,6 +54,10 @@ public class TagController {
 			return tagController;
 		}
 	}
+	
+	public void setTagList(TagList list) {
+		this.list = list;
+	}
 
 	/**
 	 * Add a tag to the current tag list

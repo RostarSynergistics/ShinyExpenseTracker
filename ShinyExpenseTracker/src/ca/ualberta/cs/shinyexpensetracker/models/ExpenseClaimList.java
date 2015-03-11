@@ -37,7 +37,6 @@ public class ExpenseClaimList extends Model<ExpenseClaimList> {
 		claims.remove(claim);
 		notifyViews();
 	}
-<<<<<<< HEAD
 	
 	public int size(){
 		return claims.size();
@@ -46,25 +45,6 @@ public class ExpenseClaimList extends Model<ExpenseClaimList> {
 	public ArrayList<ExpenseClaim> getClaims(){
 		return claims;
 	}
-
-	@Override
-	public void addView(IView<ExpenseClaimList> v) {
-		views.add(v);
-	}
-
-	@Override
-	public void removeView(IView<ExpenseClaimList> v) {
-		views.remove(v);
-	}
-
-	@Override
-	public void notifyViews() {
-		for (IView<ExpenseClaimList> v : views) {
-			v.update(this);
-		}
-	}
-=======
->>>>>>> 30e28fb247e27e7d6f08c6610ef06b7b3fea862b
 	
 	public ArrayList<ExpenseClaim> getAllClaims() {
 		return this.claims;

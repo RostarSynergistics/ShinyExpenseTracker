@@ -1,13 +1,9 @@
 package ca.ualberta.cs.shinyexpensetracker.models;
 
-import java.util.ArrayList;
 import java.util.Date;
-
-import ca.ualberta.cs.shinyexpensetracker.IView;
-
 import android.graphics.Bitmap;
 
-public class ExpenseItem implements IModel<IView<ExpenseItem>> {
+public class ExpenseItem extends Model<ExpenseItem> {
 	
 	public Date date;
 	public String description;
@@ -15,8 +11,6 @@ public class ExpenseItem implements IModel<IView<ExpenseItem>> {
 	public double amountSpent;	//FIXME doubles are bad for currencies
 	public String currency;
 	public Bitmap reciptPhoto;
-	
-	private ArrayList<IView<ExpenseItem>> views;
 	
 	public void setDate(Date date){
 		this.date = date;
@@ -65,22 +59,4 @@ public class ExpenseItem implements IModel<IView<ExpenseItem>> {
 	public Bitmap getReciptPhoto(){
 		return this.reciptPhoto;
 	}
-
-	@Override
-	public void addView(IView<ExpenseItem> v) {
-		views.add(v);
-	}
-
-	@Override
-	public void removeView(IView<ExpenseItem> v) {
-		views.remove(v);
-	}
-
-	@Override
-	public void notifyViews() {
-		for (IView<ExpenseItem> v : views) {
-			v.update(this);
-		}
-	}
-	
 }

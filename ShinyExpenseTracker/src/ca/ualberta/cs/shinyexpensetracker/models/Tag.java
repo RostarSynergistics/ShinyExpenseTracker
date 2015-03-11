@@ -1,6 +1,6 @@
 package ca.ualberta.cs.shinyexpensetracker.models;
 
-public class Tag {
+public class Tag extends Model<Tag> {
 	private String value;
 	
 	public Tag(String s) {

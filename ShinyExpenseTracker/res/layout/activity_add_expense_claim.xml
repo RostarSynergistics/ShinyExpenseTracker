@@ -80,7 +80,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="53dp"
         android:layout_toRightOf="@+id/textViewStartDate"
-        android:onClick="createExpenseClaim"
+        android:onClick="onClickDoneButton"
         android:text="Done" />
 
 </RelativeLayout>

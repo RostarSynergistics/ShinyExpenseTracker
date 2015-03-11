@@ -134,6 +134,19 @@ public class AddExpenseClaimActivity extends Activity implements OnClickListener
         ExpenseClaimList claimList = new ExpenseClaimList();
         claimList.addClaim(expenseClaim);
 	}
+	
+	public void onClickDoneButton() throws ParseException {
+		EditText name = (EditText) findViewById(R.id.editTextExpenseClaimName);
+        EditText endDateText = (EditText) findViewById(R.id.editTextEndDate);
+        EditText startDateText = (EditText) findViewById(R.id.editTextStartDate); 
+        
+        Date startDate = dateFormatter.parse(startDateText.getText().toString());
+        Date endDate = dateFormatter.parse(endDateText.getText().toString());
+        
+        ExpenseClaim expenseClaim = new ExpenseClaim(name.getText().toString(), startDate, endDate, null, null);
+        ExpenseClaimList claimList = new ExpenseClaimList();
+        claimList.addClaim(expenseClaim);
+	}
 
 	// for tests
 	public DatePickerDialog getStartDateDialog() {

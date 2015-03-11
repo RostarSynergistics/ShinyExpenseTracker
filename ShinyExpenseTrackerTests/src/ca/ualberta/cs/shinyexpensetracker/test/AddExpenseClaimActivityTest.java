@@ -1,26 +1,13 @@
-/*
- *	Copyright (C) 2015  github.com/RostarSynergistics
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *  
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *  
+/**
  *  Test case for Issue 17
  *  AddExpenseClaimActivityTest: Testing the AddExpenseClaimAcitivity representing the UI for adding/editing an Expense Claim. 
  *  No outstanding issues.
- */
+ * 
+ **/
 
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.app.Activity;
@@ -43,16 +30,17 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
     private static final int TARGET_YEAR = 2008;
     private static final int TARGET_MONTH = 11;
     private static final int TARGET_DAY = 7;
+    
+	Instrumentation instrumentation;
+	AddExpenseClaimActivity activity;
+	DatePickerDialog fromDatePickerDialog, toDatePickerDialog;
+	EditText startDate, endDate, name;
+	Button doneButton;
+	
 	
 	public AddExpenseClaimActivityTest(Class<AddExpenseClaimActivity> activityClass) {
 		super(activityClass);
 	}
-	
-	Instrumentation instrumentation;
-	Activity activity;
-	DatePickerDialog fromDatePickerDialog, toDatePickerDialog;
-	EditText startDate, endDate, name;
-	Button doneButton;
 	
 	public AddExpenseClaimActivityTest() {
 		super(AddExpenseClaimActivity.class);
@@ -69,13 +57,13 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
     protected void setUp() throws Exception {
     	super.setUp();
         instrumentation = getInstrumentation();
-        activity = (AddExpenseClaimActivity) getActivity();
+        activity = getActivity();
     	
     	DatePickerDialog datePicker = new DatePickerDialog(instrumentation.getContext(), dateListener, TARGET_YEAR, TARGET_MONTH, TARGET_DAY);
     	name = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.editTextExpenseClaimName));
     	startDate = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.editTextStartDate));
     	endDate = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.editTextEndDate));
-    	doneButton = ((Button) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.addExpenseClaimDoneButton));
+    	doneButton = (Button) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.addExpenseClaimDoneButton);
     }
     
 	public void teststartDate() {
@@ -114,30 +102,29 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 	}
 	
 	public void testAddExpenseClaim() {
-		instrumentation.runOnMainSync(new Runnable() {
-			@Override
-			public void run() {
-				String claimName = "URoma Trip";
-				@SuppressWarnings("deprecation")
-				Date startDateString = new Date(2015, 01, 01);
-				@SuppressWarnings("deprecation")
-				Date endDateString = new Date(2015, 01, 10);
-				Status status = null;
-				Tag tag = null;
-				ExpenseClaim expenseClaim = new ExpenseClaim(claimName, startDateString, endDateString, status, tag);
-				ExpenseClaimList claimList = new ExpenseClaimList();
-				assertEquals(0, claimList.size() == 0);
-				doneButton.performClick();
-				
-				assertTrue("name is not 'URoma Trip'", expenseClaim.getName().toString() == "URoma Trip");
-				assertTrue("startDate is not 'null'", expenseClaim.getStartDate().toString() == "2015-01-01");
-				assertTrue("endDate is not 'null'", expenseClaim.getEndDate().toString() == "2015-01-10");
-				assertTrue("Status is not 'null'", expenseClaim.getStatus() == null);
-				assertTrue("Tag is not 'null'", expenseClaim.getTag() == null);
-				assertTrue("ClaimList is empty", claimList.size() == 1);
-				assertEquals(1, claimList.size() == 1);	
-			}
-		});
+		
+		String nameString = "URoma";
+		SimpleDateFormat sdfFrom = new SimpleDateFormat();
+		SimpleDateFormat sdfTo = new SimpleDateFormat();
+		Date toDate = new Date();
+		Date fromDate = new Date();
+		sdfFrom.format(fromDate);
+		sdfTo.format(fromDate);
+		
+		ExpenseClaim sampleExpenseClaim = new ExpenseClaim(nameString, fromDate, toDate, null, null);
+		ExpenseClaimList claimList = new ExpenseClaimList();
+		assertEquals(0, claimList.size());
+		claimList.addClaim(sampleExpenseClaim);
+		assertEquals(1, claimList.size());
+		
+		assertEquals("name != name", "URoma", sampleExpenseClaim.getName());
+		assertNotSame("false positive, name", "Wrong Name", sampleExpenseClaim.getName());
+		
+		assertEquals("fromDate != fromDate", fromDate, sampleExpenseClaim.getStartDate());
+		assertNotSame("false positive, startDate", "Wrong startDate", sampleExpenseClaim.getStartDate());
+		
+		assertEquals("endDate != endDate", toDate, sampleExpenseClaim.getEndDate());
+		assertNotSame("false positive, endDate", "Wrong endDate", sampleExpenseClaim.getEndDate());
 	}
 	
 

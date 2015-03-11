@@ -3,7 +3,7 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 import java.util.ArrayList;
 
 public class TagList extends Model<TagList> {
-	private ArrayList<Tag> tags;
+	private ArrayList<Tag> tags = new ArrayList<Tag>();
 	
 	public ArrayList<Tag> getTags() {
 		return tags;
@@ -26,5 +26,13 @@ public class TagList extends Model<TagList> {
 
 	public void removeTag(String s) {
 		tags.remove(new Tag(s));
+	}
+
+	public int getCount() {
+		return tags.size();
+	}
+
+	public Tag getTagById(int i) {
+		return tags.get(i);
 	}
 }

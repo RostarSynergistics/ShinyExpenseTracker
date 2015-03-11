@@ -1,6 +1,6 @@
 package ca.ualberta.cs.shinyexpensetracker.models;
 
-public class Destination {
+public class Destination extends Model<Destination> {
 	private String name;
 	private String reasonForTravel;
 	

@@ -1,10 +1,4 @@
-package ca.ualberta.cs.shinyexpensetracker.test;
-
-import ca.ualberta.cs.shinyexpensetracker.TagController;
-import ca.ualberta.cs.shinyexpensetracker.models.Tag;
-import junit.framework.TestCase;
-
-/**
+/* 
  * Test suite for adding and removing a tag
  * 
  *  Copyright (C) 2015  github.com/RostarSynergistics
@@ -21,6 +15,16 @@ import junit.framework.TestCase;
  *  
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package ca.ualberta.cs.shinyexpensetracker.test;
+
+import ca.ualberta.cs.shinyexpensetracker.TagController;
+import ca.ualberta.cs.shinyexpensetracker.models.Tag;
+import junit.framework.TestCase;
+
+/**
+ *
  * 
  * Covers Issue 25
  * Things to implement: proper navigation back to Manage Tags Activity
@@ -30,6 +34,7 @@ import junit.framework.TestCase;
  */
 
 public class TagTest extends TestCase {
+
 
 	TagController tagController; 
 	public void setUp(){

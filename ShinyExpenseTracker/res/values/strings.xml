@@ -13,4 +13,29 @@
 	<string name="title_activity_expense_claims_view">Expense Claims</string>
     <string name="title_activity_add_tag">AddTagActivity</string>
 
+    <string-array name="expenseItemCategories">
+        <item>air fare</item>
+        <item>ground transport</item>
+        <item>vehicle rental</item>
+        <item>private automobile</item>
+        <item>fuel</item>
+        <item>parking</item>
+        <item>registration</item>
+        <item>accomodation</item>
+        <item>meal</item>
+        <item>supplies</item>
+    </string-array>
+
+    <string name="title_activity_expense_item">ExpenseItemActivity</string>
+    <string-array name="expenseItemCurrencies">
+        <item >CAD</item>
+        <item >USD</item>
+        <item >GBP</item>
+        <item >EUR</item>
+        <item >CHF</item>
+        <item >JPY</item>
+        <item >CNY</item>
+    </string-array>
+    
+
 </resources>

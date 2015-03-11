@@ -7,6 +7,7 @@
 
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -20,6 +21,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
+import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
@@ -67,23 +69,23 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
     }
     
 	public void teststartDate() {
+		assertFalse(((AddExpenseClaimActivity) activity).getStartDateDialog().isShowing());
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run(){
-				assertFalse(((AddExpenseClaimActivity) activity).getStartDateDialog().isShowing());
 				startDate.performClick();
-				assertTrue(((AddExpenseClaimActivity) activity).getStartDateDialog().isShowing());
 			}
 		});
+		assertTrue(((AddExpenseClaimActivity) activity).getStartDateDialog().isShowing());
 	}
 	
 	public void testendDate() {
+		assertFalse(((AddExpenseClaimActivity) activity).getEndDateDialog().isShowing());
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run(){
-				assertFalse(((AddExpenseClaimActivity) activity).getEndDateDialog().isShowing());
 				endDate.performClick();
-				assertTrue(((AddExpenseClaimActivity) activity).getEndDateDialog().isShowing());
 			}
 		});
+		assertTrue(((AddExpenseClaimActivity) activity).getEndDateDialog().isShowing());
 	}
 	
 	public void testText() {
@@ -93,28 +95,35 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 				name.setText("URoma Trip");
 				startDate.setText("01-04-2015");
 				endDate.setText("08-04-2015");
-				
-				assertEquals("URoma Trip", name.getText().toString());
-				assertEquals("01-04-2015", startDate.getText().toString());
-				assertEquals("08-04-2015", endDate.getText().toString());
 			}
 		});
+		
+		assertEquals("URoma Trip", name.getText().toString());
+		assertEquals("01-04-2015", startDate.getText().toString());
+		assertEquals("08-04-2015", endDate.getText().toString());
 	}
 	
 	public void testAddExpenseClaim() {
 		
-		String nameString = "URoma";
+		final String nameString = "URoma";
 		SimpleDateFormat sdfFrom = new SimpleDateFormat();
 		SimpleDateFormat sdfTo = new SimpleDateFormat();
-		Date toDate = new Date();
-		Date fromDate = new Date();
+		final Date toDate = new Date();
+		final Date fromDate = new Date();
 		sdfFrom.format(fromDate);
 		sdfTo.format(fromDate);
 		
-		ExpenseClaim sampleExpenseClaim = new ExpenseClaim(nameString, fromDate, toDate, null, null);
-		ExpenseClaimList claimList = new ExpenseClaimList();
-		assertEquals(0, claimList.size());
-		claimList.addClaim(sampleExpenseClaim);
+		final ExpenseClaim sampleExpenseClaim = new ExpenseClaim(nameString, fromDate, toDate, null, null);
+		final ExpenseClaimList claimList = ExpenseClaimController.getExpenseClaimList();
+		
+		instrumentation.runOnMainSync(new Runnable() {
+			
+			@Override
+			public void run() {
+				claimList.addClaim(sampleExpenseClaim);	
+			}
+		});
+		
 		assertEquals(1, claimList.size());
 		
 		assertEquals("name != name", "URoma", sampleExpenseClaim.getName());
@@ -125,7 +134,24 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 		
 		assertEquals("endDate != endDate", toDate, sampleExpenseClaim.getEndDate());
 		assertNotSame("false positive, endDate", "Wrong endDate", sampleExpenseClaim.getEndDate());
-	}
+}
 	
-
+	public void testDoneButton() throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		final Date toDate = sdf.parse("03/10/2015");
+		final Date fromDate = sdf.parse("03/01/2015");
+		
+		instrumentation.runOnMainSync(new Runnable() {
+			@Override
+			public void run() {
+				name.setText("URoma Trip");
+				startDate.setText(toDate.toString());
+				endDate.setText(fromDate.toString());
+				doneButton.performClick();
+			}
+		});
+		assertEquals("URoma Trip", ExpenseClaimController.getExpenseClaim(0).getName());
+		assertEquals(toDate, ExpenseClaimController.getExpenseClaim(0).getStartDate());
+		assertEquals(fromDate, ExpenseClaimController.getExpenseClaim(0).getEndDate());
+	}
 }

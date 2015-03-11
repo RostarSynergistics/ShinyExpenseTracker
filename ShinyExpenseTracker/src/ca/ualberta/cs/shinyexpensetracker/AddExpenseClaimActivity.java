@@ -29,10 +29,12 @@ import java.util.Locale;
 
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Menu;
@@ -41,12 +43,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 // Source for DatePicker: http://androidopentutorials.com/android-datepickerdialog-on-edittext-click-event
 
 public class AddExpenseClaimActivity extends Activity implements OnClickListener {
 	
     private EditText startDate, endDate;
+    private AlertDialog.Builder adb;
+    public Dialog alertDialog;
     private DatePickerDialog fromDatePickerDialog, toDatePickerDialog;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.CANADA);
 	
@@ -122,32 +127,73 @@ public class AddExpenseClaimActivity extends Activity implements OnClickListener
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void createExpenseClaim(View v) throws ParseException {
-		EditText name = (EditText) findViewById(R.id.editTextExpenseClaimName);
+	public boolean createExpenseClaim(View v) throws ParseException {
+		EditText nameText = (EditText) findViewById(R.id.editTextExpenseClaimName);
         EditText endDateText = (EditText) findViewById(R.id.editTextEndDate);
         EditText startDateText = (EditText) findViewById(R.id.editTextStartDate); 
         
-        Date startDate = dateFormatter.parse(startDateText.getText().toString());
-        Date endDate = dateFormatter.parse(endDateText.getText().toString());
         
-        ExpenseClaim expenseClaim = new ExpenseClaim(name.getText().toString(), startDate, endDate, null, null);
-        ExpenseClaimList claimList = new ExpenseClaimList();
+        String name = "";
+    	if (nameText.getText().length() == 0){
+    		//display dialog if no name entered
+    		adb.setMessage("Expense Claim requires a name");
+    		adb.setCancelable(true);
+    		adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+    		@Override
+    		public void onClick(DialogInterface dialog, int which) { }
+    		});
+    		alertDialog = adb.create();
+    		alertDialog.show();
+    		return false;
+    		} else {
+    		name = nameText.getText().toString();
+    		}
+        
+        
+        Date startDate = new Date();
+    	if (startDateText.getText().length() == 0) {
+    		//display dialog if no start date is entered
+    		adb.setMessage("Expense Claim requires a start date");
+    		adb.setCancelable(true);
+    		adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+    		@Override
+    		public void onClick(DialogInterface dialog, int which) { }
+    		});
+    		alertDialog = adb.create();
+    		alertDialog.show();
+    		return false;
+    		} else {
+    		startDate = dateFormatter.parse(startDateText.getText().toString());
+    		}
+        
+        Date endDate = dateFormatter.parse(endDateText.getText().toString());
+    	if (endDateText.getText().length() == 0) {
+    		//display dialog if no end date is entered
+    		adb.setMessage("Expense Claim requires an end date");
+    		adb.setCancelable(true);
+    		adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+    		@Override
+    		public void onClick(DialogInterface dialog, int which) { }
+    		});
+    		alertDialog = adb.create();
+    		alertDialog.show();
+    		return false;
+    		} else {
+    		endDate = dateFormatter.parse(endDateText.getText().toString());
+    		}
+        
+        ExpenseClaim expenseClaim = new ExpenseClaim(name, startDate, endDate, null, null);
+        ExpenseClaimList claimList = ExpenseClaimController.getExpenseClaimList();
         claimList.addClaim(expenseClaim);
+		return true;
 	}
 	
-	public void onClickDoneButton() throws ParseException {
-		EditText name = (EditText) findViewById(R.id.editTextExpenseClaimName);
-        EditText endDateText = (EditText) findViewById(R.id.editTextEndDate);
-        EditText startDateText = (EditText) findViewById(R.id.editTextStartDate); 
-        
-        Date startDate = dateFormatter.parse(startDateText.getText().toString());
-        Date endDate = dateFormatter.parse(endDateText.getText().toString());
-        
-        ExpenseClaim expenseClaim = new ExpenseClaim(name.getText().toString(), startDate, endDate, null, null);
-        ExpenseClaimList claimList = new ExpenseClaimList();
-        claimList.addClaim(expenseClaim);
+	public void doneExpenseItem(View v) throws ParseException{
+		if (createExpenseClaim(v)){
+			finish();
+		}
 	}
-
+	
 	// for tests
 	public DatePickerDialog getStartDateDialog() {
 		return fromDatePickerDialog;

@@ -80,7 +80,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="53dp"
         android:layout_toRightOf="@+id/textViewStartDate"
-        android:onClick="onClickDoneButton"
+        android:onClick="doneExpenseItem"
         android:text="Done" />
 
 </RelativeLayout>

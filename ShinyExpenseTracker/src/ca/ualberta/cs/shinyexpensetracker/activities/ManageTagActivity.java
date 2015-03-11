@@ -46,7 +46,7 @@ public class ManageTagActivity extends Activity implements IView<TagList> {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_manage_tag);
 		manageTags = (ListView)findViewById(R.id.listViewManageTags);
-		
+		tagController = TagController.getInstance();
 		//Setting a listener for tag controller
 		tagController.getTagList().addView(this);
 	}

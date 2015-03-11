@@ -1,15 +1,14 @@
-import android.R;
+package ca.ualberta.cs.shinyexpensetracker.test;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.ListView;
 import android.app.Activity;
 import android.app.Instrumentation;
-import ca.ualberta.cs.activities.ManageTagActivity;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.TagController;
+import ca.ualberta.cs.shinyexpensetracker.activities.ManageTagActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 
 
-public class ManageTagsTest extends ActivityInstrumentationTestCase2 {
+public class ManageTagsTest extends ActivityInstrumentationTestCase2<ManageTagActivity> {
 
 	Activity activity;
 	Instrumentation instrumentation;

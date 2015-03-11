@@ -8,6 +8,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
 
+
 /**
  * Test suite for adding a tag from the corresponding activity view
  * 
@@ -21,6 +22,8 @@ import android.widget.EditText;
 public class AddTagActivityTest extends ActivityInstrumentationTestCase2<AddTagActivity> {
 
 	AddTagActivity activity;
+	TagController tagController = TagController.getInstance();
+	
 	public AddTagActivityTest() {
 		super(AddTagActivity.class);
 	}
@@ -46,11 +49,11 @@ public class AddTagActivityTest extends ActivityInstrumentationTestCase2<AddTagA
 		
 		simulateUIInteraction("q1wert");
 		
-		assertEquals("failed to add a tag", TagController.getTagCount(), 1);
-		assertEquals("added a tag incorrectly", TagController.getTagList().getTagById(0), new Tag("q1wert"));
+		assertEquals("failed to add a tag", tagController.getTagCount(), 1);
+		assertEquals("added a tag incorrectly", tagController.getTagList().getTagById(0), new Tag("q1wert"));
 		
-		TagController.removeTag("q1wert");
-		assertEquals("failed to remove a tag", TagController.getTagCount(), 0);
+		tagController.removeTag("q1wert");
+		assertEquals("failed to remove a tag", tagController.getTagCount(), 0);
 	
 		
 	}
@@ -58,6 +61,6 @@ public class AddTagActivityTest extends ActivityInstrumentationTestCase2<AddTagA
 	public void testAddInvalidTagFromUI(){
 		simulateUIInteraction("!@#$%");
 		
-		assertEquals("should have discarded non-alphanumeric tag", TagController.getTagCount(), 0);
+		assertEquals("should have discarded non-alphanumeric tag", tagController.getTagCount(), 0);
 	}
 }

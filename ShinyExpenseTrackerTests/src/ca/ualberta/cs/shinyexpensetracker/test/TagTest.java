@@ -1,10 +1,4 @@
-package ca.ualberta.cs.shinyexpensetracker.test;
-
-import ca.ualberta.cs.shinyexpensetracker.TagController;
-import ca.ualberta.cs.shinyexpensetracker.models.Tag;
-import junit.framework.TestCase;
-
-/**
+/* 
  * Test suite for adding and removing a tag
  * 
  *  Copyright (C) 2015  github.com/RostarSynergistics
@@ -21,6 +15,16 @@ import junit.framework.TestCase;
  *  
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package ca.ualberta.cs.shinyexpensetracker.test;
+
+import ca.ualberta.cs.shinyexpensetracker.TagController;
+import ca.ualberta.cs.shinyexpensetracker.models.Tag;
+import junit.framework.TestCase;
+
+/**
+ *
  * 
  * Covers Issue 25
  * Things to implement: proper navigation back to Manage Tags Activity
@@ -30,59 +34,52 @@ import junit.framework.TestCase;
  */
 
 public class TagTest extends TestCase {
+
+
+	TagController tagController; 
 	public void setUp(){
-		TagController.getTagList();
+		tagController = TagController.getInstance();
 	}
 	
 	public void testAddAndRemoveTag(){
 		
-		TagController.addTag("q1wert");
-		assertEquals("failed to add a tag", TagController.getTagCount(), 1);
-		assertEquals("added a tag incorrectly", TagController.getTagList().getTagById(0), new Tag("q1wert"));
+		tagController.addTag("q1wert");
+		assertEquals("failed to add a tag", tagController.getTagCount(), 1);
+		assertEquals("added a tag incorrectly", tagController.getTagList().getTagById(0), new Tag("q1wert"));
 		
-		TagController.removeTag("q1wert");
-		assertEquals("failed to remove a tag", TagController.getTagCount(), 0);
+		tagController.removeTag("q1wert");
+		assertEquals("failed to remove a tag", tagController.getTagCount(), 0);
 		
-		TagController.addTag("1qwert");
-		assertEquals("failed to add a tag", TagController.getTagCount(), 1);
-		assertEquals("added a tag incorrectly", TagController.getTagList().getTagById(0), new Tag("1qwert"));
+		tagController.addTag("1qwert");
+		assertEquals("failed to add a tag", tagController.getTagCount(), 1);
+		assertEquals("added a tag incorrectly", tagController.getTagList().getTagById(0), new Tag("1qwert"));
 		
-		TagController.removeTag("1qwert");
-		assertEquals("failed to remove a tag", TagController.getTagCount(), 0);
+		tagController.removeTag("1qwert");
+		assertEquals("failed to remove a tag", tagController.getTagCount(), 0);
 
-		TagController.addTag("qwert");
-		assertEquals("failed to add a tag", TagController.getTagCount(), 1);
-		assertEquals("added a tag incorrectly", TagController.getTagList().getTagById(0), new Tag("qwert"));
+		tagController.addTag("qwert");
+		assertEquals("failed to add a tag", tagController.getTagCount(), 1);
+		assertEquals("added a tag incorrectly", tagController.getTagList().getTagById(0), new Tag("qwert"));
 		
-		TagController.removeTag("qwert");
-		assertEquals("failed to remove a tag", TagController.getTagCount(), 0);
+		tagController.removeTag("qwert");
+		assertEquals("failed to remove a tag", tagController.getTagCount(), 0);
 		
-		TagController.addTag("12345");
-		assertEquals("failed to add a tag", TagController.getTagCount(), 1);
-		assertEquals("added a tag incorrectly", TagController.getTagList().getTagById(0), new Tag("12345"));
+		tagController.addTag("12345");
+		assertEquals("failed to add a tag", tagController.getTagCount(), 1);
+		assertEquals("added a tag incorrectly", tagController.getTagList().getTagById(0), new Tag("12345"));
 		
-		TagController.removeTag("12345");
-		assertEquals("failed to remove a tag", TagController.getTagCount(), 0);
+		tagController.removeTag("12345");
+		assertEquals("failed to remove a tag", tagController.getTagCount(), 0);
 	}
 	
 	public void testAddInvalidTags(){
-		TagController.addTag("!@#$%");
-		assertEquals("should have discarded non-alphanumeric tag", TagController.getTagCount(), 0);
-		TagController.addTag("qwe rty");
-		assertEquals("should have discarded non-alphanumeric tag", TagController.getTagCount(), 0);
-		TagController.addTag("qwe!@#$%rty");
-		assertEquals("should have discarded non-alphanumeric tag", TagController.getTagCount(), 0);
-		TagController.addTag("!@qwerty#$%");
-		assertEquals("should have discarded non-alphanumeric tag", TagController.getTagCount(), 0);
-		TagController.addTag(" qwerty ");
-		assertEquals("should have discarded non-alphanumeric tag", TagController.getTagCount(), 0);
-		TagController.addTag(null);
-		assertEquals("should have discarded non-alphanumeric tag", TagController.getTagCount(), 0);
-		TagController.addTag("");
-		assertEquals("should have discarded non-alphanumeric tag", TagController.getTagCount(), 0);
-		TagController.addTag(" ");
-		assertEquals("should have discarded non-alphanumeric tag", TagController.getTagCount(), 0);
-		TagController.addTag("\n");
-		assertEquals("should have discarded non-alphanumeric tag", TagController.getTagCount(), 0);
+		String[] invalidTags = { ("!@#$%"), ("qwe rty"), ("qwe!@#$%rty"),
+				("!@qwerty#$%"), (" qwerty "), (null), (""), (" "), ("\n") };
+		for (String s : invalidTags) {
+			tagController.addTag(s);
+			
+			//The tag list will still be empty because nothing should be added   
+			assertEquals("should have discarded non-alphanumeric tag", tagController.getTagCount(), 0);
+		}
 	}
 }

@@ -1,22 +1,4 @@
-package ca.ualberta.cs.shinyexpensetracker.activities;
-
-import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.TagController;
-import ca.ualberta.cs.shinyexpensetracker.R.id;
-import ca.ualberta.cs.shinyexpensetracker.R.layout;
-import ca.ualberta.cs.shinyexpensetracker.R.menu;
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
-
-/**
- * Activity that reacts to creation of a new tag
- * 
+/* 
  *  Copyright (C) 2015  github.com/RostarSynergistics
  *  
  *  This program is free software: you can redistribute it and/or modify
@@ -32,19 +14,35 @@ import android.widget.Toast;
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Covers Issue 25
- * Things to implement: proper navigation back to Manage Tags Activity
- * @author Oleg Oleynikov
- * @version 1.0
- * @since 2015-03-08
  */
+package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.TagController;
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
+
+/**
+ * Activity that reacts to creation of a new tag
+ * Covers Issue #25
+ * @author Oleg Oleynikov
+ * @author Rajan Jassal
+ * @version 1.0
+ * @since 2015-03-10
+ */
 public class AddTagActivity extends Activity {
-
+	
+	TagController tagController;	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_tag);
+		tagController = TagController.getInstance();
 	}
 
 	@Override
@@ -70,9 +68,9 @@ public class AddTagActivity extends Activity {
 	{
 		EditText tagNameTextBox = (EditText) findViewById(R.id.tagName);
 		String tagName = tagNameTextBox.getText().toString();
-		int prevSize = TagController.getTagCount();
-		TagController.addTag(tagName);
-		int currSize = TagController.getTagCount();
+		int prevSize = tagController.getTagCount();
+		tagController.addTag(tagName);
+		int currSize = tagController.getTagCount();
 		if (currSize == prevSize){
 			Toast.makeText(this, "Tag name has to be an alphanumeric value.\nPlease enter a new name and press Add Tag again", Toast.LENGTH_LONG).show();
 		}

@@ -8,23 +8,9 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
 
+
 /**
  * Test suite for adding a tag from the corresponding activity view
- * 
- *  Copyright (C) 2015  github.com/RostarSynergistics
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *  
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * Covers Issue 25
  * Things to implement: proper navigation back to Manage Tags Activity
@@ -36,6 +22,8 @@ import android.widget.EditText;
 public class AddTagActivityTest extends ActivityInstrumentationTestCase2<AddTagActivity> {
 
 	AddTagActivity activity;
+	TagController tagController = TagController.getInstance();
+	
 	public AddTagActivityTest() {
 		super(AddTagActivity.class);
 	}
@@ -61,11 +49,11 @@ public class AddTagActivityTest extends ActivityInstrumentationTestCase2<AddTagA
 		
 		simulateUIInteraction("q1wert");
 		
-		assertEquals("failed to add a tag", TagController.getTagCount(), 1);
-		assertEquals("added a tag incorrectly", TagController.getTagList().getTagById(0), new Tag("q1wert"));
+		assertEquals("failed to add a tag", tagController.getTagCount(), 1);
+		assertEquals("added a tag incorrectly", tagController.getTagList().getTagById(0), new Tag("q1wert"));
 		
-		TagController.removeTag("q1wert");
-		assertEquals("failed to remove a tag", TagController.getTagCount(), 0);
+		tagController.removeTag("q1wert");
+		assertEquals("failed to remove a tag", tagController.getTagCount(), 0);
 	
 		
 	}
@@ -73,6 +61,6 @@ public class AddTagActivityTest extends ActivityInstrumentationTestCase2<AddTagA
 	public void testAddInvalidTagFromUI(){
 		simulateUIInteraction("!@#$%");
 		
-		assertEquals("should have discarded non-alphanumeric tag", TagController.getTagCount(), 0);
+		assertEquals("should have discarded non-alphanumeric tag", tagController.getTagCount(), 0);
 	}
 }

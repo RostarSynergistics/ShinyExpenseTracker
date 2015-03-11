@@ -4,12 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import ca.ualberta.cs.shinyexpensetracker.IView;
-
-public class ExpenseClaimList implements IModel<IView<ExpenseClaimList>> {
+public class ExpenseClaimList extends Model<ExpenseClaimList> {
 	private ArrayList<ExpenseClaim> claims;
 	
-	private transient ArrayList<IView<ExpenseClaimList>> views; // FIXME: Not initialized
 	/* FIXME
 	 * UML says 0..* ExpenseClaimList's are composed of
 	 * 			1 ExpenseClaimController,
@@ -18,7 +15,6 @@ public class ExpenseClaimList implements IModel<IView<ExpenseClaimList>> {
 	
 	public ExpenseClaimList() {
 		claims = new ArrayList<ExpenseClaim>();
-		views = new ArrayList<IView<ExpenseClaimList>>();
 	}
 
 	// FIXME UML says this takes no args
@@ -41,6 +37,7 @@ public class ExpenseClaimList implements IModel<IView<ExpenseClaimList>> {
 		claims.remove(claim);
 		notifyViews();
 	}
+<<<<<<< HEAD
 	
 	public int size(){
 		return claims.size();
@@ -66,6 +63,8 @@ public class ExpenseClaimList implements IModel<IView<ExpenseClaimList>> {
 			v.update(this);
 		}
 	}
+=======
+>>>>>>> 30e28fb247e27e7d6f08c6610ef06b7b3fea862b
 	
 	public ArrayList<ExpenseClaim> getAllClaims() {
 		return this.claims;

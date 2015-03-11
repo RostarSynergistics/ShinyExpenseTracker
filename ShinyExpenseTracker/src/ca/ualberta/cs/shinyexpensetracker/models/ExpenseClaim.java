@@ -1,11 +1,8 @@
 package ca.ualberta.cs.shinyexpensetracker.models;
 
-import java.util.ArrayList;
 import java.util.Date;
 
-import ca.ualberta.cs.shinyexpensetracker.IView;
-
-public class ExpenseClaim implements IModel<IView<ExpenseClaim>>, Comparable<ExpenseClaim> {
+public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<ExpenseClaim> {
 	public enum Status {
 		IN_PROGRESS, SUBMITTED, RETURNED, APPROVED
 	}
@@ -17,6 +14,7 @@ public class ExpenseClaim implements IModel<IView<ExpenseClaim>>, Comparable<Exp
 	private Status status;
 	private Tag tag;
 	
+<<<<<<< HEAD
 	private transient ArrayList<IView<ExpenseClaim>> views;
 	
 
@@ -24,6 +22,8 @@ public class ExpenseClaim implements IModel<IView<ExpenseClaim>>, Comparable<Exp
 		this.views = new ArrayList<IView<ExpenseClaim>>();
 	}
 
+=======
+>>>>>>> 30e28fb247e27e7d6f08c6610ef06b7b3fea862b
 	public ExpenseClaim(String name) {
 		this(name, new Date(), null, Status.IN_PROGRESS, null);
 	}
@@ -44,7 +44,6 @@ public class ExpenseClaim implements IModel<IView<ExpenseClaim>>, Comparable<Exp
 		this.endDate = endDate;
 		this.status = status;
 		this.tag = tag;
-		this.views = new ArrayList<IView<ExpenseClaim>>();
 	}
 	
 	public String getName() {
@@ -76,20 +75,6 @@ public class ExpenseClaim implements IModel<IView<ExpenseClaim>>, Comparable<Exp
 	}
 	public void setTag(Tag tag) {
 		this.tag = tag;
-	}
-	@Override
-	public void addView(IView<ExpenseClaim> v) {
-		views.add(v);
-	}
-	@Override
-	public void removeView(IView<ExpenseClaim> v) {
-		views.remove(v);
-	}
-	@Override
-	public void notifyViews() {
-		for (IView<ExpenseClaim> v : views) {
-			v.update(this);
-		}
 	}
 	
 	/**

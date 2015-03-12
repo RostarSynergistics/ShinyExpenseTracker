@@ -216,6 +216,30 @@ public class ViewAllExpenseClaimsActivityTests extends
 		assertEquals(6, numTests);
 	}
 	
+	/*
+	 * Inserts some data with same dates. They can be in
+	 * either order in the test, but things that are not
+	 * equal must be on the outside. Testing for outside
+	 * values is done in testClaimsSorted
+	 */
+	public void testEqualSorted() {
+		ExpenseClaim claim1 = addClaim(new ExpenseClaim("Mid Claim 1", new Date(2000)));
+		addClaim(new ExpenseClaim("Old Claim", new Date(1000)));
+		addClaim(new ExpenseClaim("New Claim", new Date(3000)));
+		ExpenseClaim claim2 = addClaim(new ExpenseClaim("Mid Claim 2", new Date(2000)));
+		
+		// index 0 newer than index 1
+		assertEquals(1, getClaim(0).compareTo(getClaim(1)));
+		// index 1 same as index 2
+		assertEquals(0, getClaim(1).compareTo(getClaim(2)));
+		// index 2 newer than index 3
+		assertEquals(1, getClaim(2).compareTo(getClaim(3)));
+		
+		// Make sure middle two indexes are truly different objects
+		assertNotSame(claim1, claim2);
+		
+	}
+	
 	/**
 	 * Deletes a claim and ensure it isn't visible in the listview.
 	 * Does not test dialogs.

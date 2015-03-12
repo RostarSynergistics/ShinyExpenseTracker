@@ -27,6 +27,19 @@
             android:label="@string/title_activity_expense_claims_view" >
 
         </activity>
+
+        <activity
+            android:name=".activities.ManageTagActivity"
+            android:label="@string/title_activity_manage_tag" >
+        </activity>
+        <activity
+            android:name=".ViewExpenseClaimActivity"
+            android:label="@string/title_activity_view_expense_claim" >
+        </activity>
+        <activity
+            android:name=".AddExpenseClaimActivity"
+            android:label="@string/title_activity_add_expense_claim" >
+		</activity>
         <activity
             android:name=".ExpenseItemActivity"
             android:label="@string/title_activity_expense_item" >

@@ -38,6 +38,14 @@ public class ExpenseClaimList extends Model<ExpenseClaimList> {
 		notifyViews();
 	}
 	
+	public int size(){
+		return claims.size();
+	}
+	
+	public ArrayList<ExpenseClaim> getClaims(){
+		return claims;
+	}
+	
 	public ArrayList<ExpenseClaim> getAllClaims() {
 		return this.claims;
 	}

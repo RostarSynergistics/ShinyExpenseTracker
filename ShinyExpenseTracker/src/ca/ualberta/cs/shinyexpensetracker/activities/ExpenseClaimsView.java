@@ -47,6 +47,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
 // TODO #55 ?
 public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimList> {
+	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
 	static int debug_addedID = 0;	// XXX Remove this when #17 is merged
 
@@ -54,6 +55,7 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_expense_claims_view);
+		controller = ExpenseClaimController.getInstance();
 	}
 	
 	@Override
@@ -69,7 +71,7 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 		claim_list.setAdapter(adapter);
 		
 		// Listen for the claim list's update.
-		ExpenseClaimController.getInstance().getExpenseClaimList().addView(this);
+		controller.getExpenseClaimList().addView(this);
 		
 		// -- Long Press of ListView Item
 		claim_list.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -110,7 +112,7 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 				ed = new Date(System.currentTimeMillis() + 2000000000  + new Random().nextInt(2000000000));
 			}
 			
-			ExpenseClaimController.getInstance().addExpenseClaim(
+			controller.addExpenseClaim(
 					new ExpenseClaim("Test ["+debug_addedID++ +"]", sd, ed));
 			
 			return true;
@@ -132,11 +134,11 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 	}
 	
 	public void addClaim(ExpenseClaim claim) {
-		ExpenseClaimController.getInstance().addExpenseClaim(claim);
+		controller.addExpenseClaim(claim);
 	}
 	
 	public void deleteClaim(ExpenseClaim claim) {
-		ExpenseClaimController.getInstance().removeExpenseClaim(claim);
+		controller.removeExpenseClaim(claim);
 	}
 	
 	public AlertDialog askDeleteClaimAt(int position) {
@@ -145,7 +147,7 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 		//  http://stackoverflow.com/questions/15020878/i-want-to-show-ok-and-cancel-button-in-my-alert-dialog
 		
 		// Get a final copy of the requested claim
-		final ExpenseClaim claimToDelete = ExpenseClaimController.getInstance().getExpenseClaim(position);
+		final ExpenseClaim claimToDelete = controller.getExpenseClaim(position);
 		
 		AlertDialog dialog = new AlertDialog.Builder(this)
 			.setTitle("Delete Claim?")

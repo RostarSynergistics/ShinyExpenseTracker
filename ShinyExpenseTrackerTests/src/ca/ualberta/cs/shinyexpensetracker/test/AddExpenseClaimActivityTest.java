@@ -30,6 +30,8 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
     private static final int TARGET_MONTH = 11;
     private static final int TARGET_DAY = 7;
     
+    private ExpenseClaimController controller;
+    
 	Instrumentation instrumentation;
 	AddExpenseClaimActivity activity;
 	DatePickerDialog fromDatePickerDialog, toDatePickerDialog;
@@ -57,6 +59,9 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
     	super.setUp();
         instrumentation = getInstrumentation();
         activity = getActivity();
+        
+        controller = ExpenseClaimController.getInstance();
+        controller.setClaimList(new ExpenseClaimList());
     	
     	DatePickerDialog datePicker = new DatePickerDialog(instrumentation.getContext(), dateListener, TARGET_YEAR, TARGET_MONTH, TARGET_DAY);
     	name = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.editTextExpenseClaimName));
@@ -111,7 +116,7 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 		sdf.format(toDate);
 		
 		final ExpenseClaim sampleExpenseClaim = new ExpenseClaim(nameString, fromDate, toDate, null, null);
-		final ExpenseClaimList claimList = ExpenseClaimController.getExpenseClaimList();
+		final ExpenseClaimList claimList = controller.getExpenseClaimList();
 		
 		instrumentation.runOnMainSync(new Runnable() {
 			
@@ -145,10 +150,10 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 	
 		doneButton.performClick();
 		
-		assertEquals("The two names do not equal each other", "URoma", ExpenseClaimController.getExpenseClaim(1).getName());
+		assertEquals("The two names do not equal each other", "URoma", controller.getExpenseClaim(0).getName());
 		
-		assertEquals("The two startDates do not equal each other", startDateObject, ExpenseClaimController.getExpenseClaim(1).getStartDate());
+		assertEquals("The two startDates do not equal each other", startDateObject, controller.getExpenseClaim(0).getStartDate());
 		
-		assertEquals("The two endDates do not equal each other", endDateObject, ExpenseClaimController.getExpenseClaim(1).getEndDate());
+		assertEquals("The two endDates do not equal each other", endDateObject, controller.getExpenseClaim(0).getEndDate());
 		}
 }

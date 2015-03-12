@@ -167,7 +167,7 @@ public class AddExpenseClaimActivity extends Activity implements
 			}
 
 		ExpenseClaim expenseClaim = new ExpenseClaim(name, startDate1, endDate, null, null);
-		ExpenseClaimList claimList = ExpenseClaimController.getExpenseClaimList();
+		ExpenseClaimList claimList = ExpenseClaimController.getInstance().getExpenseClaimList();
 		claimList.addClaim(expenseClaim);
 		return true;
 	}

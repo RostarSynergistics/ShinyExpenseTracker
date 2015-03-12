@@ -26,36 +26,38 @@ import ca.ualberta.cs.shinyexpensetracker.models.*;
 public class ExpenseClaimControllerTest extends TestCase {
 
 	private static ExpenseClaimList claimList;
+	private ExpenseClaimController controller;
 
 	protected void setUp() throws Exception {
 		super.setUp();
 		claimList = new ExpenseClaimList();
 		claimList.addClaim(new ExpenseClaim("Test"));
-		ExpenseClaimController.DEBUGGING = true;
-		ExpenseClaimController.injectExpenseClaimList(claimList);
+		// Do things a little backwards to ensure getInstance is singleton
+		ExpenseClaimController.getInstance().setClaimList(claimList);
+		controller = ExpenseClaimController.getInstance();
 	}
 
 	
 	public void testGetExpenseClaimList() {
-		assertEquals(claimList, ExpenseClaimController.getExpenseClaimList());
+		assertEquals(claimList, controller.getExpenseClaimList());
 	}
 
 	// TODO test if retrieval is possible when implemented
 	public void testSaveExpenseClaim() {
-		ExpenseClaimController.saveExpenseClaim(new ExpenseClaim("Test"), new WebServiceExporter());
+		controller.saveExpenseClaim(new ExpenseClaim("Test"), new WebServiceExporter());
 		fail();
 	}
 
 	public void testAddExpenseClaim(){
-		assertEquals(claimList, ExpenseClaimController.getExpenseClaimList());
+		assertEquals(claimList, controller.getExpenseClaimList());
 		ExpenseClaim newClaim = new ExpenseClaim("Test");
-		ExpenseClaimController.addExpenseClaim(newClaim);
-		assertEquals(ExpenseClaimController.getExpenseClaimList().getClaim(1) , newClaim);	
+		controller.addExpenseClaim(newClaim);
+		assertEquals(controller.getExpenseClaimList().getClaim(1) , newClaim);	
 	}
 
 	public void testGetExpenseClaim(){
 		ExpenseClaim claim = new ExpenseClaim("Test");
-		ExpenseClaimController.addExpenseClaim(claim);
-		assertEquals(claim, ExpenseClaimController.getExpenseClaim(1));
+		controller.addExpenseClaim(claim);
+		assertEquals(claim, controller.getExpenseClaim(1));
 	}
 }

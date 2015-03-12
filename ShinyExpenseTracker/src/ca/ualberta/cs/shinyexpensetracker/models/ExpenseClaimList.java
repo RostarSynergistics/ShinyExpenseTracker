@@ -27,12 +27,6 @@ public class ExpenseClaimList extends Model<ExpenseClaimList> {
 		notifyViews();
 	}
 	
-	// FIXME What does this do?
-	// Assuming it takes the argument claim.
-	public void editClaim(ExpenseClaim claim) {
-		notifyViews();
-	}
-	
 	public void removeClaim(ExpenseClaim claim) {
 		claims.remove(claim);
 		notifyViews();
@@ -46,10 +40,6 @@ public class ExpenseClaimList extends Model<ExpenseClaimList> {
 		return claims;
 	}
 	
-	public ArrayList<ExpenseClaim> getAllClaims() {
-		return this.claims;
-	}
-	
 	public int getCount() {
 		return this.claims.size();
 	}
@@ -61,5 +51,15 @@ public class ExpenseClaimList extends Model<ExpenseClaimList> {
 			};
 		};
 		Collections.sort(claims, reverse_compare);
+	}
+	
+	/**
+	 * Replaces the old claim with the new claim.
+	 * @param oldClaim
+	 * @param newClaim
+	 */
+	public void updateExpenseClaim(ExpenseClaim oldClaim, ExpenseClaim newClaim) {
+		int index = claims.indexOf(oldClaim);
+		claims.set(index, newClaim);
 	}
 }

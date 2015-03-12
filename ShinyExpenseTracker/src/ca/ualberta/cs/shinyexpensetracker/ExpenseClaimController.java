@@ -3,57 +3,109 @@ package ca.ualberta.cs.shinyexpensetracker;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
-// FIXME #60 - Methods needed for #22 were turned into a static method.
-//			 - #60 is responsible for fixing this.
+/**
+ * Acts as an interface between an ExpenseClaim view and
+ * the ExpenseClaimList model.
+ * 
+ * Use ExpenseClaimController.getInstance() to get the
+ * singleton object.
+ */
 public class ExpenseClaimController {
-	public static boolean DEBUGGING = false;
-	private static ExpenseClaimList claimlist;
+	private static ExpenseClaimController instance;
+	private ExpenseClaimList claimList;
 	
-	// TODO #60 - Can this be removed? Dependency injection?
 	private ExpenseClaimController() {
 		super();
-		getExpenseClaimList();
+		claimList = new ExpenseClaimList();
 	}
 	
-	public static ExpenseClaimList injectExpenseClaimList(ExpenseClaimList list) {
-		if (!DEBUGGING) {
-			throw new RuntimeException("Expense Claim Controller not in debug mode");
+	/**
+	 * Returns the global instance of this controller class.
+	 * 
+	 * @return the unique instance of the controller class.
+	 */
+	public static ExpenseClaimController getInstance() {
+		if (instance == null) {
+			instance = new ExpenseClaimController();
 		}
-		claimlist = list;
-		return getExpenseClaimList();
+		return instance;
 	}
 	
-	// TODO #60	
-	public static ExpenseClaimList getExpenseClaimList() {
-		if (claimlist == null) {
-			claimlist = new ExpenseClaimList();
-		}
-		return claimlist;
+	/**
+	 * Used to override the automatically loaded claimList object.
+	 * @param claimList
+	 */
+	public void setClaimList(ExpenseClaimList claimList) {
+		this.claimList = claimList;
 	}
 	
-	// TODO #60
-	public static void saveExpenseClaim(ExpenseClaim claim, ClaimDataExporter exporter) {
+	/**
+	 * Uses the given exporter to save the requested claim.
+	 * The exporter can be anything that implements the @link ClaimDataExporter
+	 * interface.
+	 * @param claim
+	 * @param exporter
+	 */
+	public void saveExpenseClaim(ExpenseClaim claim, ClaimDataExporter exporter) {
 		exporter.export(claim);	
 	}
 	
-	// TODO #60
-	// Lazy-ish singleton. This is the least ugly I'm willing to make it.
-	public static void addExpenseClaim(ExpenseClaim claim) {
-		getExpenseClaimList().addClaim(claim);
+	/**
+	 * Adds a claim to the ClaimList model
+	 * @param claim
+	 */
+	public void addExpenseClaim(ExpenseClaim claim) {
+		claimList.addClaim(claim);
 	}
 	
-	// TODO #60
-	// This will probably open an activity that's responsible for
-	// editing the claim
-	public void editExpenseClaim(ExpenseClaim claim) {
-		getExpenseClaimList().editClaim(claim);
+	/**
+	 * Fetches a claim from the claim list model.
+	 * @param index
+	 * @return the claim at the given index
+	 */
+	public ExpenseClaim getExpenseClaim(int index){
+		return claimList.getClaim(index);
 	}
 	
-	public static ExpenseClaim getExpenseClaim(int index){
-		return claimlist.getClaim(index);
+	/**
+	 * Remove the claim from the claim list. 
+	 * @param claim
+	 */
+	public void removeExpenseClaim(ExpenseClaim claim) {
+		claimList.removeClaim(claim);
+	}
+	
+	/**
+	 * Replaces the old claim with the new claim
+	 * @param oldClaim
+	 * @param newClaim
+	 */
+	
+	public void updateExpenseClaim(ExpenseClaim oldClaim, ExpenseClaim newClaim) {
+		claimList.updateExpenseClaim(oldClaim, newClaim);
 	}
 
-	public static void removeExpenseClaim(ExpenseClaim claim) {
-		getExpenseClaimList().removeClaim(claim);
+	/**
+	 * @return the number of claims in the claim list
+	 */
+	public int getCount() {
+		return claimList.getCount();
+	}
+	
+	/**
+	 * Sort the data on the model.
+	 * Warning: This changes the indexes in the model.
+	 */
+	// XXX: May need to be changed. See #17 for details.
+	public void sort() {
+		claimList.sort();
+	}
+	
+	/**
+	 * Returns the model
+	 * @return
+	 */
+	public ExpenseClaimList getExpenseClaimList() {
+		return claimList;
 	}
 }

@@ -49,8 +49,8 @@ public class ViewAllExpenseClaimsActivityTests extends
 		super.setUp();
 		// Inject an empty list so that saving/loading doesn't interfere,
 		// just in case.
-		ExpenseClaimController.DEBUGGING = true;
-		claimsList = ExpenseClaimController.injectExpenseClaimList(new ExpenseClaimList());
+		claimsList = new ExpenseClaimList();
+		ExpenseClaimController.getInstance().setClaimList(claimsList);
 		
 		activity = getActivity();
 		claimListView = (ListView) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expense_claim_list);

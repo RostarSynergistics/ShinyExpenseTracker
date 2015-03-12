@@ -56,6 +56,7 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_expense_claims_view);
 		controller = ExpenseClaimController.getInstance();
+		controller.getExpenseClaimList().addView(this);
 	}
 	
 	@Override
@@ -69,9 +70,6 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 		// ArrayList object
 		adapter = new ClaimListAdapter(this);
 		claim_list.setAdapter(adapter);
-		
-		// Listen for the claim list's update.
-		controller.getExpenseClaimList().addView(this);
 		
 		// -- Long Press of ListView Item
 		claim_list.setOnItemLongClickListener(new OnItemLongClickListener() {

@@ -106,6 +106,7 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 
 			// Add randomly dated claim
 			// XXX Begin -- REMOVE ME
+			// Replace this code with something that opens an activity. (#76)
 			Date sd = new Date(System.currentTimeMillis() + new Random().nextInt(2000000000));
 			Date ed = null;
 			if (new Random().nextBoolean()) {

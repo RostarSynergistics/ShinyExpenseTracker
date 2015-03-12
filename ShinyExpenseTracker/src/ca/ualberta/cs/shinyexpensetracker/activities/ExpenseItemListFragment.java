@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
+import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 
 public class ExpenseItemListFragment extends Fragment {
@@ -36,6 +38,7 @@ public class ExpenseItemListFragment extends Fragment {
 				container, false);
 		return rootView;
 	}
+
 }
 	
 

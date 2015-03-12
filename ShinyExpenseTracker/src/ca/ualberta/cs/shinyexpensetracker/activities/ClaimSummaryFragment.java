@@ -36,5 +36,5 @@ public class ClaimSummaryFragment extends Fragment {
 				container, false);
 		return rootView;
 	}
-	
+
 }

@@ -25,12 +25,6 @@
         <activity
             android:name=".activities.ExpenseClaimsView"
             android:label="@string/title_activity_expense_claims_view" >
-
-        </activity>
-
-        <activity
-            android:name=".activities.ManageTagActivity"
-            android:label="@string/title_activity_manage_tag" >
         </activity>
         <activity
             android:name=".ViewExpenseClaimActivity"
@@ -39,7 +33,7 @@
         <activity
             android:name=".AddExpenseClaimActivity"
             android:label="@string/title_activity_add_expense_claim" >
-		</activity>
+        </activity>
         <activity
             android:name=".ExpenseItemActivity"
             android:label="@string/title_activity_expense_item" >
@@ -49,13 +43,17 @@
             android:label="@string/title_activity_add_tag" >
         </activity>
         <activity
-            android:name=".TabbedSummaryActivity"
+            android:name=".activities.TabbedSummaryActivity"
             android:label="@string/title_activity_tabbed_summary" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ClaimSummaryActivity"
+            android:label="@string/title_activity_claim_summary" >
         </activity>
     </application>
 

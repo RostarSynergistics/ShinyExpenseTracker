@@ -45,4 +45,8 @@ public class TagList extends Model<TagList> {
 	public Tag getTagById(int i) {
 		return tags.get(i);
 	}
+	
+	public boolean contains(String tagString){
+		return tags.contains(new Tag(tagString));
+	}
 }

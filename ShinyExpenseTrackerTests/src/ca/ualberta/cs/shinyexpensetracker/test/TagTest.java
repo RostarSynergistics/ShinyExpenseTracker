@@ -21,6 +21,7 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 
 import ca.ualberta.cs.shinyexpensetracker.TagController;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
+import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 import junit.framework.TestCase;
 
 /**
@@ -39,6 +40,7 @@ public class TagTest extends TestCase {
 	TagController tagController; 
 	public void setUp(){
 		tagController = TagController.getInstance();
+		tagController.setTagList(new TagList());
 	}
 	
 	public void testAddAndRemoveTag(){

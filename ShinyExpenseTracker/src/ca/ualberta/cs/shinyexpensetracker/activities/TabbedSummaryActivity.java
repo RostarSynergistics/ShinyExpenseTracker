@@ -118,9 +118,9 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 	/**
 	 * Force selects the summary tab and returns the fragment.
 	 */
-	public ClaimSummaryFragment selectSummaryTab() {
+	public ClaimSummaryFragment selectClaimSummaryTab() {
 		getActionBar().selectTab(getActionBar().getTabAt(0));
-		return null;
+		return (ClaimSummaryFragment) getCurrentFragment();
 	}
 	
 	/**

@@ -19,6 +19,8 @@
 package ca.ualberta.cs.shinyexpensetracker;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 
 /**
@@ -55,29 +57,17 @@ public class TagController {
 		}
 	}
 	
-	public void setTagList(TagList list) {
-		this.list = list;
-	}
 
+
+	
 	/**
 	 * Add a tag to the current tag list
 	 * <p>
-	 * 
-	 * @param s the string value of the added tag
+	 * @param The tag object to add
+	 * @return boolean stating if the tag was added
 	 */
-	public boolean addTag(String s) {
-		if (s == null || s.equals("")){
-			return false;
-		}
-		Pattern p = Pattern.compile("^\\w*$");
-		Matcher m = p.matcher(s);
-		if (m.matches()) {
-			list.addTag(s);
-		return true;
-		}
-		else{
-			return false;
-		}
+	public boolean addTag(Tag tag){
+		return list.addTag(tag);
 	}
 
 	/**
@@ -92,7 +82,7 @@ public class TagController {
 	/**
 	 * Remove a tag from the current tag list
 	 * <p>
-	 * @param s the string value of the tag to be removed
+	 *@param s the string value of the tag to be removed
 	 */
 	public void removeTag(String s) {
 		list.removeTag(s);
@@ -106,6 +96,24 @@ public class TagController {
 	 */
 	public TagList getTagList(){
 		return list;
+	}
+	
+	/**
+	 * Returns true if the string given matches any tags 
+	 * already in the list 
+	 * <p>
+	 * @return boolean if the string is in TagList 
+	 */
+	public boolean inTagList(Tag tag){
+		return list.contains(tag);
+		
+	}
+	/**
+	 * Sets a new tag list for the singleton object
+	 * @param tagList a new tag list for the singleton
+	 */
+	public void setTagList(TagList tagList){
+		list = tagList;
 	}
 
 }

@@ -1,3 +1,7 @@
+/**
+ * Provides views to tab fragments
+ */
+
 package ca.ualberta.cs.shinyexpensetracker;
 
 import java.util.Locale;

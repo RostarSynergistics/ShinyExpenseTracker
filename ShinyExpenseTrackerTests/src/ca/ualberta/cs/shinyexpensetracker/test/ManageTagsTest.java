@@ -1,12 +1,16 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
-import android.test.ActivityInstrumentationTestCase2;
-import android.widget.ListView;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Instrumentation;
+import android.test.ActivityInstrumentationTestCase2;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.TagController;
 import ca.ualberta.cs.shinyexpensetracker.activities.ManageTagActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
-
+import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 
 public class ManageTagsTest extends ActivityInstrumentationTestCase2<ManageTagActivity> {
 
@@ -23,6 +27,7 @@ public class ManageTagsTest extends ActivityInstrumentationTestCase2<ManageTagAc
 	protected void setUp() throws Exception {
 		super.setUp();
 		tagController = TagController.getInstance();
+		tagController.setTagList(new TagList());
 		activity = getActivity();
 		instrumentation = getInstrumentation();
 		manageTagsListView = (ListView) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.listViewManageTags);
@@ -34,14 +39,16 @@ public class ManageTagsTest extends ActivityInstrumentationTestCase2<ManageTagAc
 		assertTrue(manageTagsListView.getCount() == 0);
 
 		Tag tag = new Tag("Test");
-		addTag(tag);
+		addTagToTagList(tag);
 		
 		assertEquals(tag, (Tag)manageTagsListView.getItemAtPosition(0));
 		assertTrue(tagController.getTagList().size() == 1);
 		assertTrue(manageTagsListView.getCount() == 1);	
 	}
+	
+	
 
-	private Tag addTag(final Tag tag) {
+	private Tag addTagToTagList(final Tag tag) {
 		instrumentation.runOnMainSync(new Runnable() {
 
 			@Override
@@ -52,6 +59,8 @@ public class ManageTagsTest extends ActivityInstrumentationTestCase2<ManageTagAc
 		instrumentation.waitForIdleSync();
 		return tag;
 	}
+	
+	
 	
 	
 

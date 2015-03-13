@@ -25,6 +25,12 @@
         <activity
             android:name=".activities.ExpenseClaimsView"
             android:label="@string/title_activity_expense_claims_view" >
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activities.ManageTagActivity"
+            android:label="@string/title_activity_manage_tag" >
         </activity>
         <activity
             android:name=".ViewExpenseClaimActivity"
@@ -55,6 +61,9 @@
             android:name=".ClaimSummaryActivity"
             android:label="@string/title_activity_claim_summary" >
         </activity>
+        <activity
+  			android:name=".TestFragmentActivity">
+ 		</activity>
     </application>
 
 </manifest>

@@ -163,15 +163,10 @@ public class ViewAllExpenseClaimsActivityTests extends
 		assertEquals(-1, testingClaims[1].compareTo(testingClaims[2]));
 		// -- Greater-than tests are done in the loop.
 
-		// i, j, k go to 0.
-		int i = 3;
-		while (i --> 0) {
-			
-			int j = 3;
-			while (j --> 0) {
-				
-				int k = 3;
-				while (k --> 0) {
+		// Iterate through all permutations
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; i < 3; j++) {
+				for (int k = 0; k < 3; k++) {
 					// Skip tests with equality--
 					// These depend on stability of sort 
 					if (i==j || j == k || i == k) {

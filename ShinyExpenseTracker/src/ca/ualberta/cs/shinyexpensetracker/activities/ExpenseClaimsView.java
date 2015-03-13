@@ -36,6 +36,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -73,6 +74,21 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 		adapter = new ClaimListAdapter(this);
 		claim_list.setAdapter(adapter);
 		
+		
+		claim_list.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				Intent intent = new Intent(ExpenseClaimsView.this, TabbedSummaryActivity.class);
+				intent.putExtra("claimIndex", position);
+				startActivity(intent);
+				
+			}
+			
+		});
+		
+		
 		// -- Long Press of ListView Item
 		claim_list.setOnItemLongClickListener(new OnItemLongClickListener() {
 
@@ -105,17 +121,6 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 			
 			Intent intent = new Intent(this, AddExpenseClaimActivity.class);
 			startActivity(intent);
-			
-			Date sd = new Date(System.currentTimeMillis() + new Random().nextInt(2000000000));
-			Date ed = null;
-			if (new Random().nextBoolean()) {
-				ed = new Date(System.currentTimeMillis() + 2000000000  + new Random().nextInt(2000000000));
-			}
-			
-			controller.addExpenseClaim(
-					new ExpenseClaim("Test ["+debug_addedID++ +"]", sd, ed));
-			
-			controller.getExpenseClaimList();
 			
 			return true;
 			// TODO Depends on #17

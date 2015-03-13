@@ -49,8 +49,8 @@ public class ViewAllExpenseClaimsActivityTests extends
 		super.setUp();
 		// Inject an empty list so that saving/loading doesn't interfere,
 		// just in case.
-		ExpenseClaimController.DEBUGGING = true;
-		claimsList = ExpenseClaimController.injectExpenseClaimList(new ExpenseClaimList());
+		claimsList = new ExpenseClaimList();
+		ExpenseClaimController.getInstance().setClaimList(claimsList);
 		
 		activity = getActivity();
 		claimListView = (ListView) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expense_claim_list);
@@ -144,59 +144,95 @@ public class ViewAllExpenseClaimsActivityTests extends
 	/* All of the testClaimsSorted check roughly the same thing,
 	 * going through all 6 permutations of {new, mid, old}.
 	 */
-	public void testClaimsSortedA() {
-		ExpenseClaim newClaim = addClaim(new ExpenseClaim("New Claim", new Date(1000000)));
-		ExpenseClaim midClaim = addClaim(new ExpenseClaim("Mid Claim", new Date(300000)));
-		ExpenseClaim oldClaim = addClaim(new ExpenseClaim("Old Claim", new Date(10000)));
+	public void testClaimsSorted() throws Exception {
+		ExpenseClaim[] testingClaims = {
+				new ExpenseClaim("Old Claim", new Date(1000)),
+				new ExpenseClaim("Mid Claim", new Date(2000)),
+				new ExpenseClaim("New Claim", new Date(3000)),
+		};
+		int numTests = 0;
 
-		assertEquals("new claim must come first in the list", newClaim, getClaim(0));
-		assertEquals("mid claim must be in the middle of the list", midClaim, getClaim(1));
-		assertEquals("old claim must come last in the list", oldClaim, getClaim(2));
+		// Check that our test case items compare correctly
+		// -- Equality Cases
+		assertEquals(0, testingClaims[0].compareTo(testingClaims[0]));
+		assertEquals(0, testingClaims[1].compareTo(testingClaims[1]));
+		assertEquals(0, testingClaims[2].compareTo(testingClaims[2]));
+		// -- Inequality Cases
+		assertEquals(-1, testingClaims[0].compareTo(testingClaims[1]));
+		assertEquals(-1, testingClaims[0].compareTo(testingClaims[2]));
+		assertEquals(-1, testingClaims[1].compareTo(testingClaims[2]));
+		// -- Greater-than tests are done in the loop.
+
+		// Iterate through all permutations
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				for (int k = 0; k < 3; k++) {
+					// Skip tests with equality--
+					// These depend on stability of sort 
+					if (i==j || j == k || i == k) {
+						continue;
+					}
+					
+					// Count tests actually executed
+					numTests++;
+					
+					// Build up our list
+					addClaim(testingClaims[i]);
+					addClaim(testingClaims[j]);
+					addClaim(testingClaims[k]);
+
+					// Sanity check: 3 items in the list
+					assertEquals(3, ExpenseClaimController.getInstance().getCount());
+					
+					// check index 0 is newer than index 1
+					assertEquals("Comparison failed. Wanted <" + getClaim(0) + "> newer than <" + getClaim(1) + ">;",
+							1, getClaim(0).compareTo(getClaim(1)));
+					
+					// Can skip 0 > 2 by transitivity.
+					// Leave it in as a sanity check.
+					assertEquals("Comparison failed. Wanted <" + getClaim(0) + "> newer than <" + getClaim(2) + ">;",
+							1, getClaim(0).compareTo(getClaim(2)));
+					
+					// check index 1 is newer than index 2
+					assertEquals("Comparison failed. Wanted <" + getClaim(1) + "> newer than <" + getClaim(2) + ">;",
+							1, getClaim(1).compareTo(getClaim(2)));
+
+					// Reset the test
+					// --> Can't replace the ClaimList because we'll lose
+					// 	   lose observers
+					deleteClaim(testingClaims[i]);
+					deleteClaim(testingClaims[j]);
+					deleteClaim(testingClaims[k]);
+				}
+			}
+		}
+		
+		// Sanity check: make sure we run all permutations
+		assertEquals(6, numTests);
 	}
-	public void testClaimsSortedB() {
-		ExpenseClaim newClaim = addClaim(new ExpenseClaim("New Claim", new Date(1000000)));
-		ExpenseClaim oldClaim = addClaim(new ExpenseClaim("Old Claim", new Date(10000)));
-		ExpenseClaim midClaim = addClaim(new ExpenseClaim("Mid Claim", new Date(300000)));
-
-		assertEquals("new claim must come first in the list", newClaim, getClaim(0));
-		assertEquals("mid claim must be in the middle of the list", midClaim, getClaim(1));
-		assertEquals("old claim must come last in the list", oldClaim, getClaim(2));
-	}
-	public void testClaimsSortedC() {
-		ExpenseClaim midClaim = addClaim(new ExpenseClaim("Mid Claim", new Date(300000)));
-		ExpenseClaim newClaim = addClaim(new ExpenseClaim("New Claim", new Date(1000000)));
-		ExpenseClaim oldClaim = addClaim(new ExpenseClaim("Old Claim", new Date(10000)));
-
-		assertEquals("new claim must come first in the list", newClaim, getClaim(0));
-		assertEquals("mid claim must be in the middle of the list", midClaim, getClaim(1));
-		assertEquals("old claim must come last in the list", oldClaim, getClaim(2));
-	}
-	public void testClaimsSortedD() {
-		ExpenseClaim oldClaim = addClaim(new ExpenseClaim("Old Claim", new Date(10000)));
-		ExpenseClaim newClaim = addClaim(new ExpenseClaim("New Claim", new Date(1000000)));
-		ExpenseClaim midClaim = addClaim(new ExpenseClaim("Mid Claim", new Date(300000)));
-
-		assertEquals("new claim must come first in the list", newClaim, getClaim(0));
-		assertEquals("mid claim must be in the middle of the list", midClaim, getClaim(1));
-		assertEquals("old claim must come last in the list", oldClaim, getClaim(2));
-	}
-	public void testClaimsSortedE() {
-		ExpenseClaim midClaim = addClaim(new ExpenseClaim("Mid Claim", new Date(300000)));
-		ExpenseClaim oldClaim = addClaim(new ExpenseClaim("Old Claim", new Date(10000)));
-		ExpenseClaim newClaim = addClaim(new ExpenseClaim("New Claim", new Date(1000000)));
-
-		assertEquals("new claim must come first in the list", newClaim, getClaim(0));
-		assertEquals("mid claim must be in the middle of the list", midClaim, getClaim(1));
-		assertEquals("old claim must come last in the list", oldClaim, getClaim(2));
-	}
-	public void testClaimsSortedF() {
-		ExpenseClaim oldClaim = addClaim(new ExpenseClaim("Old Claim", new Date(10000)));
-		ExpenseClaim midClaim = addClaim(new ExpenseClaim("Mid Claim", new Date(300000)));
-		ExpenseClaim newClaim = addClaim(new ExpenseClaim("New Claim", new Date(1000000)));
-
-		assertEquals("new claim must come first in the list", newClaim, getClaim(0));
-		assertEquals("mid claim must be in the middle of the list", midClaim, getClaim(1));
-		assertEquals("old claim must come last in the list", oldClaim, getClaim(2));
+	
+	/*
+	 * Inserts some data with same dates. They can be in
+	 * either order in the test, but things that are not
+	 * equal must be on the outside. Testing for outside
+	 * values is done in testClaimsSorted
+	 */
+	public void testEqualSorted() {
+		ExpenseClaim claim1 = addClaim(new ExpenseClaim("Mid Claim 1", new Date(2000)));
+		addClaim(new ExpenseClaim("Old Claim", new Date(1000)));
+		addClaim(new ExpenseClaim("New Claim", new Date(3000)));
+		ExpenseClaim claim2 = addClaim(new ExpenseClaim("Mid Claim 2", new Date(2000)));
+		
+		// index 0 newer than index 1
+		assertEquals(1, getClaim(0).compareTo(getClaim(1)));
+		// index 1 same as index 2
+		assertEquals(0, getClaim(1).compareTo(getClaim(2)));
+		// index 2 newer than index 3
+		assertEquals(1, getClaim(2).compareTo(getClaim(3)));
+		
+		// Make sure middle two indexes are truly different objects
+		assertNotSame(claim1, claim2);
+		
 	}
 	
 	/**

@@ -35,28 +35,27 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
 public class ClaimListAdapter extends BaseAdapter {
 	private final SimpleDateFormat dateFormat;
 	private final Context context;
-	private ExpenseClaimList claims;
+	private ExpenseClaimController controller;
 	
-	public ClaimListAdapter(Context context, ExpenseClaimList claims) {
+	public ClaimListAdapter(Context context) {
 		super();
 		this.dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
 		this.context = context;
-		this.claims = claims;
+		this.controller = ExpenseClaimController.getInstance();
 	}
 
 	@Override
 	public int getCount() {
-		return claims.getCount();
+		return controller.getCount();
 	}
 
 	@Override
 	public ExpenseClaim getItem(int position) {
-		return claims.getClaim(position);
+		return controller.getExpenseClaim(position);
 	}
 
 	@Override
@@ -148,6 +147,6 @@ public class ClaimListAdapter extends BaseAdapter {
 	}
 
 	private void makeSortedList() {
-		claims.sort();
+		controller.sort();
 	}
 }

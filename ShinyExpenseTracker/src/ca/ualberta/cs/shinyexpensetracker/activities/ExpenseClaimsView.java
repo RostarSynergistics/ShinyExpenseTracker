@@ -47,6 +47,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
 // TODO #55 ?
 public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimList> {
+	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
 	static int debug_addedID = 0;	// XXX Remove this when #17 is merged
 
@@ -54,22 +55,20 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_expense_claims_view);
+		controller = ExpenseClaimController.getInstance();
+		controller.getExpenseClaimList().addView(this);
 	}
 	
 	@Override
 	protected void onStart() {
 		super.onStart();
-		// Get access to the claim list
-		ExpenseClaimList claims = ExpenseClaimController.getExpenseClaimList();
-		
-		claims.addView(this);
 		
 		// Set the list view to receive updates from the model
 		final ListView claim_list = (ListView) findViewById(R.id.expense_claim_list);
 		// TODO #61 - adapter should be a custom adapter that can
 		// watch the ExpenseClaimsList object, rather than an
 		// ArrayList object
-		adapter = new ClaimListAdapter(this, claims);
+		adapter = new ClaimListAdapter(this);
 		claim_list.setAdapter(adapter);
 		
 		// -- Long Press of ListView Item
@@ -104,16 +103,20 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 			// TODO Depends on #17
 
 			// Add randomly dated claim
+			// XXX Begin -- REMOVE ME
+			// Replace this code with something that opens an activity. (#76)
 			Date sd = new Date(System.currentTimeMillis() + new Random().nextInt(2000000000));
 			Date ed = null;
 			if (new Random().nextBoolean()) {
 				ed = new Date(System.currentTimeMillis() + 2000000000  + new Random().nextInt(2000000000));
 			}
 			
-			ExpenseClaimController.addExpenseClaim(
+			controller.addExpenseClaim(
 					new ExpenseClaim("Test ["+debug_addedID++ +"]", sd, ed));
 			
 			return true;
+			// XXX REMOVE ME -- End
+			
 		case R.id.action_sort:
 		case R.id.action_filter:
 		case R.id.action_manage_tags:
@@ -130,11 +133,11 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 	}
 	
 	public void addClaim(ExpenseClaim claim) {
-		ExpenseClaimController.addExpenseClaim(claim);
+		controller.addExpenseClaim(claim);
 	}
 	
 	public void deleteClaim(ExpenseClaim claim) {
-		ExpenseClaimController.removeExpenseClaim(claim);
+		controller.removeExpenseClaim(claim);
 	}
 	
 	public AlertDialog askDeleteClaimAt(int position) {
@@ -143,7 +146,7 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 		//  http://stackoverflow.com/questions/15020878/i-want-to-show-ok-and-cancel-button-in-my-alert-dialog
 		
 		// Get a final copy of the requested claim
-		final ExpenseClaim claimToDelete = ExpenseClaimController.getExpenseClaim(position);
+		final ExpenseClaim claimToDelete = controller.getExpenseClaim(position);
 		
 		AlertDialog dialog = new AlertDialog.Builder(this)
 			.setTitle("Delete Claim?")

@@ -16,10 +16,6 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity
-            android:name="ca.ualberta.cs.shinyexpensetracker.activities.ManageTagActivity"
-            android:label="@string/title_activity_manage_tag" >
-        </activity>
 
         <!-- This replaces Main Activity. May change in the future or for testing. -->
         <activity
@@ -31,12 +27,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activities.ManageTagActivity"
+            android:label="@string/title_activity_manage_tag" >
+        </activity>
+        <activity
+            android:name=".ViewExpenseClaimActivity"
+            android:label="@string/title_activity_view_expense_claim" >
+        </activity>
+        <activity
+            android:name=".AddExpenseClaimActivity"
+            android:label="@string/title_activity_add_expense_claim" >
+		</activity>
         <activity
             android:name=".ExpenseItemActivity"
             android:label="@string/title_activity_expense_item" >
         </activity>
         <activity
-            android:name="ca.ualberta.cs.shinyexpensetracker.activities.AddTagActivity"
+            android:name=".activities.AddTagActivity"
+
             android:label="@string/title_activity_add_tag" >
         </activity>
     </application>

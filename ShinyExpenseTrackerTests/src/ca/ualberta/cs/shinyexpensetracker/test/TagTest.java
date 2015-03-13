@@ -24,6 +24,8 @@ import android.test.InstrumentationTestCase;
 import ca.ualberta.cs.shinyexpensetracker.TagController;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
+import junit.framework.TestCase;
+
 
 /**
  *
@@ -56,7 +58,7 @@ public class TagTest extends InstrumentationTestCase {
 			instrumentation.runOnMainSync(new Runnable() {
 				@Override
 				public void run() {
-					tagController.addTag(t);
+					tagController.addTag(new Tag(t));
 				}
 			});
 			assertEquals("failed to add a tag: " + t, 1, tagController.getTagCount());
@@ -82,7 +84,7 @@ public class TagTest extends InstrumentationTestCase {
 				
 				@Override
 				public void run() {
-					tagController.addTag(s);					
+					tagController.addTag(new Tag(s));					
 				}
 			});
 			

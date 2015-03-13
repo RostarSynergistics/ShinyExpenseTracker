@@ -21,7 +21,6 @@ import java.util.Locale;
 
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -46,7 +45,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
-import java.math.BigDecimal;
+
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 
 public class ExpenseItemActivity extends Activity implements OnClickListener{
 
@@ -187,7 +188,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		Category category = Category.fromString(categorySpinner.getSelectedItem().toString());
 		
 		// get the amount Spent from the editText, checking if not entered
-		BigDecimal amount = new BigDecimal("0.00");
+		double amount = 0;
 		if (amountText.getText().length() == 0) {
 			//display error dialog if no amount spent has been entered
 			adb.setMessage("Expense Item requires an amount spent");
@@ -200,11 +201,11 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 			alertDialog.show();
 			return false;
 		} else {
-			amount = new BigDecimal(amountText.getText().toString());
+			amount = Double.valueOf(amountText.getText().toString());
 		}
 		
 		//get the current selection of the currencySpinner
-		Currency currency = Currency.valueOf(currencySpinner.getSelectedItem().toString());
+		String currency = currencySpinner.getSelectedItem().toString();
 		
 		//get the description entered 
 		String description;
@@ -214,8 +215,10 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 			description = descriptionText.getText().toString();
 		}
 		
-		ExpenseItem expense = new ExpenseItem(name, date, category, amount, 
-				currency, description, button.getDrawingCache()); 
+		Money amountSpent = Money.of(CurrencyUnit.of("USD"), 0);
+		
+		ExpenseItem expense = new ExpenseItem(name, date, category, amountSpent, 
+				description, button.getDrawingCache()); 
 		
 		//Still needs to be implemented
 		//Add expenseItem to claim

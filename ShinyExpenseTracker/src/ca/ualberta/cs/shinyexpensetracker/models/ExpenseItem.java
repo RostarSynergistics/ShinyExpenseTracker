@@ -1,47 +1,39 @@
-/** Covers Issue 5
- * Things to implement: saving of an expenseItem to an expenseClaim
- * @author Sarah Morris
- * @version 1.0
- * @since 2015-03-09
- *
- * ExpenseItem hold the name, date, category, amount spent, currency, description
- * and a photo of a receipt for an expense that is added to a claim.
- * 
- * To use:
- * 	ExpenseItem e = new ExpenseItem(String name, Date date, Category category, BigDecimal amountSpent, 
- * 							Currency currency, String description, Bitmap photo);
- */
-
 package ca.ualberta.cs.shinyexpensetracker.models;
 
-import java.math.BigDecimal;
 import java.util.Date;
+import org.joda.money.Money;
 import android.graphics.Bitmap;
 
-public class ExpenseItem extends Model <ExpenseItem> {
+/**
+ * ExpenseItem holds the name, date, category, amount spent, description and a
+ * photo of a receipt for an expense that is added to a claim.
+ * 
+ * TODO: saving of an expenseItem to an expenseClaim
+ */
+public class ExpenseItem extends Model<ExpenseItem> {
 
-	public enum Category { 
-		AIR_FARE("air fare"),
+	public enum Category {
+		AIR_FARE("air fare"), 
 		GROUND_TRANSPORT("ground transport"), 
-		VEHICLE_RENTAL("vehicle rental"), 
+		VEHICLE_RENTAL( "vehicle rental"), 
 		PRIVATE_AUTOMOBILE("private automobile"), 
-		FUEL("fuel"), 
+		FUEL( "fuel"), 
 		PARKING("parking"), 
 		REGISTRATION("registration"), 
-		ACCOMODATION("accomodation"), 
-		MEAL("meal"), 
-		SUPPLIES("supplies");
+		ACCOMODATION( "accomodation"), 
+        MEAL("meal"), 
+        SUPPLIES("supplies");
 
 		private final String text;
-		
-		private Category(final String text){
+
+		private Category(final String text) {
 			this.text = text;
 		}
-		
-		public String getText(){
+
+		public String getText() {
 			return this.text;
 		}
-		
+
 		public static Category fromString(String text) {
 			if (text != null) {
 				for (Category c : Category.values()) {
@@ -53,84 +45,79 @@ public class ExpenseItem extends Model <ExpenseItem> {
 			return null;
 		}
 	}
-		
-	public enum Currency {
-		CAD, USD, GBP, EUR, CHF, JPY, CNY
-		
-	}
 
-	public String name;
-	public Date date;
-	public Category category;
-	public BigDecimal amountSpent;
-	public Currency currency;
-	public String description;
-	public Bitmap receiptPhoto;
-	
-	public ExpenseItem (String name, Date date, Category category, 
-			BigDecimal amountSpent, Currency currency, String description, Bitmap photo){
+	private String name;
+	private Date date;
+	private Category category;
+	private Money amountSpent;
+	private String description;
+	private Bitmap receiptPhoto;
+
+	/**
+	 * Primary constructor for ExpenseItem
+	 * 
+	 * @param name Its name.
+	 * @param date The date the expense was incurred.
+	 * @param category Its category
+	 * @param amountSpent Amount spent (value and type of currency)
+	 * @param description Its description
+	 * @param photo A photograph of the receipt.
+	 */
+	public ExpenseItem(String name, Date date, Category category,
+			Money amountSpent, String description, Bitmap photo) {
 		this.name = name;
 		this.date = date;
 		this.category = category;
 		this.amountSpent = amountSpent;
-		this.currency = currency;
 		this.description = description;
 		this.receiptPhoto = photo;
 	}
-	
-	public void setName(String name){
+
+	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public String getName(){
+
+	public String getName() {
 		return this.name;
 	}
 
-	public void setDate(Date date){
+	public void setDate(Date date) {
 		this.date = date;
 	}
-	
-	public Date getDate(){
+
+	public Date getDate() {
 		return this.date;
 	}
-	
-	public void setDescription(String description){
+
+	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	public String getDescription(){
+
+	public String getDescription() {
 		return this.description;
 	}
-	
-	public void setCategory(Category category){
+
+	public void setCategory(Category category) {
 		this.category = category;
 	}
 
-	public Category getCategory(){
+	public Category getCategory() {
 		return this.category;
 	}
-	
-	public void setAmountSpent(BigDecimal amountSpent){
+
+	public void setAmountSpent(Money amountSpent) {
 		this.amountSpent = amountSpent;
 	}
-	
-	public BigDecimal getAmountSpent(){
+
+	public Money getAmountSpent() {
 		return this.amountSpent;
 	}
-	
-	public void setCurrency(Currency currency){
-		this.currency = currency;
-	}
-	
-	public Currency getCurrency(){
-		return this.currency;
-	}
-	
+
 	public void setReceiptPhoto(Bitmap photo) {
 		this.receiptPhoto = photo;
 	}
-	
-	public Bitmap getReceiptPhoto(){
+
+	public Bitmap getReceiptPhoto() {
 		return this.receiptPhoto;
 	}
 }

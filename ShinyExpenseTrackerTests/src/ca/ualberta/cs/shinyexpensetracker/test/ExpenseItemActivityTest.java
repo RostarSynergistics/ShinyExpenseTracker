@@ -10,18 +10,10 @@
 
 package ca.ualberta.cs.shinyexpensetracker.test;
 
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Instrumentation;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
@@ -103,40 +95,6 @@ public class ExpenseItemActivityTest extends
 		assertTrue("datepicker dialog is showing", ((ExpenseItemActivity) activity).getDialog().isShowing());
 	}
 	
-	/* test if an expense Item is successfully created */
-	public void testCreateExpenseItem() {
-		instrumentation.runOnMainSync(new Runnable(){
-			@SuppressLint("SimpleDateFormat")
-			public void run() {
-				assertNotNull(doneButton);
-
-				 SimpleDateFormat sdf = new SimpleDateFormat();
-				 Date date = new Date();
-				 sdf.format(date);
-				 BigDecimal amount = new BigDecimal(10.00);
-				 Bitmap bitmap = null;
-				 
-				 ExpenseItem expense = new ExpenseItem("name", date, 
-						 Category.ACCOMODATION,  amount, Currency.CAD, 
-						 "description", bitmap);
-				 
-				 assertEquals("name != name", "name", expense.getName());
-				 assertNotSame("false positive, name", "Wrong Name", expense.getName());
-				 assertEquals("date != date", date, expense.getDate());
-				 assertNotSame("false positive date", "wrong date", expense.getDate());
-				 assertEquals("category != accomodation", Category.ACCOMODATION, expense.getCategory());
-				 assertNotSame("false positive, category", "wrong category", expense.getCategory());
-				 assertEquals("amount != 10.00", amount, expense.getAmountSpent());
-				 assertNotSame("false positive, amount", new BigDecimal(5.00), expense.getAmountSpent()); 
-				 assertEquals("currnency != CAD", Currency.CAD, expense.getCurrency());
-				 assertNotSame("false positive, currency", "wrong currency", expense.getCurrency());
-				 assertEquals("description != description", "description", expense.getDescription());
-				 assertNotSame("false positibe description", "wrong description", expense.getDescription());
-				 assertEquals("bitmap != bitmap", bitmap, expense.getReceiptPhoto());
-				 assertNotSame("false posibive, photo", "not bitmap", expense.getReceiptPhoto());
-			}
-		});
-	}
 	
 	/* tests if the data entered has been correctly saved to an expenseItem when the Done button is clicked */
 	public void testDone() {

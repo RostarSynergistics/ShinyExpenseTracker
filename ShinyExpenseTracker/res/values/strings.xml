@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <resources>
 
     <string name="app_name">ShinyExpenseTracker</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
     <string name="title_activity_view_expense_claim">ViewExpenseClaimActivity</string>
     <string name="title_activity_add_expense_claim">AddExpenseClaimActivity</string>
     <string name="title_activity_manage_tag">Manage Tags</string>
@@ -31,15 +29,26 @@
     </string-array>
 
     <string name="title_activity_expense_item">ExpenseItemActivity</string>
+
     <string-array name="expenseItemCurrencies">
-        <item >CAD</item>
-        <item >USD</item>
-        <item >GBP</item>
-        <item >EUR</item>
-        <item >CHF</item>
-        <item >JPY</item>
-        <item >CNY</item>
+        <item>CAD</item>
+        <item>USD</item>
+        <item>GBP</item>
+        <item>EUR</item>
+        <item>CHF</item>
+        <item>JPY</item>
+        <item>CNY</item>
     </string-array>
-    
+
+    <string name="title_activity_tabbed_summary">Claim Summary</string>
+    <string name="title_section1">Summary</string>
+    <string name="title_section2">Expenses</string>
+    <string name="title_section3">Destinations</string>
+    <string name="label_end_date">End Date:</string>
+    <string name="label_tags">Tags:</string>
+    <string name="label_expense_totals">Expense Totals:</string>
+    <string name="label_start_date">Start Date:</string>
+    <string name="label_status">Status:</string>
+    <string name="title_activity_claim_summary">ClaimSummaryActivity</string>
 
 </resources>

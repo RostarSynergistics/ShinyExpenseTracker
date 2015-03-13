@@ -2,6 +2,7 @@ package ca.ualberta.cs.shinyexpensetracker;
 
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 
 /**
  * Acts as an interface between an ExpenseClaim view and
@@ -107,5 +108,9 @@ public class ExpenseClaimController {
 	 */
 	public ExpenseClaimList getExpenseClaimList() {
 		return claimList;
+	}
+	
+	public void addExpenseItem(ExpenseItem expense, int index)	{
+		claimList.getClaim(index).addExpense(expense);
 	}
 }

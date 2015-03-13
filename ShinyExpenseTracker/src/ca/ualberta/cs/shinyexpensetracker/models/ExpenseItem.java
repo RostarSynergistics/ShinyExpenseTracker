@@ -78,6 +78,16 @@ public class ExpenseItem extends Model <ExpenseItem> {
 		this.receiptPhoto = photo;
 	}
 	
+	public ExpenseItem (String name, Date date, Category category, 
+			BigDecimal amountSpent, Currency currency, String description){
+		this.name = name;
+		this.date = date;
+		this.category = category;
+		this.amountSpent = amountSpent;
+		this.currency = currency;
+		this.description = description;
+	}
+	
 	public void setName(String name){
 		this.name = name;
 	}

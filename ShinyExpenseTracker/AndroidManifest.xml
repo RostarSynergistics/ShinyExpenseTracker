@@ -55,6 +55,9 @@
             android:name=".ClaimSummaryActivity"
             android:label="@string/title_activity_claim_summary" >
         </activity>
+        <activity
+  			android:name=".TestFragmentActivity">
+ 		</activity>
     </application>
 
 </manifest>

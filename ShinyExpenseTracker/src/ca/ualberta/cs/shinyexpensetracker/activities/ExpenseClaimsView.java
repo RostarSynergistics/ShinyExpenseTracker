@@ -30,6 +30,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +39,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
+import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.ClaimListAdapter;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.IView;
@@ -100,11 +102,27 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 		int id = item.getItemId();
 		switch (id) {
 		case R.id.action_new_claim:
+			
+			Intent intent = new Intent(this, AddExpenseClaimActivity.class);
+			startActivity(intent);
+			
+			Date sd = new Date(System.currentTimeMillis() + new Random().nextInt(2000000000));
+			Date ed = null;
+			if (new Random().nextBoolean()) {
+				ed = new Date(System.currentTimeMillis() + 2000000000  + new Random().nextInt(2000000000));
+			}
+			
+			controller.addExpenseClaim(
+					new ExpenseClaim("Test ["+debug_addedID++ +"]", sd, ed));
+			
+			controller.getExpenseClaimList();
+			
+			return true;
 			// TODO Depends on #17
 
 			// Add randomly dated claim
 			// XXX Begin -- REMOVE ME
-			// Replace this code with something that opens an activity. (#76)
+			/* Replace this code with something that opens an activity. (#76)
 			Date sd = new Date(System.currentTimeMillis() + new Random().nextInt(2000000000));
 			Date ed = null;
 			if (new Random().nextBoolean()) {
@@ -115,7 +133,7 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 					new ExpenseClaim("Test ["+debug_addedID++ +"]", sd, ed));
 			
 			return true;
-			// XXX REMOVE ME -- End
+			// XXX REMOVE ME -- End*/
 			
 		case R.id.action_sort:
 		case R.id.action_filter:
@@ -144,7 +162,6 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 		// Alert Dialog (Mar 7, 2015):
 		//  http://www.androidhive.info/2011/09/how-to-show-alert-dialog-in-android/
 		//  http://stackoverflow.com/questions/15020878/i-want-to-show-ok-and-cancel-button-in-my-alert-dialog
-		
 		// Get a final copy of the requested claim
 		final ExpenseClaim claimToDelete = controller.getExpenseClaim(position);
 		

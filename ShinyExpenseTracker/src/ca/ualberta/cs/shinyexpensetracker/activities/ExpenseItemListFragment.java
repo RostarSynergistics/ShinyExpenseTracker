@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
-import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 
 public class ExpenseItemListFragment extends Fragment {
@@ -16,7 +14,7 @@ public class ExpenseItemListFragment extends Fragment {
 	 * fragment.
 	 */
 	private static final String ARG_SECTION_NUMBER = "section_number";
-
+	
 	/**
 	 * Returns a new instance of this fragment for the given section number.
 	 */
@@ -34,9 +32,14 @@ public class ExpenseItemListFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		super.onCreateView(inflater, container, savedInstanceState);
 		View rootView = inflater.inflate(R.layout.tab_expense_list,
 				container, false);
 		return rootView;
+	}
+	
+	public void setClaim(int index) {
+		throw new RuntimeException("Something works? " + index);
 	}
 
 }

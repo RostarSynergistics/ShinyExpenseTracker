@@ -58,29 +58,7 @@ public class TagController {
 	}
 	
 
-	/**
-	 * Add a tag to the current tag list
-	 * <p>
-	 * @param tagString the string value of the added tag
-	 * @return boolean stating if the tag was added
-	 */
-	public boolean addTag(String tagString) {
-		if(inTagList(tagString)){
-			return false;
-		}
-		if (tagString == null || tagString.equals("")){
-			return false;
-		}
-		Pattern p = Pattern.compile("^\\w*$");
-		Matcher m = p.matcher(tagString);
-		if (m.matches()) {
-			list.addTag(tagString);
-		return true;
-		}
-		else{
-			return false;
-		}
-	}
+
 	
 	/**
 	 * Add a tag to the current tag list
@@ -89,7 +67,7 @@ public class TagController {
 	 * @return boolean stating if the tag was added
 	 */
 	public boolean addTag(Tag tag){
-		return addTag(tag.getValue());
+		return list.addTag(tag);
 	}
 
 	/**
@@ -104,7 +82,7 @@ public class TagController {
 	/**
 	 * Remove a tag from the current tag list
 	 * <p>
-	 * @param s the string value of the tag to be removed
+	 *@param s the string value of the tag to be removed
 	 */
 	public void removeTag(String s) {
 		list.removeTag(s);
@@ -126,8 +104,8 @@ public class TagController {
 	 * <p>
 	 * @return boolean if the string is in TagList 
 	 */
-	public boolean inTagList(String tagString){
-		return list.contains(tagString);
+	public boolean inTagList(Tag tag){
+		return list.contains(tag);
 		
 	}
 	/**

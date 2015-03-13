@@ -106,13 +106,13 @@ public class ManageTagActivity extends Activity implements IView<TagList> {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				String tagName = tagNameTextBox.getText().toString();
-				
-				if(tagController.inTagList(tagName)){
+				Tag tag = new Tag(tagName);
+				if(tagController.inTagList(tag)){
 					Toast.makeText(getApplicationContext(), "Tag already exists", Toast.LENGTH_LONG).show();
 					return;
 				}
 				
-				if (!tagController.addTag(tagName)){
+				if (!tagController.addTag(tag)){
 					Toast.makeText(getApplicationContext(), "Tag name has to be an alphanumeric value.", Toast.LENGTH_LONG).show();
 				}
 			}

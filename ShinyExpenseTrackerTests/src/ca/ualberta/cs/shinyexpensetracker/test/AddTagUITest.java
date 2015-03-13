@@ -10,6 +10,7 @@ import android.widget.ListView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.TagController;
 import ca.ualberta.cs.shinyexpensetracker.activities.ManageTagActivity;
+import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 import junit.framework.TestCase;
 
@@ -41,15 +42,16 @@ public class AddTagUITest extends ActivityInstrumentationTestCase2<ManageTagActi
 	
 
 	public void testAddingToDialog(){
+		Tag tag = new Tag("TEST");
+		addTagThroughDialog(tag.getValue());
+		assertTrue("Tag not added correctly",tagController.inTagList(tag));
 		
-		addTagThroughDialog("TEST");
-		assertTrue("Tag not added correctly",tagController.inTagList("TEST"));
-		
-		addTagThroughDialog("FAI LED ");
-		assertFalse("Non alphanumeric tag added" ,tagController.inTagList("FAI LED "));
-		
-		addTagThroughDialog("!@#$%");
-		assertFalse("Non alphanumeric tag added",tagController.inTagList("!@#$%"));
+		tag = new Tag("FAI LED");
+		addTagThroughDialog(tag.getValue());
+		assertFalse("Non alphanumeric tag added" ,tagController.inTagList(tag));
+		tag = new Tag("!@#$%");
+		addTagThroughDialog(tag.getValue());
+		assertFalse("Non alphanumeric tag added",tagController.inTagList(tag));
 	}
 
 	//Adds a tag through the add menu button and dialog

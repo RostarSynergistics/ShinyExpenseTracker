@@ -1,6 +1,8 @@
 package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TagList extends Model<TagList> {
 	private ArrayList<Tag> tags = new ArrayList<Tag>();
@@ -13,18 +15,27 @@ public class TagList extends Model<TagList> {
 		return tags;
 	}
 	
-	/* FIXME
-	 * UML says addTag(String) and removeTag(String).
-	 * Should this go into the TagController object?
-	 */
-	public void addTag(Tag t) {
-		tags.add(t);
-		notifyViews();
+	
+	public boolean addTag(Tag tag) {
+		String tagString = tag.getValue();
+		if(contains(tag)){
+			return false;
+		}
+		if (tagString == null || tagString.equals("")){
+			return false;
+		}
+		Pattern p = Pattern.compile("^\\w*$");
+		Matcher m = p.matcher(tagString);
+		if (m.matches()) {
+			tags.add(tag);
+			notifyViews();
+		return true;
+		}
+		else{
+			return false;
+		}
 	}
-	public void addTag(String s) {
-		tags.add(new Tag(s));
-		notifyViews();
-	}
+	
 	
 	public void removeTag(Tag t) {
 		tags.remove(t);
@@ -46,7 +57,7 @@ public class TagList extends Model<TagList> {
 		return tags.get(i);
 	}
 	
-	public boolean contains(String tagString){
-		return tags.contains(new Tag(tagString));
+	public boolean contains(Tag tag){
+		return tags.contains(tag);
 	}
 }

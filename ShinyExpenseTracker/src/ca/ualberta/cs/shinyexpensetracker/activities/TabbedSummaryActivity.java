@@ -1,6 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
 import android.app.ActionBar;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
@@ -112,5 +113,34 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 	@Override
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
+	}
+	
+	/**
+	 * Force selects the summary tab and returns the fragment.
+	 */
+	public ClaimSummaryFragment selectClaimSummaryTab() {
+		getActionBar().selectTab(getActionBar().getTabAt(0));
+		return (ClaimSummaryFragment) getCurrentFragment();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public ExpenseItemListFragment selectExpenseListTab() {
+		getActionBar().selectTab(getActionBar().getTabAt(1));
+		return (ExpenseItemListFragment) getCurrentFragment();
+	}
+	
+	public DestinationsListFragment selectDestinationListTab() {
+		getActionBar().selectTab(getActionBar().getTabAt(2));
+		return null;
+	}
+	
+	public Fragment getCurrentFragment() {
+		int index = mViewPager.getCurrentItem();
+		SectionsPagerAdapter adapter = ((SectionsPagerAdapter)mViewPager.getAdapter());
+		Fragment fragment = adapter.getFragment(index);
+		return fragment;
 	}
 }

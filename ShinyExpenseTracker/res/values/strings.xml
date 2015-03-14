@@ -50,5 +50,7 @@
     <string name="label_start_date">Start Date:</string>
     <string name="label_status">Status:</string>
     <string name="title_activity_claim_summary">ClaimSummaryActivity</string>
+    <string name="no_expenses">No Expenses</string>
+    <string name="claim_name">claim name</string>
 
 </resources>

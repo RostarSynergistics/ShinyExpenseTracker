@@ -116,30 +116,43 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 	}
 	
 	/**
-	 * Force selects the summary tab and returns the fragment.
+	 * Force selects the summary tab 
+	 * @return the corresponding fragment.
 	 */
 	public ClaimSummaryFragment selectClaimSummaryTab() {
+		// Select the 0'th tab
 		getActionBar().selectTab(getActionBar().getTabAt(0));
 		return (ClaimSummaryFragment) getCurrentFragment();
 	}
-	
+
 	/**
-	 * 
-	 * @return
+	 * Force selects the expense list tab 
+	 * @return the corresponding fragment.
 	 */
 	public ExpenseItemListFragment selectExpenseListTab() {
+		// Select the 1st tab
 		getActionBar().selectTab(getActionBar().getTabAt(1));
 		return (ExpenseItemListFragment) getCurrentFragment();
 	}
-	
+
+	/**
+	 * Force selects the destination list tab
+	 * @return the corresponding fragment.
+	 */
 	public DestinationsListFragment selectDestinationListTab() {
+		// Select the 2nd tab
 		getActionBar().selectTab(getActionBar().getTabAt(2));
 		return null;
 	}
 	
+	/**
+	 * @return The currently visible fragment.
+	 */
 	public Fragment getCurrentFragment() {
+		// http://stackoverflow.com/questions/18609261/getting-the-current-fragment-instance-in-the-viewpager
+		// March 13, 2015
 		int index = mViewPager.getCurrentItem();
-		SectionsPagerAdapter adapter = ((SectionsPagerAdapter)mViewPager.getAdapter());
+		SectionsPagerAdapter adapter = ((SectionsPagerAdapter) mViewPager.getAdapter());
 		Fragment fragment = adapter.getFragment(index);
 		return fragment;
 	}

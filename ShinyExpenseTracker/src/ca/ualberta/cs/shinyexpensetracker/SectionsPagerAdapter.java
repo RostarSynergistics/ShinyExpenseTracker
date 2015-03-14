@@ -86,7 +86,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 	 * resources.
 	 * @param position
 	 * @param context
-	 * @return
+	 * @return The appropriate page title
 	 */
 	public CharSequence getPageTitle(int position, Context context) {
 		Locale l = Locale.getDefault();

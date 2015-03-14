@@ -5,7 +5,6 @@ import java.util.Date;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.R;

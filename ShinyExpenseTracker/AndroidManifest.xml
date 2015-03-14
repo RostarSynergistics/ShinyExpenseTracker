@@ -25,6 +25,7 @@
         <activity
             android:name=".activities.ExpenseClaimsView"
             android:label="@string/title_activity_expense_claims_view" >
+
         </activity>
         <activity
             android:name=".ViewExpenseClaimActivity"

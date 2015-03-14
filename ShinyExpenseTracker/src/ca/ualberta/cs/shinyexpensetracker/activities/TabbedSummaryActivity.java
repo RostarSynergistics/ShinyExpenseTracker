@@ -4,12 +4,14 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.SectionsPagerAdapter;
 
@@ -84,6 +86,17 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 		getMenuInflater().inflate(R.menu.tabbed_summary, menu);
 		return true;
 	}
+	
+	public void addExpenseItemMenuItem(MenuItem menu) {
+		Intent intent = new Intent(TabbedSummaryActivity.this, ExpenseItemActivity.class);
+		startActivity(intent);
+	}
+	
+	public void addTagMenuItem(MenuItem menu) {
+	}
+	
+	public void addDestinationMenuItem(MenuItem menu) {
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -143,4 +156,6 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 		Fragment fragment = adapter.getFragment(index);
 		return fragment;
 	}
+	
+
 }

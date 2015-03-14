@@ -166,7 +166,7 @@ public class AddExpenseClaimActivity extends Activity implements
 				endDate = dateFormatter.parse(endDateText.getText().toString());
 			}
 
-		ExpenseClaim expenseClaim = new ExpenseClaim(name, startDate1, endDate, null, null);
+		ExpenseClaim expenseClaim = new ExpenseClaim(name, startDate1, endDate);
 		ExpenseClaimList claimList = ExpenseClaimController.getInstance().getExpenseClaimList();
 		claimList.addClaim(expenseClaim);
 		return true;

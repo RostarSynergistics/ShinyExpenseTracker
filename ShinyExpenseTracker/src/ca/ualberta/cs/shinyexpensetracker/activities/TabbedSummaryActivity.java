@@ -4,12 +4,14 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.SectionsPagerAdapter;
 
@@ -84,6 +86,33 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 		getMenuInflater().inflate(R.menu.tabbed_summary, menu);
 		return true;
 	}
+	
+	/**
+	 * Called on MenuItem "Add Expense Item" click
+	 * Goes to ExpenseItemActivity to allow user to add an expense item to their claim
+	 * @param menu
+	 */
+	public void addExpenseItemMenuItem(MenuItem menu) {
+		Intent intent = getIntent();
+		int claimIndex = intent.getIntExtra("claimIndex", -1);
+		intent = new Intent(TabbedSummaryActivity.this, ExpenseItemActivity.class);
+		intent.putExtra("claimIndex", claimIndex);
+		startActivity(intent);
+	}
+	
+	/**
+	 * Called on MenuItem "Add Tag" click
+	 * @param menu
+	 */
+	public void addTagMenuItem(MenuItem menu) {
+	}
+	
+	/** 
+	 * Called on MenuItem "Add Destination" click
+	 * @param menu
+	 */
+	public void addDestinationMenuItem(MenuItem menu) {
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -156,4 +185,6 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 		Fragment fragment = adapter.getFragment(index);
 		return fragment;
 	}
+	
+
 }

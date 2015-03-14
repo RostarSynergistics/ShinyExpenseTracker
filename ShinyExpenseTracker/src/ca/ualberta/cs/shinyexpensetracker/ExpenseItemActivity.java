@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
@@ -142,6 +143,11 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
      */
 	public boolean createExpenseItem(View v) throws ParseException {
 		
+		Intent intent = getIntent();
+		int claimIndex = intent.getIntExtra("claimIndex", -1);
+		ExpenseClaimController ecc = ExpenseClaimController.getInstance();
+		ExpenseClaim claim = ecc.getExpenseClaim(claimIndex);
+		
 		EditText nameText = (EditText) findViewById(R.id.expenseItemNameEditText);
 		EditText dateText = (EditText) findViewById(R.id.expenseItemDateEditText);
 		Spinner categorySpinner = (Spinner) findViewById(R.id.expenseItemCategorySpinner);
@@ -217,9 +223,9 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		ExpenseItem expense = new ExpenseItem(name, date, category, amount, 
 				currency, description, button.getDrawingCache()); 
 		
-		//Still needs to be implemented
 		//Add expenseItem to claim
-		
+		claim.addExpense(expense);
+				
 		return true;
 	}
 	

@@ -11,7 +11,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:text="claim name"
+        android:text="@string/claim_name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -71,7 +71,16 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/claimExpenseTotalsTextView"
         android:layout_below="@+id/claimExpenseTotalsTextView" >
-
     </ListView>
+
+    <!--source: http://developer.android.com/reference/android/app/ListActivity.html -->
+	<TextView android:id="@+id/noExpensesTextView"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@+id/claimExpenseTotalsTextView"
+	    android:layout_marginTop="10dp"
+	    android:layout_marginStart="20dp"
+	    android:visibility="invisible"
+	    android:text="@string/no_expenses"/>
 
 </RelativeLayout>

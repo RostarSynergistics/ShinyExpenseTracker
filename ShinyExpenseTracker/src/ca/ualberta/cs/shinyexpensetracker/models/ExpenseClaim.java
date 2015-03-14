@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<ExpenseClaim> {
 	public enum Status {
-		IN_PROGRESS("In progress"),
+		IN_PROGRESS("In Progress"),
 		SUBMITTED("Submitted"), 
 		RETURNED("Returned"),
 		APPROVED("Approved");
@@ -37,7 +37,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	private Date startDate;
 	private Date endDate;
 	private Status status;
-	private Tag tag;
+	private TagList tagList;
 	private ArrayList<ExpenseItem> expenses = new ArrayList<ExpenseItem>();
 	
 	public ExpenseClaim(String name) {
@@ -49,17 +49,21 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	}
 	
 	public ExpenseClaim(String name, Date startDate, Date endDate) {
-		this(name, startDate, endDate, Status.IN_PROGRESS, null);
+		this.name = name;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.status = Status.IN_PROGRESS;
+		this.tagList = new TagList();
 	}
 	
 	public ExpenseClaim(String name, Date startDate, Date endDate,
-			Status status, Tag tag) {
+			Status status, TagList tagList) {
 		super();
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.status = status;
-		this.tag = tag;
+		this.tagList = tagList;
 	}
 	
 	public String getName() {
@@ -90,12 +94,11 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		this.status = status;
 		notifyViews();
 	}
-	public Tag getTag() {
-		return tag;
+	public TagList getTagList() {
+		return tagList;
 	}
-	public void setTag(Tag tag) {
-		this.tag = tag;
-		notifyViews();
+	public void setTagList(TagList tagList) {
+		this.tagList = tagList;
 	}
 	public ArrayList<ExpenseItem> getExpenses(){
 		return expenses;

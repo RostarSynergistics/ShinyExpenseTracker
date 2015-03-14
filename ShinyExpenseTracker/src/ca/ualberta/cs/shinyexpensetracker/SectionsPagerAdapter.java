@@ -21,13 +21,14 @@ import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemListFragment;
  * one of the sections/tabs/pages.
  */
 
-// http://stackoverflow.com/questions/18609261/getting-the-current-fragment-instance-in-the-viewpager
-// March 13
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 	private SparseArray<Fragment> mPageReferenceMap;
 	
 	public SectionsPagerAdapter(FragmentManager fm) {
 		super(fm);
+
+		// http://stackoverflow.com/questions/18609261/getting-the-current-fragment-instance-in-the-viewpager
+		// March 13, 2015
 		mPageReferenceMap = new SparseArray<Fragment>();
 	}
 
@@ -64,6 +65,12 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		mPageReferenceMap.delete(position);
 	}
 	
+	/**
+	 * Gets the fragment corresponding to the given position,
+	 * or null if it hasn't been made yet.
+	 * @param position
+	 * @return
+	 */
 	public Fragment getFragment(int position) {
 		return mPageReferenceMap.get(position);
 	}
@@ -74,6 +81,13 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		return 3;
 	}
 
+	/**
+	 * Returns a page title for the given position from the string.xml
+	 * resources.
+	 * @param position
+	 * @param context
+	 * @return
+	 */
 	public CharSequence getPageTitle(int position, Context context) {
 		Locale l = Locale.getDefault();
 		switch (position) {

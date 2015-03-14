@@ -16,22 +16,13 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity
-            android:name=".activities.ManageTagActivity"
-            android:label="@string/title_activity_manage_tag" >
-        </activity>
 
         <!-- This replaces Main Activity. May change in the future or for testing. -->
         <activity
             android:name=".activities.ExpenseClaimsView"
             android:label="@string/title_activity_expense_claims_view" >
-            </intent-filter>
         </activity>
 
-        <activity
-            android:name=".activities.ManageTagActivity"
-            android:label="@string/title_activity_manage_tag" >
-        </activity>
         <activity
             android:name=".ViewExpenseClaimActivity"
             android:label="@string/title_activity_view_expense_claim" >

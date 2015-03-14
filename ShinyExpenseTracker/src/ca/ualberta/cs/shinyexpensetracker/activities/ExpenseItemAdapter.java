@@ -13,8 +13,6 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 
 /**
  * Adapter for the listviews that display ExpenseItems.
- * 
- * @author tristan
  *
  */
 public class ExpenseItemAdapter extends BaseAdapter implements ListAdapter {

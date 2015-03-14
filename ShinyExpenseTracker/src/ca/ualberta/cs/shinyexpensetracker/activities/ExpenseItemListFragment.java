@@ -52,6 +52,9 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 				container, false);
 		Intent intent = getActivity().getIntent();
 		claimIndex = intent.getIntExtra("claimIndex", -1);
+		if (claimIndex == -1) {
+			throw new RuntimeException("Intent not passed: Got claim index of -1");
+		}
 		return rootView;
 	}
 	

@@ -30,6 +30,7 @@ public class ExpenseItemListFragmentTest extends
 	public ExpenseItemListFragmentTest(Class<TabbedSummaryActivity> activityClass) {
 		super(activityClass);
 	}
+	
 	public ExpenseItemListFragmentTest() {
 		super(TabbedSummaryActivity.class);
 	}
@@ -140,16 +141,19 @@ public class ExpenseItemListFragmentTest extends
 		assertNull(frag.getLastDialog());
 
 		// Delete the expense at index 0		
-		final AlertDialog deleteDialog = frag.askDeleteExpenseAt(0);
+		frag.askDeleteExpenseAt(0);
+
+		// Get a dialog
+		AlertDialog deleteDialog = frag.getLastDialog();
+		
+		// Make sure the dialog is real and is showing
+		assertNotNull(frag.getLastDialog());
 		assertTrue("Dialog not showing", deleteDialog.isShowing());
 		
-		// Make sure the dialog is real
-		assertNotNull(frag.getLastDialog());
-
 		// (Fake) click OK. (The most painful thing for some reason).
 		// --> All this seems to do is tell us if there was something that
 		//		could be clicked and that it could be performed. It still
-		//		fails to do anything for no apparent reason.
+		//		fails to do anything for no apparent reason
 		Button button = deleteDialog.getButton(DialogInterface.BUTTON_POSITIVE);
 		assertTrue(button.performClick());
 		
@@ -168,7 +172,7 @@ public class ExpenseItemListFragmentTest extends
 		
 		// Check that the controller removed an item (UI -> Model)
 		assertEquals(0, claim.getExpenseCount());
-		// Check that the listview removed an item (UI -> UI)
+		// Check that the list view removed an item (UI -> UI)
 		assertEquals(0, expenseList.getCount());
 	}
 	
@@ -180,7 +184,7 @@ public class ExpenseItemListFragmentTest extends
 		// Make sure we still have that one claim from before
 		// - Sanity check
 		assertEquals(1, claim.getExpenses().size());
-		// - Check the listview for the same number of things  
+		// - Check the list view for the same number of things  
 		assertEquals(1, expenseList.getCount());
 		
 		// Add another expense
@@ -201,7 +205,7 @@ public class ExpenseItemListFragmentTest extends
 		// Make sure we have a new claim
 		// - Sanity check
 		assertEquals(2, claim.getExpenses().size());
-		// - Check the listview for the new number of things
+		// - Check the list view for the new number of things
 		assertEquals(2, expenseList.getCount());
 	}
 }

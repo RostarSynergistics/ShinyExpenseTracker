@@ -104,7 +104,7 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 	 * Prompts the user for deletion of an expense at a given position
 	 * @param position the position in the listview to delete
 	 */
-	public AlertDialog askDeleteExpenseAt(final int position) {
+	public void askDeleteExpenseAt(final int position) {
 		// Construct a new dialog to be displayed.
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		
@@ -137,8 +137,6 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 		// Show the newly created dialog
 		lastDialog = builder.create();
 		lastDialog.show();
-		
-		return lastDialog;
 	}
 
 	/**
@@ -169,6 +167,10 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 		adapter.notifyDataSetChanged();
 	}
 	
+	/**
+	 * The last displayed dialog of the fragment
+	 * @return Returns the last displayed dialog that is open, or null if it was closed
+	 */
 	public AlertDialog getLastDialog() {
 		return lastDialog;
 	}

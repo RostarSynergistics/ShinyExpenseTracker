@@ -12,9 +12,25 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 
 /**
- * Adapter for the listviews that display ExpenseItems.
+ * Adapter for the list Views that display ExpenseItems.
+ * It fills the expense_list_item.xml layout file to display
+ * Expense Items.
+ * 
+ * You can use this in place of an ArrayAdapter for ExpenseItems.
+ * This gives better flexibility for the adapter.
+ * 
+ * Example usage:
+ * public class MyActivity extends Activity) {
+ *  
+ *  public setupListView() {
+ *  	adapter = new Adapter( claimToWatch, this ) 
+ * 		listview.setAdapter(adapter);
+ *		...
+ * }
  *
  */
+// Note: This object watches claim.getExpenses()
+// If this changes, functionality here must be updated.
 public class ExpenseItemAdapter extends BaseAdapter implements ListAdapter {
 	private ExpenseClaim claim;
 	private Context context;

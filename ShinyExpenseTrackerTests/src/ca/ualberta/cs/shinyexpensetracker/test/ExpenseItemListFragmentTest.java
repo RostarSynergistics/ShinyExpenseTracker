@@ -82,10 +82,10 @@ public class ExpenseItemListFragmentTest extends
 	}
 	
 	/**
-	 * Checks that we can access views inside the fragment.
+	 * Checks that we can access views within the fragment.
 	 */
-	public void testNothing() {
-		// Check for swag-money listview in the CoolFragment class
+	public void testFragViewsNotNothing() {
+		// Try to fetch the list view in the fragment.
 		assertNotNull(frag.getView()
 				.findViewById(R.id.expenseItemsListView));
 	}
@@ -117,12 +117,30 @@ public class ExpenseItemListFragmentTest extends
 		nextActivity.finish();
 	}
 	
-	public void testDeleteExpenseShowsDialog() {
+	/**
+	 * Test deleting an existing expense.
+	 */
+	public void testDeleteExpense() {
+		// Fake the functionality of long pressing the listview
+		// because that method doesn't seem to be exposed.
 		
+		ListView expenseList = (ListView) frag.getView().findViewById(R.id.expenseItemsListView);
+		
+		// Make sure we have 1 thing before
+		assertEquals(1, expenseList.getCount());
+		assertEquals(1, ExpenseClaimController.getInstance().getCount());
+		
+		// Delete the expense at index 0
+		frag.deleteExpenseAt(0);
+		
+		// Check that the listview removed an item (UI -> UI)
+		assertEquals(0, expenseList.getCount());
+		// Check that the controller removed an item (UI -> Model)
+		assertEquals(0, ExpenseClaimController.getInstance().getCount());
 	}
 	
 	/**
-	 * Tests that new 
+	 * Tests that new expenses update the interface
 	 */
 	public void testNewExpensesAreAdded() {
 		ListView expenseList = (ListView) frag.getView().findViewById(R.id.expenseItemsListView);
@@ -139,14 +157,13 @@ public class ExpenseItemListFragmentTest extends
 				ExpenseItem.Category.ACCOMODATION,
 				new BigDecimal(1000000),
 				ExpenseItem.Currency.CAD,
-				"Look it's TDD!",
+				"Look out! It's TDD!",
 				null));
 		
 		// Make sure we have a new claim
 		// - Sanity check
 		assertEquals(2, claim.getExpenses().size());
-		// - Check the listview for the same number of things
+		// - Check the listview for the new number of things
 		assertEquals(2, expenseList.getCount());
-		assertEquals(2, claim.getExpenses().size());
 	}
 }

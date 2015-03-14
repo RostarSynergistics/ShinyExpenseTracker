@@ -63,22 +63,19 @@ public class ExpenseItemListFragment extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-//				editExpenseAt(position);
+				editExpenseAt(position);
 			}
 		});
 		
 		// -- On Long Click : Delete -- //
-//		expenses.setOnItemLongClickListener(new OnItemLongClickListener() {
-//			@Override
-//			public boolean onItemLongClick(AdapterView<?> parent, View view,
-//					int position, long id) {
-////				askDeleteExpenseAt(position);
-//				return true;
-//			}
-//		});
-		
-		// -- On Menu -> New Expense -- //
-		
+		expenses.setOnItemLongClickListener(new OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				deleteExpenseAt(position);
+				return true;
+			}
+		});
 	}
 	
 	/**
@@ -90,6 +87,14 @@ public class ExpenseItemListFragment extends Fragment {
 		// Get a reference to a real claim.
 		claim = ExpenseClaimController.getInstance().getExpenseClaim(index);
 	}
-	
+
+	public void deleteExpenseAt(int i) {
+		// TODO Auto-generated method stub
+	}
+
+
+	public void editExpenseAt(int position) {
+		// TODO Auto-generated method stub
+	}
 }
 	

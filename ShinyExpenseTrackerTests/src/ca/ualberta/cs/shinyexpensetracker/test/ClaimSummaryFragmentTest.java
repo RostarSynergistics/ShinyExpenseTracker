@@ -3,8 +3,10 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.R;
@@ -21,6 +23,8 @@ import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 //Source: http://stackoverflow.com/questions/21156463/junit-testing-for-android-app-with-fragments
 //On March 12
 
+//tests claimSummaryFragment
+
 public class ClaimSummaryFragmentTest extends
 		ActivityInstrumentationTestCase2<TabbedSummaryActivity> {
 	
@@ -35,9 +39,34 @@ public class ClaimSummaryFragmentTest extends
 		super(TabbedSummaryActivity.class);
 	}
 	
+	ExpenseClaim claim;
+	ExpenseClaimController ecc;
+	ExpenseClaimList claimList;
+	
+	String claimName = "test claim name";
+	Date startDate = new Date(1000);
+	Date endDate = new Date(2000);
+	ExpenseClaim.Status status = ExpenseClaim.Status.RETURNED;
+	
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
+		
+		//set up a mock intent to allow for passing the claimIndex
+		Intent intent = new Intent();
+		//intent.setClassName("ca.ualberta.cs.shinyexpensetracker.activities", 
+		//		"ca.ualberta.cs.shinyexpensetracker.activities.ClaimSummaryFragment");
+		intent.putExtra("claimIndex", 0);
+		setActivityIntent(intent);
+		
+		claimList = new ExpenseClaimList();
+		ecc = ExpenseClaimController.getInstance();
+		ecc.setClaimList(claimList);
+		
+		//Add an expense claim to the expenseClaimController
+		ExpenseClaim claim = new ExpenseClaim(claimName, startDate, endDate);
+		claim.setStatus(status);
+		ecc.addExpenseClaim(claim);
 		
 		activity = getActivity();
 		getInstrumentation().runOnMainSync(new Runnable() {
@@ -54,38 +83,28 @@ public class ClaimSummaryFragmentTest extends
 		View view = frag.getView();
 		assertNotNull("No view", view);
 	}
-	
-	/**
-	 * Checks for swag money in the CoolFragment.
-	 */
-	/*public void testNothing() {
-		assertNotNull(frag
-				.getView()
-				.findViewById(R.id.expenseItemsListView));
-		// If you get a runtime error here, everything is fantastic. :D
-		frag.setClaim(0);
-	} */
-	
+
+	//Tests that setClaimInfo sets the correct information for the claim
 	public void testSetClaimInfo() {
-		ExpenseClaimList claimList = new ExpenseClaimList();
-		ExpenseClaimController ecc = ExpenseClaimController.getInstance();
+		
+		claimList = new ExpenseClaimList();
+		ecc = ExpenseClaimController.getInstance();
 		ecc.setClaimList(claimList);
-		String claimName = "test claim name";
-		Date startDate = new Date(1000);
-		Date endDate = new Date(2000);
-		ExpenseClaim.Status status = ExpenseClaim.Status.RETURNED;
+		
+		//Add an expense claim to the expenseClaimController
 		ExpenseClaim claim = new ExpenseClaim(claimName, startDate, endDate);
 		claim.setStatus(status);
+		ecc.addExpenseClaim(claim);
+		
 		TagList tagList = new TagList();
 		Tag tag = new Tag("testTag");
 		tagList.addTag(tag);
 		claim.setTagList(tagList);
-		ecc.addExpenseClaim(claim);
 		BigDecimal amount = new BigDecimal(10);
-		ExpenseItem expense = new ExpenseItem("expenseItemName", startDate, Category.ACCOMODATION, 
+		ExpenseItem expense = new ExpenseItem("expenseItemName", new Date(1000), Category.ACCOMODATION, 
 				amount, Currency.CAD, "expenseItemDescription");
+		
 		claim.addExpense(expense);
-		String CADexpenseTotal = amount.toString() + Currency.CAD.toString();
 		
 		getInstrumentation().runOnMainSync(new Runnable() {
 			
@@ -113,11 +132,9 @@ public class ClaimSummaryFragmentTest extends
 		
 		TextView tagText = (TextView) frag.getView().findViewById(R.id.claimTagsTextView);
 		assertEquals("Claim tags not set correctly", "Tags: " + tag, tagText.getText().toString());
-		
-		//ListView expenseTotals = (ListView) frag.getView().findViewById(R.id.claimExpenseTotalsListView);
-		//assertEquals("Claim expense totals not set correctly", CADexpenseTotal, expenseTotals.getChildAt(0).toString());
 	}
 	
+	//test that when a claim doesn't have any expenses a textView saying "No Expenses" is shown
 	public void testNoExpenses() {
 		getInstrumentation().runOnMainSync(new Runnable() {
 
@@ -131,6 +148,7 @@ public class ClaimSummaryFragmentTest extends
 		assertEquals("No Expenses not shown", "No Expenses", noExpenses.getText().toString());
 	}
 	
+	//Test that when a claim has no tags only the "Tags: " title is shown
 	public void testNoTags() {
 		getInstrumentation().runOnMainSync(new Runnable() {
 
@@ -144,15 +162,70 @@ public class ClaimSummaryFragmentTest extends
 		assertEquals("Tags showns", "Tags: ", tags.getText().toString());
 	}
 	
+
+	
+	//Test that the expeseTotals appear as expected
 	public void testExpenseTotals() {
+		Date startDate = new Date(1000);
+		Date endDate = new Date(2000);
+		
+		ExpenseClaim claim = new ExpenseClaim("Test claim", startDate, endDate);
+		
+		BigDecimal amount = new BigDecimal(10);
+		ExpenseItem expense = new ExpenseItem("test Expense", startDate, Category.ACCOMODATION, amount, Currency.CAD);
+		
+		ExpenseClaimList claimList = new ExpenseClaimList();
+		ExpenseClaimController ecc = ExpenseClaimController.getInstance();
+		ecc.setClaimList(claimList);
+		
+		ecc.addExpenseClaim(claim);
+		ecc.addExpenseItem(expense, 0);
+
 		getInstrumentation().runOnMainSync(new Runnable() {
 
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
-				
+				frag.setClaimInfo(frag.getView());
 			}
-			
 		});
+		
+		ListView expenseTotals = (ListView) frag.getView().findViewById(R.id.claimExpenseTotalsListView);
+		assertEquals("expense was not added to expensesTotal list", "CAD 10", 
+				expenseTotals.getItemAtPosition(0).toString());
+		
+		amount = new BigDecimal(20);
+		expense = new ExpenseItem ("test expense 2", startDate, Category.AIR_FARE, amount, Currency.CHF);
+		ecc.addExpenseItem(expense, 0);
+		
+		getInstrumentation().runOnMainSync(new Runnable() {
+
+			@Override
+			public void run() {
+				frag.setClaimInfo(frag.getView());
+			}
+		});
+		
+		expenseTotals = (ListView) frag.getView().findViewById(R.id.claimExpenseTotalsListView);
+		assertEquals("expense was not added to expensesTotal list", "CAD 10", 
+				expenseTotals.getItemAtPosition(0).toString());
+		assertEquals("expense was not added to expensesTotal list", "CHF 20", 
+				expenseTotals.getItemAtPosition(1).toString());
+		
+		expense = new ExpenseItem("test expense 3", startDate, Category.FUEL, amount, Currency.CAD);
+		ecc.addExpenseItem(expense, 0);
+		
+		getInstrumentation().runOnMainSync(new Runnable() {
+
+			@Override
+			public void run() {
+				frag.setClaimInfo(frag.getView());
+			}
+		});
+		
+		expenseTotals = (ListView) frag.getView().findViewById(R.id.claimExpenseTotalsListView);
+		assertEquals("expense was not added to expensesTotal list", "CAD 30", 
+				expenseTotals.getItemAtPosition(0).toString());
+		assertEquals("expense was not added to expensesTotal list", "CHF 20", 
+				expenseTotals.getItemAtPosition(1).toString());
 	}
 }

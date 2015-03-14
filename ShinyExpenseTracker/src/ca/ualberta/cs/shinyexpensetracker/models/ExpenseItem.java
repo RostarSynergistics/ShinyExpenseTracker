@@ -16,6 +16,9 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.math.BigDecimal;
 import java.util.Date;
+
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import android.graphics.Bitmap;
 
 public class ExpenseItem extends Model <ExpenseItem> {
@@ -88,6 +91,15 @@ public class ExpenseItem extends Model <ExpenseItem> {
 		this.description = description;
 	}
 	
+	public ExpenseItem(String name, Date date, Category category,
+			BigDecimal amount, Currency currency) {
+		this.name = name;
+		this.date = date;
+		this.category = category;
+		this.amountSpent = amount;
+		this.currency = currency;
+	}
+
 	public void setName(String name){
 		this.name = name;
 	}

@@ -1,7 +1,5 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
-import java.util.Date;
-
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +12,18 @@ import ca.ualberta.cs.shinyexpensetracker.ExpenseTotalsAdapter;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
+
+/**
+ * displays a summary of a claims information (name, status, start date, end date,
+ * tags, and totals of currencies in expenses
+ * 
+ * Reached when a claim is selected from claimListView
+ * 
+ * Can add expenses, tags and destination through menu items
+ * 
+ * @author Sarah Morris
+ *
+ */
 public class ClaimSummaryFragment extends Fragment {
 
 	private ExpenseClaim claim;
@@ -45,7 +55,6 @@ public class ClaimSummaryFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.tab_claim_summary,
 				container, false);
 		view = rootView;
-		//setClaimInfo(view);
 		return rootView;
 	}
 	
@@ -62,28 +71,17 @@ public class ClaimSummaryFragment extends Fragment {
 	public void setClaimInfo(View view) {
 		ExpenseClaimController ecc = ExpenseClaimController.getInstance(); 
 		
-		Date startDate = new Date(1000);
-		Date endDate = new Date(2000);
-		//ExpenseClaim.Status status = ExpenseClaim.Status.SUBMITTED;
-		//TagList tagList = new TagList();
-		//Tag tag = new Tag("testTag");
-		//tagList.addTag(tag);
-		ExpenseClaim claim = new ExpenseClaim("testClaim", startDate, endDate);
-		ecc.addExpenseClaim(claim);
-		//ExpenseItem expense = new ExpenseItem("test Expense", startDate, Category.MEAL, 
-		//		new BigDecimal(10.00), Currency.CAD, "description test");
-		//claim.addExpense(expense);
-		
+		//get the claim that we are working with
 		int claimIndex = getActivity().getIntent().getIntExtra("claimIndex", -1);
-		//claim = ecc.getExpenseClaim(claimIndex);
-		
-		// This part is just for now need to actually get claim that was clicked on
-		claimIndex = 0;
+		claim = ecc.getExpenseClaim(claimIndex);
+
+		// make sure that it is a valid claim
 		try {
 			claim = ecc.getExpenseClaim(claimIndex);
 		} catch (IndexOutOfBoundsException e){
 			throw new RuntimeException();
 		}
+		
 		TextView claimName = (TextView) view.findViewById(R.id.claimNameTextView);
 		TextView claimStatus = (TextView) view.findViewById(R.id.claimStatusTextView);
 		TextView claimStartDate = (TextView) view.findViewById(R.id.claimStartDateTextView);
@@ -91,7 +89,23 @@ public class ClaimSummaryFragment extends Fragment {
 		TextView claimTags = (TextView) view.findViewById(R.id.claimTagsTextView);
 		TextView noExpenses = (TextView) view.findViewById(R.id.noExpensesTextView);
 		
+		claimName.setText(claim.getName());
+		claimStatus.setText("Claim Status: " + claim.getStatus().getText());
+		claimStartDate.setText("Start Date: " + claim.getStartDate());
+		claimEndDate.setText("End Date: " + claim.getEndDate());
 		
+		// set the tags
+		String tags;
+		if (claim.getTagList() != null)	{
+			//claim has tags, get them
+			tags = claim.getTagList().toString();
+		} else {
+			//claim has no tags, don't display anything
+			tags = "";
+		}
+		claimTags.setText("Tags: " + tags);
+		
+		//display the expense totals
 		if(claim.getExpenses().size() != 0) {
 			//Need to get a list currencies and their total amount of all expenses in claim
 			ListView expenseTotals = (ListView) view.findViewById(R.id.claimExpenseTotalsListView);
@@ -101,19 +115,6 @@ public class ClaimSummaryFragment extends Fragment {
 			// no expenses to list, show message saying "No expenses"
 			noExpenses.setVisibility(view.VISIBLE);
 		}
-		
-		claimName.setText(claim.getName());
-		claimStatus.setText("Claim Status: " + claim.getStatus().getText());
-		claimStartDate.setText("Start Date: " + claim.getStartDate());
-		claimEndDate.setText("End Date: " + claim.getEndDate());
-		
-		String tags;
-		if (claim.getTagList() != null)	{
-			tags = claim.getTagList().toString();
-		} else {
-			tags = "";
-		}
-		claimTags.setText("Tags: " + tags);
 	}
 	
 }

@@ -1,12 +1,10 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -15,11 +13,6 @@ import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseTotalsAdapter;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
-import ca.ualberta.cs.shinyexpensetracker.models.Tag;
-import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 
 public class ClaimSummaryFragment extends Fragment {
 
@@ -52,10 +45,20 @@ public class ClaimSummaryFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.tab_claim_summary,
 				container, false);
 		view = rootView;
-		setClaimInfo(view);
+		//setClaimInfo(view);
 		return rootView;
 	}
 	
+	public void onResume(){
+		super.onResume();
+		setClaimInfo(view);
+	}
+	
+	/**
+	 * Fills in the claim name, status, start date, end date, tags and currency totals 
+	 * of any expense items in the summary view.
+	 * @param view
+	 */
 	public void setClaimInfo(View view) {
 		ExpenseClaimController ecc = ExpenseClaimController.getInstance(); 
 		
@@ -86,16 +89,16 @@ public class ClaimSummaryFragment extends Fragment {
 		TextView claimStartDate = (TextView) view.findViewById(R.id.claimStartDateTextView);
 		TextView claimEndDate = (TextView) view.findViewById(R.id.claimEndDateTextView);
 		TextView claimTags = (TextView) view.findViewById(R.id.claimTagsTextView);
+		TextView noExpenses = (TextView) view.findViewById(R.id.noExpensesTextView);
 		
 		
 		if(claim.getExpenses().size() != 0) {
 			//Need to get a list currencies and their total amount of all expenses in claim
 			ListView expenseTotals = (ListView) view.findViewById(R.id.claimExpenseTotalsListView);
 			expenseTotals.setAdapter(new ExpenseTotalsAdapter(claim, getActivity().getBaseContext()));
-
+			noExpenses.setVisibility(view.INVISIBLE);
 		} else {
 			// no expenses to list, show message saying "No expenses"
-			TextView noExpenses = (TextView) view.findViewById(R.id.noExpensesTextView);
 			noExpenses.setVisibility(view.VISIBLE);
 		}
 		
@@ -112,5 +115,5 @@ public class ClaimSummaryFragment extends Fragment {
 		}
 		claimTags.setText("Tags: " + tags);
 	}
-
+	
 }

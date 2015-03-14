@@ -99,7 +99,8 @@ public class ClaimListAdapter extends BaseAdapter {
 		
 		// Name and status can't be null
 		name.setText(claim.getName());
-		status.setText(claim.getStatus().toString());
+		status.setText(claim.getStatus().getText());
+				
 		
 		// Start date can't be null, but end date might be.
 		if (claim.getEndDate() == null) {

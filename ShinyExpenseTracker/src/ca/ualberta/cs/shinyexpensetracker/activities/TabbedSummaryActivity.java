@@ -87,14 +87,30 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 		return true;
 	}
 	
+	/**
+	 * Called on MenuItem "Add Expense Item" click
+	 * Goes to ExpenseItemActivity to allow user to add an expense item to their claim
+	 * @param menu
+	 */
 	public void addExpenseItemMenuItem(MenuItem menu) {
-		Intent intent = new Intent(TabbedSummaryActivity.this, ExpenseItemActivity.class);
+		Intent intent = getIntent();
+		int claimIndex = intent.getIntExtra("claimIndex", -1);
+		intent = new Intent(TabbedSummaryActivity.this, ExpenseItemActivity.class);
+		intent.putExtra("claimIndex", claimIndex);
 		startActivity(intent);
 	}
 	
+	/**
+	 * Called on MenuItem "Add Tag" click
+	 * @param menu
+	 */
 	public void addTagMenuItem(MenuItem menu) {
 	}
 	
+	/** 
+	 * Called on MenuItem "Add Destination" click
+	 * @param menu
+	 */
 	public void addDestinationMenuItem(MenuItem menu) {
 	}
 

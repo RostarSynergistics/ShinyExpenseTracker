@@ -49,7 +49,11 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	}
 	
 	public ExpenseClaim(String name, Date startDate, Date endDate) {
-		this(name, startDate, endDate, Status.IN_PROGRESS, null);
+		this.name = name;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.status = Status.IN_PROGRESS;
+		this.tagList = new TagList();
 	}
 	
 	public ExpenseClaim(String name, Date startDate, Date endDate,

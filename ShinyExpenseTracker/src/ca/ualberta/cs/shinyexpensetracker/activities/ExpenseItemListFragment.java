@@ -50,11 +50,6 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 		super.onCreateView(inflater, container, savedInstanceState);
 		View rootView = inflater.inflate(R.layout.tab_expense_list,
 				container, false);
-		Intent intent = getActivity().getIntent();
-		claimIndex = intent.getIntExtra("claimIndex", -1);
-		if (claimIndex == -1) {
-			throw new RuntimeException("Intent not passed: Got claim index of -1");
-		}
 		return rootView;
 	}
 	
@@ -62,6 +57,13 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 	public void onStart() {
 		super.onStart();
 
+		// Get the claim index to display
+		Intent intent = getActivity().getIntent();
+		claimIndex = intent.getIntExtra("claimIndex", -1);
+		if (claimIndex == -1) {
+			throw new RuntimeException("Intent not passed: Got claim index of -1");
+		}
+		
 		// Get the claim context
 		claim = ExpenseClaimController.getInstance().getExpenseClaim(claimIndex);
 
@@ -93,15 +95,6 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 		});
 	}
 	
-	/**
-	 * Sets the claim context for this fragment view. Provides no
-	 * checks that the index is valid.
-	 * @param index corresponds to an index in the ExpenseClaimController.
-	 */
-	public void setClaim(int index) {
-		// Get a reference to a real claim.
-		claim = ExpenseClaimController.getInstance().getExpenseClaim(index);
-	}
 
 	/**
 	 * Prompts the user for deletion of an expense at a given position

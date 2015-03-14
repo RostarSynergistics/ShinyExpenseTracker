@@ -67,38 +67,54 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	}
 	public void setName(String name) {
 		this.name = name;
+		notifyViews();
 	}
 	public Date getStartDate() {
 		return startDate;
 	}
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
+		notifyViews();
 	}
 	public Date getEndDate() {
 		return endDate;
 	}
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+		notifyViews();
 	}
 	public Status getStatus() {
 		return status;
 	}
 	public void setStatus(Status status) {
 		this.status = status;
+		notifyViews();
 	}
 	public Tag getTag() {
 		return tag;
 	}
 	public void setTag(Tag tag) {
 		this.tag = tag;
+		notifyViews();
 	}
 	public ArrayList<ExpenseItem> getExpenses(){
 		return expenses;
 	}
 	public void addExpense(ExpenseItem expense) {
 		expenses.add(expense);
+		notifyViews();
 	}
-
+	public void removeExpense(int index) {
+		// TODO Issue #21.
+		// This function is partially complete, but does not
+		// delete from the local stores or ElasticSearch.
+		expenses.remove(index);
+		notifyViews();
+	}
+	public void removeExpense(ExpenseItem expense) {
+		expenses.remove( expenses.indexOf(expense) );
+		notifyViews();
+	}
 	
 	/**
 	 * Comparison of two claims is the comparison of their start date.
@@ -107,8 +123,11 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		return this.getStartDate().compareTo(other.getStartDate());
 	}
 	
-	// #22 This needs to be replaced when we make a better list view
 	public String toString() {
 		return getName();
+	}
+
+	public int getExpenseCount() {
+		return expenses.size();
 	}
 }

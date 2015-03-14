@@ -50,5 +50,9 @@
     <string name="label_start_date">Start Date:</string>
     <string name="label_status">Status:</string>
     <string name="title_activity_claim_summary">ClaimSummaryActivity</string>
+    
+    
+    <string name="deleteExpenseItemPromptTitle">Delete this expense?</string>
+    <string name="deleteExpenseItemPromptMessage">This action cannot be undone.</string>
 
 </resources>

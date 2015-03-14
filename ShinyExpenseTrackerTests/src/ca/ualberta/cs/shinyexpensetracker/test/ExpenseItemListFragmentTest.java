@@ -3,10 +3,13 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import android.app.AlertDialog;
 import android.app.Instrumentation.ActivityMonitor;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
@@ -47,7 +50,7 @@ public class ExpenseItemListFragmentTest extends
 				"Really expensive thing",
 				new Date(159371),
 				ExpenseItem.Category.SUPPLIES,
-				new BigDecimal(1000000),
+				new BigDecimal(33000),
 				ExpenseItem.Currency.CAD,
 				"Something really shiny",
 				null));
@@ -110,6 +113,8 @@ public class ExpenseItemListFragmentTest extends
 			}
 		});
 		
+		getInstrumentation().waitForIdleSync();
+		
 		// Wait up to 5 seconds for the next activity open, if available,
 		// timing out if it blocks.
 		AddExpenseClaimActivity nextActivity = (AddExpenseClaimActivity) getInstrumentation().waitForMonitorWithTimeout(monitor, 5);
@@ -119,24 +124,52 @@ public class ExpenseItemListFragmentTest extends
 	
 	/**
 	 * Test deleting an existing expense.
+	 * @throws InterruptedException 
 	 */
-	public void testDeleteExpense() {
+	public void testDeleteExpense() throws InterruptedException {
 		// Fake the functionality of long pressing the listview
 		// because that method doesn't seem to be exposed.
-		
+ 		
 		ListView expenseList = (ListView) frag.getView().findViewById(R.id.expenseItemsListView);
 		
 		// Make sure we have 1 thing before
 		assertEquals(1, expenseList.getCount());
-		assertEquals(1, ExpenseClaimController.getInstance().getCount());
+		assertEquals(1, claim.getExpenseCount());
+
+		// Make sure the dialog isn't real
+		assertNull(frag.getLastDialog());
+
+		// Delete the expense at index 0		
+		final AlertDialog deleteDialog = frag.askDeleteExpenseAt(0);
+		assertTrue("Dialog not showing", deleteDialog.isShowing());
 		
-		// Delete the expense at index 0
-		frag.deleteExpenseAt(0);
+		// Make sure the dialog is real
+		assertNotNull(frag.getLastDialog());
+
+		// (Fake) click OK. (The most painful thing for some reason).
+		// --> All this seems to do is tell us if there was something that
+		//		could be clicked and that it could be performed. It still
+		//		fails to do anything for no apparent reason.
+		Button button = deleteDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+		assertTrue(button.performClick());
 		
+		// If "performClick" doesn't perform click...
+		if (frag.getLastDialog() != null) {
+			// Forcefully induce the event that was supposed to be called
+			// because nothing seems to do that.
+			getInstrumentation().runOnMainSync(new Runnable() {
+				
+				@Override
+				public void run() {
+					frag.deleteExpenseAt(0);
+				}
+			});
+		}
+		
+		// Check that the controller removed an item (UI -> Model)
+		assertEquals(0, claim.getExpenseCount());
 		// Check that the listview removed an item (UI -> UI)
 		assertEquals(0, expenseList.getCount());
-		// Check that the controller removed an item (UI -> Model)
-		assertEquals(0, ExpenseClaimController.getInstance().getCount());
 	}
 	
 	/**
@@ -151,15 +184,20 @@ public class ExpenseItemListFragmentTest extends
 		assertEquals(1, expenseList.getCount());
 		
 		// Add another expense
-		claim.addExpense(new ExpenseItem(
-				"TDD things",
-				new Date(123123),
-				ExpenseItem.Category.ACCOMODATION,
-				new BigDecimal(1000000),
-				ExpenseItem.Currency.CAD,
-				"Look out! It's TDD!",
-				null));
-		
+		getInstrumentation().runOnMainSync(new Runnable() {
+			@Override
+			public void run() {
+				claim.addExpense(new ExpenseItem(
+						"TDD things",
+						new Date(123123),
+						ExpenseItem.Category.ACCOMODATION,
+						new BigDecimal(1000000),
+						ExpenseItem.Currency.CAD,
+						"Look out! It's TDD!",
+						null));
+			}
+		});
+		getInstrumentation().waitForIdleSync();
 		// Make sure we have a new claim
 		// - Sanity check
 		assertEquals(2, claim.getExpenses().size());

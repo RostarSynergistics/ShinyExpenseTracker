@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/claimNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="claim name"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/claimStatusTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/claimNameTextView"
+        android:layout_below="@+id/claimNameTextView"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:text="@string/label_status"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/claimStartDateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/claimStatusTextView"
+        android:layout_below="@+id/claimStatusTextView"
+        android:layout_marginTop="10dp"
+        android:text="@string/label_start_date"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/claimEndDateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/claimStartDateTextView"
+        android:layout_below="@+id/claimStartDateTextView"
+        android:layout_marginTop="10dp"
+        android:text="@string/label_end_date"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/claimTagsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/claimEndDateTextView"
+        android:layout_below="@+id/claimEndDateTextView"
+        android:layout_marginTop="10dp"
+        android:text="@string/label_tags"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/claimExpenseTotalsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/claimTagsTextView"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:text="@string/label_expense_totals"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <ListView
+        android:id="@+id/claimExpenseTotalsListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/claimExpenseTotalsTextView"
+        android:layout_below="@+id/claimExpenseTotalsTextView" >
+
+    </ListView>
+
+</RelativeLayout>

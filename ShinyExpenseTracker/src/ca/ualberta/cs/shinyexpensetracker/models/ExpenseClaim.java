@@ -1,10 +1,35 @@
 package ca.ualberta.cs.shinyexpensetracker.models;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<ExpenseClaim> {
 	public enum Status {
-		IN_PROGRESS, SUBMITTED, RETURNED, APPROVED
+		IN_PROGRESS("In progress"),
+		SUBMITTED("Submitted"), 
+		RETURNED("Returned"),
+		APPROVED("Approved");
+		
+		private final String text;
+		
+		private Status(final String text){
+			this.text = text;
+		}
+		
+		public String getText(){
+			return this.text;
+		}
+		
+		public static Status fromString(String text) {
+			if (text != null) {
+				for (Status s : Status.values()) {
+					if (text.equalsIgnoreCase(s.text)) {
+						return s;
+					}
+				}
+			}
+			return null;
+		}
 	}
 
 	private String name;
@@ -13,6 +38,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	private Date endDate;
 	private Status status;
 	private Tag tag;
+	private ArrayList<ExpenseItem> expenses = new ArrayList<ExpenseItem>();
 	
 	public ExpenseClaim(String name) {
 		this(name, new Date(), null, Status.IN_PROGRESS, null);
@@ -66,6 +92,13 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	public void setTag(Tag tag) {
 		this.tag = tag;
 	}
+	public ArrayList<ExpenseItem> getExpenses(){
+		return expenses;
+	}
+	public void addExpense(ExpenseItem expense) {
+		expenses.add(expense);
+	}
+
 	
 	/**
 	 * Comparison of two claims is the comparison of their start date.

@@ -2,10 +2,7 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.DestinationList;
-import ca.ualberta.cs.shinyexpensetracker.models.Tag;
-import android.app.Instrumentation;
 import android.test.InstrumentationTestCase;
-import junit.framework.TestCase;
 
 public class DestinationTest extends InstrumentationTestCase {
 	DestinationList destList;

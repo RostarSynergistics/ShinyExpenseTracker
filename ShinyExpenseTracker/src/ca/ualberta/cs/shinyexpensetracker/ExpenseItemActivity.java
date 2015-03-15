@@ -13,6 +13,8 @@
 
 package ca.ualberta.cs.shinyexpensetracker;
 
+import java.io.File;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -20,10 +22,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -31,6 +29,9 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,11 +46,11 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import java.io.File;
-import java.math.BigDecimal;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 
 public class ExpenseItemActivity extends Activity implements OnClickListener{
 
@@ -70,6 +71,10 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
     private HashMap<String, Integer> categoriesMap = new HashMap<String, Integer>();
     private HashMap<String, Integer> currenciesMap = new HashMap<String, Integer>();
     private ExpenseClaimController controller;
+    
+    public Resources getLocalResources(){
+    	return getResources();
+    }
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -138,7 +143,23 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		s.setSelection(categoriesMap.get(item.getCategory().getText()));
 		s = (Spinner) findViewById(R.id.expenseItemCurrencySpinner);
 		s.setSelection(currenciesMap.get(item.getCurrency().name()));
+		
+		if (item.doesHavePhoto()){
+			button.setDrawingCacheEnabled(true);
+			button.setImageBitmap(item.getReceiptPhoto());
+		}
 	}
+	
+	// copied from https://stackoverflow.com/questions/26842530/roundedimageview-add-border-and-shadow
+	// on March 15, 2015
+	public Bitmap convertToBitmap(Drawable drawable, int widthPixels, int heightPixels) {
+        Bitmap mutableBitmap = Bitmap.createBitmap(widthPixels, heightPixels, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(mutableBitmap);
+        drawable.setBounds(0, 0, widthPixels, heightPixels);
+        drawable.draw(canvas);
+
+        return mutableBitmap;
+    }
 	
 	private void populateHashMaps() {
 		categoriesMap.put("air fare", 0);

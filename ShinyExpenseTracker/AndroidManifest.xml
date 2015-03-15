@@ -19,19 +19,21 @@
 
         <!-- This replaces Main Activity. May change in the future or for testing. -->
         <activity
-            android:name=".activities.ExpenseClaimsView"
-            android:label="@string/title_activity_expense_claims_view" >
-                <intent-filter>
+            android:name=".activities.ManageTagActivity"
+            android:label="@string/title_activity_manage_tag" >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name=".activities.ManageTagActivity"
-            android:label="@string/title_activity_manage_tag" >
+            android:name=".activities.ExpenseClaimsView"
+            android:label="@string/title_activity_expense_claims_view" >
+                
         </activity>
+
+       
         <activity
             android:name=".ViewExpenseClaimActivity"
             android:label="@string/title_activity_view_expense_claim" >

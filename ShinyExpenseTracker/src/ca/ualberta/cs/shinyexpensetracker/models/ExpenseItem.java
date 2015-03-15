@@ -39,7 +39,7 @@ public class ExpenseItem extends Model <ExpenseItem> {
 			this.text = text;
 		}
 		
-		public String getText(){
+		public String toString(){
 			return this.text;
 		}
 		

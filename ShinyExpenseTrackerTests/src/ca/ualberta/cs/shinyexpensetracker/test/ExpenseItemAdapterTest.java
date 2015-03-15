@@ -1,9 +1,14 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import android.test.AndroidTestCase;
+import android.view.View;
+import android.widget.TextView;
+import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemAdapter;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
@@ -110,5 +115,25 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 		claim.removeExpense(fancyPants);
 		
 		assertEquals(classyHotel, adapter.getItem(0));
+	}
+	
+	/**
+	 * Checks that the item data in the fields are what we expect
+	 */
+	public void testItemData() {
+		claim.addExpense(scrumptiousFood);
+		View view = adapter.getView(0, null, null);
+
+		TextView viewName = (TextView) view.findViewById(R.id.expenseItemName);
+		TextView viewValue = (TextView) view.findViewById(R.id.expenseItemValue);
+		TextView viewDate = (TextView) view.findViewById(R.id.expenseItemDate);
+		TextView viewCategory = (TextView) view.findViewById(R.id.expenseItemCategory);
+
+		SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
+		
+		assertEquals(viewName.getText().toString(), scrumptiousFood.getName());
+		assertEquals(viewValue.getText().toString(), scrumptiousFood.getValueString());
+		assertEquals(viewDate.getText().toString(), df.format(scrumptiousFood.getDate()));
+		assertEquals(viewCategory.getText().toString(), scrumptiousFood.getCategory().toString());
 	}
 }

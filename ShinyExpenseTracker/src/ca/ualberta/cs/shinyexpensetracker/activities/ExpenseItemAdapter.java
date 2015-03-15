@@ -1,5 +1,8 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,10 +84,11 @@ public class ExpenseItemAdapter extends BaseAdapter implements ListAdapter {
 		ExpenseItem expense = getItem(position);
 		
 		// Fill in the values
+		SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
 		expenseItemName.setText(expense.getName().toString());
 		expenseItemValue.setText(expense.getValueString().toString());
-		expenseItemDate.setText(expense.getName().toString());
-		expenseItemCategory.setText(expense.getName().toString());
+		expenseItemDate.setText(df.format(expense.getDate()));
+		expenseItemCategory.setText(expense.getCategory().toString());
 
 		// Return the converted view
 		return convertView;

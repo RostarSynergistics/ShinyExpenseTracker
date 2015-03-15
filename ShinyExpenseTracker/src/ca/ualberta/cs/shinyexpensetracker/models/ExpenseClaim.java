@@ -13,27 +13,33 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	private Date endDate;
 	private Status status;
 	private Tag tag;
+	private Destination destination;
 	
 	public ExpenseClaim(String name) {
-		this(name, new Date(), null, Status.IN_PROGRESS, null);
+		this(name, new Date(), null, Status.IN_PROGRESS, null, null);
 	}
 
 	public ExpenseClaim(String name, Date startDate) {
-		this(name, startDate, null, Status.IN_PROGRESS, null);
+		this(name, startDate, null, Status.IN_PROGRESS, null, null);
 	}
 	
 	public ExpenseClaim(String name, Date startDate, Date endDate) {
-		this(name, startDate, endDate, Status.IN_PROGRESS, null);
+		this(name, startDate, endDate, Status.IN_PROGRESS, null, null);
 	}
 	
 	public ExpenseClaim(String name, Date startDate, Date endDate,
 			Status status, Tag tag) {
+		this(name, startDate, endDate, Status.IN_PROGRESS, null, null);
+	}
+	
+	public ExpenseClaim(String name, Date startDate, Date endDate, Status status, Tag tag, Destination destination) {
 		super();
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.status = status;
 		this.tag = tag;
+		this.destination = destination;
 	}
 	
 	public String getName() {
@@ -65,6 +71,12 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	}
 	public void setTag(Tag tag) {
 		this.tag = tag;
+	}
+	public Destination getDestination() {
+		return destination;
+	}
+	public void setDestination(Destination destination) {
+		this.destination = destination;
 	}
 	
 	/**

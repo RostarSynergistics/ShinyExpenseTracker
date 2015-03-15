@@ -70,6 +70,7 @@ public class ClaimListAdapter extends BaseAdapter {
 		TextView dates;
 		TextView status;
 		TextView tags;
+		TextView destination;
 		// Are we recycling?
 		if (convertView == null) {
 			// No.
@@ -81,9 +82,10 @@ public class ClaimListAdapter extends BaseAdapter {
 			dates = (TextView) convertView.findViewById(R.id.claimDateRange);
 			status = (TextView) convertView.findViewById(R.id.claimStatus);
 			tags = (TextView) convertView.findViewById(R.id.claimTags);
+			destination = (TextView) convertView.findViewById(R.id.claimDestination);
 			
 			// Tag the convert view so we can reuse this in the future
-			vh = new ViewHolder(name, dates, status, tags);
+			vh = new ViewHolder(name, dates, status, tags, destination);
 			convertView.setTag(vh);
 		} else {
 			// Yes.
@@ -93,6 +95,7 @@ public class ClaimListAdapter extends BaseAdapter {
 			dates = vh.dates;
 			status = vh.status;
 			tags = vh.tags;
+			destination = vh.destination;
 		}
 
 		ExpenseClaim claim = getItem(position);
@@ -129,14 +132,16 @@ public class ClaimListAdapter extends BaseAdapter {
 		public final TextView dates;
 		public final TextView status;
 		public final TextView tags;
+		public final TextView destination;
 		
 		public ViewHolder(TextView name, TextView dates, TextView status,
-				TextView tags) {
+				TextView tags, TextView destination) {
 			super();
 			this.name = name;
 			this.dates = dates;
 			this.status = status;
 			this.tags = tags;
+			this.destination = destination;
 		}
 	}
 	

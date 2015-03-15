@@ -6,7 +6,13 @@ import ca.ualberta.cs.shinyexpensetracker.persistance.ExpenseClaimListPersister;
 import ca.ualberta.cs.shinyexpensetracker.persistance.IPersistenceStrategy;
 import junit.framework.TestCase;
 
+/**
+ * Tests ExpenseClaimListPersister's ability to save and load an ExpenseClaimList.
+ */
 public class ExpenseClaimListPersisterTests extends TestCase {
+	/**
+     * Tests ExpenseClaimListPersister's ability to save and load an ExpenseClaimList.
+	 */
 	public void testPersistanceOfExpenseClaims() {
 		ExpenseClaimList list = new ExpenseClaimList();
 		ExpenseClaim claim = new ExpenseClaim("test");

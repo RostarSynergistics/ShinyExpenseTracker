@@ -66,7 +66,6 @@ public class ExpenseItem extends Model <ExpenseItem> {
 	public Currency currency;
 	public String description;
 	public Bitmap receiptPhoto;
-	private boolean hasPhoto;
 	
 	public ExpenseItem (String name, Date date, Category category, 
 			BigDecimal amountSpent, Currency currency, String description, Bitmap photo){
@@ -136,10 +135,6 @@ public class ExpenseItem extends Model <ExpenseItem> {
 	}
 
 	public boolean doesHavePhoto() {
-		return hasPhoto;
-	}
-
-	public void setHasPhoto(boolean hasPhoto) {
-		this.hasPhoto = hasPhoto;
+		return this.receiptPhoto != null;
 	}
 }

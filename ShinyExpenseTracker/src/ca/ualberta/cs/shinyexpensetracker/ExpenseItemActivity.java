@@ -45,6 +45,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
+import java.math.BigDecimal;
 
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
@@ -141,7 +142,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
      * @param v
      * @throws ParseException
      */
-	public boolean createExpenseItem(View v) throws ParseException {
+	public ExpenseItem createExpenseItem() throws ParseException {
 		
 		EditText nameText = (EditText) findViewById(R.id.expenseItemNameEditText);
 		EditText dateText = (EditText) findViewById(R.id.expenseItemDateEditText);
@@ -162,7 +163,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 			});
 			alertDialog = adb.create();
 			alertDialog.show();
-			return false;
+			return null;
 		} else {
 			name = nameText.getText().toString();
 		}
@@ -179,7 +180,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 			});
 			alertDialog = adb.create();
 			alertDialog.show();
-			return false;
+			return null;
 		} else {
 			date = dateFormatter.parse(dateText.getText().toString());
 		}
@@ -188,7 +189,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		Category category = Category.fromString(categorySpinner.getSelectedItem().toString());
 		
 		// get the amount Spent from the editText, checking if not entered
-		double amount = 0;
+		BigDecimal amount = new BigDecimal("0.00");
 		if (amountText.getText().length() == 0) {
 			//display error dialog if no amount spent has been entered
 			adb.setMessage("Expense Item requires an amount spent");
@@ -199,9 +200,9 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 			});
 			alertDialog = adb.create();
 			alertDialog.show();
-			return false;
+			return null;
 		} else {
-			amount = Double.valueOf(amountText.getText().toString());
+			amount = new BigDecimal(amountText.getText().toString());
 		}
 		
 		//get the current selection of the currencySpinner
@@ -215,15 +216,10 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 			description = descriptionText.getText().toString();
 		}
 		
-		Money amountSpent = Money.of(CurrencyUnit.of("USD"), 0);
+		Money amountSpent = Money.of(CurrencyUnit.of(currency), amount);
 		
-		ExpenseItem expense = new ExpenseItem(name, date, category, amountSpent, 
+		return new ExpenseItem(name, date, category, amountSpent, 
 				description, button.getDrawingCache()); 
-		
-		//Still needs to be implemented
-		//Add expenseItem to claim
-		
-		return true;
 	}
 	
 	/** 
@@ -277,8 +273,11 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 	 * @throws ParseException 
 	 */
 	public void doneExpenseItem(View v) throws ParseException{
+		ExpenseItem item = createExpenseItem();
 		
-		if (createExpenseItem(v)){
+		// TODO: add item to appropriate ExpenseItem
+		
+		if (item != null){
 			finish();
 		}
 	}

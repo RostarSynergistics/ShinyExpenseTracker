@@ -1,9 +1,9 @@
  /** 
- * Covers Issue 5
- * Things to implement: saving of an expenseItem to an expenseClaim
+ * Covers Issues 5 and 15
  * @author Sarah Morris
- * @version 1.0
- * @since 2015-03-09
+ * @author Oleg Oleynikov
+ * @version 1.1
+ * @since 2015-03-15
  *
  * 
  * Displays activity_create_expense_item activity, to give the user an 
@@ -29,7 +29,6 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -72,9 +71,6 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
     private HashMap<String, Integer> currenciesMap = new HashMap<String, Integer>();
     private ExpenseClaimController controller;
     
-    public Resources getLocalResources(){
-    	return getResources();
-    }
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -89,10 +85,14 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		Bundle bundle = intent.getExtras();
 		
 		if (bundle != null){
+			// we have to receive a Claim ID so that we know to what claim to save an item
 			int claimId = (Integer) bundle.get("Claim ID");
 			Integer expenseItemId = (Integer) bundle.get("Item ID");
 			controller = ExpenseClaimController.getInstance();
 			claim = controller.getExpenseClaim(claimId);
+			// if we received an Item ID
+			// then we are editing an item
+			// fetch the item and preset all fields with its values
 			if (expenseItemId != null){
 				item = claim.getItemById(expenseItemId);
 				isEditing = true;
@@ -145,7 +145,6 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		s.setSelection(currenciesMap.get(item.getCurrency().name()));
 		
 		if (item.doesHavePhoto()){
-			button.setDrawingCacheEnabled(true);
 			button.setImageBitmap(item.getReceiptPhoto());
 		}
 	}
@@ -299,8 +298,11 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 			description = descriptionText.getText().toString();
 		}
 		
+		Drawable dr = button.getDrawable();
+		Bitmap bm = convertToBitmap(dr, dr.getMinimumWidth(), dr.getMinimumHeight());
+		
 		ExpenseItem expense = new ExpenseItem(name, date, category, amount, 
-				currency, description, button.getDrawingCache()); 
+				currency, description, bm);//button.getDrawingCache()); 
 		
 		if (isEditing){
 			claim.removeItem(item);

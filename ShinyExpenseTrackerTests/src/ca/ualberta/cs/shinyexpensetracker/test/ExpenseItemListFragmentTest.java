@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemListFragment;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
@@ -101,7 +102,7 @@ public class ExpenseItemListFragmentTest extends
 		// March 13, 2015
 		
 		// Use a monitor to listen for activity changes
-		ActivityMonitor monitor = getInstrumentation().addMonitor(AddExpenseClaimActivity.class.getName(), null, false);
+		ActivityMonitor monitor = getInstrumentation().addMonitor(ExpenseItemActivity.class.getName(), null, false);
 
 		activity.runOnUiThread(new Runnable() {
 			
@@ -118,7 +119,7 @@ public class ExpenseItemListFragmentTest extends
 		
 		// Wait up to 5 seconds for the next activity open, if available,
 		// timing out if it blocks.
-		AddExpenseClaimActivity nextActivity = (AddExpenseClaimActivity) getInstrumentation().waitForMonitorWithTimeout(monitor, 5);
+		ExpenseItemActivity nextActivity = (ExpenseItemActivity) getInstrumentation().waitForMonitorWithTimeout(monitor, 5);
 		assertNotNull("Next activity wasn't opened", nextActivity);
 		nextActivity.finish();
 	}

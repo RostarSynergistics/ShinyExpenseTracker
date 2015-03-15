@@ -12,8 +12,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
-import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.IView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -140,10 +140,11 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 	 * @param position the position in the listview to edit.
 	 */
 	public void editExpenseAt(int position) {
-		// Create an intent to open the AddExpenseClaimActivity.
-		Intent intent = new Intent(getActivity(), AddExpenseClaimActivity.class);
+		// Create an intent to edit an expense item
+		Intent intent = new Intent(getActivity(), ExpenseItemActivity.class);
 		// --> Tell it that we're editing the index at this position
-		intent.putExtra("claimIndex", position);
+		intent.putExtra("claimIndex", claimIndex);
+		intent.putExtra("expenseIndex", position);
 		
 		// Start the activity with our edit intent
 		startActivity(intent);

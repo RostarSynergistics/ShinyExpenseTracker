@@ -16,8 +16,6 @@
  * 
  */
 package ca.ualberta.cs.shinyexpensetracker.activities;
-import java.util.zip.Inflater;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -26,9 +24,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.IView;
 import ca.ualberta.cs.shinyexpensetracker.R;
@@ -50,6 +51,7 @@ public class ManageTagActivity extends Activity implements IView<TagList> {
 	private ArrayAdapter<Tag> tagListAdapter;
 	private TagController tagController;
 	protected static AlertDialog alertDialogAddTag;
+	protected static AlertDialog alertDialogEditTag;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,7 @@ public class ManageTagActivity extends Activity implements IView<TagList> {
 		setContentView(R.layout.activity_manage_tag);
 		manageTags = (ListView)findViewById(R.id.listViewManageTags);
 		tagController = TagController.getInstance();
+		
 		//Setting a listener for tag controller
 		tagController.getTagList().addView(this);
 	}
@@ -71,8 +74,20 @@ public class ManageTagActivity extends Activity implements IView<TagList> {
 	@Override
 	protected void onResume() {
 		super.onResume();	
+		
+		//Setting the list view
 		tagListAdapter = new ArrayAdapter<Tag>(this, android.R.layout.simple_list_item_1, tagController.getTagList().getTags());
 		manageTags.setAdapter(tagListAdapter);
+		
+		manageTags.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long arg3) {
+				editTagFromDialog(position);
+			}
+		
+		});
 	}
 
 	@Override
@@ -97,9 +112,13 @@ public class ManageTagActivity extends Activity implements IView<TagList> {
 		//Creating the dialog from a custom layout and getting all the widgets needed 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		LayoutInflater layoutInflater = this.getLayoutInflater();
-		View dialogView = layoutInflater.inflate(R.layout.dialog_add_tag, null);
+		View dialogView = layoutInflater.inflate(R.layout.dialog_tag_input, null);
 		builder.setView(dialogView);
-		final EditText tagNameTextBox = (EditText)dialogView.findViewById(R.id.EditTextdialogAddTag);
+		final EditText tagNameTextBox = (EditText)dialogView.findViewById(R.id.EditTextDialogTag);
+		
+		//Set the correct text
+		TextView dialogTextView = (TextView) dialogView.findViewById(R.id.TextViewDialogInputType);
+		dialogTextView.setText("Name for the new Tag:");
 		
 		//Setting the positive button to save the text in the dialog as a tag if valid
 		builder.setPositiveButton("Add Tag", new android.content.DialogInterface.OnClickListener() {
@@ -131,6 +150,49 @@ public class ManageTagActivity extends Activity implements IView<TagList> {
 		return true;
 	}
 	
+	private void editTagFromDialog(final int pos){
+		//Creating the dialog from a custom layout and getting all the widgets needed 
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		LayoutInflater layoutInflater = this.getLayoutInflater();
+		View dialogView = layoutInflater.inflate(R.layout.dialog_tag_input, null);
+		builder.setView(dialogView);
+		
+		
+		//Set the correct text
+		TextView dialogTextView = (TextView) dialogView.findViewById(R.id.TextViewDialogInputType);
+		dialogTextView.setText("Edit tag name:");
+		
+		//Displaying the old tag name to edit
+		final EditText tagNameTextBox = (EditText)dialogView.findViewById(R.id.EditTextDialogTag);
+		tagNameTextBox.setText(tagController.getTag(pos).getValue());
+		
+		builder.setPositiveButton("Edit Tag", new android.content.DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				String tagName = tagNameTextBox.getText().toString();
+				Tag tag = new Tag(tagName);
+				if(tagController.inTagList(tag)){
+					Toast.makeText(getApplicationContext(), "Tag already exists", Toast.LENGTH_LONG).show();
+					return;
+				}
+				
+				if (!tagController.editTag(pos, tag)){
+					Toast.makeText(getApplicationContext(), "Tag name has to be an alphanumeric value.", Toast.LENGTH_LONG).show();
+				}
+			}
+		});
+		
+		builder.setNegativeButton("Cancel", new android.content.DialogInterface.OnClickListener(){
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+			}
+		});
+		
+		alertDialogEditTag = builder.create();
+		alertDialogEditTag.show();
+		
+	}
+	
 	@Override
 	public void update(TagList m) {
 		tagListAdapter.notifyDataSetChanged();
@@ -138,5 +200,9 @@ public class ManageTagActivity extends Activity implements IView<TagList> {
 	
 	public static AlertDialog getDialog(){
 		return alertDialogAddTag;
+	}
+	
+	public static AlertDialog getEditDialog(){
+		return alertDialogEditTag;
 	}
 }

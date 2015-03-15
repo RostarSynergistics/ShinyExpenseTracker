@@ -1,13 +1,3 @@
-/**
- * Test suite to test activity that lets the user view 
- * information of the selected ExpenseItem
- * 
- * Covers Issue 16
- * @author Oleg Oleynikov 
- * @version 1.0
- * @since 2015-03-15
- */
-
 package ca.ualberta.cs.shinyexpensetracker.test;
 
 import java.math.BigDecimal;
@@ -31,6 +21,16 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.widget.TextView;
 import junit.framework.TestCase;
 
+/**
+ * Test suite to test activity that lets the user view 
+ * information of the selected ExpenseItem
+ * 
+ * Covers Issue 16
+ * @author Oleg Oleynikov 
+ * @version 1.0
+ * @since 2015-03-15
+ */
+
 public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<ExpenseItemDetailView> {
 
 	public TestExpenseItemDetailView() {
@@ -46,14 +46,12 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 		
 		ExpenseClaim claim = new ExpenseClaim("test claim");
 		Calendar newDate = Calendar.getInstance();
-        newDate.set(2000, 00, 01);
+		newDate.set(2000, 00, 01);
 
 		ExpenseItem item = new ExpenseItem("test item", newDate.getTime(), Category.fromString("air fare"), new BigDecimal("0.125"), Currency.CAD, "Test Item", null);
-		item.setHasPhoto(false);
 		claim.addItem(item);
 		ExpenseClaimList claimList = new ExpenseClaimList();
 		claimList.addClaim(claim);
-		// Do things a little backwards to ensure getInstance is singleton
 		ExpenseClaimController.getInstance().setClaimList(claimList);
 		controller = ExpenseClaimController.getInstance();
 		Intent intent = new Intent(getInstrumentation().getTargetContext(), ExpenseItemDetailView.class);

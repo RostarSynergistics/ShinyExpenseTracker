@@ -1,13 +1,3 @@
-/**
- * Activity that lets the user view 
- * information of the selected ExpenseItem
- * 
- * Covers Issue 16
- * @author Oleg Oleynikov 
- * @version 1.0
- * @since 2015-03-15
- */
-
 package ca.ualberta.cs.shinyexpensetracker;
 
 import java.text.SimpleDateFormat;
@@ -26,6 +16,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+/**
+ * Activity that lets the user view 
+ * information of the selected ExpenseItem
+ * 
+ * Covers Issue 16
+ * @author Oleg Oleynikov 
+ * @version 1.0
+ * @since 2015-03-15
+ */
 
 public class ExpenseItemDetailView extends Activity {
 
@@ -48,21 +48,18 @@ public class ExpenseItemDetailView extends Activity {
 			item = claim.getItemById(expenseItemId);
 			populateTextViews();
 		}
-		// this one is just for testing purposes
-		// because I can't figure out how to send an Intent from a test
-		/*else{
-			ExpenseClaimController controller = ExpenseClaimController.getInstance();
-			ExpenseClaim claim = controller.getExpenseClaim(0);
-			item = claim.getItemById(0);
-			populateTextViews();
-		}*/
 		
 	}
 
+	private void setTextViewValue(int textViewId, String value){
+		TextView tv = (TextView) findViewById(textViewId);
+		tv.setText(value);
+	}
+	
 	private void populateTextViews(){
 		SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.CANADA);
 		
-		TextView name = (TextView) findViewById(R.id.expenseItemNameValue);
+		/*TextView name = (TextView) findViewById(R.id.expenseItemNameValue);
 		TextView date = (TextView) findViewById(R.id.expenseItemDateValue);
 		TextView category = (TextView) findViewById(R.id.expenseItemCategoryValue);
 		TextView description = (TextView) findViewById(R.id.expenseItemDescriptionValue);
@@ -76,12 +73,18 @@ public class ExpenseItemDetailView extends Activity {
 		category.setText(item.getCategory().getText());
 		description.setText(item.getDescription().toString());
 		amount.setText(item.getAmountSpent().toString());
-		currency.setText(item.getCurrency().name());
+		currency.setText(item.getCurrency().name());*/
+		setTextViewValue(R.id.expenseItemNameValue, item.getName().toString());
+		setTextViewValue(R.id.expenseItemDateValue, dateFormatter.format(item.getDate()));
+		setTextViewValue(R.id.expenseItemCategoryValue, item.getCategory().toString());
+		setTextViewValue(R.id.expenseItemDescriptionValue, item.getDescription().toString());
+		setTextViewValue(R.id.expenseItemAmountValue, item.getAmountSpent().toString());
+		setTextViewValue(R.id.expenseItemCurrencyValue, item.getCurrency().name());
 		if (item.doesHavePhoto()){
-			receipt.setText("Present");
+			setTextViewValue(R.id.expenseItemReceiptValue,"Present");
 		}
 		else{
-			receipt.setText("Not Present");
+			setTextViewValue(R.id.expenseItemReceiptValue,"Not Present");
 		}
 		
 	}
@@ -105,7 +108,7 @@ public class ExpenseItemDetailView extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void pressBack(View v)
+	public void onBackButtonPress(View v)
 	{
 		finish();
 	}

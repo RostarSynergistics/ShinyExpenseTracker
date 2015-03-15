@@ -1,8 +1,14 @@
 package ca.ualberta.cs.shinyexpensetracker;
 
+import java.io.IOException;
+
+import android.content.Context;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+import ca.ualberta.cs.shinyexpensetracker.persistance.ExpenseClaimListPersister;
+import ca.ualberta.cs.shinyexpensetracker.persistance.FilePersistenceStrategy;
+import ca.ualberta.cs.shinyexpensetracker.persistance.IExpenseClaimListPersister;
 
 /**
  * Acts as an interface between an ExpenseClaim view and
@@ -12,51 +18,38 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
  * singleton object.
  */
 public class ExpenseClaimController {
-	private static ExpenseClaimController instance;
+	private final IExpenseClaimListPersister persister;
 	private ExpenseClaimList claimList;
 	
-	private ExpenseClaimController() {
-		super();
-		claimList = new ExpenseClaimList();
-	}
-	
 	/**
-	 * Returns the global instance of this controller class.
+	 * Default constructor.
 	 * 
-	 * @return the unique instance of the controller class.
+	 * @param context The application's current context.
+	 * @throws IOException
 	 */
-	public static ExpenseClaimController getInstance() {
-		if (instance == null) {
-			instance = new ExpenseClaimController();
-		}
-		return instance;
+	public ExpenseClaimController(Context context) throws IOException {
+		this(new ExpenseClaimListPersister(
+				new FilePersistenceStrategy(context, "expenseClaims")));
 	}
 	
 	/**
-	 * Used to override the automatically loaded claimList object.
-	 * @param claimList
+	 * Constructor.
+	 * 
+	 * @param context The application's current context.
+	 * @throws IOException
 	 */
-	public void setClaimList(ExpenseClaimList claimList) {
-		this.claimList = claimList;
-	}
-	
-	/**
-	 * Uses the given exporter to save the requested claim.
-	 * The exporter can be anything that implements the @link ClaimDataExporter
-	 * interface.
-	 * @param claim
-	 * @param exporter
-	 */
-	public void saveExpenseClaim(ExpenseClaim claim, ClaimDataExporter exporter) {
-		exporter.export(claim);	
+	public ExpenseClaimController(IExpenseClaimListPersister persister) throws IOException {
+		this.persister = persister;
+		claimList = persister.loadExpenseClaims();
 	}
 	
 	/**
 	 * Adds a claim to the ClaimList model
 	 * @param claim
 	 */
-	public void addExpenseClaim(ExpenseClaim claim) {
+	public void addExpenseClaim(ExpenseClaim claim) throws IOException {
 		claimList.addClaim(claim);
+		persister.saveExpenseClaims(claimList);
 	}
 	
 	/**
@@ -64,7 +57,7 @@ public class ExpenseClaimController {
 	 * @param index
 	 * @return the claim at the given index
 	 */
-	public ExpenseClaim getExpenseClaim(int index){
+	public ExpenseClaim getExpenseClaim(int index) {
 		return claimList.getClaim(index);
 	}
 	
@@ -72,8 +65,9 @@ public class ExpenseClaimController {
 	 * Remove the claim from the claim list. 
 	 * @param claim
 	 */
-	public void removeExpenseClaim(ExpenseClaim claim) {
+	public void removeExpenseClaim(ExpenseClaim claim) throws IOException {
 		claimList.removeClaim(claim);
+		persister.saveExpenseClaims(claimList);
 	}
 	
 	/**
@@ -82,8 +76,10 @@ public class ExpenseClaimController {
 	 * @param newClaim
 	 */
 	
-	public void updateExpenseClaim(ExpenseClaim oldClaim, ExpenseClaim newClaim) {
+	public void updateExpenseClaim(ExpenseClaim oldClaim, ExpenseClaim newClaim) 
+	throws IOException {
 		claimList.updateExpenseClaim(oldClaim, newClaim);
+		persister.saveExpenseClaims(claimList);
 	}
 
 	/**
@@ -110,7 +106,8 @@ public class ExpenseClaimController {
 		return claimList;
 	}
 	
-	public void addExpenseItem(ExpenseItem expense, int index)	{
+	public void addExpenseItem(ExpenseItem expense, int index) throws IOException	{
 		claimList.getClaim(index).addExpense(expense);
+		persister.saveExpenseClaims(claimList);
 	}
 }

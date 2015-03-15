@@ -1,5 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import java.io.IOException;
+
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -35,18 +37,13 @@ public class ClaimSummaryFragment extends Fragment {
 	private static final String ARG_SECTION_NUMBER = "section_number";
 	private View view;
 
-	/**
-	 * Returns a new instance of this fragment for the given section number.
-	 */
-	public static ClaimSummaryFragment newInstance(int sectionNumber) {
-		ClaimSummaryFragment fragment = new ClaimSummaryFragment();
+	public ClaimSummaryFragment() {
+	}
+	
+	public ClaimSummaryFragment(int sectionNumber) {
 		Bundle args = new Bundle();
 		args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-		fragment.setArguments(args);
-		return fragment;
-	}
-
-	public ClaimSummaryFragment() {
+		setArguments(args);
 	}
 
 	@Override
@@ -58,18 +55,24 @@ public class ClaimSummaryFragment extends Fragment {
 		return rootView;
 	}
 	
-	public void onResume(){
+	public void onResume() {
 		super.onResume();
-		setClaimInfo(view);
+
+		try {
+			setClaimInfo(view);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	/**
 	 * Fills in the claim name, status, start date, end date, tags and currency totals 
 	 * of any expense items in the summary view.
 	 * @param view
+	 * @throws IOException 
 	 */
-	public void setClaimInfo(View view) {
-		ExpenseClaimController ecc = ExpenseClaimController.getInstance(); 
+	public void setClaimInfo(View view) throws IOException {
+		ExpenseClaimController ecc = new ExpenseClaimController(getActivity()); 
 		
 		//get the claim that we are working with
 		int claimIndex = getActivity().getIntent().getIntExtra("claimIndex", -1);

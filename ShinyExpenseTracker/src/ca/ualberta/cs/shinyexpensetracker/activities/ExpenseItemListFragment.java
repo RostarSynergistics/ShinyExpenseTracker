@@ -1,5 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import java.io.IOException;
+
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
@@ -31,18 +33,13 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 	private ExpenseItemAdapter adapter;
 	private AlertDialog lastDialog;
 	
-	/**
-	 * Returns a new instance of this fragment for the given section number.
-	 */
-	public static ExpenseItemListFragment newInstance(int sectionNumber) {
-		ExpenseItemListFragment fragment = new ExpenseItemListFragment();
+	public ExpenseItemListFragment() {
+	}
+	
+	public ExpenseItemListFragment(int sectionNumber) {
 		Bundle args = new Bundle();
 		args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-		fragment.setArguments(args);
-		return fragment;
-	}
-
-	public ExpenseItemListFragment() {
+		setArguments(args);
 	}
 
 	@Override
@@ -66,7 +63,11 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 		}
 		
 		// Get the claim context
-		claim = ExpenseClaimController.getInstance().getExpenseClaim(claimIndex);
+		try {
+			claim = new ExpenseClaimController(getActivity()).getExpenseClaim(claimIndex);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 
 		// Inform the model that we're listening for updates.
 		claim.addView(this);

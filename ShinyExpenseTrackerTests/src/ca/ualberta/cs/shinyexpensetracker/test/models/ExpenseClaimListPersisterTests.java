@@ -5,6 +5,7 @@ import java.io.IOException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.persistance.ExpenseClaimListPersister;
+import ca.ualberta.cs.shinyexpensetracker.persistance.IExpenseClaimListPersister;
 import ca.ualberta.cs.shinyexpensetracker.persistance.IPersistenceStrategy;
 import junit.framework.TestCase;
 
@@ -22,7 +23,7 @@ public class ExpenseClaimListPersisterTests extends TestCase {
 		ExpenseClaim claim = new ExpenseClaim("test");
 		list.addClaim(claim);
 
-		ExpenseClaimListPersister persister = new ExpenseClaimListPersister(
+		IExpenseClaimListPersister persister = new ExpenseClaimListPersister(
 				new MockPersistenceStrategy());
 
 		try {

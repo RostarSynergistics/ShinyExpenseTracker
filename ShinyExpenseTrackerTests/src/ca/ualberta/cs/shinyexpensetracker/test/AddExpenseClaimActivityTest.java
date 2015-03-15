@@ -24,6 +24,7 @@ import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
+import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase2<AddExpenseClaimActivity> {
 	
@@ -61,8 +62,7 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
         instrumentation = getInstrumentation();
         activity = getActivity();
         
-        controller = ExpenseClaimController.getInstance();
-        controller.setClaimList(new ExpenseClaimList());
+        controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
     	
     	DatePickerDialog datePicker = new DatePickerDialog(instrumentation.getContext(), dateListener, TARGET_YEAR, TARGET_MONTH, TARGET_DAY);
     	name = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.editTextExpenseClaimName));

@@ -25,6 +25,7 @@
 //   http://www.piwai.info/android-adapter-good-practices/
 package ca.ualberta.cs.shinyexpensetracker;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -41,11 +42,11 @@ public class ClaimListAdapter extends BaseAdapter {
 	private final Context context;
 	private ExpenseClaimController controller;
 	
-	public ClaimListAdapter(Context context) {
+	public ClaimListAdapter(Context context) throws IOException {
 		super();
 		this.dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
 		this.context = context;
-		this.controller = ExpenseClaimController.getInstance();
+		this.controller = new ExpenseClaimController(context);
 	}
 
 	@Override

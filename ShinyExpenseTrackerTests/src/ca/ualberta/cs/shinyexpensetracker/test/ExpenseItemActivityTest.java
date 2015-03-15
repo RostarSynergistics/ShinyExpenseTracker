@@ -21,6 +21,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
+import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -85,8 +86,7 @@ public class ExpenseItemActivityTest extends
     	super.setUp();
         instrumentation = getInstrumentation();
         
-        ExpenseClaimController controller = ExpenseClaimController.getInstance();
-        controller.setClaimList(new ExpenseClaimList());
+        ExpenseClaimController controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
         controller.addExpenseClaim(new ExpenseClaim("Test Claim"));
         Intent intent = new Intent();
         intent.putExtra("claimIndex", 0);

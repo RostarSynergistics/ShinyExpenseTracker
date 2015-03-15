@@ -20,6 +20,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 public class ExpenseItemListFragmentTest extends
 	ActivityInstrumentationTestCase2<TabbedSummaryActivity> {
@@ -40,7 +41,7 @@ public class ExpenseItemListFragmentTest extends
 	public void setUp() throws Exception {
 		super.setUp();
 		// Use a clean claimList
-		ExpenseClaimController.getInstance().setClaimList(new ExpenseClaimList());
+		ExpenseClaimController controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
 		
 		claim = new ExpenseClaim(
 				"My Cool Expense Claim",
@@ -57,7 +58,7 @@ public class ExpenseItemListFragmentTest extends
 				"Something really shiny",
 				null));
 		// Add the expense claim
-		ExpenseClaimController.getInstance().addExpenseClaim(claim);
+		controller.addExpenseClaim(claim);
 		
 		// Inject an intent that we have full control of.
 		// This MUST be called before the first call to getActivity()

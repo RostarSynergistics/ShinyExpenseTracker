@@ -47,6 +47,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 
 public class ExpenseItemActivity extends Activity implements OnClickListener{
@@ -140,12 +141,13 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
      * Gets inputed data from text fields and spinners, saving them in an expenseItem object.
      * @param v
      * @throws ParseException
+     * @throws IOException 
      */
-	public boolean createExpenseItem(View v) throws ParseException {
+	public boolean createExpenseItem(View v) throws ParseException, IOException {
 		
 		Intent intent = getIntent();
 		int claimIndex = intent.getIntExtra("claimIndex", -1);
-		ExpenseClaimController ecc = ExpenseClaimController.getInstance();
+		ExpenseClaimController ecc = new ExpenseClaimController(this);
 		ExpenseClaim claim = ecc.getExpenseClaim(claimIndex);
 		
 		EditText nameText = (EditText) findViewById(R.id.expenseItemNameEditText);
@@ -278,9 +280,9 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 	 * return to the previous activity (ExpenseItems Summary page)
 	 * @param v
 	 * @throws ParseException 
+	 * @throws IOException  
 	 */
-	public void doneExpenseItem(View v) throws ParseException{
-		
+	public void doneExpenseItem(View v) throws ParseException, IOException {
 		if (createExpenseItem(v)){
 			finish();
 		}

@@ -23,6 +23,7 @@
 
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Random;
 
@@ -58,8 +59,12 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_expense_claims_view);
-		controller = ExpenseClaimController.getInstance();
-		controller.getExpenseClaimList().addView(this);
+		try {
+			controller = new ExpenseClaimController(this);
+            controller.getExpenseClaimList().addView(this);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	@Override
@@ -71,9 +76,13 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 		// TODO #61 - adapter should be a custom adapter that can
 		// watch the ExpenseClaimsList object, rather than an
 		// ArrayList object
-		adapter = new ClaimListAdapter(this);
+		try {
+			adapter = new ClaimListAdapter(this);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
 		claim_list.setAdapter(adapter);
-		
 		
 		claim_list.setOnItemClickListener(new OnItemClickListener() {
 
@@ -138,11 +147,11 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 		adapter.notifyDataSetChanged();
 	}
 	
-	public void addClaim(ExpenseClaim claim) {
+	public void addClaim(ExpenseClaim claim) throws IOException {
 		controller.addExpenseClaim(claim);
 	}
 	
-	public void deleteClaim(ExpenseClaim claim) {
+	public void deleteClaim(ExpenseClaim claim) throws IOException {
 		controller.removeExpenseClaim(claim);
 	}
 	
@@ -160,7 +169,11 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 			.setPositiveButton("OK", new OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					deleteClaim(claimToDelete);
+					try {
+						deleteClaim(claimToDelete);
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
 					dialog.dismiss();
 				}
 			})

@@ -6,6 +6,7 @@
 
 package ca.ualberta.cs.shinyexpensetracker;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -117,7 +118,7 @@ public class AddExpenseClaimActivity extends Activity implements
 		return super.onOptionsItemSelected(item);
 	}
 
-	public boolean createExpenseClaim(View v) throws ParseException {
+	public boolean createExpenseClaim(View v) throws ParseException, IOException {
 		EditText nameText = (EditText) findViewById(R.id.editTextExpenseClaimName);
 		EditText endDateText = (EditText) findViewById(R.id.editTextEndDate);
 		EditText startDateText = (EditText) findViewById(R.id.editTextStartDate);
@@ -169,13 +170,13 @@ public class AddExpenseClaimActivity extends Activity implements
 			}
 
 		ExpenseClaim expenseClaim = new ExpenseClaim(name, startDate1, endDate);
-		ExpenseClaimList claimList = ExpenseClaimController.getInstance().getExpenseClaimList();
+		ExpenseClaimList claimList = new ExpenseClaimController(this).getExpenseClaimList();
 		claimList.addClaim(expenseClaim);
 		
 		return true;
 	}
 	
-	public void doneExpenseItem(View v) throws ParseException{
+	public void doneExpenseItem(View v) throws ParseException, IOException {
 		if (createExpenseClaim(v)){
 			finish();
 			Intent intent = new Intent(this, TabbedSummaryActivity.class);

@@ -16,8 +16,8 @@ import android.content.SharedPreferences.Editor;
  * Source: https://www.youtube.com/watch?v=gmNfc6u1qk0 (2015-01-31)
  * https://www.youtube.com/watch?v=uat-8Z6U_Co (2015-02-01)
  */
-public class ExpenseClaimListPersister {
-	private final IPersistenceStrategy persistanceStrategy;
+public class ExpenseClaimListPersister implements IExpenseClaimListPersister {
+	private final IPersistenceStrategy persistenceStrategy;
 	private final Gson gson;
 
 	/**
@@ -25,20 +25,14 @@ public class ExpenseClaimListPersister {
 	 * 
 	 * @param context The application's context.
 	 */
-	public ExpenseClaimListPersister(IPersistenceStrategy persistanceStrategy) {
-		this.persistanceStrategy = persistanceStrategy;
+	public ExpenseClaimListPersister(IPersistenceStrategy persistenceStrategy) {
+		this.persistenceStrategy = persistenceStrategy;
 		this.gson = new Gson();
 	}
 
-	/**
-	 * Loads the ExpenseClaimList from file (or creates a new one if none exists)
-	 * and returns it.
-	 * 
-	 * @return A loaded or new ExpenseClaimList.
-	 * @throws IOException 
-	 */
+	@Override
 	public ExpenseClaimList loadExpenseClaims() throws IOException {
-		String travelClaimsListData = persistanceStrategy.load();
+		String travelClaimsListData = persistenceStrategy.load();
 		if (travelClaimsListData.equals("")) {
 			return new ExpenseClaimList();
 		} else {
@@ -46,14 +40,9 @@ public class ExpenseClaimListPersister {
 		}
 	}
 
-	/**
-	 * Saves an ExpenseClaimList to file.
-	 * 
-	 * @param list The ExpenseClaimList to save;
-	 * @throws IOException 
-	 */
+	@Override
 	public void saveExpenseClaims(ExpenseClaimList list) throws IOException {
 		String travelClaimsString = gson.toJson(list);
-		persistanceStrategy.save(travelClaimsString);
+		persistenceStrategy.save(travelClaimsString);
 	}
 }

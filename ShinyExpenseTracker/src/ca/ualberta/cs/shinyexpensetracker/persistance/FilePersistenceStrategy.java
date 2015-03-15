@@ -6,17 +6,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 import android.content.Context;
 
 /**
  * Handles saving and loading a string value from the contents of a specified
  * file.
  * 
- * Source: http://developer.android.com/training/basics/data-storage/files.html
+ * Source: 	http://developer.android.com/training/basics/data-storage/files.html
  * (2015-03-15)
- * http://developer.android.com/guide/topics/data/data-storage.html#
- * filesInternal (2015-03-15)
+ * 			http://developer.android.com/guide/topics/data/data-storage.html#filesInternal (2015-03-15)
  */
 public class FilePersistenceStrategy implements IPersistenceStrategy {
 	private final Context context;

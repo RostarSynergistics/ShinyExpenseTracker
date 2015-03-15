@@ -1,5 +1,6 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -19,6 +20,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
+import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 //Source: http://stackoverflow.com/questions/21156463/junit-testing-for-android-app-with-fragments
 //On March 12
@@ -59,9 +61,7 @@ public class ClaimSummaryFragmentTest extends
 		intent.putExtra("claimIndex", 0);
 		setActivityIntent(intent);
 		
-		claimList = new ExpenseClaimList();
-		ecc = ExpenseClaimController.getInstance();
-		ecc.setClaimList(claimList);
+		ecc = new ExpenseClaimController(new MockExpenseClaimListPersister());
 		
 		//Add an expense claim to the expenseClaimController
 		ExpenseClaim claim = new ExpenseClaim(claimName, startDate, endDate);
@@ -85,11 +85,10 @@ public class ClaimSummaryFragmentTest extends
 	}
 
 	//Tests that setClaimInfo sets the correct information for the claim
-	public void testSetClaimInfo() {
+	public void testSetClaimInfo() throws IOException {
 		
 		claimList = new ExpenseClaimList();
-		ecc = ExpenseClaimController.getInstance();
-		ecc.setClaimList(claimList);
+		ecc = new ExpenseClaimController(new MockExpenseClaimListPersister(claimList));
 		
 		//Add an expense claim to the expenseClaimController
 		ExpenseClaim claim = new ExpenseClaim(claimName, startDate, endDate);
@@ -110,7 +109,11 @@ public class ClaimSummaryFragmentTest extends
 			
 			@Override
 			public void run() {
-				frag.setClaimInfo(frag.getView());
+				try {
+					frag.setClaimInfo(frag.getView());
+				} catch (IOException e) {
+					fail();
+				}
 			}
 			
 		});
@@ -140,7 +143,11 @@ public class ClaimSummaryFragmentTest extends
 
 			@Override
 			public void run() {
-				frag.setClaimInfo(frag.getView());
+				try {
+					frag.setClaimInfo(frag.getView());
+				} catch (IOException e) {
+					fail();
+				}
 			}
 
 		});
@@ -154,8 +161,11 @@ public class ClaimSummaryFragmentTest extends
 
 			@Override
 			public void run() {
-				frag.setClaimInfo(frag.getView());
-				
+				try {
+					frag.setClaimInfo(frag.getView());
+				} catch (IOException e) {
+					fail();
+				}
 			}
 		});
 		TextView tags = (TextView) frag.getView().findViewById(R.id.claimTagsTextView);
@@ -165,7 +175,7 @@ public class ClaimSummaryFragmentTest extends
 
 	
 	//Test that the expeseTotals appear as expected
-	public void testExpenseTotals() {
+	public void testExpenseTotals() throws IOException {
 		Date startDate = new Date(1000);
 		Date endDate = new Date(2000);
 		
@@ -175,8 +185,7 @@ public class ClaimSummaryFragmentTest extends
 		ExpenseItem expense = new ExpenseItem("test Expense", startDate, Category.ACCOMODATION, amount, Currency.CAD);
 		
 		ExpenseClaimList claimList = new ExpenseClaimList();
-		ExpenseClaimController ecc = ExpenseClaimController.getInstance();
-		ecc.setClaimList(claimList);
+		ExpenseClaimController ecc = new ExpenseClaimController(new MockExpenseClaimListPersister(claimList));
 		
 		ecc.addExpenseClaim(claim);
 		ecc.addExpenseItem(expense, 0);
@@ -185,7 +194,11 @@ public class ClaimSummaryFragmentTest extends
 
 			@Override
 			public void run() {
-				frag.setClaimInfo(frag.getView());
+				try {
+					frag.setClaimInfo(frag.getView());
+				} catch (IOException e) {
+					fail();
+				}
 			}
 		});
 		
@@ -201,7 +214,11 @@ public class ClaimSummaryFragmentTest extends
 
 			@Override
 			public void run() {
-				frag.setClaimInfo(frag.getView());
+				try {
+					frag.setClaimInfo(frag.getView());
+				} catch (IOException e) {
+					fail();
+				}
 			}
 		});
 		
@@ -218,7 +235,11 @@ public class ClaimSummaryFragmentTest extends
 
 			@Override
 			public void run() {
-				frag.setClaimInfo(frag.getView());
+				try {
+					frag.setClaimInfo(frag.getView());
+				} catch (IOException e) {
+					fail();
+				}
 			}
 		});
 		

@@ -51,8 +51,8 @@
     <string name="label_status">Status:</string>
     <string name="title_activity_claim_summary">ClaimSummaryActivity</string>
 
-    <string name="deleteExpenseItemPromptTitle">Delete this expense?</string>
-    <string name="deleteExpenseItemPromptMessage">This action cannot be undone.</string>
+    <string name="deleteExpenseItemPromptTitle">Delete?</string>
+    <string name="deleteExpenseItemPromptMessage">Delete this expense item?</string>
 
     <string name="no_expenses">No Expenses</string>
     <string name="claim_name">claim name</string>

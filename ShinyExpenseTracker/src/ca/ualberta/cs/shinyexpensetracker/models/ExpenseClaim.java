@@ -99,6 +99,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	}
 	public void setTagList(TagList tagList) {
 		this.tagList = tagList;
+		notifyViews();
 	}
 	public ArrayList<ExpenseItem> getExpenses(){
 		return expenses;

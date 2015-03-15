@@ -11,7 +11,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
+import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.R;
@@ -95,6 +95,10 @@ public class ExpenseItemListFragmentTest extends
 				.findViewById(R.id.expenseItemsListView));
 	}
 	
+	/**
+	 * Checks that tapping an item in the list view will
+	 * open the appropriate activity
+	 */
 	public void testEditExpenseShowsActivity() {
 		final ListView listview = (ListView) frag.getView().findViewById(R.id.expenseItemsListView);
 		
@@ -208,5 +212,33 @@ public class ExpenseItemListFragmentTest extends
 		assertEquals(2, claim.getExpenses().size());
 		// - Check the list view for the new number of things
 		assertEquals(2, expenseList.getCount());
+	}
+	
+	public void testExpenseListVisibility() {
+		TextView noExpensePrompt = (TextView) frag.getView().findViewById(R.id.noExpensesTextView);
+
+		// Sanity check
+		assertEquals(1, claim.getExpenseCount());
+		
+		// Stuff to display:
+		// --> Check that the list is visible
+		assertEquals(View.INVISIBLE, noExpensePrompt.getVisibility());
+		
+		// Remove the item
+		getInstrumentation().runOnMainSync(new Runnable() {
+			
+			@Override
+			public void run() {
+				claim.removeExpense(0);
+			}
+		});
+		getInstrumentation().waitForIdleSync();
+
+		// Sanity check
+		assertEquals(0, claim.getExpenseCount());
+		
+		// Nothing to display:
+		// --> Check that the prompt is visible
+		assertEquals(View.VISIBLE, noExpensePrompt.getVisibility());
 	}
 }

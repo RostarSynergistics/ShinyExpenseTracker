@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.IView;
@@ -69,6 +70,9 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 
 		// Inform the model that we're listening for updates.
 		claim.addView(this);
+
+		// Set up view visibility
+		setPromptVisibility();
 		
 		// Set up the list view to display data
 		ListView expenses = (ListView) getView().findViewById(R.id.expenseItemsListView);
@@ -95,10 +99,14 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 		});
 	}
 	
+	@Override
+	public void onResume() {
+		super.onResume();
+	}
 
 	/**
 	 * Prompts the user for deletion of an expense at a given position
-	 * @param position the position in the listview to delete
+	 * @param position the position in the list view to delete
 	 */
 	public void askDeleteExpenseAt(final int position) {
 		// Construct a new dialog to be displayed.
@@ -160,8 +168,29 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 
 	@Override
 	public void update(ExpenseClaim m) {
-		// Model was updated, inform the adapter
+		// Model was updated, inform the views
 		adapter.notifyDataSetChanged();
+		setPromptVisibility();
+	}
+	
+	/**
+	 * Sets visibility for the prompt informing the user that
+	 * there are no expenses. Should be called any time the list
+	 * needs refreshing.
+	 */
+	private void setPromptVisibility() {
+		TextView noExpenses = (TextView) getView().findViewById(R.id.noExpensesTextView);
+		
+		// Are there expenses to display?
+		if (claim.getExpenseCount() == 0) {
+			// No.
+			// Set the prompt to be visible
+			noExpenses.setVisibility(View.VISIBLE);
+		} else {
+			// Yes.
+			// Set the list to be visible
+			noExpenses.setVisibility(View.INVISIBLE);
+		}
 	}
 	
 	/**

@@ -17,8 +17,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
@@ -43,6 +45,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -61,24 +64,43 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private AlertDialog.Builder adb;
     public Dialog alertDialog;
-    
-    
+    private boolean isEditing = false;
+    private ExpenseItem item;
+    private ExpenseClaim claim;
+    private HashMap<String, Integer> categoriesMap = new HashMap<String, Integer>();
+    private HashMap<String, Integer> currenciesMap = new HashMap<String, Integer>();
+    private ExpenseClaimController controller;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_expense_item);
 		
 		dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.CANADA);
+
+        
+        button = (ImageButton) findViewById(R.id.expenseItemReceiptImageButton);
+        
+        Intent intent = getIntent();
+		Bundle bundle = intent.getExtras();
+		
+		if (bundle != null){
+			int claimId = (Integer) bundle.get("Claim ID");
+			Integer expenseItemId = (Integer) bundle.get("Item ID");
+			controller = ExpenseClaimController.getInstance();
+			claim = controller.getExpenseClaim(claimId);
+			if (expenseItemId != null){
+				item = claim.getItemById(expenseItemId);
+				isEditing = true;
+				populateTextViews();
+			}
+		}
 		adb = new AlertDialog.Builder(this);
         
         findViewsById();
         
         setDateTimeField();
-        
-        button = (ImageButton) findViewById(R.id.expenseItemReceiptImageButton);
-
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -98,6 +120,48 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		return super.onOptionsItemSelected(item);
 	}
 	
+	private void setEditTextValue(int textViewId, String value){
+		EditText tv = (EditText) findViewById(textViewId);
+		tv.setText(value);
+	}
+	
+	private void populateTextViews(){
+		populateHashMaps();
+		
+		//SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.CANADA);
+		
+		setEditTextValue(R.id.expenseItemNameEditText, item.getName().toString());
+		setEditTextValue(R.id.expenseItemDateEditText, dateFormatter.format(item.getDate()));
+		setEditTextValue(R.id.expesenItemDescriptionEditText, item.getDescription().toString());
+		setEditTextValue(R.id.expenseItemAmountEditText, item.getAmountSpent().toString());
+		Spinner s = (Spinner) findViewById(R.id.expenseItemCategorySpinner);
+		s.setSelection(categoriesMap.get(item.getCategory().getText()));
+		s = (Spinner) findViewById(R.id.expenseItemCurrencySpinner);
+		s.setSelection(currenciesMap.get(item.getCurrency().name()));
+	}
+	
+	private void populateHashMaps() {
+		categoriesMap.put("air fare", 0);
+		categoriesMap.put("ground transport", 1);
+		categoriesMap.put("vehicle rental", 2);
+		categoriesMap.put("private automobile", 3);
+		categoriesMap.put("fuel", 4);
+		categoriesMap.put("parking", 5);
+		categoriesMap.put("registration", 6);
+		categoriesMap.put("accomodation", 7);
+		categoriesMap.put("meal", 8);
+		categoriesMap.put("supplies", 9);
+
+		currenciesMap.put("CAD", 0);
+		currenciesMap.put("USD", 1);
+		currenciesMap.put("GBP", 2);
+		currenciesMap.put("EUR", 3);
+		currenciesMap.put("CHF", 4);
+		currenciesMap.put("JPY", 5);
+		currenciesMap.put("CNY", 6);
+		
+	}
+
 	private void findViewsById() {
     	date = (EditText) findViewById(R.id.expenseItemDateEditText);
         date.setInputType(InputType.TYPE_NULL);
@@ -217,11 +281,19 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		ExpenseItem expense = new ExpenseItem(name, date, category, amount, 
 				currency, description, button.getDrawingCache()); 
 		
+		if (isEditing){
+			claim.removeItem(item);
+			claim.addItem(expense);
+		}
+		else{
+			claim.addItem(expense);
+		}
 		//Still needs to be implemented
 		//Add expenseItem to claim
 		
 		return true;
 	}
+
 	
 	/** 
 	 * Runs on click of the expenseItemImageButton.  Opens Camera app to allow user to take a 

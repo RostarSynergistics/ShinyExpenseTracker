@@ -1,6 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseTotalsAdapter;
+import ca.ualberta.cs.shinyexpensetracker.IView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
@@ -24,9 +26,11 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
  * @author Sarah Morris
  *
  */
-public class ClaimSummaryFragment extends Fragment {
+public class ClaimSummaryFragment extends Fragment implements IView<ExpenseClaim> {
 
 	private ExpenseClaim claim;
+	private int claimIndex;
+	private ExpenseTotalsAdapter adapter;
 	
 	/**
 	 * The fragment argument representing the section number for this
@@ -58,6 +62,29 @@ public class ClaimSummaryFragment extends Fragment {
 		return rootView;
 	}
 	
+	@Override
+	public void onStart() {
+		super.onStart();
+		
+		//get the Claim we are working with
+		Intent intent = getActivity().getIntent();
+		claimIndex = intent.getIntExtra("claimIndex", -1);
+		if (claimIndex == -1) {
+			throw new RuntimeException("Intent not passed: Got claim index of -1");
+		}
+		
+		// Get the claim context
+		claim = ExpenseClaimController.getInstance().getExpenseClaim(claimIndex);
+		
+		// Inform the model that we're listening for updates.
+		claim.addView(this);
+
+		// Set up the list view to display data
+		ListView expenses = (ListView) getView().findViewById(R.id.claimExpenseTotalsListView);
+		adapter = new ExpenseTotalsAdapter(claim, getActivity().getBaseContext());
+		expenses.setAdapter(adapter);
+	}
+	
 	public void onResume(){
 		super.onResume();
 		setClaimInfo(view);
@@ -69,15 +96,9 @@ public class ClaimSummaryFragment extends Fragment {
 	 * @param view
 	 */
 	public void setClaimInfo(View view) {
-		ExpenseClaimController ecc = ExpenseClaimController.getInstance(); 
-		
-		//get the claim that we are working with
-		int claimIndex = getActivity().getIntent().getIntExtra("claimIndex", -1);
-		claim = ecc.getExpenseClaim(claimIndex);
-
 		// make sure that it is a valid claim
 		try {
-			claim = ecc.getExpenseClaim(claimIndex);
+			claim = ExpenseClaimController.getInstance().getExpenseClaim(claimIndex);
 		} catch (IndexOutOfBoundsException e){
 			throw new RuntimeException();
 		}
@@ -115,6 +136,12 @@ public class ClaimSummaryFragment extends Fragment {
 			// no expenses to list, show message saying "No expenses"
 			noExpenses.setVisibility(view.VISIBLE);
 		}
+	}
+
+	@Override
+	public void update(ExpenseClaim m) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

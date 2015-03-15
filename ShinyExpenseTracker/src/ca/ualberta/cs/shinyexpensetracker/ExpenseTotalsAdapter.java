@@ -34,17 +34,19 @@ public class ExpenseTotalsAdapter extends BaseAdapter implements ListAdapter {
 	
 	@Override
 	public int getCount() {
+		createExpenseTotals();
 		return totals.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
+		createExpenseTotals();
 		return totals.get(position);
-		//return claim.getExpenses().get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
+		createExpenseTotals();
 		return position;
 	}
 
@@ -68,11 +70,11 @@ public class ExpenseTotalsAdapter extends BaseAdapter implements ListAdapter {
 		return convertView;
 	}
 
-	@Override
+	/*@Override
 	public void notifyDataSetChanged() {
 		super.notifyDataSetChanged();
 		createExpenseTotals();
-	}
+	}*/
 	
 	/**
 	 * Generates the list of expense item totals

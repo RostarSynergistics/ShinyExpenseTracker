@@ -179,6 +179,7 @@ public class AddExpenseClaimActivity extends Activity implements
 		if (createExpenseClaim(v)){
 			finish();
 			Intent intent = new Intent(this, TabbedSummaryActivity.class);
+			intent.putExtra("claimIndex", ExpenseClaimController.getInstance().getCount() - 1);
 			startActivity(intent);
 		}
 	}

@@ -121,8 +121,8 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 			
 			Intent intent = new Intent(this, AddExpenseClaimActivity.class);
 			startActivity(intent);
-			return true;
 			
+			return true;
 		case R.id.action_sort:
 		case R.id.action_filter:
 		case R.id.action_manage_tags:

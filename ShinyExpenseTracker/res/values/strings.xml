@@ -51,4 +51,12 @@
     <string name="label_status">Status:</string>
     <string name="title_activity_claim_summary">ClaimSummaryActivity</string>
 
+    <string name="deleteExpenseItemPromptTitle">Delete?</string>
+    <string name="deleteExpenseItemPromptMessage">Delete this expense item?</string>
+
+    <string name="no_expenses">No Expenses</string>
+    <string name="claim_name">claim name</string>
+    <string name="add_expense_item">Add Expense Item</string>
+    <string name="add_destination">Add Destination</string>
+
 </resources>

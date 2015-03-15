@@ -38,6 +38,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimsView;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
+import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 
 public class ViewAllExpenseClaimsActivityTests extends
 		ActivityInstrumentationTestCase2<ExpenseClaimsView> {
@@ -249,12 +250,14 @@ public class ViewAllExpenseClaimsActivityTests extends
 	 */
 	public void testDeleteVisibleClaim() {
 		// Build 2 claims with dates so that claim 1 < claim 2.
+		TagList tags1 = new TagList();
+		tags1.addTag(new Tag("Test 1"));
 		ExpenseClaim claim1 = addClaim(
-				new ExpenseClaim("Delete Claim 1", new Date(), null, ExpenseClaim.Status.IN_PROGRESS, new Tag("Test 1"))
-			);
+				new ExpenseClaim("Delete Claim 1", new Date(), null, ExpenseClaim.Status.IN_PROGRESS, tags1));
+		TagList tags2 = new TagList();
+		tags2.addTag(new Tag("Test 2"));
 		ExpenseClaim claim2 = addClaim(
-				new ExpenseClaim("Delete Claim 2", new Date(), null, ExpenseClaim.Status.IN_PROGRESS, new Tag("Test 2"))
-			);
+				new ExpenseClaim("Delete Claim 2", new Date(), null, ExpenseClaim.Status.IN_PROGRESS, tags2));
 		ExpenseClaim visibleClaim;
 		
 		// Check that an item is actually deleted

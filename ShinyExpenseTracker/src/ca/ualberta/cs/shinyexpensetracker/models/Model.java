@@ -29,7 +29,9 @@ public abstract class Model<M extends Model<M>> {
 	 * @param v The view to keep track of.
 	 */
 	public void addView(IView<M> v) {
-		views.add(v);
+		if (!views.contains(v)) {
+			views.add(v);
+		}
 	}
 
 	/**

@@ -16,6 +16,7 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.math.BigDecimal;
 import java.util.Date;
+
 import android.graphics.Bitmap;
 
 public class ExpenseItem extends Model <ExpenseItem> {
@@ -38,7 +39,7 @@ public class ExpenseItem extends Model <ExpenseItem> {
 			this.text = text;
 		}
 		
-		public String getText(){
+		public String toString(){
 			return this.text;
 		}
 		
@@ -56,7 +57,6 @@ public class ExpenseItem extends Model <ExpenseItem> {
 		
 	public enum Currency {
 		CAD, USD, GBP, EUR, CHF, JPY, CNY
-		
 	}
 
 	public String name;
@@ -88,6 +88,15 @@ public class ExpenseItem extends Model <ExpenseItem> {
 		this.description = description;
 	}
 	
+	public ExpenseItem(String name, Date date, Category category,
+			BigDecimal amount, Currency currency) {
+		this.name = name;
+		this.date = date;
+		this.category = category;
+		this.amountSpent = amount;
+		this.currency = currency;
+	}
+
 	public void setName(String name){
 		this.name = name;
 	}
@@ -142,5 +151,14 @@ public class ExpenseItem extends Model <ExpenseItem> {
 	
 	public Bitmap getReceiptPhoto(){
 		return this.receiptPhoto;
+	}
+	
+	// XXX: #69 <- This should return the formatted JodaMoney string
+	public String getValueString() {
+		return new StringBuilder()
+					.append(getAmountSpent())
+					.append(" ")
+					.append(getCurrency().toString())
+			.toString();
 	}
 }

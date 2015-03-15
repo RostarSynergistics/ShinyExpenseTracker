@@ -13,5 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
     </ListView>
+    
+    <TextView
+        android:id="@+id/noExpensesTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/no_expenses" >
+    </TextView>
 
 </LinearLayout>

@@ -41,5 +41,23 @@
     </string-array>
 
     <string name="title_activity_add_destination">AddDestinationActivity</string>
+    <string name="title_activity_tabbed_summary">Claim Summary</string>
+    <string name="title_section1">Summary</string>
+    <string name="title_section2">Expenses</string>
+    <string name="title_section3">Destinations</string>
+    <string name="label_end_date">End Date:</string>
+    <string name="label_tags">Tags:</string>
+    <string name="label_expense_totals">Expense Totals:</string>
+    <string name="label_start_date">Start Date:</string>
+    <string name="label_status">Status:</string>
+    <string name="title_activity_claim_summary">ClaimSummaryActivity</string>
+
+    <string name="deleteExpenseItemPromptTitle">Delete?</string>
+    <string name="deleteExpenseItemPromptMessage">Delete this expense item?</string>
+
+    <string name="no_expenses">No Expenses</string>
+    <string name="claim_name">claim name</string>
+    <string name="add_expense_item">Add Expense Item</string>
+    <string name="add_destination">Add Destination</string>
 
 </resources>

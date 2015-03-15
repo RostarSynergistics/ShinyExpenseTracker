@@ -17,6 +17,43 @@ public class TagList extends Model<TagList> {
 	
 	
 	public boolean addTag(Tag tag) {
+		if(checkValidTag(tag)){
+			tags.add(tag);
+			notifyViews();
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Edits a tag in the tag list at a given position
+	 * @param postion of tag to edit
+	 * @param newTag to change the old tag into 
+	 * @return boolean stating if change could be made
+	 */
+	public boolean editTag(int postion, Tag newTag){
+		//Check for valid position
+		if(postion >= tags.size()){
+			return false;
+		}
+		
+		//Check for valid tag
+		if(checkValidTag(newTag)){
+			tags.set(postion, newTag);
+			notifyViews();
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	/**
+	 * Checks if the tag given is valid for this tag list e.g alphanumeric
+	 * @param tag 
+	 * @return boolean stating if the tag is vallid 
+	 */
+	private boolean checkValidTag(Tag tag) {
 		String tagString = tag.getValue();
 		if(contains(tag)){
 			return false;
@@ -27,9 +64,7 @@ public class TagList extends Model<TagList> {
 		Pattern p = Pattern.compile("^\\w*$");
 		Matcher m = p.matcher(tagString);
 		if (m.matches()) {
-			tags.add(tag);
-			notifyViews();
-		return true;
+			return true;
 		}
 		else{
 			return false;
@@ -59,5 +94,14 @@ public class TagList extends Model<TagList> {
 	
 	public boolean contains(Tag tag){
 		return tags.contains(tag);
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < tags.size(); i++) {
+			sb.append(tags.get(i));
+		}
+		return sb.toString();
 	}
 }

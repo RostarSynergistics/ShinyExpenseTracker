@@ -102,7 +102,8 @@ public class ClaimListAdapter extends BaseAdapter {
 		
 		// Name and status can't be null
 		name.setText(claim.getName());
-		status.setText(claim.getStatus().toString());
+		status.setText(claim.getStatus().getText());
+				
 		
 		// Start date can't be null, but end date might be.
 		if (claim.getEndDate() == null) {
@@ -114,10 +115,10 @@ public class ClaimListAdapter extends BaseAdapter {
 					dateFormat.format(claim.getEndDate()));
 		}
 		// Tag might be null
-		if (claim.getTag() == null) {
+		if (claim.getTagList() == null) {
 			tags.setText(null);
 		} else {
-			tags.setText(claim.getTag().toString());
+			tags.setText(claim.getTagList().toString());
 		}
 		
 		return convertView;

@@ -24,9 +24,15 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
 import java.util.Date;
+import java.util.Random;
 
+import android.app.Activity;
+import android.app.Instrumentation.ActivityMonitor;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.UiThreadTest;
+import android.view.KeyEvent;
 import android.widget.ListView;
+import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimsView;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -39,6 +45,8 @@ public class ViewAllExpenseClaimsActivityTests extends
 	
 	ExpenseClaimsView activity;
 	ExpenseClaimList claimsList;
+	ExpenseClaimController controller;
+	static int debug_addedID = 0;
 	
 	ListView claimListView;
 	
@@ -267,22 +275,23 @@ public class ViewAllExpenseClaimsActivityTests extends
 
 	/**
 	 * Checks if pressing the NewClaim button opens the
-	 * appropriate activity.
+	 * appropriate activity and adds a new claim i
 	 */
-	public void testMenuNewClaim() {
+	
+	public void testMenuClickNewActivity() {
 		
-		// Execute the New Claim button from the Options menu synchronously.
-		assertTrue(getInstrumentation().invokeMenuActionSync(
-				activity, ca.ualberta.cs.shinyexpensetracker.R.id.action_new_claim,
-				0));
+		// Check to see if AddExpenseActivity is visible once the MenuItem is clicked.
+		// Code taken from: stackoverflow.com/questions/3084891/how-to-test-menu
+				
+		ActivityMonitor am = getInstrumentation().addMonitor(AddExpenseClaimActivity.class.getName(), null, false);
+		getInstrumentation().invokeMenuActionSync(activity, ca.ualberta.cs.shinyexpensetracker.R.id.action_new_claim, 0);
+		
+		Activity a = getInstrumentation().waitForMonitorWithTimeout(am, 1000);
+		assertEquals(true, getInstrumentation().checkMonitorHit(am, 1));
+		a.finish();
+		
 		// Wait for the application to become idle
 		getInstrumentation().waitForIdleSync();
 
-		// TODO #17 Check if the activity was opened.
-		// Here, we're checking if the "New Claim" button adds a new faux claim
-		assertEquals("Claim not added", 1, claimListView.getCount());
-		
-		// Fail this test because it isn't finished.
-		fail();
 	}
 }

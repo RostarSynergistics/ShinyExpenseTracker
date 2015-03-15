@@ -123,23 +123,6 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 			startActivity(intent);
 			
 			return true;
-			// TODO Depends on #17
-
-			// Add randomly dated claim
-			// XXX Begin -- REMOVE ME
-			/* Replace this code with something that opens an activity. (#76)
-			Date sd = new Date(System.currentTimeMillis() + new Random().nextInt(2000000000));
-			Date ed = null;
-			if (new Random().nextBoolean()) {
-				ed = new Date(System.currentTimeMillis() + 2000000000  + new Random().nextInt(2000000000));
-			}
-			
-			controller.addExpenseClaim(
-					new ExpenseClaim("Test ["+debug_addedID++ +"]", sd, ed));
-			
-			return true;
-			// XXX REMOVE ME -- End*/
-			
 		case R.id.action_sort:
 		case R.id.action_filter:
 		case R.id.action_manage_tags:

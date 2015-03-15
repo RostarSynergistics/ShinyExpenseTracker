@@ -95,4 +95,13 @@ public class TagList extends Model<TagList> {
 	public boolean contains(Tag tag){
 		return tags.contains(tag);
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < tags.size(); i++) {
+			sb.append(tags.get(i));
+		}
+		return sb.toString();
+	}
 }

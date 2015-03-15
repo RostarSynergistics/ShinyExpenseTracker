@@ -14,13 +14,14 @@ import java.util.Date;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Instrumentation;
+import android.app.Instrumentation.ActivityMonitor;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.UiThreadTest;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
@@ -137,23 +138,38 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 		assertEquals("endDate != endDate", toDate, sampleExpenseClaim.getEndDate());
 		assertNotSame("false positive, endDate", "Wrong endDate", sampleExpenseClaim.getEndDate());
 }
-	@UiThreadTest
+	
 	public void testDoneButton() throws ParseException {
 		
+		ActivityMonitor monitor = instrumentation.addMonitor(TabbedSummaryActivity.class.getName(), null, false);
+		
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				
+				startDate.setText("01-01-2015");
+				endDate.setText("01-10-2015");
+				name.setText("URoma");
+	
+				doneButton.performClick();
+				
+			}
+		});
+		instrumentation.waitForIdleSync();
+		
+		TabbedSummaryActivity nextActivity = (TabbedSummaryActivity) instrumentation.waitForMonitor(monitor);
+		assertNotNull("Next activity not started", nextActivity);
+		
 		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
-
-		startDate.setText("01-01-2015");
-		endDate.setText("01-10-2015");
-		name.setText("URoma");
 		Date startDateObject = sdf.parse(startDate.getText().toString());
 		Date endDateObject = sdf.parse(endDate.getText().toString());
-	
-		doneButton.performClick();
 		
 		assertEquals("The two names do not equal each other", "URoma", controller.getExpenseClaim(0).getName());
 		
 		assertEquals("The two startDates do not equal each other", startDateObject, controller.getExpenseClaim(0).getStartDate());
 		
 		assertEquals("The two endDates do not equal each other", endDateObject, controller.getExpenseClaim(0).getEndDate());
-		}
+		
+		nextActivity.finish();
+	}
 }

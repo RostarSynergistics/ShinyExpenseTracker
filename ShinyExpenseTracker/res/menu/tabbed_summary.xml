@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ca.ualberta.cs.shinyexpensetracker.TabbedSummaryActivity" >
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_settings"/>
+    
+    <item android:id="@+id/addExpenseItem" 
+        android:title="@string/add_expense_item" 
+        android:onClick="addExpenseItemMenuItem">
+    </item>
+    
+    <item android:id="@+id/addTag" 
+        android:title="@string/add_tag" 
+        android:onClick="addTagMenuItem">
+    </item>
+    
+    <item android:id="@+id/addDestination" 
+        android:title="@string/add_destination" 
+        android:onClick="addDestinationMenuItem">
+    </item>
+
+</menu>

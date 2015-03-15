@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import android.app.AlertDialog;
@@ -20,6 +21,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Menu;
@@ -166,15 +168,18 @@ public class AddExpenseClaimActivity extends Activity implements
 				endDate = dateFormatter.parse(endDateText.getText().toString());
 			}
 
-		ExpenseClaim expenseClaim = new ExpenseClaim(name, startDate1, endDate, null, null);
+		ExpenseClaim expenseClaim = new ExpenseClaim(name, startDate1, endDate);
 		ExpenseClaimList claimList = ExpenseClaimController.getInstance().getExpenseClaimList();
 		claimList.addClaim(expenseClaim);
+		
 		return true;
 	}
 	
 	public void doneExpenseItem(View v) throws ParseException{
 		if (createExpenseClaim(v)){
 			finish();
+			Intent intent = new Intent(this, TabbedSummaryActivity.class);
+			startActivity(intent);
 		}
 	}
 

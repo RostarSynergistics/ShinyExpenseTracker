@@ -8,8 +8,11 @@ import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import android.net.NetworkInfo.DetailedState;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 
 public class AddDestinationActivity extends Activity {
@@ -18,6 +21,7 @@ public class AddDestinationActivity extends Activity {
 	private EditText reasonForTravelEditText;
 	private ExpenseClaimController ecc;
 	private DestinationList destList;
+	int claimIndex;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,15 @@ public class AddDestinationActivity extends Activity {
 		findViewsById();
 		ecc = ExpenseClaimController.getInstance();
 		destList = new DestinationList();
+		claimIndex = getIntent().getExtras().getInt("claimIndex");
+		
+        final Button button = (Button) findViewById(R.id.addDestinationDoneButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	addNewDestination();
+            }
+        });
+
 	}
 
 	@Override
@@ -50,12 +63,9 @@ public class AddDestinationActivity extends Activity {
 		reason = reasonForTravelEditText.getText().toString();
 		
 		Destination destination = new Destination(dest, reason);
-		destList.addDestination(destination);
+		ecc.getExpenseClaim(claimIndex).addDestination(destination);
 		
-		//Still needs to be implemented: Add Destination to ExpenseClaim
-		
-		return false;
+		return true;
 		
 	}
-
 }

@@ -57,7 +57,8 @@
         android:layout_marginTop="17dp"
         android:ems="10"
         android:hint="Touch to enter..."
-        android:inputType="textMultiLine" >
+        android:inputType="textMultiLine"
+        android:gravity="top" >
 
         <requestFocus />
     </EditText>

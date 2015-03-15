@@ -41,7 +41,6 @@ public class DestinationList extends Model<DestinationList> {
 		}
 	}
 	
-	
 	public void removeDestination(Destination d) {
 		destinationList.remove(d);
 	}

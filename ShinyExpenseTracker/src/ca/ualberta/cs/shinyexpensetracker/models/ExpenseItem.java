@@ -16,6 +16,7 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.math.BigDecimal;
 import java.util.Date;
+
 import android.graphics.Bitmap;
 
 public class ExpenseItem extends Model <ExpenseItem> {
@@ -137,4 +138,47 @@ public class ExpenseItem extends Model <ExpenseItem> {
 	public boolean doesHavePhoto() {
 		return this.receiptPhoto != null;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ExpenseItem other = (ExpenseItem) obj;
+		if (amountSpent == null) {
+			if (other.amountSpent != null)
+				return false;
+		} else if (!amountSpent.equals(other.amountSpent))
+			return false;
+		if (category != other.category)
+			return false;
+		if (currency != other.currency)
+			return false;
+		if (date == null) {
+			if (other.date != null)
+				return false;
+		} else if (!date.equals(other.date))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (receiptPhoto == null) {
+			if (other.receiptPhoto != null)
+				return false;
+		} else if (!receiptPhoto.equals(other.receiptPhoto))
+			return false;
+		return true;
+	}
+	
+	
 }

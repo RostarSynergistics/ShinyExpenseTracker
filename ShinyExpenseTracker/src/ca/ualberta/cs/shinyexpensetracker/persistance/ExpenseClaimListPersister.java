@@ -15,7 +15,7 @@ import android.content.SharedPreferences.Editor;
  * https://www.youtube.com/watch?v=uat-8Z6U_Co (2015-02-01)
  */
 public class ExpenseClaimListPersister {
-	private final IPersistanceStrategy persistanceStrategy;
+	private final IPersistenceStrategy persistanceStrategy;
 	private final Gson gson;
 
 	/**
@@ -23,7 +23,7 @@ public class ExpenseClaimListPersister {
 	 * 
 	 * @param context The application's context.
 	 */
-	public ExpenseClaimListPersister(IPersistanceStrategy persistanceStrategy) {
+	public ExpenseClaimListPersister(IPersistenceStrategy persistanceStrategy) {
 		this.persistanceStrategy = persistanceStrategy;
 		this.gson = new Gson();
 	}

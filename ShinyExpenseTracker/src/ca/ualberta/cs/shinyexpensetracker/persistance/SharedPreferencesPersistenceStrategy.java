@@ -4,13 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-public class SharedPreferencesPersistanceStrategy implements
-		IPersistanceStrategy {
+public class SharedPreferencesPersistenceStrategy implements
+		IPersistenceStrategy {
 	private static final String preferencesFileName = "ShinyExpenseTracker-expenseClaims";
 	private static final String preferenceKey = "expenseClaims";
 	private final Context context;
 
-	public SharedPreferencesPersistanceStrategy(Context context) {
+	public SharedPreferencesPersistenceStrategy(Context context) {
 		this.context = context;
 	}
 

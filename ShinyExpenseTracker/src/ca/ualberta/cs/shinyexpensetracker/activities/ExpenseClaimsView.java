@@ -116,8 +116,10 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 			
 			return true;
 		case R.id.action_sort:
+			return true;
 		case R.id.action_filter:
 			//TODO #28
+			return true;
 		case R.id.action_manage_tags:
 			Intent manageTagsIntent = new Intent(ExpenseClaimsView.this, ManageTagActivity.class);
 			startActivity(manageTagsIntent);

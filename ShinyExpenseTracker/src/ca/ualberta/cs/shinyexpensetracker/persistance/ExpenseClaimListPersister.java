@@ -46,10 +46,10 @@ public class ExpenseClaimListPersister {
 	/**
 	 * Saves an ExpenseClaimList to file.
 	 * 
-	 * @param travelClaims The ExpenseClaimList to save;
+	 * @param list The ExpenseClaimList to save;
 	 */
-	public void saveExpenseClaims(ExpenseClaimList travelClaims) {
-		String travelClaimsString = gson.toJson(travelClaims);
+	public void saveExpenseClaims(ExpenseClaimList list) {
+		String travelClaimsString = gson.toJson(list);
 		persistanceStrategy.save(travelClaimsString);
 	}
 }

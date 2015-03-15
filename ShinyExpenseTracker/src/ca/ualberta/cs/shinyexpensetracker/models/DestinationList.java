@@ -19,7 +19,7 @@ public class DestinationList extends Model<DestinationList> {
 	public boolean addDestination(Destination destination) {
 		String destinationName = destination.getName();
 		String destReason = destination.getReasonForTravel();
-		if(contains(destination)){
+		if(destinationList.contains(destination)){
 			return false;
 		}
 		if (destinationName == null || destinationName.equals("")){

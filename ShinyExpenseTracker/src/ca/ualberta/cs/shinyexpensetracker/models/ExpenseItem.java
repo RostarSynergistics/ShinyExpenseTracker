@@ -66,6 +66,7 @@ public class ExpenseItem extends Model <ExpenseItem> {
 	public Currency currency;
 	public String description;
 	public Bitmap receiptPhoto;
+	private boolean hasPhoto;
 	
 	public ExpenseItem (String name, Date date, Category category, 
 			BigDecimal amountSpent, Currency currency, String description, Bitmap photo){
@@ -152,6 +153,7 @@ public class ExpenseItem extends Model <ExpenseItem> {
 	public Bitmap getReceiptPhoto(){
 		return this.receiptPhoto;
 	}
+
 	
 	// XXX: #69 <- This should return the formatted JodaMoney string
 	public String getValueString() {
@@ -160,5 +162,6 @@ public class ExpenseItem extends Model <ExpenseItem> {
 					.append(" ")
 					.append(getCurrency().toString())
 			.toString();
+
 	}
 }

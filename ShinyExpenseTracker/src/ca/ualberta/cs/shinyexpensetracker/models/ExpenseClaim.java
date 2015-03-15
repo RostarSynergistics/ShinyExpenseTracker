@@ -39,6 +39,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	private Status status;
 	private TagList tagList;
 	private ArrayList<ExpenseItem> expenses = new ArrayList<ExpenseItem>();
+
 	
 	public ExpenseClaim(String name) {
 		this(name, new Date(), null, Status.IN_PROGRESS, null);
@@ -119,7 +120,15 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		expenses.remove( expenses.indexOf(expense) );
 		notifyViews();
 	}
-	
+	public void addItem(ExpenseItem item){
+		this.expenses.add(item);
+	}
+	public void removeItem(ExpenseItem item){
+		this.expenses.remove(item);
+	}
+	public ExpenseItem getItemById(int id){
+		return this.expenses.get(id);
+	}
 	/**
 	 * Comparison of two claims is the comparison of their start date.
 	 */

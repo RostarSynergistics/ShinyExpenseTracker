@@ -1,15 +1,4 @@
- /** 
- * Covers Issues 5 and 15
- * @author Sarah Morris
- * @author Oleg Oleynikov
- * @version 1.1
- * @since 2015-03-15
- *
- * 
- * Displays activity_create_expense_item activity, to give the user an 
- * interface to add the name, date, category, amount spent, currency, 
- * description and a photo of a receipt for expense items. 
- */
+
 
 package ca.ualberta.cs.shinyexpensetracker;
 
@@ -21,7 +10,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -50,6 +38,20 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
+
+/** 
+* Covers Issues 5 and 15
+* @author Sarah Morris
+* @author Oleg Oleynikov
+* @version 1.1
+* @since 2015-03-15
+*
+* 
+* Displays activity_create_expense_item activity, to give the user an 
+* interface to add the name, date, category, amount spent, currency, 
+* description and a photo of a receipt for expense items.
+* Also allows editing of a referred Expense Item, if there is any 
+*/
 
 public class ExpenseItemActivity extends Activity implements OnClickListener{
 
@@ -86,8 +88,8 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		
 		if (bundle != null){
 			// we have to receive a Claim ID so that we know to what claim to save an item
-			int claimId = (Integer) bundle.get("Claim ID");
-			Integer expenseItemId = (Integer) bundle.get("Item ID");
+			int claimId = (Integer) bundle.get("claimIndex");
+			Integer expenseItemId = (Integer) bundle.get("itemIndex");
 			controller = ExpenseClaimController.getInstance();
 			claim = controller.getExpenseClaim(claimId);
 			// if we received an Item ID
@@ -125,15 +127,11 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		return super.onOptionsItemSelected(item);
 	}
 	
-	private void setEditTextValue(int textViewId, String value){
-		EditText tv = (EditText) findViewById(textViewId);
-		tv.setText(value);
-	}
-	
+	/**
+	 * Pre-set fields with a loaded ExpenseItem info
+	 */
 	private void populateTextViews(){
 		populateHashMaps();
-		
-		//SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.CANADA);
 		
 		setEditTextValue(R.id.expenseItemNameEditText, item.getName().toString());
 		setEditTextValue(R.id.expenseItemDateEditText, dateFormatter.format(item.getDate()));
@@ -149,16 +147,10 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		}
 	}
 	
-	// copied from https://stackoverflow.com/questions/26842530/roundedimageview-add-border-and-shadow
-	// on March 15, 2015
-	public Bitmap convertToBitmap(Drawable drawable, int widthPixels, int heightPixels) {
-        Bitmap mutableBitmap = Bitmap.createBitmap(widthPixels, heightPixels, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(mutableBitmap);
-        drawable.setBounds(0, 0, widthPixels, heightPixels);
-        drawable.draw(canvas);
-
-        return mutableBitmap;
-    }
+	private void setEditTextValue(int textViewId, String value){
+		EditText tv = (EditText) findViewById(textViewId);
+		tv.setText(value);
+	}
 	
 	private void populateHashMaps() {
 		categoriesMap.put("air fare", 0);
@@ -181,6 +173,22 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		currenciesMap.put("CNY", 6);
 		
 	}
+	
+	// copied from https://stackoverflow.com/questions/26842530/roundedimageview-add-border-and-shadow
+	// on March 15, 2015
+	/** 
+	 * Convert a Drawable object to Bitmap 
+	 */
+	public Bitmap convertToBitmap(Drawable drawable, int widthPixels, int heightPixels) {
+        Bitmap mutableBitmap = Bitmap.createBitmap(widthPixels, heightPixels, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(mutableBitmap);
+        drawable.setBounds(0, 0, widthPixels, heightPixels);
+        drawable.draw(canvas);
+
+        return mutableBitmap;
+    }
+	
+	
 
 	private void findViewsById() {
     	date = (EditText) findViewById(R.id.expenseItemDateEditText);
@@ -225,11 +233,6 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
      * @throws ParseException
      */
 	public boolean createExpenseItem(View v) throws ParseException {
-		
-		Intent intent = getIntent();
-		int claimIndex = intent.getIntExtra("claimIndex", -1);
-		ExpenseClaimController ecc = ExpenseClaimController.getInstance();
-		ExpenseClaim claim = ecc.getExpenseClaim(claimIndex);
 		
 		EditText nameText = (EditText) findViewById(R.id.expenseItemNameEditText);
 		EditText dateText = (EditText) findViewById(R.id.expenseItemDateEditText);
@@ -303,13 +306,13 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 			description = descriptionText.getText().toString();
 		}
 		
+		// convert ImageButton image to bitmap
 		Drawable dr = button.getDrawable();
 		Bitmap bm = convertToBitmap(dr, dr.getMinimumWidth(), dr.getMinimumHeight());
 		
 		ExpenseItem expense = new ExpenseItem(name, date, category, amount, 
-				currency, description, bm);//button.getDrawingCache()); 
+				currency, description, bm); 
 		
-
 		if (isEditing){
 			claim.removeExpense(item);
 			claim.addExpense(expense);
@@ -317,8 +320,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		else{
 			claim.addExpense(expense);
 		}
-
-				
+		
 		return true;
 	}
 

@@ -1,5 +1,6 @@
 package ca.ualberta.cs.shinyexpensetracker;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -39,6 +40,7 @@ public class ExpenseTotalsAdapter extends BaseAdapter implements ListAdapter {
 	@Override
 	public Object getItem(int position) {
 		return totals.get(position);
+		//return claim.getExpenses().get(position);
 	}
 
 	@Override
@@ -55,8 +57,10 @@ public class ExpenseTotalsAdapter extends BaseAdapter implements ListAdapter {
 			// Need a new item view
 			convertView = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_1, parent, false);
 		}
+		
 		// This is the textview we're setting the value for
 		TextView text = (TextView) convertView.findViewById(android.R.id.text1);
+		
 		// Fetch the total for this position
 		text.setText( getItem(position).toString() );
 		
@@ -73,57 +77,66 @@ public class ExpenseTotalsAdapter extends BaseAdapter implements ListAdapter {
 	/**
 	 * Generates the list of expense item totals
 	 */
-	private void createExpenseTotals() {
+	public void createExpenseTotals() {
 		ArrayList<ExpenseItem> expenses = claim.getExpenses();
-		int cad = 0, usd = 0, gbp = 0, chf = 0, cny = 0, eur = 0, jpy = 0;
+		
+		BigDecimal cad = new BigDecimal(0);
+		BigDecimal usd = new BigDecimal(0);
+		BigDecimal gbp = new BigDecimal(0);
+		BigDecimal chf = new BigDecimal(0);
+		BigDecimal cny = new BigDecimal(0);
+		BigDecimal eur = new BigDecimal(0);
+		BigDecimal jpy = new BigDecimal(0);
+		
 		for (int i = 0; i < expenses.size(); i++) {
 			switch (expenses.get(i).getCurrency()) {
 			case CAD:
-				cad += expenses.get(i).getAmountSpent().intValue();
+				cad = cad.add(expenses.get(i).getAmountSpent());
 				break;
 			case USD:
-				usd += expenses.get(i).getAmountSpent().intValue();
+				usd = usd.add(expenses.get(i).getAmountSpent());
 				break;
 			case GBP:
-				gbp += expenses.get(i).getAmountSpent().intValue();
+				gbp = gbp.add(expenses.get(i).getAmountSpent());
 				break;
 			case CHF:
-				chf += expenses.get(i).getAmountSpent().intValue();
+				chf = chf.add(expenses.get(i).getAmountSpent());
 				break;
 			case CNY:
-				cny += expenses.get(i).getAmountSpent().intValue();
+				cny = cny.add(expenses.get(i).getAmountSpent());
 				break;
 			case EUR:
-				eur += expenses.get(i).getAmountSpent().intValue();
+				eur = eur.add(expenses.get(i).getAmountSpent());
 				break;
 			case JPY:
-				jpy += expenses.get(i).getAmountSpent().intValue();
+				jpy = jpy.add(expenses.get(i).getAmountSpent());
 				break;
 			default:
 				break;
 			}
 		}
+		
 		totals = new ArrayList<String>();
-		if (cad != 0){
-			totals.add(Currency.CAD + " " + cad);
+		if (!cad.equals(new BigDecimal(0))){
+			totals.add(Currency.CAD + " " + cad.toString());
 		} 
-		if (usd != 0) {
-			totals.add(Currency.USD + " " + usd);
+		if (!usd.equals(new BigDecimal(0))) {
+			totals.add(Currency.USD + " " + usd.toString());
 		} 
-		if (gbp != 0) {
-			totals.add(Currency.GBP + " " + gbp);
+		if (!gbp.equals(new BigDecimal(0))) {
+			totals.add(Currency.GBP + " " + gbp.toString());
 		} 
-		if (chf != 0) {
-			totals.add(Currency.CHF + " " + chf);
+		if (!chf.equals(new BigDecimal(0))) {
+			totals.add(Currency.CHF + " " + chf.toString());
 		} 
-		if (cny != 0) { 
-			totals.add(Currency.CNY + " " + cny);
+		if (!cny.equals(new BigDecimal(0))) { 
+			totals.add(Currency.CNY + " " + cny.toString());
 		} 
-		if (eur != 0) {
-			totals.add(Currency.EUR + " " + eur);
+		if (!eur.equals(new BigDecimal(0))) {
+			totals.add(Currency.EUR + " " + eur.toString());
 		} 
-		if (jpy != 0) {
-			totals.add(Currency.JPY + " " + jpy);
+		if (!jpy.equals(new BigDecimal(0))) {
+			totals.add(Currency.JPY + " " + jpy.toString());
 		}
 	}
 }

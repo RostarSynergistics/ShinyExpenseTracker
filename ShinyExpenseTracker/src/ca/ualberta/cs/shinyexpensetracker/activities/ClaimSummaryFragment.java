@@ -131,17 +131,16 @@ public class ClaimSummaryFragment extends Fragment implements IView<ExpenseClaim
 			//Need to get a list currencies and their total amount of all expenses in claim
 			ListView expenseTotals = (ListView) view.findViewById(R.id.claimExpenseTotalsListView);
 			expenseTotals.setAdapter(new ExpenseTotalsAdapter(claim, getActivity().getBaseContext()));
-			noExpenses.setVisibility(view.INVISIBLE);
+			noExpenses.setVisibility(View.INVISIBLE);
 		} else {
 			// no expenses to list, show message saying "No expenses"
-			noExpenses.setVisibility(view.VISIBLE);
+			noExpenses.setVisibility(View.VISIBLE);
 		}
 	}
 
 	@Override
 	public void update(ExpenseClaim m) {
-		// TODO Auto-generated method stub
-		
+		adapter.notifyDataSetChanged();
 	}
 	
 }

@@ -60,6 +60,7 @@ public class ExpenseTotalsAdapterTest extends AndroidTestCase {
 	public void testGetItem() {
 		// Add the expense
 		claim.addExpense(expense1);
+		adapter.notifyDataSetChanged();
 		assertEquals(expense1.getCurrency().toString() + " " + expense1.getAmountSpent().toString()
 				, adapter.getItem(0));
 	}
@@ -69,6 +70,7 @@ public class ExpenseTotalsAdapterTest extends AndroidTestCase {
 	 */
 	public void testGetItemId() {
 		claim.addExpense(expense2);
+		adapter.notifyDataSetChanged();
 		assertEquals(0, adapter.getItemId(0));
 	}
 	
@@ -78,21 +80,25 @@ public class ExpenseTotalsAdapterTest extends AndroidTestCase {
 	public void testGetCount() {
 		// Add just one item
 		claim.addExpense(expense1);
+		adapter.notifyDataSetChanged();
 		assertEquals(1, adapter.getCount());
 
 		// Add many an item
 		// expense1 currency == expense3 currency therefore there will only be two items in the list
 		claim.addExpense(expense2);
 		claim.addExpense(expense3);
+		adapter.notifyDataSetChanged();
 		assertEquals(2, adapter.getCount());
 		
 		// Remove an item
 		claim.removeExpense(expense1);
+		adapter.notifyDataSetChanged();
 		assertEquals(2, adapter.getCount());
 		
 		// Remove all items
 		claim.removeExpense(expense2);
 		claim.removeExpense(expense3);
+		adapter.notifyDataSetChanged();
 		assertEquals(0, adapter.getCount());
 	}
 	
@@ -104,6 +110,7 @@ public class ExpenseTotalsAdapterTest extends AndroidTestCase {
 		claim.addExpense(expense1);
 		claim.addExpense(expense2);
 		claim.removeExpense(expense2);
+		adapter.notifyDataSetChanged();
 		
 		assertEquals(expense1.getCurrency().toString() + " " + expense1.getAmountSpent().toString(), 
 				adapter.getItem(0));
@@ -115,6 +122,7 @@ public class ExpenseTotalsAdapterTest extends AndroidTestCase {
 	 */
 	public void testCreateExpenseTotals() {
 		claim.addExpense(expense1);
+		adapter.notifyDataSetChanged();
 		View view = adapter.getView(0, null, null);
 
 		TextView total = (TextView) view.findViewById(android.R.id.text1);
@@ -124,6 +132,7 @@ public class ExpenseTotalsAdapterTest extends AndroidTestCase {
 				total.getText().toString());
 		
 		claim.addExpense(expense3);
+		adapter.notifyDataSetChanged();
 		view = adapter.getView(0, null, null);
 		
 		total = (TextView) view.findViewById(android.R.id.text1);

@@ -3,9 +3,6 @@ package ca.ualberta.cs.shinyexpensetracker;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 
 /**
  * This class extends BaseAdapter to display the expense totals of a claim
@@ -34,19 +34,16 @@ public class ExpenseTotalsAdapter extends BaseAdapter implements ListAdapter {
 	
 	@Override
 	public int getCount() {
-		createExpenseTotals();
 		return totals.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		createExpenseTotals();
 		return totals.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		createExpenseTotals();
 		return position;
 	}
 
@@ -63,18 +60,18 @@ public class ExpenseTotalsAdapter extends BaseAdapter implements ListAdapter {
 		// This is the textview we're setting the value for
 		TextView text = (TextView) convertView.findViewById(android.R.id.text1);
 		
-		// Fetch the total for this position
+		// Fetch the createExpenseTotals total for this position
 		text.setText( getItem(position).toString() );
 		
 		// Return the converted view.
 		return convertView;
 	}
 
-	/*@Override
+	@Override
 	public void notifyDataSetChanged() {
 		super.notifyDataSetChanged();
 		createExpenseTotals();
-	}*/
+	}
 	
 	/**
 	 * Generates the list of expense item totals

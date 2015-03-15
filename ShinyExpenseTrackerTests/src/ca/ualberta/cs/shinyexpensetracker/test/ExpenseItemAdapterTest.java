@@ -69,6 +69,7 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 	public void testGetItem() {
 		// Add the expense
 		claim.addExpense(fancyPants);
+		adapter.notifyDataSetChanged();
 		assertEquals(fancyPants, adapter.getItem(0));
 		// Easy peasy.
 	}
@@ -78,6 +79,7 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 	 */
 	public void testGetItemId() {
 		claim.addExpense(classyHotel);
+		adapter.notifyDataSetChanged();
 		assertEquals(0, adapter.getItemId(0));
 	}
 	
@@ -87,20 +89,24 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 	public void testGetCount() {
 		// Add just one item
 		claim.addExpense(fancyPants);
+		adapter.notifyDataSetChanged();
 		assertEquals(1, adapter.getCount());
 
 		// Add many an item
 		claim.addExpense(classyHotel);
 		claim.addExpense(scrumptiousFood);
+		adapter.notifyDataSetChanged();
 		assertEquals(3, adapter.getCount());
 		
 		// Remove an item
 		claim.removeExpense(fancyPants);
+		adapter.notifyDataSetChanged();
 		assertEquals(2, adapter.getCount());
 		
 		// Remove all items
 		claim.removeExpense(scrumptiousFood);
 		claim.removeExpense(classyHotel);
+		adapter.notifyDataSetChanged();
 		assertEquals(0, adapter.getCount());
 		
 	}
@@ -113,6 +119,7 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 		claim.addExpense(fancyPants);
 		claim.addExpense(classyHotel);
 		claim.removeExpense(fancyPants);
+		adapter.notifyDataSetChanged();
 		
 		assertEquals(classyHotel, adapter.getItem(0));
 	}
@@ -122,6 +129,7 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 	 */
 	public void testItemData() {
 		claim.addExpense(scrumptiousFood);
+		adapter.notifyDataSetChanged();
 		View view = adapter.getView(0, null, null);
 
 		TextView viewName = (TextView) view.findViewById(R.id.expenseItemName);

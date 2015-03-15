@@ -25,6 +25,16 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 
+/**
+ * Tests activity that lets the user edit 
+ * information of the selected ExpenseItem
+ * 
+ * Covers Issue 15
+ * @author Oleg Oleynikov 
+ * @version 1.0
+ * @since 2015-03-15
+ */
+
 public class TestEditExpenseItem extends ActivityInstrumentationTestCase2<ExpenseItemActivity> {
 
 	public TestEditExpenseItem() {

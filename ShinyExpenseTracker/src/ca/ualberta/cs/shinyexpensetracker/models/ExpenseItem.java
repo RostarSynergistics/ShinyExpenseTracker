@@ -15,9 +15,13 @@
 package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import android.graphics.Bitmap;
+import android.text.format.DateFormat;
 
 public class ExpenseItem extends Model <ExpenseItem> {
 
@@ -105,7 +109,7 @@ public class ExpenseItem extends Model <ExpenseItem> {
 		return this.name;
 	}
 
-	public void setDate(Date date){
+	public void setDate(Date date) throws ParseException{
 		this.date = date;
 	}
 	
@@ -170,40 +174,32 @@ public class ExpenseItem extends Model <ExpenseItem> {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		else if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		else if (getClass() != obj.getClass())
 			return false;
 		ExpenseItem other = (ExpenseItem) obj;
-		if (amountSpent == null) {
-			if (other.amountSpent != null)
-				return false;
-		} else if (!amountSpent.equals(other.amountSpent))
+		if (!this.getName().equals(other.getName()) ){
 			return false;
-		if (category != other.category)
+		}
+		else if(!this.getDate().equals(other.getDate())){
 			return false;
-		if (currency != other.currency)
+		}
+		else if(!this.getDescription().equals(other.getDescription())){
 			return false;
-		if (date == null) {
-			if (other.date != null)
-				return false;
-		} else if (!date.equals(other.date))
+		}
+		else if(!this.getCategory().equals(other.getCategory())){
 			return false;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
+		}
+		else if(!this.getAmountSpent().equals(other.getAmountSpent())){
 			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
+		}
+		else if(!this.getCurrency().equals(other.getCurrency())){
 			return false;
-		if (receiptPhoto == null) {
-			if (other.receiptPhoto != null)
-				return false;
-		} else if (!receiptPhoto.equals(other.receiptPhoto))
+		}
+		else if(!this.getReceiptPhoto().sameAs(other.getReceiptPhoto())){
 			return false;
+		}
 		return true;
 	}
 	

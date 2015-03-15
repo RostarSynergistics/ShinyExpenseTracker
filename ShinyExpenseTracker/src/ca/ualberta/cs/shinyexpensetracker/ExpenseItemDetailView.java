@@ -1,13 +1,8 @@
 package ca.ualberta.cs.shinyexpensetracker;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Locale;
 
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimsRepository;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 
 /**
  * Activity that lets the user view 

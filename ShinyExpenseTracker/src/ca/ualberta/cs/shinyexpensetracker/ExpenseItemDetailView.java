@@ -59,21 +59,7 @@ public class ExpenseItemDetailView extends Activity {
 	private void populateTextViews(){
 		SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.CANADA);
 		
-		/*TextView name = (TextView) findViewById(R.id.expenseItemNameValue);
-		TextView date = (TextView) findViewById(R.id.expenseItemDateValue);
-		TextView category = (TextView) findViewById(R.id.expenseItemCategoryValue);
-		TextView description = (TextView) findViewById(R.id.expenseItemDescriptionValue);
-		TextView amount = (TextView) findViewById(R.id.expenseItemAmountValue);
-		TextView currency = (TextView) findViewById(R.id.expenseItemCurrencyValue);
-		TextView receipt = (TextView) findViewById(R.id.expenseItemReceiptValue);
-		TextView completeness = (TextView) findViewById(R.id.expenseItemCompletenessValue);
-		
-		name.setText(item.getName().toString());
-		date.setText(dateFormatter.format(item.getDate()));
-		category.setText(item.getCategory().getText());
-		description.setText(item.getDescription().toString());
-		amount.setText(item.getAmountSpent().toString());
-		currency.setText(item.getCurrency().name());*/
+
 		setTextViewValue(R.id.expenseItemNameValue, item.getName().toString());
 		setTextViewValue(R.id.expenseItemDateValue, dateFormatter.format(item.getDate()));
 		setTextViewValue(R.id.expenseItemCategoryValue, item.getCategory().getText());

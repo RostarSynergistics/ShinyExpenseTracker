@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -46,7 +47,7 @@ public class TestEditExpenseItem extends ActivityInstrumentationTestCase2<Expens
 	ExpenseClaimController controller;
 	Bitmap imageSmall;
 	Bitmap imageBig;
-	
+
 	Resources res;
 	
 	protected void setUp() throws Exception {
@@ -120,11 +121,13 @@ public class TestEditExpenseItem extends ActivityInstrumentationTestCase2<Expens
 		BitmapDrawable dr = new BitmapDrawable(res, imageBig);
 		Bitmap imageBigScaled = activity.convertToBitmap(dr, imageBig.getWidth(), imageBig.getHeight());
 		ExpenseItem editedItem = new ExpenseItem("test item", dateToAssign, Category.fromString("air fare"), new BigDecimal("0.125"), Currency.CAD, "Test Edit", imageBigScaled);
+
 		assertEquals("did not update item", controller.getExpenseClaim(0).getItemById(0), editedItem);
 	}
 	/**
 	 * This tests that the image is successfully drawn on the ImageButton
 	 */
+
 	public void testDrawImageButton(){
 		ImageButton button = (ImageButton) activity.findViewById(R.id.expenseItemReceiptImageButton);
 		drawNewImage();

@@ -5,7 +5,7 @@
  *  @author ramishsyed
  **/
 
-package ca.ualberta.cs.shinyexpensetracker;
+package ca.ualberta.cs.shinyexpensetracker.activities;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -28,10 +28,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
+import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
 // Source for DatePicker: http://androidopentutorials.com/android-datepickerdialog-on-edittext-click-event
@@ -46,7 +47,6 @@ public class AddExpenseClaimActivity extends Activity implements
 	private SimpleDateFormat dateFormatter;
 	private AlertDialog.Builder adb;
 	public Dialog alertDialog;
-	private Button doneButton;
 	private ExpenseClaim claim;
 	private int claimIndex;
 
@@ -89,8 +89,6 @@ public class AddExpenseClaimActivity extends Activity implements
 
 		endDate = (EditText) findViewById(R.id.editTextEndDate);
 		endDate.setInputType(InputType.TYPE_NULL);
-
-		doneButton = (Button) findViewById(R.id.addExpenseClaimDoneButton);
 	}
 
 	private void setDateTimeField() {

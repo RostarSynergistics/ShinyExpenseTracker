@@ -69,6 +69,12 @@
     <string name="no_destinations">No Destinations</string>
     <string name="delete_selected_tag">Delete selected tag?</string>
     <string name="title_activity_expense_item_detail_view">ExpenseItemDetailView</string>
-
+    <string name="destination_Done_Button">Done</string>
+    <string name="reason_For_Travel">Reason For Travel</string>
+    <string name="destination_name">Destination</string>
+    <string name="tap_to_enter">Touch to enter&#8230;</string>
+    <string name="name_value">Name</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
 
 </resources>

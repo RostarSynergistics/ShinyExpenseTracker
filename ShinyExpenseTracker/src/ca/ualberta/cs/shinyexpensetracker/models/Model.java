@@ -2,7 +2,7 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.ArrayList;
 
-import ca.ualberta.cs.shinyexpensetracker.IView;
+import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 
 /**
  * Base class for domain model classes.

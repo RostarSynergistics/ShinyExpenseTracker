@@ -2,7 +2,7 @@
  * Provides views to tab fragments
  */
 
-package ca.ualberta.cs.shinyexpensetracker;
+package ca.ualberta.cs.shinyexpensetracker.adapters;
 
 import java.util.Locale;
 
@@ -12,9 +12,10 @@ import android.content.Context;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
-import ca.ualberta.cs.shinyexpensetracker.activities.ClaimSummaryFragment;
-import ca.ualberta.cs.shinyexpensetracker.activities.DestinationListFragment;
-import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemListFragment;
+import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
+import ca.ualberta.cs.shinyexpensetracker.fragments.DestinationListFragment;
+import ca.ualberta.cs.shinyexpensetracker.fragments.ExpenseItemListFragment;
 
 /**
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to

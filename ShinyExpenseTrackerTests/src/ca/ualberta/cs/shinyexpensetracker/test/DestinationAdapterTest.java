@@ -5,8 +5,8 @@ import java.util.Date;
 import android.test.AndroidTestCase;
 import android.view.View;
 import android.widget.TextView;
-import ca.ualberta.cs.shinyexpensetracker.DestinationItemAdapter;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.adapters.DestinationItemAdapter;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 

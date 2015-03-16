@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -46,7 +47,7 @@ public class TestEditExpenseItem extends ActivityInstrumentationTestCase2<Expens
 	ExpenseClaimController controller;
 	Bitmap imageSmall;
 	Bitmap imageBig;
-	
+
 	Resources res;
 	
 	protected void setUp() throws Exception {
@@ -125,6 +126,7 @@ public class TestEditExpenseItem extends ActivityInstrumentationTestCase2<Expens
 	/**
 	 * This tests that the image is successfully drawn on the ImageButton
 	 */
+
 	public void testDrawImageButton(){
 		ImageButton button = (ImageButton) activity.findViewById(R.id.expenseItemReceiptImageButton);
 		drawNewImage();

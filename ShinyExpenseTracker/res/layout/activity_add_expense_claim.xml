@@ -12,11 +12,11 @@
         android:id="@+id/editTextExpenseClaimName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/textViewName"
         android:ems="10"
-        android:hint="Touch to enter..." >
+        android:hint="@string/tap_to_enter" >
 
         <requestFocus />
     </EditText>
@@ -25,52 +25,52 @@
         android:id="@+id/textViewName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editTextExpenseClaimName"
+        android:layout_alignStart="@+id/editTextExpenseClaimName"
         android:layout_alignParentTop="true"
         android:layout_marginTop="16dp"
-        android:text="Name"
+        android:text="@string/name_value"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/textViewStartDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editTextExpenseClaimName"
+        android:layout_alignStart="@+id/editTextExpenseClaimName"
         android:layout_below="@+id/editTextExpenseClaimName"
         android:layout_marginTop="25dp"
-        android:text="Start Date"
+        android:text="@string/start_date"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
         android:id="@+id/editTextStartDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textViewStartDate"
-        android:layout_alignRight="@+id/editTextExpenseClaimName"
+        android:layout_alignStart="@+id/textViewStartDate"
+        android:layout_alignEnd="@+id/editTextExpenseClaimName"
         android:layout_below="@+id/textViewStartDate"
         android:ems="10"
-        android:hint="Touch to enter..."
+        android:hint="@string/tap_to_enter"
         android:inputType="date" />
 
     <EditText
         android:id="@+id/editTextEndDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textViewEndDate"
-        android:layout_alignRight="@+id/editTextStartDate"
+        android:layout_alignStart="@+id/textViewEndDate"
+        android:layout_alignEnd="@+id/editTextStartDate"
         android:layout_below="@+id/textViewEndDate"
         android:ems="10"
-        android:hint="Touch to enter..."
+        android:hint="@string/tap_to_enter"
         android:inputType="date" />
 
     <TextView
         android:id="@+id/textViewEndDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editTextStartDate"
+        android:layout_alignStart="@+id/editTextStartDate"
         android:layout_below="@+id/editTextStartDate"
         android:layout_marginTop="20dp"
-        android:text="End Date"
+        android:text="@string/end_date"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Button
@@ -79,8 +79,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="53dp"
-        android:layout_toRightOf="@+id/textViewStartDate"
+        android:layout_toEndOf="@+id/textViewStartDate"
         android:onClick="doneExpenseItem"
-        android:text="Done" />
+        android:text="@string/destination_Done_Button" />
 
 </RelativeLayout>

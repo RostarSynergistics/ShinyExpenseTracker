@@ -46,7 +46,6 @@ public class TestEditExpenseItem extends
 	}
 
 	ExpenseItemActivity activity;
-	ExpenseClaimController controller;
 	Bitmap image;
 
 	protected void setUp() throws Exception {
@@ -135,7 +134,7 @@ public class TestEditExpenseItem extends
 		ExpenseItem editedItem = new ExpenseItem("test item", dateToAssign,
 				Category.fromString("air fare"), new BigDecimal("0.125"),
 				Currency.CAD, "Test Edit", image);
-		assertEquals("did not update item", controller.getExpenseClaim(0)
+		assertEquals("did not update item", Application.getExpenseClaimController().getExpenseClaim(0)
 				.getItemById(0), editedItem);
 	}
 

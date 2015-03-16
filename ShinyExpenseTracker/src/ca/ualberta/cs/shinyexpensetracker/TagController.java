@@ -126,6 +126,10 @@ public class TagController {
 		return list.getTagById(index);
 	}
 	
+	public boolean deleteTag(int index){
+		return list.deleteTag(index);
+	}
+	
 	public boolean editTag(int index, Tag newTag){
 		return list.editTag(index, newTag);
 	}

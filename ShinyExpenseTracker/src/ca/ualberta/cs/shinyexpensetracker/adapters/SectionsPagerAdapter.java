@@ -13,7 +13,6 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.R.string;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
 import ca.ualberta.cs.shinyexpensetracker.fragments.DestinationListFragment;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ExpenseItemListFragment;

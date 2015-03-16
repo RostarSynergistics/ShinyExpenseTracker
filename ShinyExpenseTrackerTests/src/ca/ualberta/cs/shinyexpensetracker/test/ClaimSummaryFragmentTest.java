@@ -179,7 +179,6 @@ public class ClaimSummaryFragmentTest extends
 	 */
 	public void testExpenseTotals() throws IOException {
 		Date startDate = new Date(1000);
-		Date endDate = new Date(2000);
 		
 		BigDecimal amount = new BigDecimal(10);
 		final ExpenseItem expense = new ExpenseItem("test Expense", startDate, Category.ACCOMODATION, amount, Currency.CAD);

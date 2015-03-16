@@ -2,6 +2,7 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 
 import android.app.AlertDialog;
 import android.app.Instrumentation;
+import android.content.DialogInterface;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,13 +13,13 @@ import ca.ualberta.cs.shinyexpensetracker.framework.TagController;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 
-public class TagUITest extends ActivityInstrumentationTestCase2<ManageTagActivity> {
+public class ManageTagActivityTests extends ActivityInstrumentationTestCase2<ManageTagActivity> {
 	ManageTagActivity activity;
 	Instrumentation instrumentation;
 	TagController tagController;
 	ListView manageTagsListView;
 	
-	public TagUITest() {
+	public ManageTagActivityTests() {
 		super(ManageTagActivity.class);
 	}
 	
@@ -122,7 +123,7 @@ public class TagUITest extends ActivityInstrumentationTestCase2<ManageTagActivit
 		AlertDialog dialog = ManageTagActivity.getDialog();
 		
 		EditText dialogEditText = (EditText) dialog.findViewById(R.id.EditTextDialogTag);
-		final Button dialogPostiveButton = (Button) dialog.getButton(dialog.BUTTON_POSITIVE);
+		final Button dialogPostiveButton = (Button) dialog.getButton(DialogInterface.BUTTON_POSITIVE);
 		
 		dialogEditText.setText(tagName);
 		
@@ -142,7 +143,7 @@ public class TagUITest extends ActivityInstrumentationTestCase2<ManageTagActivit
 		
 		AlertDialog dialog = ManageTagActivity.getEditDialog();
 		final EditText dialogEditText = (EditText) dialog.findViewById(R.id.EditTextDialogTag);
-		final Button dialogPostiveButton = (Button) dialog.getButton(dialog.BUTTON_POSITIVE);
+		final Button dialogPostiveButton = (Button) dialog.getButton(DialogInterface.BUTTON_POSITIVE);
 		
 		instrumentation.runOnMainSync(new Runnable() {
 			
@@ -163,7 +164,7 @@ public class TagUITest extends ActivityInstrumentationTestCase2<ManageTagActivit
 			activity.deleteTagFromDialog(pos);
 			AlertDialog dialog = ManageTagActivity.getDeleteDialog();
 			
-			final Button dialogPostiveButton = (Button) dialog.getButton(dialog.BUTTON_POSITIVE);
+			final Button dialogPostiveButton = (Button) dialog.getButton(DialogInterface.BUTTON_POSITIVE);
 			dialogPostiveButton.performClick();
 			}	
 		});

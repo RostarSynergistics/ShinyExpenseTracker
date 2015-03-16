@@ -382,7 +382,6 @@ public class ViewAllExpenseClaimsActivityTests extends
 		createExpense.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				Button done = (Button) createExpense.findViewById(R.id.expenseItemDoneButton);
 				EditText name = (EditText) createExpense.findViewById(R.id.expenseItemNameEditText);
 				EditText date = (EditText) createExpense.findViewById(R.id.expenseItemDateEditText);
 				EditText amount = (EditText) createExpense.findViewById(R.id.expenseItemAmountEditText);

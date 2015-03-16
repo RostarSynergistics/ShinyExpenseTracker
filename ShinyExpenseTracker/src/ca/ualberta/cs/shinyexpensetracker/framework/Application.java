@@ -2,7 +2,6 @@ package ca.ualberta.cs.shinyexpensetracker.framework;
 
 import java.io.IOException;
 
-
 import android.content.Context;
 
 /**

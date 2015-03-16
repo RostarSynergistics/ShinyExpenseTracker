@@ -94,7 +94,7 @@ public class ExpenseItemActivityTest extends
     	super.setUp();
         instrumentation = getInstrumentation();
         
-        ExpenseClaimController controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
+        controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
         Application.setExpenseClaimController(controller);
         
         controller.addExpenseClaim(new ExpenseClaim("Test Claim"));

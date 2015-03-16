@@ -16,6 +16,9 @@ import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.SectionsPagerAdapter;
+import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
+import ca.ualberta.cs.shinyexpensetracker.fragments.DestinationListFragment;
+import ca.ualberta.cs.shinyexpensetracker.fragments.ExpenseItemListFragment;
 
 // Source: https://github.com/astuetz/PagerSlidingTabStrip
 // on March 11 2015

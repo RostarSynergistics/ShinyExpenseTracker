@@ -1,4 +1,4 @@
-package ca.ualberta.cs.shinyexpensetracker.activities;
+package ca.ualberta.cs.shinyexpensetracker.fragments;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -19,6 +19,7 @@ import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseItemDetailView;
 import ca.ualberta.cs.shinyexpensetracker.IView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemAdapter;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
 public class ExpenseItemListFragment extends Fragment implements IView<ExpenseClaim> {

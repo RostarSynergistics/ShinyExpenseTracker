@@ -1,4 +1,4 @@
-package ca.ualberta.cs.shinyexpensetracker.activities;
+package ca.ualberta.cs.shinyexpensetracker.fragments;
 
 import android.app.AlertDialog;
 import android.app.Fragment;

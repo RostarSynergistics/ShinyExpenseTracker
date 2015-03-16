@@ -141,7 +141,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
      * @param v
      * @throws ParseException
      */
-	public boolean createExpenseItem(View v) throws ParseException {
+	public boolean createExpenseItem() throws ParseException {
 		
 		Intent intent = getIntent();
 		int claimIndex = intent.getIntExtra("claimIndex", -1);
@@ -281,7 +281,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 	 */
 	public void doneExpenseItem(View v) throws ParseException{
 		
-		if (createExpenseItem(v)){
+		if (createExpenseItem()){
 			finish();
 		}
 	}

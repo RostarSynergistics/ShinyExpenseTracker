@@ -23,6 +23,7 @@
 
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+import java.text.ParseException;
 import java.util.Date;
 
 import android.app.Activity;
@@ -76,7 +77,7 @@ public class ViewAllExpenseClaimsActivityTests extends
 	 */
 	private ExpenseClaim addClaim(final ExpenseClaim claim) {
 		// Run on the activity thread.
-		getInstrumentation().runOnMainSync(new Runnable() {
+		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				claimsList.addClaim(claim);
@@ -92,7 +93,7 @@ public class ViewAllExpenseClaimsActivityTests extends
 	 */
 	private void deleteClaim(final ExpenseClaim claim) {
 		// Run on the activity thread
-		getInstrumentation().runOnMainSync(new Runnable() {
+		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				claimsList.removeClaim(claim);
@@ -373,6 +374,7 @@ public class ViewAllExpenseClaimsActivityTests extends
 		assertEquals(true, getInstrumentation().checkMonitorHit(expenseMonitor, 1));
 		
 		// Try to close the createExpense activity
+		failed = false;
 		createExpense.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -386,24 +388,36 @@ public class ViewAllExpenseClaimsActivityTests extends
 				date.setText("03-05-2015");
 				amount.setText("100");
 				
-				failed = false;
+				// Create the expense item
 				try {
-					// Press done.
-					done.performClick();
+					assertTrue(createExpense.createExpenseItem());
+				} catch (ParseException e) {
+					fail("Parse Exception :(");
+					e.printStackTrace();
 				} catch (NullPointerException e) {
 					failed = true;
-					createExpense.finish();
+					e.printStackTrace();
 				}
 				
 			}
 		});
 		
+		// Close the activity safely outside of a thread
+		// Source: Email from Alex Wilson (March 15, 2015)
+		try {
+			createExpense.finish();
+		} catch (NullPointerException e) {
+			failed = true;
+		}
+		// Clean up
+		summaryActivity.finish();
+		
+		// Check if there were problems
+		assertFalse("Bug #91 reproduced", failed); 
+		
 		// Wait for the application to become idle
 		getInstrumentation().waitForIdleSync();
-		
-		assertFalse("Bug #91 reproduced.", failed);
 
-		summaryActivity.finish();
 		
 	}
 }

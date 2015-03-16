@@ -179,6 +179,11 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 	 * needs refreshing.
 	 */
 	private void setPromptVisibility() {
+		// Stop if we're not bound to a view.
+		if (getView() == null) {
+			return;
+		}
+		
 		TextView noExpenses = (TextView) getView().findViewById(R.id.noExpensesTextView);
 		
 		// Are there expenses to display?

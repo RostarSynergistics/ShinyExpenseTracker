@@ -25,11 +25,11 @@ import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersist
  * Test suite to test activity that lets the user view information of the
  * selected ExpenseItem
  * 
- * Covers Issue 16
+ * Covers Issues 16, 36
  * 
  * @author Oleg Oleynikov
- * @version 1.0
- * @since 2015-03-15
+ * @version 1.1
+ * @since 2015-03-16
  */
 public class TestExpenseItemDetailView extends
 		ActivityInstrumentationTestCase2<ExpenseItemDetailActivity> {

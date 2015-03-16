@@ -21,9 +21,16 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
  * Activity that lets the user view 
  * information of the selected ExpenseItem
  * 
+<<<<<<< HEAD:ShinyExpenseTracker/src/ca/ualberta/cs/shinyexpensetracker/activities/ExpenseItemDetailActivity.java
  * Covers Issue 16
  * @version 1.0
  * @since 2015-03-15
+=======
+ * Covers Issues 16, 36
+ * @author Oleg Oleynikov 
+ * @version 1.1
+ * @since 2015-03-16
+>>>>>>> added comments:ShinyExpenseTracker/src/ca/ualberta/cs/shinyexpensetracker/ExpenseItemDetailView.java
  */
 
 public class ExpenseItemDetailActivity extends Activity implements IView<ExpenseItem> {
@@ -110,6 +117,7 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 	}
 	
 
+	// notify all views of an update
 	@Override
 	public void update(ExpenseItem m) {
 		populateTextViews();

@@ -179,4 +179,13 @@
         android:onClick="onReceiptThumbnailClick"
         android:src="@android:drawable/alert_light_frame" />
 
+    <Button
+        android:id="@+id/removeReceiptButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/expenseItemDetailViewBackButton"
+        android:layout_alignParentEnd="true"
+        android:onClick="onClickRemoveReceipt"
+        android:text="Remove Receipt" />
+
 </RelativeLayout>

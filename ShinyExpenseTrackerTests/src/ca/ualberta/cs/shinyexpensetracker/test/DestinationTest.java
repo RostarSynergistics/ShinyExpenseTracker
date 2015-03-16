@@ -1,11 +1,18 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import ca.ualberta.cs.shinyexpensetracker.AddDestinationActivity;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import android.app.Instrumentation;
+import android.app.Instrumentation.ActivityMonitor;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
@@ -18,8 +25,8 @@ public class DestinationTest extends
 	Instrumentation instrumentation;
 	EditText nameInput, reasonInput;
 	Button doneButton;
-    private ExpenseClaimController controller;
-    private ExpenseClaim expenseClaim;
+    private ExpenseClaimController ecc;
+    private ExpenseClaim claim;
 	
 		public DestinationTest(){
 			super(AddDestinationActivity.class);
@@ -31,16 +38,19 @@ public class DestinationTest extends
 
 	protected void setUp() throws Exception {
     	super.setUp();
-        instrumentation = getInstrumentation();
-        
-        ExpenseClaimController controller = ExpenseClaimController.getInstance();
-        controller.setClaimList(new ExpenseClaimList());
-        controller.addExpenseClaim(new ExpenseClaim("Test Claim"));
-        Intent intent = new Intent();
-        intent.putExtra("claimIndex", 0);
-        setActivityIntent(intent);
-        
-        activity = getActivity();
+		
+		ExpenseClaim claim = new ExpenseClaim("Example name");
+		ExpenseClaimController ecc = ExpenseClaimController.getInstance();
+		ecc.setClaimList(new ExpenseClaimList());
+		ecc.addExpenseClaim(claim);
+
+		instrumentation = getInstrumentation();
+
+		Intent intent = new Intent();
+		intent.putExtra("claimIndex", 0);
+		setActivityIntent(intent);
+
+		activity = getActivity();
         
         nameInput = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.destinationEditText));
         reasonInput = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.reasonEditText));
@@ -68,7 +78,6 @@ public class DestinationTest extends
 	
 	/* tests if the data entered has been correctly saved to a Destination when the Done button is clicked */
 	public void testDone() {
-		//TODO: Test not done being implemented, needs to check to see if loaded destination is what was entered
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {				
 				nameInput.setText("Las Vegas");
@@ -78,15 +87,13 @@ public class DestinationTest extends
 			}
 		});
 		instrumentation.waitForIdleSync();
-
 		assertTrue(activity != null);
 		
-		assertEquals("name length == 0", 9, nameInput.getText().length());
-		assertEquals("nameInput == Destination.name", "Las Vegas", nameInput.getText().toString());
+		int claimIndex = ExpenseClaimController.getInstance().getIndexOf(claim) + 1;
 		
-		assertEquals("reason length == 0", 8, reasonInput.getText().length());
-		assertEquals("reasonInput == Destination.reason", "Vacation", reasonInput.getText().toString());
+		Destination dest= ExpenseClaimController.getInstance().getExpenseClaim(claimIndex).getDestination(0);
 		
-		fail();
+		assertEquals("Destination name does not equal 'Las Vegas'", "Las Vegas", dest.getName());
+		assertEquals("Deastination reason does not equal 'Vacation'", "Vacation", dest.getReasonForTravel());
 	}
 }

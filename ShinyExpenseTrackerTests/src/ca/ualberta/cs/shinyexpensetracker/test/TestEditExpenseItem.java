@@ -47,6 +47,7 @@ public class TestEditExpenseItem extends ActivityInstrumentationTestCase2<Expens
 	ExpenseClaimController controller;
 	Bitmap imageSmall;
 	Bitmap imageBig;
+	
 	Resources res;
 	
 	protected void setUp() throws Exception {
@@ -58,7 +59,8 @@ public class TestEditExpenseItem extends ActivityInstrumentationTestCase2<Expens
 		res = getInstrumentation().getTargetContext().getResources();
 		imageSmall = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
 		imageBig = BitmapFactory.decodeResource(res, R.drawable.keyhole_nebula_hubble_1999);
-		ExpenseItem item = new ExpenseItem("test item", newDate.getTime(), Category.fromString("air fare"), new BigDecimal("0.125"), Currency.CAD, "Test Item", imageSmall);
+		
+		ExpenseItem item = new ExpenseItem("test item", newDate.getTime(), Category.fromString("air fare"), new BigDecimal("0.125"), Currency.CAD, "Test Item", imageBig);
 		claim.addExpense(item);
 		ExpenseClaimList claimList = new ExpenseClaimList();
 		claimList.addClaim(claim);
@@ -115,15 +117,18 @@ public class TestEditExpenseItem extends ActivityInstrumentationTestCase2<Expens
 		SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.CANADA);
 		String inputDate = dateFormatter.format(date);
 		Date dateToAssign = dateFormatter.parse(inputDate);
-		
-		ExpenseItem editedItem = new ExpenseItem("test item", dateToAssign, Category.fromString("air fare"), new BigDecimal("0.125"), Currency.CAD, "Test Edit", imageSmall);
+
+		BitmapDrawable dr = new BitmapDrawable(res, imageBig);
+		Bitmap imageBigScaled = activity.convertToBitmap(dr, imageBig.getWidth(), imageBig.getHeight());
+		ExpenseItem editedItem = new ExpenseItem("test item", dateToAssign, Category.fromString("air fare"), new BigDecimal("0.125"), Currency.CAD, "Test Edit", imageBigScaled);
 		assertEquals("did not update item", controller.getExpenseClaim(0).getItemById(0), editedItem);
 	}
 	/**
 	 * This tests that the image is successfully drawn on the ImageButton
 	 */
-	public void testSmallReceiptValue(){
+	public void testDrawImageButton(){
 		ImageButton button = (ImageButton) activity.findViewById(R.id.expenseItemReceiptImageButton);
+		drawNewImage();
 		assertNotNull("no image on button", button.getDrawable());
 		Drawable dr = button.getDrawable();
 		Bitmap bm = activity.convertToBitmap(dr, imageSmall.getWidth(), imageSmall.getHeight());
@@ -132,12 +137,23 @@ public class TestEditExpenseItem extends ActivityInstrumentationTestCase2<Expens
 	/**
 	 * This tests that the image is successfully scaled down
 	 */
-	public void testBigReceiptValue(){
+	public void testScale(){
 		BitmapDrawable dr = new BitmapDrawable(res, imageBig);
-		Bitmap bm = activity.convertToBitmap(dr, imageBig.getWidth(), imageBig.getHeight());
-		assertTrue("image too big", bm.getByteCount()<=65536);
+		Bitmap imageBigScaled = activity.convertToBitmap(dr, imageBig.getWidth(), imageBig.getHeight());
+		assertTrue("image too big", imageBigScaled.getByteCount()<=65536);
 	}
 
+	private void drawNewImage(){
+		getInstrumentation().runOnMainSync(new Runnable() {
+			@Override
+			public void run() {
+				ImageButton button = (ImageButton) activity.findViewById(R.id.expenseItemReceiptImageButton);
+				button.setImageBitmap(imageSmall);
+			}
+		});
+		getInstrumentation().waitForIdleSync();
+	}
+	
 	/**
 	 * Update the global Claim List in main thread 
 	 */

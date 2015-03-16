@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * Represents the collection of ExpenseClaims that exist in the application.
+ * 
+ * As each part of the application should be working with the same list,
+ * ExpenseClaimList uses the Singleton pattern.
+ */
 public class ExpenseClaimList extends Model<ExpenseClaimList> {
 	private ArrayList<ExpenseClaim> claims;
 	

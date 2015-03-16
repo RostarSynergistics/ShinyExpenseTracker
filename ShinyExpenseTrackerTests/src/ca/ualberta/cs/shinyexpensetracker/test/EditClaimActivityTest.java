@@ -3,6 +3,7 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
 import android.app.DatePickerDialog;
 import android.app.Instrumentation;
 import android.content.Intent;
@@ -10,9 +11,10 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
 import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
+import ca.ualberta.cs.shinyexpensetracker.Application;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
+import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 /**
  * Test for editing an ExpenseClaim
@@ -43,14 +45,15 @@ public class EditClaimActivityTest extends
 	protected void setUp() throws Exception {
 		super.setUp();
 
+		ExpenseClaimController controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
+		Application.setExpenseClaimController(controller);
+
 		dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.CANADA);
 		dateFormatter.format(claimStartDate);
 		dateFormatter.format(claimEndDate);
 		ExpenseClaim claim = new ExpenseClaim(claimName, claimStartDate,
 				claimEndDate);
-		ExpenseClaimController ecc = ExpenseClaimController.getInstance();
-		ecc.setClaimList(new ExpenseClaimList());
-		ecc.addExpenseClaim(claim);
+		controller.addExpenseClaim(claim);
 
 		instrumentation = getInstrumentation();
 

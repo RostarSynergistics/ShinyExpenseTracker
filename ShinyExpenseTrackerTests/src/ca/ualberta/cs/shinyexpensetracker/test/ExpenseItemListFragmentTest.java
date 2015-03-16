@@ -12,14 +12,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import ca.ualberta.cs.shinyexpensetracker.Application;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemListFragment;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 public class ExpenseItemListFragmentTest extends
 	ActivityInstrumentationTestCase2<TabbedSummaryActivity> {
@@ -39,8 +40,7 @@ public class ExpenseItemListFragmentTest extends
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		// Use a clean claimList
-		ExpenseClaimController.getInstance().setClaimList(new ExpenseClaimList());
+		Application.setExpenseClaimController(new ExpenseClaimController(new MockExpenseClaimListPersister()));
 		
 		claim = new ExpenseClaim(
 				"My Cool Expense Claim",
@@ -57,7 +57,7 @@ public class ExpenseItemListFragmentTest extends
 				"Something really shiny",
 				null));
 		// Add the expense claim
-		ExpenseClaimController.getInstance().addExpenseClaim(claim);
+		Application.getExpenseClaimController().addExpenseClaim(claim);
 		
 		// Inject an intent that we have full control of.
 		// This MUST be called before the first call to getActivity()

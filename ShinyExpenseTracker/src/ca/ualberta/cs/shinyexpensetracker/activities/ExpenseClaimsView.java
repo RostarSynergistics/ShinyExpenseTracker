@@ -23,6 +23,8 @@
 
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -37,6 +39,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
+import ca.ualberta.cs.shinyexpensetracker.Application;
 import ca.ualberta.cs.shinyexpensetracker.ClaimListAdapter;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.IView;
@@ -44,7 +47,8 @@ import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
-public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimList> {
+public class ExpenseClaimsView extends Activity implements
+		IView<ExpenseClaimList> {
 	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
 
@@ -52,41 +56,40 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_expense_claims_view);
-		controller = ExpenseClaimController.getInstance();
-		controller.getExpenseClaimList().addView(this);
 	}
-	
+
 	@Override
 	protected void onStart() {
 		super.onStart();
-		
+		controller = Application.getExpenseClaimController();
+		controller.getExpenseClaimList().addView(this);
+
 		// Set the list view to receive updates from the model
 		final ListView claim_list = (ListView) findViewById(R.id.expense_claim_list);
 		adapter = new ClaimListAdapter(this);
 		claim_list.setAdapter(adapter);
-		
-		
+
 		claim_list.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,
-					long id) {
-				Intent intent = new Intent(ExpenseClaimsView.this, TabbedSummaryActivity.class);
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Intent intent = new Intent(ExpenseClaimsView.this,
+						TabbedSummaryActivity.class);
 				intent.putExtra("claimIndex", position);
 				startActivity(intent);
-				
+
 			}
-			
+
 		});
-		
-		
+
 		// -- Long Press of ListView Item
 		claim_list.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				
+
 				// Don't change this line. Change "askDeleteClaimAt" instead.
 				askDeleteClaimAt(position);
 				return true;
@@ -109,18 +112,19 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 		int id = item.getItemId();
 		switch (id) {
 		case R.id.action_new_claim:
-			
+
 			Intent intent = new Intent(this, AddExpenseClaimActivity.class);
 			startActivity(intent);
-			
+
 			return true;
 		case R.id.action_sort:
 			return true;
 		case R.id.action_filter:
-			//TODO #28
+			// TODO #28
 			return true;
 		case R.id.action_manage_tags:
-			Intent manageTagsIntent = new Intent(ExpenseClaimsView.this, ManageTagActivity.class);
+			Intent manageTagsIntent = new Intent(ExpenseClaimsView.this,
+					ManageTagActivity.class);
 			startActivity(manageTagsIntent);
 			return true;
 		}
@@ -131,46 +135,51 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 	public void update(ExpenseClaimList m) {
 		adapter.notifyDataSetChanged();
 	}
-	
-	public void addClaim(ExpenseClaim claim) {
+
+	public void addClaim(ExpenseClaim claim) throws IOException {
 		controller.addExpenseClaim(claim);
 	}
-	
-	public void deleteClaim(ExpenseClaim claim) {
+
+	public void deleteClaim(ExpenseClaim claim) throws IOException {
 		controller.removeExpenseClaim(claim);
 	}
-	
+
 	public AlertDialog askDeleteClaimAt(int position) {
 		// Alert Dialog (Mar 7, 2015):
-		//  http://www.androidhive.info/2011/09/how-to-show-alert-dialog-in-android/
-		//  http://stackoverflow.com/questions/15020878/i-want-to-show-ok-and-cancel-button-in-my-alert-dialog
+		// http://www.androidhive.info/2011/09/how-to-show-alert-dialog-in-android/
+		// http://stackoverflow.com/questions/15020878/i-want-to-show-ok-and-cancel-button-in-my-alert-dialog
 		// Get a final copy of the requested claim
 		final ExpenseClaim claimToDelete = controller.getExpenseClaim(position);
-		
+
 		AlertDialog dialog = new AlertDialog.Builder(this)
-			.setTitle("Delete Claim?")
-			.setMessage("Delete '" + claimToDelete.toString() + "'?\n(This cannot be undone)")
-			// If OK, delete the claim. (Positive action);
-			.setPositiveButton("OK", new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					deleteClaim(claimToDelete);
-					dialog.dismiss();
-				}
-			})
-			// If cancel, do nothing
-			.setNeutralButton("Cancel", new OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// Do nothing
-					dialog.dismiss();
-				}
-			})
-			.create();
-		
+				.setTitle("Delete Claim?")
+				.setMessage(
+						"Delete '" + claimToDelete.toString()
+								+ "'?\n(This cannot be undone)")
+				// If OK, delete the claim. (Positive action);
+				.setPositiveButton("OK", new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						try {
+							deleteClaim(claimToDelete);
+						} catch (IOException e) {
+							throw new RuntimeException(e);
+						}
+						dialog.dismiss();
+					}
+				})
+				// If cancel, do nothing
+				.setNeutralButton("Cancel", new OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// Do nothing
+						dialog.dismiss();
+					}
+				}).create();
+
 		dialog.show();
 		return dialog;
 	}
-	
+
 }

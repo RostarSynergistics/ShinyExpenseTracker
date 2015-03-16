@@ -19,22 +19,23 @@
 
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+import java.io.IOException;
+
 import junit.framework.TestCase;
-import ca.ualberta.cs.shinyexpensetracker.*;
-import ca.ualberta.cs.shinyexpensetracker.models.*;
+import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
+import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 public class ExpenseClaimControllerTest extends TestCase {
-
-	private static ExpenseClaimList claimList;
 	private ExpenseClaimController controller;
-
+	private ExpenseClaimList claimList;
+	
 	protected void setUp() throws Exception {
 		super.setUp();
 		claimList = new ExpenseClaimList();
 		claimList.addClaim(new ExpenseClaim("Test"));
-		// Do things a little backwards to ensure getInstance is singleton
-		ExpenseClaimController.getInstance().setClaimList(claimList);
-		controller = ExpenseClaimController.getInstance();
+		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(claimList));
 	}
 
 	
@@ -42,20 +43,14 @@ public class ExpenseClaimControllerTest extends TestCase {
 		assertEquals(claimList, controller.getExpenseClaimList());
 	}
 
-	// TODO test if retrieval is possible when implemented
-	public void testSaveExpenseClaim() {
-		controller.saveExpenseClaim(new ExpenseClaim("Test"), new WebServiceExporter());
-		fail();
-	}
-
-	public void testAddExpenseClaim(){
+	public void testAddExpenseClaim() throws IOException {
 		assertEquals(claimList, controller.getExpenseClaimList());
 		ExpenseClaim newClaim = new ExpenseClaim("Test");
 		controller.addExpenseClaim(newClaim);
 		assertEquals(controller.getExpenseClaimList().getClaim(1) , newClaim);	
 	}
 
-	public void testGetExpenseClaim(){
+	public void testGetExpenseClaim() throws IOException {
 		ExpenseClaim claim = new ExpenseClaim("Test");
 		controller.addExpenseClaim(claim);
 		assertEquals(claim, controller.getExpenseClaim(1));

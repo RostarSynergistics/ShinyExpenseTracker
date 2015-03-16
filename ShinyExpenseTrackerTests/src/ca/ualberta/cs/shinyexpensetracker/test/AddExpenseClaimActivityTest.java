@@ -116,7 +116,7 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 		sdf.format(fromDate);
 		sdf.format(toDate);
 		
-		final ExpenseClaim sampleExpenseClaim = new ExpenseClaim(nameString, fromDate, toDate, null, null, null);
+		final ExpenseClaim sampleExpenseClaim = new ExpenseClaim(nameString, fromDate, toDate, null, null);
 		final ExpenseClaimList claimList = controller.getExpenseClaimList();
 		
 		instrumentation.runOnMainSync(new Runnable() {

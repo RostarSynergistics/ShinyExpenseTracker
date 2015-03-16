@@ -253,11 +253,11 @@ public class ViewAllExpenseClaimsActivityTests extends
 		TagList tags1 = new TagList();
 		tags1.addTag(new Tag("Test 1"));
 		ExpenseClaim claim1 = addClaim(
-				new ExpenseClaim("Delete Claim 1", new Date(), null, ExpenseClaim.Status.IN_PROGRESS, tags1, null));
+				new ExpenseClaim("Delete Claim 1", new Date(), null, ExpenseClaim.Status.IN_PROGRESS, tags1));
 		TagList tags2 = new TagList();
 		tags2.addTag(new Tag("Test 2"));
 		ExpenseClaim claim2 = addClaim(
-				new ExpenseClaim("Delete Claim 2", new Date(), null, ExpenseClaim.Status.IN_PROGRESS, tags2, null));
+				new ExpenseClaim("Delete Claim 2", new Date(), null, ExpenseClaim.Status.IN_PROGRESS, tags2));
 		ExpenseClaim visibleClaim;
 		
 		// Check that an item is actually deleted

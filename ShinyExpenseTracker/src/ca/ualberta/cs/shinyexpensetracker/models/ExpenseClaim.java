@@ -36,39 +36,29 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	private Date startDate;
 	private Date endDate;
 	private Status status;
-	private DestinationList destinationList;
+	private ArrayList<Destination> destinations = new ArrayList<Destination>();
 	private TagList tagList;
 	private ArrayList<ExpenseItem> expenses = new ArrayList<ExpenseItem>();
 	
 	public ExpenseClaim(String name) {
-		this(name, new Date(), null, Status.IN_PROGRESS, null, null);
+		this(name, new Date(), null, Status.IN_PROGRESS, null);
 	}
 
 	public ExpenseClaim(String name, Date startDate) {
-		this(name, startDate, null, Status.IN_PROGRESS, null, null);
+		this(name, startDate, null, Status.IN_PROGRESS, null);
 	}
 	
 	public ExpenseClaim(String name, Date startDate, Date endDate) {
-		this(name, startDate, endDate, Status.IN_PROGRESS, null, null);
+		this(name, startDate, endDate, Status.IN_PROGRESS, null);
 	}
-	
-	public void addDestination(Destination destination) {
-		destinationList.addDestination(destination);
-	}
-	
-	public void removeDestinationList(Destination destination) {
-		destinationList.removeDestination(destination);
-	}
-	
 	
 	public ExpenseClaim(String name, Date startDate, Date endDate,
-			Status status, TagList tagList, DestinationList destinationList) {
+			Status status, TagList tagList) {
 		super();
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.status = status;
-		this.destinationList = destinationList;
 		this.tagList = tagList;
 	}
 	
@@ -107,6 +97,23 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		this.tagList = tagList;
 		notifyViews();
 	}
+	
+	public ArrayList<Destination> getDestinations(){
+		return destinations;
+	}
+	public void addDestination(Destination destination) {
+		destinations.add(destination);
+		notifyViews();
+	}
+	public void removeDestination(int index) {
+		destinations.remove(index);
+		notifyViews();
+	}
+	public void removeDestination(Destination destination) {
+		destinations.remove(destinations.indexOf(destination) );
+		notifyViews();
+	}
+	
 	public ArrayList<ExpenseItem> getExpenses(){
 		return expenses;
 	}
@@ -122,14 +129,8 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		notifyViews();
 	}
 	public void removeExpense(ExpenseItem expense) {
-		expenses.remove( expenses.indexOf(expense) );
+		expenses.remove(expenses.indexOf(expense) );
 		notifyViews();
-	}
-	public DestinationList getDestination() {
-		return destinationList;
-	}
-	public void setDestinationList(DestinationList destinationList) {
-		this.destinationList = destinationList;
 	}
 	
 	/**
@@ -142,8 +143,11 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	public String toString() {
 		return getName();
 	}
-
+	
 	public int getExpenseCount() {
 		return expenses.size();
+	}
+	public int getDestinationCount() {
+		return destinations.size();
 	}
 }

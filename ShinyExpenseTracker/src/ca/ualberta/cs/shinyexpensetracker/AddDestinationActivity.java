@@ -1,5 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker;
 
+import java.text.ParseException;
+
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.DestinationList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -17,10 +19,8 @@ import android.widget.EditText;
 
 public class AddDestinationActivity extends Activity {
 	
-	private EditText destinationEditText;
-	private EditText reasonForTravelEditText;
-	private ExpenseClaimController ecc;
-	private DestinationList destList;
+	private EditText destinationEditText, reasonForTravelEditText;
+	private Button doneButton;
 	int claimIndex;
 	
 	@Override
@@ -28,17 +28,7 @@ public class AddDestinationActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_destination);
 		
-		findViewsById();
-		ecc = ExpenseClaimController.getInstance();
-		destList = new DestinationList();
-		claimIndex = getIntent().getExtras().getInt("claimIndex");
-		
-        final Button button = (Button) findViewById(R.id.addDestinationDoneButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-            	addNewDestination();
-            }
-        });
+		doneButton = (Button) findViewById(R.id.addDestinationDoneButton);
 
 	}
 
@@ -49,23 +39,29 @@ public class AddDestinationActivity extends Activity {
 		return true;
 	}
 	
-	private void findViewsById() {
+	public boolean createDestination(View v) throws ParseException {
+		
+		Intent intent = getIntent();
+		int claimIndex = intent.getIntExtra("claimIndex", -1);
+		ExpenseClaimController ecc = ExpenseClaimController.getInstance();
+		ExpenseClaim claim = ecc.getExpenseClaim(claimIndex);
+		
 		destinationEditText = (EditText) findViewById(R.id.destinationEditText);
 		reasonForTravelEditText = (EditText) findViewById(R.id.reasonEditText);
-	}
-	
-	public boolean addNewDestination() {
 		
-		String dest = "";
-		String reason = "";
-		
-		dest = destinationEditText.getText().toString();
-		reason = reasonForTravelEditText.getText().toString();
+		String dest = destinationEditText.getText().toString();
+		String reason = reasonForTravelEditText.getText().toString();
 		
 		Destination destination = new Destination(dest, reason);
-		ecc.getExpenseClaim(claimIndex).addDestination(destination);
-		
+		claim.addDestination(destination);		
 		return true;
 		
+	}
+	
+	public void doneCreateDestination(View v) throws ParseException{
+		
+		if (createDestination(v)){
+			finish();
+		}
 	}
 }

@@ -2,7 +2,6 @@
  *  Covers issue 17. 
  *  AddExpenseClaimActivity: Activity representing the UI for adding/editing an Expense Claim. 
  *  No outstanding issues.
- *  @author ramishsyed
  **/
 
 package ca.ualberta.cs.shinyexpensetracker.activities;
@@ -82,6 +81,9 @@ public class AddExpenseClaimActivity extends Activity implements
 		controller = Application.getExpenseClaimController();
 	}
 
+	/**
+	 * Sets all the views and widgets in on create
+	 */
 	private void findViewsById() {
 		startDate = (EditText) findViewById(R.id.editTextStartDate);
 		startDate.setInputType(InputType.TYPE_NULL);
@@ -91,6 +93,10 @@ public class AddExpenseClaimActivity extends Activity implements
 		endDate.setInputType(InputType.TYPE_NULL);
 	}
 
+	/**
+	 * Creates a date picker and sets it to the edit text views 
+	 * for picking dates
+	 */
 	private void setDateTimeField() {
 		startDate.setOnClickListener(this);
 		endDate.setOnClickListener(this);

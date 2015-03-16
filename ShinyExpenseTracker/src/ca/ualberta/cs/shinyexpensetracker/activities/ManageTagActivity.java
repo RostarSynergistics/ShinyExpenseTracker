@@ -27,8 +27,8 @@ import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 
 /**
- * Activity that handles viewing all the tags and also allows movement to add,
- * edit and delete tags Covers Issue #24, 74
+ * Activity that handles viewing all the tags.  Enables user to add, edit and delete tags 
+ * Covers Issue #24, 74
  * 
  * @version 1.0
  * @since 2015-03-10

@@ -1,25 +1,3 @@
-/** 
- * This class extends the BaseAdapter to display and sort
- * the claims with their necessary information.
- * 
- *  Copyright (C) 2015  github.com/RostarSynergistics
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *  
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * Issue #61
- * @author Tristan Meleshko
- */
 
 // Sourced (Mar 8, 2015)
 //   http://www.piwai.info/android-adapter-good-practices/
@@ -39,6 +17,10 @@ import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
+/** 
+ * This class extends the BaseAdapter to display and sort
+ * the claims with their necessary information.
+ */
 public class ClaimListAdapter extends BaseAdapter {
 	private final SimpleDateFormat dateFormat;
 	private final Context context;
@@ -128,9 +110,10 @@ public class ClaimListAdapter extends BaseAdapter {
 	}
 
 	// ViewHolders are very nice.
-	// This holds the views related to a claim so that
-	// the view can be recycled efficiently.
-	
+	/**
+	 *  This holds the views related to a claim so that
+	 *  the view can be recycled efficiently.
+	 */ 
 	private static class ViewHolder {
 		public final TextView name;
 		public final TextView dates;
@@ -155,6 +138,9 @@ public class ClaimListAdapter extends BaseAdapter {
 		makeSortedList();
 	}
 
+	/**
+	 * sorts the list of claims
+	 */
 	private void makeSortedList() {
 		controller.sort();
 	}

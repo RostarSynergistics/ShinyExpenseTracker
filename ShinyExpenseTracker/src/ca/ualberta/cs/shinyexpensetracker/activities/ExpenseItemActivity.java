@@ -47,8 +47,6 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 
 /** 
 * Covers Issues 5, 15, and 29
-* @author Sarah Morris
-* @author Oleg Oleynikov
 * @version 1.2
 * @since 2015-03-15
 *
@@ -161,11 +159,19 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		}
 	}
 	
+	/**
+	 * Sets an given edit text view to the correct value 
+	 * @param textViewId Id for the textview
+	 * @param value value of new string to be put in
+	 */
 	private void setEditTextValue(int textViewId, String value){
 		EditText tv = (EditText) findViewById(textViewId);
 		tv.setText(value);
 	}
 	
+	/**
+	 * Fills the categories hashmap to the correct values
+	 */
 	private void populateHashMaps() {
 		categoriesMap.put("air fare", 0);
 		categoriesMap.put("ground transport", 1);

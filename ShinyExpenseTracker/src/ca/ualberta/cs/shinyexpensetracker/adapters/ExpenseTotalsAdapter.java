@@ -16,8 +16,6 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 
 /**
  * This class extends BaseAdapter to display the expense totals of a claim
- * 
- * @author Sarah Morris
  */
 public class ExpenseTotalsAdapter extends BaseAdapter implements ListAdapter {
 	private ArrayList<String> totals;

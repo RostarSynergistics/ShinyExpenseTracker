@@ -21,7 +21,16 @@ import ca.ualberta.cs.shinyexpensetracker.fragments.ExpenseItemListFragment;
 // on March 11 2015
 //http://www.androidhive.info/2013/10/android-tab-layout-with-swipeable-views-1/
 //on March 12 2015
-
+/**
+ * Deals with displaying the ClaimSummaryFragment, ExpenseItemListFragment, and
+ * DestinationListFragment.  Allows user to either click on the action bar tabs
+ * or swipe left and right to view the other tabs.  
+ * 
+ * Called when user clicks on an Expense claim in the expenseClaimListActivity
+ * 
+ * Begins by loading the ClaimSummaryFragment.
+ *
+ */
 public class TabbedSummaryActivity extends FragmentActivity implements
 		ActionBar.TabListener {
 

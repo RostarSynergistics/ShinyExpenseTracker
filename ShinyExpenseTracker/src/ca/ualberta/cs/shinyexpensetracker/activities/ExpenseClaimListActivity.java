@@ -18,7 +18,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * Issue #22
- * @author Tristan Meleshko
  */
 
 package ca.ualberta.cs.shinyexpensetracker.activities;
@@ -136,14 +135,30 @@ public class ExpenseClaimListActivity
 		adapter.notifyDataSetChanged();
 	}
 
+	/**
+	 * Adds a claim to the claim list controller
+	 * @param claim
+	 * @throws IOException
+	 */
 	public void addClaim(ExpenseClaim claim) throws IOException {
 		controller.addExpenseClaim(claim);
 	}
 
+	/**
+	 * Deletes a claim from the claim list controller
+	 * @param claim
+	 * @throws IOException
+	 */
 	public void deleteClaim(ExpenseClaim claim) throws IOException {
 		controller.removeExpenseClaim(claim);
 	}
-
+	
+	/**
+	 * This creates and shows an dialog used when a claim is longed clicked. 
+	 * This dialog is used for deleting a claim 
+	 * @param position
+	 * @return The alertDialog for delete claim
+	 */
 	public AlertDialog askDeleteClaimAt(int position) {
 		// Alert Dialog (Mar 7, 2015):
 		// http://www.androidhive.info/2011/09/how-to-show-alert-dialog-in-android/
@@ -153,9 +168,7 @@ public class ExpenseClaimListActivity
 
 		AlertDialog dialog = new AlertDialog.Builder(this)
 				.setTitle("Delete Claim?")
-				.setMessage(
-						"Delete '" + claimToDelete.toString()
-								+ "'?\n(This cannot be undone)")
+				.setMessage("Delete '" + claimToDelete.toString() + "'?\n(This cannot be undone)")
 				// If OK, delete the claim. (Positive action);
 				.setPositiveButton("OK", new OnClickListener() {
 					@Override

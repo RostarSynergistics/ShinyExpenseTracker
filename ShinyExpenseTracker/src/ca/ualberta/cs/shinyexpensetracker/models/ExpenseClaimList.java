@@ -13,43 +13,64 @@ import java.util.Comparator;
 public class ExpenseClaimList extends Model<ExpenseClaimList> {
 	private ArrayList<ExpenseClaim> claims;
 	
-	/* FIXME
-	 * UML says 0..* ExpenseClaimList's are composed of
-	 * 			1 ExpenseClaimController,
-	 * and that 1 ExpenseClaimList is composed of ? Expense Claims
-	 */
-	
 	public ExpenseClaimList() {
 		claims = new ArrayList<ExpenseClaim>();
 	}
 
-	// FIXME UML says this takes no args
+	/**
+	 * Returns a claim from the claimList based on index passed in
+	 * @param index
+	 * @return
+	 */
 	public ExpenseClaim getClaim(int index) {
 		return claims.get(index);
 	}
 	
+	/**
+	 * Adds a claim to the claimList
+	 * @param claim
+	 */
 	public void addClaim(ExpenseClaim claim) {
 		claims.add(claim);
 		notifyViews();
 	}
 	
+	/**
+	 * deletes a claim from the claimList
+	 * @param claim
+	 */
 	public void removeClaim(ExpenseClaim claim) {
 		claims.remove(claim);
 		notifyViews();
 	}
 	
+	/**
+	 * returns number of claims in claimList
+	 * @return
+	 */
 	public int size(){
 		return claims.size();
 	}
 	
+	/**
+	 * returns array list of claims
+	 * @return
+	 */
 	public ArrayList<ExpenseClaim> getClaims(){
 		return claims;
 	}
 	
+	/**
+	 * returns number of claims in claimList
+	 * @return
+	 */
 	public int getCount() {
 		return this.claims.size();
 	}
 
+	/**
+	 * sorts the claimList
+	 */
 	public void sort() {
 		Comparator<? super ExpenseClaim> reverse_compare = new Comparator<ExpenseClaim>() {
 			public int compare(ExpenseClaim lhs, ExpenseClaim rhs) {

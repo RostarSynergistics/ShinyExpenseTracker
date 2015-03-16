@@ -3,7 +3,9 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 
 /**
  * Tag object that holds a string that represents a tag
- * @author Tristan 
+ * 
+ * Has value: String
+ * 
  * @version 1.0
  * @since 2015-03-10
  */

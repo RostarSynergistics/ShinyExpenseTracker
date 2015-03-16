@@ -3,6 +3,18 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * ExpenseClaim objects extend Model and implement Comparable
+ * 
+ * Has a name: String,
+ * 		startDate: Date,
+ * 		endDate: Date,
+ * 		Status: enum Status
+ * 		Destinations: ArrayList<Destination>
+ * 		TagList: TagList
+ * 		Expenses: ArrayList<ExpenseItem>
+ *
+ */
 public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<ExpenseClaim> {
 	public enum Status {
 		IN_PROGRESS("In Progress"),
@@ -66,31 +78,39 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	public String getName() {
 		return name;
 	}
+	
 	public void setName(String name) {
 		this.name = name;
 		notifyViews();
 	}
+	
 	public Date getStartDate() {
 		return startDate;
 	}
+	
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 		notifyViews();
 	}
+	
 	public Date getEndDate() {
 		return endDate;
 	}
+	
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 		notifyViews();
 	}
+	
 	public Status getStatus() {
 		return status;
 	}
+	
 	public void setStatus(Status status) {
 		this.status = status;
 		notifyViews();
 	}
+	
 	public TagList getTagList() {
 		return tagList;
 	}
@@ -102,14 +122,17 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	public Destination getDestination(int index){
 		return destinations.get(index);
 	}
+	
 	public void addDestination(Destination destination) {
 		destinations.add(destination);
 		notifyViews();
 	}
+	
 	public void removeDestination(int index) {
 		destinations.remove(index);
 		notifyViews();
 	}
+	
 	public void removeDestination(Destination destination) {
 		destinations.remove(destinations.indexOf(destination) );
 		notifyViews();
@@ -119,6 +142,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		expenses.add(expense);
 		notifyViews();
 	}
+	
 	public void removeExpense(int index) {
 		// TODO Issue #21.
 		// This function is partially complete, but does not
@@ -126,6 +150,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		expenses.remove(index);
 		notifyViews();
 	}
+	
 	public void removeExpense(ExpenseItem expense) {
 		expenses.remove(expenses.indexOf(expense) );
 		notifyViews();
@@ -151,9 +176,18 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		return getName();
 	}
 	
+	/**
+	 * returns number of expenses
+	 * @return
+	 */
 	public int getExpenseCount() {
 		return expenses.size();
 	}
+	
+	/**
+	 * returns number of destinations
+	 * @return
+	 */
 	public int getDestinationCount() {
 		return destinations.size();
 	}

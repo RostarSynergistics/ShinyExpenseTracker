@@ -126,12 +126,27 @@ public class TagController {
 		return list.getTagById(index);
 	}
 	
+
+
+	
+
+	/**
+	 * Deletes a tag from the master tagList
+	 * @param index
+	 * @return
+	 */
 	public boolean deleteTag(int index) throws IOException {
 		boolean result = list.deleteTag(index);
 		persister.saveTags(list);
 		return result;
 	}
 	
+	/**
+	 * Edits a tag in the master Taglist
+	 * @param index
+	 * @param newTag
+	 * @return
+	 */
 	public boolean editTag(int index, Tag newTag) throws IOException {
 		boolean result = list.editTag(index, newTag);
 		persister.saveTags(list);

@@ -12,8 +12,6 @@ import ca.ualberta.cs.shinyexpensetracker.TagController;
 import ca.ualberta.cs.shinyexpensetracker.activities.ManageTagActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
-import junit.framework.Assert;
-import junit.framework.TestCase;
 
 public class TagUITest extends ActivityInstrumentationTestCase2<ManageTagActivity> {
 	Activity activity;

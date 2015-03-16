@@ -1,11 +1,11 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
+import android.content.Intent;
+import android.test.ActivityInstrumentationTestCase2;
+import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseItemDetailView;
 import ca.ualberta.cs.shinyexpensetracker.R;
@@ -14,12 +14,6 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.test.ActivityInstrumentationTestCase2;
-import android.widget.TextView;
-import junit.framework.TestCase;
 
 /**
  * Test suite to test activity that lets the user view 

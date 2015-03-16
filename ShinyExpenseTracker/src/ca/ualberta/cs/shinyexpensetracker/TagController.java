@@ -17,9 +17,6 @@
 
 
 package ca.ualberta.cs.shinyexpensetracker;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 

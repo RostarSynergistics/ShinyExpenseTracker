@@ -6,9 +6,9 @@ import android.content.Context;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
-import ca.ualberta.cs.shinyexpensetracker.persistance.ExpenseClaimListPersister;
-import ca.ualberta.cs.shinyexpensetracker.persistance.FilePersistenceStrategy;
-import ca.ualberta.cs.shinyexpensetracker.persistance.IExpenseClaimListPersister;
+import ca.ualberta.cs.shinyexpensetracker.persistence.ExpenseClaimListPersister;
+import ca.ualberta.cs.shinyexpensetracker.persistence.FilePersistenceStrategy;
+import ca.ualberta.cs.shinyexpensetracker.persistence.IExpenseClaimListPersister;
 
 /**
  * Acts as an interface between an ExpenseClaim view and

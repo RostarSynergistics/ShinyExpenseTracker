@@ -9,7 +9,7 @@ import android.test.AndroidTestCase;
 import android.view.View;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemAdapter;
+import ca.ualberta.cs.shinyexpensetracker.adapters.ExpenseItemAdapter;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 

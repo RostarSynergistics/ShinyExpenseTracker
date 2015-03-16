@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme" >
         <!-- This replaces Main Activity. May change in the future or for testing. -->
         <activity
-            android:name="ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimsActivity"
+            android:name="ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimListActivity"
             android:label="@string/title_activity_expense_claims_view" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -34,7 +34,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.AddExpenseClaimActivity;
-import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimsActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimListActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
@@ -46,9 +46,9 @@ import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 public class ViewAllExpenseClaimsActivityTests extends
-		ActivityInstrumentationTestCase2<ExpenseClaimsActivity> {
+		ActivityInstrumentationTestCase2<ExpenseClaimListActivity> {
 	
-	ExpenseClaimsActivity activity;
+	ExpenseClaimListActivity activity;
 	ExpenseClaimList claimsList;
 	ExpenseClaimController controller;
 
@@ -58,7 +58,7 @@ public class ViewAllExpenseClaimsActivityTests extends
 	ListView claimListView;
 	
 	public ViewAllExpenseClaimsActivityTests() {
-		super(ExpenseClaimsActivity.class);
+		super(ExpenseClaimListActivity.class);
 	}
 
 	protected void setUp() throws Exception {

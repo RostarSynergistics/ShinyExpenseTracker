@@ -46,7 +46,7 @@ import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
-public class ExpenseClaimsActivity 
+public class ExpenseClaimListActivity 
 	extends Activity 
 	implements IView<ExpenseClaimList> {
 	private ExpenseClaimController controller;
@@ -74,7 +74,7 @@ public class ExpenseClaimsActivity
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Intent intent = new Intent(ExpenseClaimsActivity.this,
+				Intent intent = new Intent(ExpenseClaimListActivity.this,
 						TabbedSummaryActivity.class);
 				intent.putExtra("claimIndex", position);
 				startActivity(intent);
@@ -123,7 +123,7 @@ public class ExpenseClaimsActivity
 			// TODO #28
 			return true;
 		case R.id.action_manage_tags:
-			Intent manageTagsIntent = new Intent(ExpenseClaimsActivity.this,
+			Intent manageTagsIntent = new Intent(ExpenseClaimListActivity.this,
 					ManageTagActivity.class);
 			startActivity(manageTagsIntent);
 			return true;

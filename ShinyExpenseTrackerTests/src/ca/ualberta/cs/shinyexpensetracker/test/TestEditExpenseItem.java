@@ -60,8 +60,10 @@ public class TestEditExpenseItem extends ActivityInstrumentationTestCase2<Expens
 		ExpenseClaimController.getInstance().setClaimList(claimList);
 		controller = ExpenseClaimController.getInstance();
 		Intent intent = new Intent();
+
 	    intent.putExtra("claimIndex", new Integer(0));
 	    intent.putExtra("itemIndex", new Integer(0));
+
 	    setActivityIntent(intent);
 	    activity = getActivity();
 	    

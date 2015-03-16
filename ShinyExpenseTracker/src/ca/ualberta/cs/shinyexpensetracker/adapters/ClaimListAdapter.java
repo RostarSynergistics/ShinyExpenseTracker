@@ -23,7 +23,7 @@
 
 // Sourced (Mar 8, 2015)
 //   http://www.piwai.info/android-adapter-good-practices/
-package ca.ualberta.cs.shinyexpensetracker;
+package ca.ualberta.cs.shinyexpensetracker.adapters;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -34,6 +34,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
 public class ClaimListAdapter extends BaseAdapter {

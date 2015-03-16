@@ -5,9 +5,9 @@ import java.io.IOException;
 import junit.framework.TestCase;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
-import ca.ualberta.cs.shinyexpensetracker.persistance.ExpenseClaimListPersister;
-import ca.ualberta.cs.shinyexpensetracker.persistance.IExpenseClaimListPersister;
-import ca.ualberta.cs.shinyexpensetracker.persistance.IPersistenceStrategy;
+import ca.ualberta.cs.shinyexpensetracker.persistence.ExpenseClaimListPersister;
+import ca.ualberta.cs.shinyexpensetracker.persistence.IExpenseClaimListPersister;
+import ca.ualberta.cs.shinyexpensetracker.persistence.IPersistenceStrategy;
 
 /**
  * Tests ExpenseClaimListPersister's ability to save and load an

@@ -2,10 +2,7 @@
 
 package ca.ualberta.cs.shinyexpensetracker;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,7 +10,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -22,7 +18,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -46,10 +41,10 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 
 /** 
-* Covers Issues 5 and 15
+* Covers Issues 5, 15, and 29
 * @author Sarah Morris
 * @author Oleg Oleynikov
-* @version 1.1
+* @version 1.2
 * @since 2015-03-15
 *
 * 
@@ -198,8 +193,17 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
         }
         return mutableBitmap;
     }
-
+	/**
+	 * Scale image, if needed.
+	 */
+	
 	private Bitmap scaleImage(Bitmap mutableBitmap, int width, int height){
+		/* 
+		 * The max size is 64 KB. Since each pixel is stored in 4 bytes,
+		 * the max number of pixels allowed in the image is 16384.
+		 * Scale height and width appropriately and return a new Bitmap
+		 * with those values
+		 */
 		int sizeInBytes = mutableBitmap.getByteCount();
 
 		// if it's already smaller, just returns

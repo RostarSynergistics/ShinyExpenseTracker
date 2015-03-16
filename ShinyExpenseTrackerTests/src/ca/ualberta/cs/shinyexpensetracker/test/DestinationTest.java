@@ -1,41 +1,33 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import ca.ualberta.cs.shinyexpensetracker.AddDestinationActivity;
-import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
-import ca.ualberta.cs.shinyexpensetracker.models.DestinationList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
-import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
 import android.app.Instrumentation;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.InstrumentationTestCase;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.Spinner;
 
-public class DestinationTest extends ActivityInstrumentationTestCase2<AddDestinationActivity> {
-	AddDestinationActivity activity;
-	 Instrumentation instrumentation;
-	 EditText nameInput, reasonInput;
-	 Button doneButton;
+public class DestinationTest extends 
+			ActivityInstrumentationTestCase2<AddDestinationActivity> {
 	
-    public DestinationTest(Class<AddDestinationActivity> activityClass) {
-		super(activityClass);
-	}
+	AddDestinationActivity activity;
+	Instrumentation instrumentation;
+	EditText nameInput, reasonInput;
+	Button doneButton;
+    private ExpenseClaimController controller;
+    private ExpenseClaim expenseClaim;
+	
+		public DestinationTest(){
+			super(AddDestinationActivity.class);
+		}
+		 
+		public DestinationTest(Class<AddDestinationActivity> activityClass) {
+			super(activityClass);
+		}
 
 	protected void setUp() throws Exception {
     	super.setUp();
@@ -44,6 +36,9 @@ public class DestinationTest extends ActivityInstrumentationTestCase2<AddDestina
         ExpenseClaimController controller = ExpenseClaimController.getInstance();
         controller.setClaimList(new ExpenseClaimList());
         controller.addExpenseClaim(new ExpenseClaim("Test Claim"));
+        Intent intent = new Intent();
+        intent.putExtra("claimIndex", 0);
+        setActivityIntent(intent);
         
         activity = getActivity();
         
@@ -53,7 +48,7 @@ public class DestinationTest extends ActivityInstrumentationTestCase2<AddDestina
     }
 	
 	/* test if a Destination is made*/
-	public void testCreateExpenseDestination() {
+	public void testCreateDestination() {
 		instrumentation.runOnMainSync(new Runnable(){
 			public void run() {
 				assertNotNull(doneButton);
@@ -69,5 +64,29 @@ public class DestinationTest extends ActivityInstrumentationTestCase2<AddDestina
 				 assertNotSame("false positive reason", "Wrong reason", destination.getReasonForTravel());				 
 			}
 		});
+	}
+	
+	/* tests if the data entered has been correctly saved to a Destination when the Done button is clicked */
+	public void testDone() {
+		//TODO: Test not done being implemented, needs to check to see if loaded destination is what was entered
+		instrumentation.runOnMainSync(new Runnable() {
+			public void run() {				
+				nameInput.setText("Las Vegas");
+				reasonInput.setText("Vacation");
+				doneButton.performClick();
+				activity = getActivity();
+			}
+		});
+		instrumentation.waitForIdleSync();
+
+		assertTrue(activity != null);
+		
+		assertEquals("name length == 0", 9, nameInput.getText().length());
+		assertEquals("nameInput == Destination.name", "Las Vegas", nameInput.getText().toString());
+		
+		assertEquals("reason length == 0", 8, reasonInput.getText().length());
+		assertEquals("reasonInput == Destination.reason", "Vacation", reasonInput.getText().toString());
+		
+		fail();
 	}
 }

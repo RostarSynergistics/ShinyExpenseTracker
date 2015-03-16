@@ -54,6 +54,8 @@ public class ClaimSummaryFragmentTest extends
 	public void setUp() throws Exception {
 		super.setUp();
 		
+		//Source: http://stackoverflow.com/questions/23728835/in-junit-test-activity-if-it-did-received-the-extra-from-intent
+		//On March 14 2015
 		//set up a mock intent to allow for passing the claimIndex
 		Intent intent = new Intent();
 		//intent.setClassName("ca.ualberta.cs.shinyexpensetracker.activities", 

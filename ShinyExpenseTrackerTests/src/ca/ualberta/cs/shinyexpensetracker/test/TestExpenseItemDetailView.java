@@ -31,7 +31,6 @@ import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersist
  * 
  * Covers Issues 16, 36
  * 
- * @author Oleg Oleynikov
  * @version 1.1
  * @since 2015-03-16
  */

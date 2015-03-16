@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
@@ -19,8 +20,6 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 
 /**
- * Activity that lets the user view information of the selected ExpenseItem
- * 
  * Covers Issue 16
  * 
  * @version 1.0
@@ -43,8 +42,8 @@ public class ExpenseItemDetailActivity extends Activity implements
 		Bundle bundle = intent.getExtras();
 
 		if (bundle != null) {
-			claimIndex = bundle.getInt("claimIndex");
-			expenseItemIndex = bundle.getInt("expenseIndex");
+			claimIndex = intent.getIntExtra("claimIndex", -1);
+			expenseItemIndex = intent.getIntExtra("expenseIndex", -1);
 			ExpenseClaimController controller = Application
 					.getExpenseClaimController();
 			ExpenseClaim claim = controller.getExpenseClaim(claimIndex);
@@ -85,20 +84,18 @@ public class ExpenseItemDetailActivity extends Activity implements
 				Locale.CANADA);
 
 		setTextViewValue(R.id.expenseItemNameValue, item.getName().toString());
-		setTextViewValue(R.id.expenseItemDateValue,
-				dateFormatter.format(item.getDate()));
-		setTextViewValue(R.id.expenseItemCategoryValue, item.getCategory()
-				.toString());
-		setTextViewValue(R.id.expenseItemDescriptionValue, item
-				.getDescription().toString());
-		setTextViewValue(R.id.expenseItemAmountValue, item.getAmountSpent()
-				.toString());
-		setTextViewValue(R.id.expenseItemCurrencyValue, item.getCurrency()
-				.name());
-		if (item.doesHavePhoto()) {
-			setTextViewValue(R.id.expenseItemReceiptValue, "Present");
-		} else {
-			setTextViewValue(R.id.expenseItemReceiptValue, "Not Present");
+		setTextViewValue(R.id.expenseItemDateValue, dateFormatter.format(item.getDate()));
+		setTextViewValue(R.id.expenseItemCategoryValue, item.getCategory().toString());
+		setTextViewValue(R.id.expenseItemDescriptionValue, item.getDescription().toString());
+		setTextViewValue(R.id.expenseItemAmountValue, item.getAmountSpent().toString());
+		setTextViewValue(R.id.expenseItemCurrencyValue, item.getCurrency().name());
+		if (item.doesHavePhoto()){
+			setTextViewValue(R.id.expenseItemReceiptValue,"Present");
+			ImageView iv = (ImageView) findViewById(R.id.expenseItemDetailImageButton);
+			iv.setImageBitmap(item.getReceiptPhoto());
+		}
+		else{
+			setTextViewValue(R.id.expenseItemReceiptValue,"Not Present");
 		}
 
 	}
@@ -157,4 +154,8 @@ public class ExpenseItemDetailActivity extends Activity implements
 		intent.putExtra("expenseIndex", expenseItemIndex);
 		startActivity(intent);
 	}
+	public void onClickRemoveReceipt(View v){
+		item.setReceiptPhoto(null);	
+	}
+
 }

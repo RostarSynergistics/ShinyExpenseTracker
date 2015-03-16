@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -63,7 +62,7 @@ public class TestEditExpenseItem extends ActivityInstrumentationTestCase2<Expens
 		Intent intent = new Intent();
 
 	    intent.putExtra("claimIndex", new Integer(0));
-	    intent.putExtra("expenseIndex", new Integer(0));
+	    intent.putExtra("itemIndex", new Integer(0));
 
 	    setActivityIntent(intent);
 	    activity = getActivity();

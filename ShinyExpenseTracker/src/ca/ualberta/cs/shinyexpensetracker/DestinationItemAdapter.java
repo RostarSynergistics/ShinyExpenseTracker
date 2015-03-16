@@ -15,7 +15,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
  * It fills the destination_list_item.xml layout file to display
  * Destination Items.
  * 
- * You can use this in place of an ArrayAdapter for ExpenseItems.
+ * You can use this in place of an ArrayAdapter for Destinations.
  * This gives better flexibility for the adapter.
  * 
  * Example usage:

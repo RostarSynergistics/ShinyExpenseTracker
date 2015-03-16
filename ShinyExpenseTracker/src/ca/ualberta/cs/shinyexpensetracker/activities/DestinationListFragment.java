@@ -20,6 +20,9 @@ import ca.ualberta.cs.shinyexpensetracker.IView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
+/**
+ * Displays a list of destinations. One of the tabs in the summary page.
+ */
 public class DestinationListFragment extends Fragment implements IView<ExpenseClaim> {
 
 	/**
@@ -42,10 +45,7 @@ public class DestinationListFragment extends Fragment implements IView<ExpenseCl
 		fragment.setArguments(args);
 		return fragment;
 	}
-
-	public DestinationListFragment() {
-	}
-
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

@@ -20,7 +20,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 
 /**
  * Activity that lets the user view information of the selected ExpenseItem
- * 
+ * Used when the expense item list fragment is loaded 
  * Covers Issue 16
  * 
  * @version 1.0
@@ -72,7 +72,11 @@ public class ExpenseItemDetailActivity extends Activity implements
 		super.onPause();
 		Log.d("ExpenseItemDetailView", "Pausing activity.");
 	}
-
+	/**
+	 * Sets the value of a textView
+	 * @param textViewId Id of the text view
+	 * @param value string to put in the textView
+	 */
 	private void setTextViewValue(int textViewId, String value) {
 		TextView tv = (TextView) findViewById(textViewId);
 		tv.setText(value);
@@ -150,6 +154,7 @@ public class ExpenseItemDetailActivity extends Activity implements
 		populateTextViews();
 	}
 
+	
 	public void onReceiptThumbnailClick(View v) {
 		Intent intent = new Intent(ExpenseItemDetailActivity.this,
 				ReceiptViewActivity.class);

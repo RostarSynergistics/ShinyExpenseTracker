@@ -103,7 +103,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 			// then we are editing an item
 			// fetch the item and preset all fields with its values
 			if (expenseItemId != null){
-				item = claim.getItemById(expenseItemId);
+				item = claim.getExpense(expenseItemId);
 				isEditing = true;
 				populateTextViews();
 			}
@@ -356,14 +356,20 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 			Drawable dr = button.getDrawable();
 			bm = convertToBitmap(dr, dr.getMinimumWidth(), dr.getMinimumHeight());
 		}
-		ExpenseItem expense = new ExpenseItem(name, date, category, amount, 
-				currency, description, bm); 
 		
 		if (isEditing){
-			claim.removeExpense(item);
-			claim.addExpense(expense);
-		}
-		else{
+			// Update the existing expense
+			item.setName(name);
+			item.setDate(date);
+			item.setCategory(category);
+			item.setAmountSpent(amount);
+			item.setCurrency(currency);
+			item.setDescription(description);
+			item.setReceiptPhoto(bm);
+		} else { 
+			// Add a new expense
+			ExpenseItem expense = new ExpenseItem(name, date, category, amount, 
+				currency, description, bm); 
 			claim.addExpense(expense);
 		}
 		

@@ -22,8 +22,7 @@ public class DestinationTest extends InstrumentationTestCase {
 		assertEquals("DestinationList is empty: ", 1, destList.getCount());
 	}
 	
-	public void removeDestination() {
-		assertEquals("DestinationList is empty: ", 1, destList.getCount());
+	public void testRemoveDestination() {
 		String n = "Miami";
 		String r = "Vacation";
 		destList.removeDestination(n, r);

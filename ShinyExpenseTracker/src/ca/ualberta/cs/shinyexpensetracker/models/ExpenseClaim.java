@@ -125,7 +125,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		expenses.remove( expenses.indexOf(expense) );
 		notifyViews();
 	}
-	public DestinationList getDestinationList() {
+	public DestinationList getDestination() {
 		return destinationList;
 	}
 	public void setDestinationList(DestinationList destinationList) {

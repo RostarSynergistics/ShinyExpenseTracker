@@ -1,8 +1,12 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.TagController;
 import ca.ualberta.cs.shinyexpensetracker.activities.ManageTagActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;

@@ -2,7 +2,6 @@ package ca.ualberta.cs.shinyexpensetracker;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -39,7 +38,7 @@ public class ExpenseItemDetailView extends Activity {
 		
 		if (bundle != null){
 			int claimId = (Integer) bundle.get("claimIndex");
-			int expenseItemId = (Integer) bundle.get("expenseIndex");
+			int expenseItemId = (Integer) bundle.get("itemIndex");
 			ExpenseClaimController controller = ExpenseClaimController.getInstance();
 			ExpenseClaim claim = controller.getExpenseClaim(claimId);
 			item = claim.getItemById(expenseItemId);

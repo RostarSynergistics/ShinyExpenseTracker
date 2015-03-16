@@ -13,7 +13,7 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 import ca.ualberta.cs.shinyexpensetracker.activities.ClaimSummaryFragment;
-import ca.ualberta.cs.shinyexpensetracker.activities.DestinationsListFragment;
+import ca.ualberta.cs.shinyexpensetracker.activities.DestinationListFragment;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemListFragment;
 
 /**
@@ -49,7 +49,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			break;
 		case 2:
 			//DestinationsList activity
-			frag = DestinationsListFragment.newInstance(position+1);
+			frag = DestinationListFragment.newInstance(position+1);
 			break;
 		default:
 			throw new RuntimeException("No such tab");

@@ -22,5 +22,10 @@
         android:title="@string/add_destination" 
         android:onClick="addDestinationMenuItem">
     </item>
+    
+        <item android:id="@+id/editClaim" 
+        android:title="@string/edit_claim" 
+        android:onClick="editClaimMenuItem">
+    </item>
 
 </menu>

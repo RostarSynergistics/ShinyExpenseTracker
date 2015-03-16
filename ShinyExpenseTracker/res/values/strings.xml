@@ -40,8 +40,7 @@
         <item>CNY</item>
     </string-array>
 
-
-
+    <string name="title_activity_add_destination">AddDestinationActivity</string>
     <string name="title_activity_tabbed_summary">Claim Summary</string>
     <string name="title_section1">Summary</string>
     <string name="title_section2">Expenses</string>
@@ -55,13 +54,17 @@
 
     <string name="deleteExpenseItemPromptTitle">Delete?</string>
     <string name="deleteExpenseItemPromptMessage">Delete this expense item?</string>
+    
+    <string name="deleteDestinationItemPromptTitle">Delete?</string>
+    <string name="deleteDestinationItemPromptMessage">Delete this destination?</string>
 
     <string name="no_expenses">No Expenses</string>
     <string name="claim_name">claim name</string>
     <string name="add_expense_item">Add Expense Item</string>
     <string name="add_destination">Add Destination</string>
+    <string name="edit_claim">Edit Claim</string>
+    <string name="no_destinations">No Destinations</string>
     <string name="delete_selected_tag">Delete selected tag?</string>
-
     <string name="title_activity_expense_item_detail_view">ExpenseItemDetailView</string>
 
 

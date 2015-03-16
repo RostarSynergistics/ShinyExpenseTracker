@@ -1,6 +1,5 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
@@ -12,8 +11,6 @@ import ca.ualberta.cs.shinyexpensetracker.TagController;
 import ca.ualberta.cs.shinyexpensetracker.activities.ManageTagActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
-import junit.framework.Assert;
-import junit.framework.TestCase;
 
 public class TagUITest extends ActivityInstrumentationTestCase2<ManageTagActivity> {
 	ManageTagActivity activity;

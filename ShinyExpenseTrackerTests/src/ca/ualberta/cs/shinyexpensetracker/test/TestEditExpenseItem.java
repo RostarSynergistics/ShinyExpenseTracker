@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -142,7 +141,9 @@ public class TestEditExpenseItem extends ActivityInstrumentationTestCase2<Expens
 		Bitmap imageBigScaled = activity.convertToBitmap(dr, imageBig.getWidth(), imageBig.getHeight());
 		assertTrue("image too big", imageBigScaled.getByteCount()<=65536);
 	}
-
+	/**
+	 * Draw a new image on ImageButton
+	 */
 	private void drawNewImage(){
 		getInstrumentation().runOnMainSync(new Runnable() {
 			@Override

@@ -24,7 +24,6 @@ import android.test.InstrumentationTestCase;
 import ca.ualberta.cs.shinyexpensetracker.TagController;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
-import junit.framework.TestCase;
 
 
 /**

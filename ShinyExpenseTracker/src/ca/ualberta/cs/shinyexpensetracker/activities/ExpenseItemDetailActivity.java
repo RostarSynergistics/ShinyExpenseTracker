@@ -13,6 +13,7 @@ import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 
@@ -25,7 +26,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
  * @since 2015-03-15
  */
 
-public class ExpenseItemDetailActivity extends Activity {
+public class ExpenseItemDetailActivity extends Activity implements IView<ExpenseItem> {
 
 	private ExpenseItem item;
 	int claimId;
@@ -45,6 +46,7 @@ public class ExpenseItemDetailActivity extends Activity {
 			ExpenseClaimController controller = Application.getExpenseClaimController();
 			ExpenseClaim claim = controller.getExpenseClaim(claimId);
 			item = claim.getItemById(expenseItemId);
+			item.addView(this);
 			populateTextViews();
 		}
 	}
@@ -96,11 +98,21 @@ public class ExpenseItemDetailActivity extends Activity {
 		finish();
 	}
 
+
 	public void onReceiptThumbnailClick(View v){
 		Intent intent = new Intent(ExpenseItemDetailActivity.this, ReceiptViewActivity.class);
 		intent.putExtra("claimIndex", claimId);
 		intent.putExtra("expenseIndex", expenseItemId);
 		startActivity(intent);
+	}
+	public void onClickRemoveReceipt(View v){
+		item.setReceiptPhoto(null);	
+	}
+	
+
+	@Override
+	public void update(ExpenseItem m) {
+		populateTextViews();
 	}
 }
 

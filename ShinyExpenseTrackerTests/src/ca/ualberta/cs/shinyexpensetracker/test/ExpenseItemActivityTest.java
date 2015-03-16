@@ -1,13 +1,3 @@
-/** 
- * Covers Issue 5
- * Things to implement: saving of an expenseItem to an expenseClaim
- * @author Sarah Morris
- * @version 1.0
- * @since 2015-03-09
- *
- * Tests ExpenseItemActivity 
- */
-
 package ca.ualberta.cs.shinyexpensetracker.test;
 
 import java.math.BigDecimal;
@@ -38,6 +28,12 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
+/** 
+ * Tests ExpenseItemActivity.
+ * 
+ *  ExpenseItemActivity is responsible for adding and
+ *  editing expense items.
+ */
 public class ExpenseItemActivityTest extends
 		ActivityInstrumentationTestCase2<ExpenseItemActivity> {
 
@@ -90,6 +86,11 @@ public class ExpenseItemActivityTest extends
         }
     };
 
+    /**
+     * Setup for each test. Creates a new claim and passes
+     * the intent for the 0 index. Sets up input fields
+     */
+    @Override
     protected void setUp() throws Exception {
     	super.setUp();
         instrumentation = getInstrumentation();
@@ -116,7 +117,9 @@ public class ExpenseItemActivityTest extends
         doneButton = ((Button) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemDoneButton));
     }
     
-    /* Tests that when the ExpenseItemDateTextView is clicked a DatePickerDialog is shown */
+    /** Tests that when the ExpenseItemDateTextView is clicked
+     *  a DatePickerDialog is shown
+     */
 	public void testSetDateTimeField() {
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {
@@ -127,7 +130,7 @@ public class ExpenseItemActivityTest extends
 				((ExpenseItemActivity) activity).getDialog().isShowing());
 	}
 
-	/* test if an expense Item is successfully created */
+	/** test if an expense Item is successfully created */
 	public void testCreateExpenseItem() {
 		instrumentation.runOnMainSync(new Runnable() {
 			@SuppressLint("SimpleDateFormat")
@@ -174,7 +177,7 @@ public class ExpenseItemActivityTest extends
 		});
 	}
 
-	/*
+	/**
 	 * tests if the data entered has been correctly saved to an expenseItem when
 	 * the Done button is clicked
 	 */
@@ -201,7 +204,7 @@ public class ExpenseItemActivityTest extends
 
 	}
 
-	/*
+	/**
 	 * tests that a dialog telling the user that they require a name before
 	 * completing the expense item appears
 	 */
@@ -218,7 +221,7 @@ public class ExpenseItemActivityTest extends
 				activity.alertDialog.isShowing());
 	}
 
-	/*
+	/**
 	 * tests that a dialog telling the user that they require a date before
 	 * completing the expense item appears
 	 */
@@ -235,7 +238,7 @@ public class ExpenseItemActivityTest extends
 				activity.alertDialog.isShowing());
 	}
 
-	/*
+	/**
 	 * tests that a dialog telling the user that they require an amount spent
 	 * before completing the expense item appears
 	 */

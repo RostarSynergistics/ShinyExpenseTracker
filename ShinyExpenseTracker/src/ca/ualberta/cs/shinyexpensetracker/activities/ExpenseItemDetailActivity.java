@@ -20,11 +20,8 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 
 /**
-<<<<<<< HEAD
  * Activity that lets the user view information of the selected ExpenseItem
- * Used when an expense item is selected from the ExpenseItemListFragment  
-=======
->>>>>>> 6d47d77c66dfa95ae430bfe8d28107504d4a70cd
+ * Used when an expense item is selected from the ExpenseItemListFragment
  * Covers Issue 16
  * 
  * @version 1.0

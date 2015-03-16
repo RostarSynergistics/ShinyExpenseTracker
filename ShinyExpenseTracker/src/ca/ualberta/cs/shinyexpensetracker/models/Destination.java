@@ -1,5 +1,14 @@
 package ca.ualberta.cs.shinyexpensetracker.models;
 
+/**
+ * 
+ * Destination object extends Model.  
+ * Has a name: String,
+ * 		reason for travel: String
+ * 
+ * Destinations are added to expense claims
+ *
+ */
 public class Destination extends Model<Destination> {
 	public String name;
 	public String reasonForTravel;

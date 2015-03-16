@@ -20,6 +20,19 @@ import java.util.Date;
 
 import android.graphics.Bitmap;
 
+/**
+ * Houses ExpenseItem Data.  Extends Model
+ * 
+ * Has name: String,
+ * 	   date: Date,
+ * 	   category: enum Category
+ *     amountSpent: BigDecimal
+ *     currency: enum Currency
+ *     description: String
+ *     recieptPhoto: Bitmap
+ * 
+ *
+ */
 public class ExpenseItem extends Model <ExpenseItem> {
 
 	public enum Category { 
@@ -163,6 +176,10 @@ public class ExpenseItem extends Model <ExpenseItem> {
 			.toString();
 	}
 
+	/**
+	 * returns true is expenseItem has a receipt
+	 * @return
+	 */
 	public boolean doesHavePhoto() {
 		return this.receiptPhoto != null;
 	}

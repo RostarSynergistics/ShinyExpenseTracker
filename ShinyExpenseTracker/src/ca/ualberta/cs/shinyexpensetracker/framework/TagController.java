@@ -26,8 +26,6 @@ import ca.ualberta.cs.shinyexpensetracker.models.TagList;
  * program
  * 
  * Covers Issue 25
- * @author Oleg Oleynikov 
- * @auther Rajan Jassal
  * @version 1.0
  * @since 2015-03-10
  */
@@ -53,9 +51,6 @@ public class TagController {
 			return tagController;
 		}
 	}
-	
-
-
 	
 	/**
 	 * Add a tag to the current tag list
@@ -123,10 +118,21 @@ public class TagController {
 		return list.getTagById(index);
 	}
 	
+	/**
+	 * Deletes a tag from the master tagList
+	 * @param index
+	 * @return
+	 */
 	public boolean deleteTag(int index){
 		return list.deleteTag(index);
 	}
 	
+	/**
+	 * Edits a tag in the master Taglist
+	 * @param index
+	 * @param newTag
+	 * @return
+	 */
 	public boolean editTag(int index, Tag newTag){
 		return list.editTag(index, newTag);
 	}

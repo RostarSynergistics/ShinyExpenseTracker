@@ -4,6 +4,16 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Keeps a list of tags.
+ * 
+ * Used as a master TagList for all tags in the system and by
+ * claims individually to keeps a claim dependant list of tags associated 
+ * with given claim
+ * 
+ * Has tags: ArrayList<Tag>
+ *
+ */
 public class TagList extends Model<TagList> {
 	private ArrayList<Tag> tags = new ArrayList<Tag>();
 	

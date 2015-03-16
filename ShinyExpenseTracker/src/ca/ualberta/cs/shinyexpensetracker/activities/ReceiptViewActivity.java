@@ -13,11 +13,13 @@ import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 /**
+ * View receipt of an Expense Item. Access through view expense item details by 
+ * clicking on the receipt thumbnail.
+ * Receives an ClaimIndex and an expenseItemIndex from the intent.
  * Covers Issue 30
  * 
  * @version 1.0
  * @since 2015-03-16
- * View receipt of a referred Expense Item, if there is any 
  */
 public class ReceiptViewActivity extends Activity {
 

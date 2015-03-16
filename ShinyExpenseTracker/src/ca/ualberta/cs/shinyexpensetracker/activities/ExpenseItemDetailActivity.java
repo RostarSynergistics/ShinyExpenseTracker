@@ -20,7 +20,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 
 /**
  * Activity that lets the user view information of the selected ExpenseItem
- * Used when the expense item list fragment is loaded 
+ * Used when an expense item is selected from the ExpenseItemListFragment  
  * Covers Issue 16
  * 
  * @version 1.0
@@ -82,6 +82,10 @@ public class ExpenseItemDetailActivity extends Activity implements
 		tv.setText(value);
 	}
 
+	/**
+	 * Sets expenseName, date, category, amount spent, currency, 
+	 * and the receipt value (has receipt or not) of the expenseItem being used
+	 */
 	private void populateTextViews() {
 		Log.d("ExpenseItemDetailView", "Updating text views.");
 
@@ -154,7 +158,11 @@ public class ExpenseItemDetailActivity extends Activity implements
 		populateTextViews();
 	}
 
-	
+	/**
+	 * Allows the user to click on the thumbnail of the recipt.
+	 * Will pass on the claimIndex and expenseItemIndex to the ReceiptViewActivity
+	 * @param v
+	 */
 	public void onReceiptThumbnailClick(View v) {
 		Intent intent = new Intent(ExpenseItemDetailActivity.this,
 				ReceiptViewActivity.class);

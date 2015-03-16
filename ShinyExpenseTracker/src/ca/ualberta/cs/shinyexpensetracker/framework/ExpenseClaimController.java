@@ -109,10 +109,20 @@ public class ExpenseClaimController {
 		return claimList;
 	}
 	
+	/**
+	 * Adds an expenseItem to the claims (gotten by index) expenseItemsList
+	 * @param expense
+	 * @param index
+	 */
 	public void addExpenseItem(ExpenseItem expense, int index)	{
 		claimList.getClaim(index).addExpense(expense);
 	}
 
+	/**
+	 * Returns the index of an expenseClaim
+	 * @param claim
+	 * @return
+	 */
 	public int getIndexOf(ExpenseClaim claim) {
 		return claimList.getClaims().indexOf(claim);
 	}

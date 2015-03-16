@@ -58,5 +58,6 @@
     <string name="claim_name">claim name</string>
     <string name="add_expense_item">Add Expense Item</string>
     <string name="add_destination">Add Destination</string>
+    <string name="delete_selected_tag">Delete selected tag?</string>
 
 </resources>

@@ -16,7 +16,7 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 
 public class TagUITest extends ActivityInstrumentationTestCase2<ManageTagActivity> {
-	Activity activity;
+	ManageTagActivity activity;
 	Instrumentation instrumentation;
 	TagController tagController;
 	ListView manageTagsListView;
@@ -29,7 +29,7 @@ public class TagUITest extends ActivityInstrumentationTestCase2<ManageTagActivit
 		super.setUp();
 		tagController = TagController.getInstance();
 		tagController.setTagList(new TagList());
-		activity = getActivity();
+		activity = (ManageTagActivity)getActivity();
 		instrumentation = getInstrumentation();
 		manageTagsListView = (ListView) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.listViewManageTags);
 	}
@@ -88,7 +88,34 @@ public class TagUITest extends ActivityInstrumentationTestCase2<ManageTagActivit
 		assertTrue("Number of tags did not stay the same" ,tagController.getTagCount() == 1);
 		assertFalse("Non alphanumeric tag added", tagController.getTag(0).getValue().equals("#@!^"));
 		assertEquals("Tag does no have the correct value" ,tagController.getTag(0).getValue(),"EditedTag");
+	}
+	
+	public void testDeleteDialogShows(){
+		addTagToController(new Tag("TEST"));
 		
+		//Simulate a long click to show delete dialog
+		activity.deleteTagFromDialog(0);
+		AlertDialog dialog = ManageTagActivity.getDeleteDialog();
+		assertTrue(dialog.isShowing());
+	}
+	
+	public void testDeleteTag(){
+		assertEquals(tagController.getTagCount(),0);
+		addTagToController(new Tag("TEST"));
+		assertEquals(tagController.getTagCount(),1);
+		
+		//Test to see if tag is deleted
+		deleteTagThroughDialog(0);
+		assertEquals("Tag was not deleted",tagController.getTagCount(),0);
+		
+		//Test to see if the right tag is deleted 
+		Tag testTag = new Tag("TEST2");
+		addTagToController(new Tag("TEST1"));
+		addTagToController(testTag);
+		assertEquals(tagController.getTagCount(),2);
+		deleteTagThroughDialog(0);
+		assertEquals("Tag not deleted", tagController.getTagCount(),1);
+		assertEquals("Wrong tag deleted",tagController.getTag(0), testTag);
 		
 	}
 
@@ -112,15 +139,13 @@ public class TagUITest extends ActivityInstrumentationTestCase2<ManageTagActivit
 		instrumentation.waitForIdleSync();
 	}
 	
+	//Edits a tag through the listview click and dialog
 	private void editTagThroughDialog(int pos, final String editedTagString) {
 		clickListView(pos);
 		
 		AlertDialog dialog = ManageTagActivity.getEditDialog();
-		
 		final EditText dialogEditText = (EditText) dialog.findViewById(R.id.EditTextDialogTag);
-		
 		final Button dialogPostiveButton = (Button) dialog.getButton(dialog.BUTTON_POSITIVE);
-		
 		
 		instrumentation.runOnMainSync(new Runnable() {
 			
@@ -132,7 +157,23 @@ public class TagUITest extends ActivityInstrumentationTestCase2<ManageTagActivit
 		});
 		instrumentation.waitForIdleSync();
 	}
-
+	
+	//Deletes a tag through the listview click and dialog
+	private void deleteTagThroughDialog(final int pos){
+		instrumentation.runOnMainSync(new Runnable() {
+		@Override
+			public void run() {
+			activity.deleteTagFromDialog(pos);
+			AlertDialog dialog = ManageTagActivity.getDeleteDialog();
+			
+			final Button dialogPostiveButton = (Button) dialog.getButton(dialog.BUTTON_POSITIVE);
+			dialogPostiveButton.performClick();
+			}	
+		});
+		instrumentation.waitForIdleSync();
+	}
+	
+	//Clicks the list view at given postion
 	private void clickListView(int pos) {
 		instrumentation.runOnMainSync(new Runnable() {
 			
@@ -145,6 +186,7 @@ public class TagUITest extends ActivityInstrumentationTestCase2<ManageTagActivit
 		instrumentation.waitForIdleSync();
 	}
 	
+	//Adds tag to the the tag contoller 
 	private void addTagToController(final Tag tag){
 		instrumentation.runOnMainSync(new Runnable() {
 			

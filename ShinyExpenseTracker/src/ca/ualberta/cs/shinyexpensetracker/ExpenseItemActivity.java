@@ -2,7 +2,10 @@
 
 package ca.ualberta.cs.shinyexpensetracker;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,6 +22,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -26,6 +30,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,10 +46,10 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 
 /** 
-* Covers Issues 5 and 15
+* Covers Issues 5, 15, and 29
 * @author Sarah Morris
 * @author Oleg Oleynikov
-* @version 1.1
+* @version 1.2
 * @since 2015-03-15
 *
 * 
@@ -180,19 +185,46 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 	// copied from https://stackoverflow.com/questions/26842530/roundedimageview-add-border-and-shadow
 	// on March 15, 2015
 	/** 
-	 * Convert a Drawable object to Bitmap 
+	 * Convert a Drawable object to Bitmap, scale down if needed 
 	 */
 	public Bitmap convertToBitmap(Drawable drawable, int widthPixels, int heightPixels) {
         Bitmap mutableBitmap = Bitmap.createBitmap(widthPixels, heightPixels, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(mutableBitmap);
         drawable.setBounds(0, 0, widthPixels, heightPixels);
         drawable.draw(canvas);
-
+        int sizeInBytes = mutableBitmap.getByteCount();
+        if (sizeInBytes > 65536){
+        	mutableBitmap = scaleImage(mutableBitmap, widthPixels, heightPixels);
+        }
         return mutableBitmap;
     }
+	/**
+	 * Scale image, if needed.
+	 */
 	
-	
+	private Bitmap scaleImage(Bitmap mutableBitmap, int width, int height){
+		/* 
+		 * The max size is 64 KB. Since each pixel is stored in 4 bytes,
+		 * the max number of pixels allowed in the image is 16384.
+		 * Scale height and width appropriately and return a new Bitmap
+		 * with those values
+		 */
+		int sizeInBytes = mutableBitmap.getByteCount();
 
+		// if it's already smaller, just returns
+		if (sizeInBytes <= 65536){
+			return mutableBitmap;
+		}
+		double ratio = width/height;
+		final int MAX_PIXELS = 16384;
+		int newWidth = (int) Math.floor(Math.sqrt(MAX_PIXELS*ratio));
+		Log.e("newWidth", String.valueOf(newWidth));
+		int newHeight = (int) Math.floor(Math.sqrt(MAX_PIXELS/ratio));
+		Log.e("newHeight", String.valueOf(newHeight));
+    	mutableBitmap = Bitmap.createScaledBitmap(mutableBitmap, newWidth, newHeight, false);
+		return mutableBitmap;
+	}
+	
 	private void findViewsById() {
     	date = (EditText) findViewById(R.id.expenseItemDateEditText);
         date.setInputType(InputType.TYPE_NULL);

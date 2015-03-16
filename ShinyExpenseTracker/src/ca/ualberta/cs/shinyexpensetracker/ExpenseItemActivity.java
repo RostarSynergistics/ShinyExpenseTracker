@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -72,6 +73,8 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
     private HashMap<String, Integer> categoriesMap = new HashMap<String, Integer>();
     private HashMap<String, Integer> currenciesMap = new HashMap<String, Integer>();
     private ExpenseClaimController controller;
+    private Drawable defaultDrawableOnImageButton;
+    
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,14 +85,14 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 
         
         button = (ImageButton) findViewById(R.id.expenseItemReceiptImageButton);
-        
+        defaultDrawableOnImageButton = button.getDrawable();
         Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
 		
 		if (bundle != null){
 			// we have to receive a Claim ID so that we know to what claim to save an item
 			int claimId = (Integer) bundle.get("claimIndex");
-			Integer expenseItemId = (Integer) bundle.get("itemIndex");
+			Integer expenseItemId = (Integer) bundle.get("expenseIndex");
 			controller = ExpenseClaimController.getInstance();
 			claim = controller.getExpenseClaim(claimId);
 			// if we received an Item ID
@@ -306,10 +309,15 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 			description = descriptionText.getText().toString();
 		}
 		
-		// convert ImageButton image to bitmap
-		Drawable dr = button.getDrawable();
-		Bitmap bm = convertToBitmap(dr, dr.getMinimumWidth(), dr.getMinimumHeight());
-		
+		Bitmap bm;
+		// convert ImageButton image to bitmap if it is different from the default Drawable
+		if(button.getDrawable().equals(defaultDrawableOnImageButton)){
+			bm = null;
+		}
+		else{
+			Drawable dr = button.getDrawable();
+			bm = convertToBitmap(dr, dr.getMinimumWidth(), dr.getMinimumHeight());
+		}
 		ExpenseItem expense = new ExpenseItem(name, date, category, amount, 
 				currency, description, bm); 
 		

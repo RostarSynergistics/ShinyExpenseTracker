@@ -49,12 +49,12 @@ public class ExpenseItemAdapter extends BaseAdapter implements ListAdapter {
 
 	@Override
 	public int getCount() {
-		return claim.getExpenses().size();
+		return claim.getExpenseCount();
 	}
 
 	@Override
 	public ExpenseItem getItem(int position) {
-		return claim.getExpenses().get(position);
+		return claim.getExpense(position);
 	}
 
 	@Override

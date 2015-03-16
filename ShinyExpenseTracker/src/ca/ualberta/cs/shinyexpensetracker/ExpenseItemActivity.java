@@ -100,7 +100,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 			// then we are editing an item
 			// fetch the item and preset all fields with its values
 			if (expenseItemId != null){
-				item = claim.getItemById(expenseItemId);
+				item = claim.getExpense(expenseItemId);
 				isEditing = true;
 				populateTextViews();
 			}

@@ -58,7 +58,7 @@ public class TestEditExpenseItem extends
 		super.setUp();
 
 		ExpenseClaimList claimList = new ExpenseClaimList();
-		ExpenseClaimController controller = new ExpenseClaimController(
+		controller = new ExpenseClaimController(
 				new MockExpenseClaimListPersister(claimList));
 		Application.setExpenseClaimController(controller);
 
@@ -75,7 +75,7 @@ public class TestEditExpenseItem extends
 		Intent intent = new Intent();
 
 		intent.putExtra("claimIndex", 0);
-		intent.putExtra("itemIndex", 0);
+		intent.putExtra("expenseIndex", 0);
 
 	    setActivityIntent(intent);
 	    activity = getActivity();
@@ -140,7 +140,7 @@ public class TestEditExpenseItem extends
 		BitmapDrawable dr = new BitmapDrawable(res, imageBig);
 		Bitmap imageBigScaled = activity.convertToBitmap(dr, imageBig.getWidth(), imageBig.getHeight());
 		ExpenseItem editedItem = new ExpenseItem("test item", dateToAssign, Category.fromString("air fare"), new BigDecimal("0.125"), Currency.CAD, "Test Edit", imageBigScaled);
-		assertEquals("did not update item", controller.getExpenseClaim(0).getItemById(0), editedItem);
+		assertEquals("did not update item", controller.getExpenseClaim(0).getExpense(0), editedItem);
 	}
 	/**
 	 * This tests that the image is successfully drawn on the ImageButton

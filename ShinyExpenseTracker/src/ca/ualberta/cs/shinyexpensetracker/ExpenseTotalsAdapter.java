@@ -77,8 +77,6 @@ public class ExpenseTotalsAdapter extends BaseAdapter implements ListAdapter {
 	 * Generates the list of expense item totals
 	 */
 	public void createExpenseTotals() {
-		ArrayList<ExpenseItem> expenses = claim.getExpenses();
-		
 		BigDecimal cad = new BigDecimal(0);
 		BigDecimal usd = new BigDecimal(0);
 		BigDecimal gbp = new BigDecimal(0);
@@ -87,28 +85,30 @@ public class ExpenseTotalsAdapter extends BaseAdapter implements ListAdapter {
 		BigDecimal eur = new BigDecimal(0);
 		BigDecimal jpy = new BigDecimal(0);
 		
-		for (int i = 0; i < expenses.size(); i++) {
-			switch (expenses.get(i).getCurrency()) {
+		ExpenseItem expense;
+		for (int i = 0; i < claim.getExpenseCount(); i++) {
+			expense = claim.getExpense(i);
+			switch (expense.getCurrency()) {
 			case CAD:
-				cad = cad.add(expenses.get(i).getAmountSpent());
+				cad = cad.add(expense.getAmountSpent());
 				break;
 			case USD:
-				usd = usd.add(expenses.get(i).getAmountSpent());
+				usd = usd.add(expense.getAmountSpent());
 				break;
 			case GBP:
-				gbp = gbp.add(expenses.get(i).getAmountSpent());
+				gbp = gbp.add(expense.getAmountSpent());
 				break;
 			case CHF:
-				chf = chf.add(expenses.get(i).getAmountSpent());
+				chf = chf.add(expense.getAmountSpent());
 				break;
 			case CNY:
-				cny = cny.add(expenses.get(i).getAmountSpent());
+				cny = cny.add(expense.getAmountSpent());
 				break;
 			case EUR:
-				eur = eur.add(expenses.get(i).getAmountSpent());
+				eur = eur.add(expense.getAmountSpent());
 				break;
 			case JPY:
-				jpy = jpy.add(expenses.get(i).getAmountSpent());
+				jpy = jpy.add(expense.getAmountSpent());
 				break;
 			default:
 				break;

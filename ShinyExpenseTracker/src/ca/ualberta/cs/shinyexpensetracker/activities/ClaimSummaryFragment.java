@@ -139,7 +139,7 @@ public class ClaimSummaryFragment extends Fragment implements
 		claimTags.setText("Tags: " + tags);
 
 		// display the expense totals
-		if (claim.getExpenses().size() != 0) {
+		if (claim.getExpenseCount() != 0) {
 			// Need to get a list currencies and their total amount of all
 			// expenses in claim
 			ListView expenseTotals = (ListView) view

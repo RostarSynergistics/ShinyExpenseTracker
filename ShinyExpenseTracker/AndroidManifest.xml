@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.ManageTagActivity"
+            android:name="ca.ualberta.cs.shinyexpensetracker.activities.ManageTagActivity"
             android:label="@string/title_activity_manage_tag" >
         </activity>
         <activity

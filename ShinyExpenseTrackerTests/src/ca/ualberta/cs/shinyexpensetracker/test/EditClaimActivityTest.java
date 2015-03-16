@@ -3,7 +3,6 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
 import android.app.DatePickerDialog;
 import android.app.Instrumentation;
 import android.content.Intent;
@@ -15,7 +14,12 @@ import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
-public class EditClaimActivityTest extends ActivityInstrumentationTestCase2<AddExpenseClaimActivity> {
+/**
+ * Test for editing an ExpenseClaim
+ * @author Sarah Morris
+ */
+public class EditClaimActivityTest extends
+		ActivityInstrumentationTestCase2<AddExpenseClaimActivity> {
 
 	public EditClaimActivityTest(Class<AddExpenseClaimActivity> activityClass) {
 		super(activityClass);
@@ -25,7 +29,7 @@ public class EditClaimActivityTest extends ActivityInstrumentationTestCase2<AddE
 	public EditClaimActivityTest() {
 		super(AddExpenseClaimActivity.class);
 	}
-	
+
 	Instrumentation instrumentation;
 	AddExpenseClaimActivity activity;
 	DatePickerDialog fromDatePickerDialog, toDatePickerDialog;
@@ -35,36 +39,45 @@ public class EditClaimActivityTest extends ActivityInstrumentationTestCase2<AddE
 	SimpleDateFormat dateFormatter;
 	Date claimStartDate = new Date(1000);
 	Date claimEndDate = new Date(2000);
-	
-    protected void setUp() throws Exception {
-    	super.setUp();
-    	
-    	dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.CANADA);
-    	dateFormatter.format(claimStartDate);
-    	dateFormatter.format(claimEndDate);
-		ExpenseClaim claim = new ExpenseClaim(claimName, claimStartDate, claimEndDate);
+
+	protected void setUp() throws Exception {
+		super.setUp();
+
+		dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.CANADA);
+		dateFormatter.format(claimStartDate);
+		dateFormatter.format(claimEndDate);
+		ExpenseClaim claim = new ExpenseClaim(claimName, claimStartDate,
+				claimEndDate);
 		ExpenseClaimController ecc = ExpenseClaimController.getInstance();
 		ecc.setClaimList(new ExpenseClaimList());
 		ecc.addExpenseClaim(claim);
-    	
-        instrumentation = getInstrumentation();
-        
-        Intent intent = new Intent();
-        intent.putExtra("claimIndex", 0);
-        setActivityIntent(intent);
-        
-        activity = getActivity();
-    }
+
+		instrumentation = getInstrumentation();
+
+		Intent intent = new Intent();
+		intent.putExtra("claimIndex", 0);
+		setActivityIntent(intent);
+
+		activity = getActivity();
+	}
 
 	public void testDisplayExpenseClaim() {
-		
-		EditText name = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.editTextExpenseClaimName));
-    	EditText startDate = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.editTextStartDate));
-    	EditText endDate = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.editTextEndDate));
-		
-		assertEquals("Claim name set incorrectly", claimName, name.getText().toString());
-		assertEquals("claim start date set incorrectly", dateFormatter.format(claimStartDate), startDate.getText().toString());
-	assertEquals("claim end date set incorrectly", dateFormatter.format(claimEndDate), endDate.getText().toString());
+
+		EditText name = ((EditText) activity
+				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.editTextExpenseClaimName));
+		EditText startDate = ((EditText) activity
+				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.editTextStartDate));
+		EditText endDate = ((EditText) activity
+				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.editTextEndDate));
+
+		assertEquals("Claim name set incorrectly", claimName, name.getText()
+				.toString());
+		assertEquals("claim start date set incorrectly",
+				dateFormatter.format(claimStartDate), startDate.getText()
+						.toString());
+		assertEquals("claim end date set incorrectly",
+				dateFormatter.format(claimEndDate), endDate.getText()
+						.toString());
 	}
-	
+
 }

@@ -13,7 +13,11 @@ import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 /**
- * Class for testing addDestination and testing the AddDestinations button
+ * Class for testing addDestination and testing the
+ * AddDestinations button.
+ * 
+ * Tests the AddDestination Activity, which is responsible
+ * for adding and editing destinations to a claim.
  */
 public class DestinationTest extends
 		ActivityInstrumentationTestCase2<AddDestinationActivity> {
@@ -34,6 +38,11 @@ public class DestinationTest extends
 		super(activityClass);
 	}
 
+	/**
+	 * Setup for each test. Creates a new claim and
+	 * sets up commonly used variables.
+	 */
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 
@@ -84,19 +93,6 @@ public class DestinationTest extends
 						destination.getReasonForTravel());
 			}
 		});
-	}
-
-	public void testText() {
-		instrumentation.runOnMainSync(new Runnable() {
-			@Override
-			public void run() {
-				nameInput.setText("Germany");
-				reasonInput.setText("Europe trip");
-			}
-		});
-
-		assertEquals("Germany", nameInput.getText().toString());
-		assertEquals("Europe trip", reasonInput.getText().toString());
 	}
 
 	/**

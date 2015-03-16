@@ -26,7 +26,8 @@ import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersist
 //On March 12
 
 /**
- * tests claimSummaryFragment
+ * Tests for the ClaimSummaryFragment. This fragment
+ * displays details about a given claim.
  */
 public class ClaimSummaryFragmentTest extends
 		ActivityInstrumentationTestCase2<TabbedSummaryActivity> {
@@ -52,6 +53,11 @@ public class ClaimSummaryFragmentTest extends
 	ExpenseClaimController controller;
 	
 	@Override
+	/**
+	 * Setup for each test.
+	 * Creates and adds a claim and sets an intent
+	 * that points to this claim.
+	 */
 	public void setUp() throws Exception {
 		super.setUp();
 		
@@ -144,8 +150,8 @@ public class ClaimSummaryFragmentTest extends
 	}
 	
 	/**
-	 * test that when a claim doesn't have any expenses a
-	 * textView saying "No Expenses" is shown
+	 * Test for message displayed in the UI if there are no
+	 * expenses to total.
 	 */
 	public void testNoExpenses() {
 		getInstrumentation().runOnMainSync(new Runnable() {
@@ -160,7 +166,9 @@ public class ClaimSummaryFragmentTest extends
 		assertEquals("No Expenses not shown", "No Expenses", noExpenses.getText().toString());
 	}
 	
-	//Test that when a claim has no tags only the "Tags: " title is shown
+	/**
+	 * Test that when a claim has no tags only the "Tags: " title is shown
+	 */
 	public void testNoTags() {
 		getInstrumentation().runOnMainSync(new Runnable() {
 
@@ -174,7 +182,8 @@ public class ClaimSummaryFragmentTest extends
 	}
 	
 	/**
-	 * Test that the expeseTotals appear as expected
+	 * Test that the expenseTotals displays the correct
+	 * values after expenses are added.
 	 * @throws IOException
 	 */
 	public void testExpenseTotals() throws IOException {

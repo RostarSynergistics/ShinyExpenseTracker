@@ -21,6 +21,11 @@ import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
+/**
+ * Test for the DestinationListFragment. This
+ * fragment is responsible for displaying a list
+ * of destinations in the summary page.
+ */
 public class DestinationListFragmentTest extends
 	ActivityInstrumentationTestCase2<TabbedSummaryActivity> {
 	
@@ -39,6 +44,12 @@ public class DestinationListFragmentTest extends
 		super(TabbedSummaryActivity.class);
 	}
 	
+	/**
+	 * Setup for each test. Creates a new claim and
+	 * adds a destination. It then starts the activity
+	 * with the intent of displaying info about this claim
+	 * and selects the Destinations tab.
+	 */
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
@@ -86,6 +97,8 @@ public class DestinationListFragmentTest extends
 	
 	/**
 	 * Checks that we can access views within the fragment.
+	 * If this test fails, the fragment isn't being put into
+	 * the activity correctly.
 	 */
 	public void testFragViewsNotNothing() {
 		// Try to fetch the list view in the fragment.
@@ -95,7 +108,7 @@ public class DestinationListFragmentTest extends
 	
 	/**
 	 * Checks that tapping an item in the list view will
-	 * open the appropriate activity
+	 * open the appropriate activity for editing.
 	 */
 	public void testEditDestinationShowsActivity() {
 		final ListView listview = (ListView) frag.getView().findViewById(R.id.destinationsListView);
@@ -127,10 +140,10 @@ public class DestinationListFragmentTest extends
 	}
 	
 	/**
-	 * Test deleting an existing destination.
-	 * @throws InterruptedException 
+	 * Test that deleting an existing destination removes it
+	 * from the list view.
 	 */
-	public void testDeleteDestination() throws InterruptedException {
+	public void testDeleteDestination() {
 		// Fake the functionality of long pressing the listview
 		// because that method doesn't seem to be exposed.
  		
@@ -180,9 +193,9 @@ public class DestinationListFragmentTest extends
 	}
 	
 	/**
-	 * Tests that new destinations update the interface
+	 * Tests that adding new destinations update the interface.
 	 */
-	public void testNewExpensesAreAdded() {
+	public void testNewDestinationsAreAdded() {
 		ListView destinationList = (ListView) frag.getView().findViewById(R.id.destinationsListView);
 		// Make sure we still have that one claim from before
 		// - Sanity check
@@ -206,7 +219,7 @@ public class DestinationListFragmentTest extends
 	}
 	
 	/**
-	 * Checks that destinations are visible in the list
+	 * Checks that destinations are visible in the list view.
 	 */
 	public void testDestinationListVisibility() {
 		TextView noDestinationPrompt = (TextView) frag.getView().findViewById(R.id.noDestinationsTextView);

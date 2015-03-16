@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;

@@ -24,7 +24,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
  * @since 2015-03-15
  */
 
-public class ExpenseItemDetailView extends Activity {
+public class ExpenseItemDetailView extends Activity implements IView<ExpenseItem> {
 
 	private ExpenseItem item;
 	private Context context = ExpenseItemDetailView.this;
@@ -43,6 +43,7 @@ public class ExpenseItemDetailView extends Activity {
 			ExpenseClaimController controller = Application.getExpenseClaimController();
 			ExpenseClaim claim = controller.getExpenseClaim(claimId);
 			item = claim.getItemById(expenseItemId);
+			item.addView(this);
 			populateTextViews();
 		}
 		
@@ -95,7 +96,16 @@ public class ExpenseItemDetailView extends Activity {
 		finish();
 	}
 
+	public void onClickRemoveReceipt(View v){
+		item.setReceiptPhoto(null);	
+	}
+	
 	public Context getContext() {
 		return context;
+	}
+
+	@Override
+	public void update(ExpenseItem m) {
+		populateTextViews();
 	}
 }

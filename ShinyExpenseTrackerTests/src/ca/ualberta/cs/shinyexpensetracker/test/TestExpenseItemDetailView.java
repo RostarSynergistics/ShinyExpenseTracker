@@ -4,7 +4,12 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.test.ActivityInstrumentationTestCase2;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.Application;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
@@ -36,7 +41,10 @@ public class TestExpenseItemDetailView extends
 
 	ExpenseItemDetailView activity;
 	ExpenseClaimController controller;
-
+	ExpenseItem item;
+	Bitmap imageSmall;
+	Resources res;
+	
 	protected void setUp() throws Exception {
 		super.setUp();
 
@@ -49,16 +57,19 @@ public class TestExpenseItemDetailView extends
 		Calendar newDate = Calendar.getInstance();
 		newDate.set(2000, 00, 01);
 
-		ExpenseItem item = new ExpenseItem("test item", newDate.getTime(),
+		res = getInstrumentation().getTargetContext().getResources();
+		imageSmall = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
+		
+		item = new ExpenseItem("test item", newDate.getTime(),
 				Category.fromString("air fare"), new BigDecimal("0.125"),
-				Currency.CAD, "Test Item", null);
+				Currency.CAD, "Test Item", imageSmall);
 
 		claim.addExpense(item);
 		claimList.addClaim(claim);
 
 		Intent intent = new Intent();
 		intent.putExtra("claimIndex", 0);
-		intent.putExtra("itemIndex", 0);
+		intent.putExtra("expenseIndex", 0);
 		setActivityIntent(intent);
 		activity = getActivity();
 	}
@@ -110,6 +121,24 @@ public class TestExpenseItemDetailView extends
 		TextView receipt = (TextView) activity
 				.findViewById(R.id.expenseItemReceiptValue);
 		assertEquals("receipt is not right", receipt.getText().toString(),
-				"Not Present");
+				"Present");
+	}
+	public void testRemoveReceipt(){
+		assertNotNull("receipt not present in item", item.getReceiptPhoto());
+		clickRemoveReceipt();
+		assertNull("did not remove receipt photo", item.getReceiptPhoto());
+	}
+	
+	private void clickRemoveReceipt() {
+		getInstrumentation().runOnMainSync(new Runnable() {
+			@Override
+			public void run() {
+				Button removeReceiptButton = (Button) activity
+						.findViewById(R.id.removeReceiptButton);
+				removeReceiptButton.callOnClick();
+			}
+		});
+		getInstrumentation().waitForIdleSync();
+
 	}
 }

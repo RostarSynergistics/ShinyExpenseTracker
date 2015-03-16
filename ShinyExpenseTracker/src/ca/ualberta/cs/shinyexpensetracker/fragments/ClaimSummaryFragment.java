@@ -138,6 +138,11 @@ public class ClaimSummaryFragment extends Fragment implements
 		TextView noExpenses = (TextView) view
 				.findViewById(R.id.noExpensesTextView);
 
+		// Stop if we don't have a view
+		if (getView() == null) {
+			return;
+		}
+		
 		// display the expense totals
 		if (claim.getExpenseCount() != 0) {
 			expenseTotals.setVisibility(View.VISIBLE);

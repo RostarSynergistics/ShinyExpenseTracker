@@ -51,16 +51,12 @@
     <string name="label_start_date">Start Date:</string>
     <string name="label_status">Status:</string>
     <string name="title_activity_claim_summary">ClaimSummaryActivity</string>
-
     <string name="deleteExpenseItemPromptTitle">Delete?</string>
     <string name="deleteExpenseItemPromptMessage">Delete this expense item?</string>
-    
     <string name="deleteDestinationItemPromptTitle">Delete?</string>
     <string name="deleteDestinationItemPromptMessage">Delete this destination?</string>
-
     <string name="editOrViewExpenseItemPromptTitle">Choose Action</string>
     <string name="editOrViewExpenseItemPromptMessage">Edit or View Details of this Expense?</string>
-
     <string name="no_expenses">No Expenses</string>
     <string name="claim_name">claim name</string>
     <string name="add_expense_item">Add Expense Item</string>
@@ -76,5 +72,11 @@
     <string name="name_value">Name</string>
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
-
+    <string name="expense_item_category">Category</string>
+    <string name="expense_item_description">Description</string>
+    <string name="expense_item_amount">Amount</string>
+    <string name="expense_item_completeness">Complete</string>
+    <string name="expense_item_date">Date</string>
+    <string name="expense_item_receipt">Receipt</string>
+    <string name="title_activity_receipt_view">ReceiptViewActivity</string>
 </resources>

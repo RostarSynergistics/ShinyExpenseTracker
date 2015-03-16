@@ -1,12 +1,16 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.Calendar;
 
+import android.app.Instrumentation.ActivityMonitor;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
+import android.widget.EditText;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemDetailActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -62,6 +66,29 @@ public class TestExpenseItemDetailView extends
 		setActivityIntent(intent);
 		activity = getActivity();
 	}
+	
+	/**
+	 * Tests if the menu opens the expense for editing
+	 */
+	public void testEditExpense() {
+		// Monitor for ExpenseItemActivity
+		ActivityMonitor expenseMonitor = getInstrumentation().addMonitor(ExpenseItemActivity.class.getName(), null, false);
+		
+		// Press "Edit Claim"
+		getInstrumentation().invokeMenuActionSync(activity, R.id.editClaim, 0);
+		
+		// Get the activity
+		final ExpenseItemActivity expenseActivity = (ExpenseItemActivity) getInstrumentation().waitForMonitorWithTimeout(expenseMonitor, 1000);
+		assertEquals("Did not open the expense activity", true, getInstrumentation().checkMonitorHit(expenseMonitor, 1));
+		
+		// Check that the activity received valid intents
+		assertEquals(0, expenseActivity.getIntent().getIntExtra("claimIndex", -1000));
+		assertEquals(0, expenseActivity.getIntent().getIntExtra("expenseIndex", -1000));
+		
+		// Close the activity
+		expenseActivity.finish();
+		getInstrumentation().waitForIdleSync();
+	}
 
 	public void testNameValue() {
 		TextView name = (TextView) activity
@@ -111,5 +138,51 @@ public class TestExpenseItemDetailView extends
 				.findViewById(R.id.expenseItemReceiptValue);
 		assertEquals("receipt is not right", receipt.getText().toString(),
 				"Not Present");
+	}
+	
+	/**
+	 * Tests for a bug where the activity's view is not updated
+	 * after an edit to the expense.
+	 * @throws ParseException 
+	 */
+	public void testEditUpdatesViews() throws ParseException {
+		// Monitor for ExpenseItemActivity
+		ActivityMonitor expenseMonitor = getInstrumentation().addMonitor(ExpenseItemActivity.class.getName(), null, false);
+
+		
+		// Press "Edit Claim"
+		getInstrumentation().invokeMenuActionSync(activity, R.id.editClaim, 0);
+		
+		// Get the activity
+		final ExpenseItemActivity expenseActivity = (ExpenseItemActivity) getInstrumentation().waitForMonitorWithTimeout(expenseMonitor, 1000);
+		assertEquals("Did not open the expense activity", true, getInstrumentation().checkMonitorHit(expenseMonitor, 1));
+		
+		// Fill the activity
+		final String veryDifferentName = "DIFFERENT NAME A9T1091A";
+		expenseActivity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				EditText nameText = (EditText) expenseActivity.findViewById(R.id.expenseItemNameEditText);
+				
+				// Change data
+				nameText.setText(veryDifferentName);
+				
+				// Close the activity
+				try {
+					expenseActivity.doneExpenseItem(expenseActivity.findViewById(R.id.expenseItemDoneButton));
+				} catch (ParseException e) {
+					fail();
+					e.printStackTrace();
+				}
+			}
+		});
+		// Sync
+		getInstrumentation().waitForIdleSync();
+		
+		// Check that the data in the detail view was updated
+		TextView name = (TextView) activity.findViewById(R.id.expenseItemNameValue);
+		
+		// Check that the data was updated
+		assertEquals(veryDifferentName, name.getText().toString());
 	}
 }

@@ -4,9 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,66 +14,95 @@ import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 
 /**
- * Activity that lets the user view 
- * information of the selected ExpenseItem
+ * Activity that lets the user view information of the selected ExpenseItem
  * 
  * Covers Issue 16
- * @author Oleg Oleynikov 
+ * 
  * @version 1.0
  * @since 2015-03-15
  */
 
-public class ExpenseItemDetailActivity extends Activity {
+public class ExpenseItemDetailActivity extends Activity implements
+		IView<ExpenseItem> {
 
 	private ExpenseItem item;
-	private Context context = ExpenseItemDetailActivity.this;
-	
+	private int claimIndex;
+	private int expenseItemIndex;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_expense_item_detail_view);
-		
+
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
-		
+
 		if (bundle != null) {
-			int claimId = (Integer) bundle.get("claimIndex");
-			int expenseItemId = (Integer) bundle.get("expenseIndex");
-			ExpenseClaimController controller = Application.getExpenseClaimController();
-			ExpenseClaim claim = controller.getExpenseClaim(claimId);
-			item = claim.getItemById(expenseItemId);
-			populateTextViews();
+			claimIndex = bundle.getInt("claimIndex");
+			expenseItemIndex = bundle.getInt("expenseIndex");
+			ExpenseClaimController controller = Application
+					.getExpenseClaimController();
+			ExpenseClaim claim = controller.getExpenseClaim(claimIndex);
+			// Fetch the relevant item
+			item = claim.getExpense(expenseItemIndex);
+
+			item.addView(this);
+		} else {
+			Log.wtf("Activity",
+					"ExpenseItem Detail View - Did not receive an intent");
+			throw new RuntimeException();
 		}
-		
 	}
 
-	private void setTextViewValue(int textViewId, String value){
+	@Override
+	protected void onResume() {
+		super.onResume();
+		// Update the text views
+		Log.d("ExpenseItemDetailView", "Resuming activity.");
+		populateTextViews();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		Log.d("ExpenseItemDetailView", "Pausing activity.");
+	}
+
+	private void setTextViewValue(int textViewId, String value) {
 		TextView tv = (TextView) findViewById(textViewId);
 		tv.setText(value);
 	}
-	
-	private void populateTextViews(){
-		SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.CANADA);
-		
+
+	private void populateTextViews() {
+		Log.d("ExpenseItemDetailView", "Updating text views.");
+
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy",
+				Locale.CANADA);
+
 		setTextViewValue(R.id.expenseItemNameValue, item.getName().toString());
-		setTextViewValue(R.id.expenseItemDateValue, dateFormatter.format(item.getDate()));
-		setTextViewValue(R.id.expenseItemCategoryValue, item.getCategory().toString());
-		setTextViewValue(R.id.expenseItemDescriptionValue, item.getDescription().toString());
-		setTextViewValue(R.id.expenseItemAmountValue, item.getAmountSpent().toString());
-		setTextViewValue(R.id.expenseItemCurrencyValue, item.getCurrency().name());
-		if (item.doesHavePhoto()){
-			setTextViewValue(R.id.expenseItemReceiptValue,"Present");
+		setTextViewValue(R.id.expenseItemDateValue,
+				dateFormatter.format(item.getDate()));
+		setTextViewValue(R.id.expenseItemCategoryValue, item.getCategory()
+				.toString());
+		setTextViewValue(R.id.expenseItemDescriptionValue, item
+				.getDescription().toString());
+		setTextViewValue(R.id.expenseItemAmountValue, item.getAmountSpent()
+				.toString());
+		setTextViewValue(R.id.expenseItemCurrencyValue, item.getCurrency()
+				.name());
+		if (item.doesHavePhoto()) {
+			setTextViewValue(R.id.expenseItemReceiptValue, "Present");
+		} else {
+			setTextViewValue(R.id.expenseItemReceiptValue, "Not Present");
 		}
-		else{
-			setTextViewValue(R.id.expenseItemReceiptValue,"Not Present");
-		}
-		
+
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -86,19 +115,46 @@ public class ExpenseItemDetailActivity extends Activity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		switch (item.getItemId()) {
+		case R.id.editClaim:
+			editExpense();
 			return true;
+		case R.id.action_settings:
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
-	}
-	
-	public void onBackButtonPress(View v)
-	{
-		finish();
 	}
 
-	public Context getContext() {
-		return context;
+	/**
+	 * Opens the activity responsible for editing a claim
+	 * 
+	 * @param position
+	 *            the position in the listview to edit.
+	 */
+	public void editExpense() {
+		// Create an intent to edit an expense item
+		Intent intent = new Intent(this, ExpenseItemActivity.class);
+		// --> Tell it that we're editing the index at this position
+		intent.putExtra("claimIndex", claimIndex);
+		intent.putExtra("expenseIndex", expenseItemIndex);
+
+		// Start the activity with our edit intent
+		startActivity(intent);
+	}
+
+	@Override
+	public void update(ExpenseItem m) {
+		// If the claim changed, update the text views
+		Log.d("ExpenseItemDetailView", "Received update.");
+		populateTextViews();
+	}
+
+	public void onReceiptThumbnailClick(View v) {
+		Intent intent = new Intent(ExpenseItemDetailActivity.this,
+				ReceiptViewActivity.class);
+		intent.putExtra("claimIndex", claimIndex);
+		intent.putExtra("expenseIndex", expenseItemIndex);
+		startActivity(intent);
 	}
 }

@@ -115,9 +115,6 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		notifyViews();
 	}
 	
-	public ArrayList<ExpenseItem> getExpenses(){
-		return expenses;
-	}
 	public void addExpense(ExpenseItem expense) {
 		expenses.add(expense);
 		notifyViews();
@@ -134,9 +131,15 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		notifyViews();
 	}
 
-	public ExpenseItem getItemById(int id){
-		return this.expenses.get(id);
+	/**
+	 * Returns the expense for this claim at the given index
+	 * @param index of the expense item
+	 * @return the requested Expense item
+	 */
+	public ExpenseItem getExpense(int index){
+		return expenses.get(index);
 	}
+	
 	/**
 	 * Comparison of two claims is the comparison of their start date.
 	 */

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
@@ -43,8 +44,8 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 		Bundle bundle = intent.getExtras();
 		
 		if (bundle != null) {
-			claimId = bundle.getInt("claimIndex");
-			expenseItemId = bundle.getInt("expenseIndex");
+			claimId = intent.getIntExtra("claimIndex", -1);
+			expenseItemId = intent.getIntExtra("expenseIndex", -1);
 			ExpenseClaimController controller = Application.getExpenseClaimController();
 			ExpenseClaim claim = controller.getExpenseClaim(claimId);
 			item = claim.getItemById(expenseItemId);
@@ -69,6 +70,8 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 		setTextViewValue(R.id.expenseItemCurrencyValue, item.getCurrency().name());
 		if (item.doesHavePhoto()){
 			setTextViewValue(R.id.expenseItemReceiptValue,"Present");
+			ImageView iv = (ImageView) findViewById(R.id.expenseItemDetailImageButton);
+			iv.setImageBitmap(item.getReceiptPhoto());
 		}
 		else{
 			setTextViewValue(R.id.expenseItemReceiptValue,"Not Present");

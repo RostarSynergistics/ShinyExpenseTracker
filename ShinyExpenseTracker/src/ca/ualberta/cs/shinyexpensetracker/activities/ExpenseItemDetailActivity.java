@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -22,7 +21,6 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
  * information of the selected ExpenseItem
  * 
  * Covers Issue 16
- * @author Oleg Oleynikov 
  * @version 1.0
  * @since 2015-03-15
  */
@@ -30,7 +28,8 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 public class ExpenseItemDetailActivity extends Activity {
 
 	private ExpenseItem item;
-	private Context context = ExpenseItemDetailActivity.this;
+	int claimId;
+	int expenseItemId;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +40,13 @@ public class ExpenseItemDetailActivity extends Activity {
 		Bundle bundle = intent.getExtras();
 		
 		if (bundle != null) {
-			int claimId = (Integer) bundle.get("claimIndex");
-			int expenseItemId = (Integer) bundle.get("expenseIndex");
+			claimId = bundle.getInt("claimIndex");
+			expenseItemId = bundle.getInt("expenseIndex");
 			ExpenseClaimController controller = Application.getExpenseClaimController();
 			ExpenseClaim claim = controller.getExpenseClaim(claimId);
 			item = claim.getItemById(expenseItemId);
 			populateTextViews();
 		}
-		
 	}
 
 	private void setTextViewValue(int textViewId, String value){
@@ -98,7 +96,11 @@ public class ExpenseItemDetailActivity extends Activity {
 		finish();
 	}
 
-	public Context getContext() {
-		return context;
+	public void onReceiptThumbnailClick(View v){
+		Intent intent = new Intent(ExpenseItemDetailActivity.this, ReceiptViewActivity.class);
+		intent.putExtra("claimIndex", claimId);
+		intent.putExtra("expenseIndex", expenseItemId);
+		startActivity(intent);
 	}
 }
+

@@ -53,7 +53,6 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 				container, false);
 		return rootView;
 	}
-	
 	@Override
 	public void onStart() {
 		super.onStart();
@@ -206,4 +205,3 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 		return lastDialog;
 	}
 }
-	

@@ -13,8 +13,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import ca.ualberta.cs.shinyexpensetracker.AddDestinationActivity;
+import ca.ualberta.cs.shinyexpensetracker.DestinationItemAdapter;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.IView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -28,7 +29,7 @@ public class DestinationListFragment extends Fragment implements IView<ExpenseCl
 	private static final String ARG_SECTION_NUMBER = "section_number";
 	private ExpenseClaim claim;
 	private int claimIndex;
-	private ExpenseItemAdapter adapter;
+	private DestinationItemAdapter adapter;
 	private AlertDialog lastDialog;
 	
 	/**
@@ -49,7 +50,7 @@ public class DestinationListFragment extends Fragment implements IView<ExpenseCl
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		View rootView = inflater.inflate(R.layout.tab_expense_list,
+		View rootView = inflater.inflate(R.layout.tab_destinations_list,
 				container, false);
 		return rootView;
 	}
@@ -75,25 +76,25 @@ public class DestinationListFragment extends Fragment implements IView<ExpenseCl
 		setPromptVisibility();
 		
 		// Set up the list view to display data
-		ListView expenses = (ListView) getView().findViewById(R.id.expenseItemsListView);
-		adapter = new ExpenseItemAdapter(claim, getActivity().getBaseContext());
-		expenses.setAdapter(adapter);
+		ListView destinations = (ListView) getView().findViewById(R.id.destinationsListView);
+		adapter = new DestinationItemAdapter(claim, getActivity().getBaseContext());
+		destinations.setAdapter(adapter);
 		
 		// -- On Click : Edit -- //
-		expenses.setOnItemClickListener(new OnItemClickListener() {
+		destinations.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				editExpenseAt(position);
+				editDestinationAt(position);
 			}
 		});
 		
 		// -- On Long Click : Delete -- //
-		expenses.setOnItemLongClickListener(new OnItemLongClickListener() {
+		destinations.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				askDeleteExpenseAt(position);
+				askDeleteDestinationAt(position);
 				return true;
 			}
 		});
@@ -105,23 +106,23 @@ public class DestinationListFragment extends Fragment implements IView<ExpenseCl
 	}
 
 	/**
-	 * Prompts the user for deletion of an expense at a given position
+	 * Prompts the user for deletion of an destination at a given position
 	 * @param position the position in the list view to delete
 	 */
-	public void askDeleteExpenseAt(final int position) {
+	public void askDeleteDestinationAt(final int position) {
 		// Construct a new dialog to be displayed.
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		
-		// -- Delete this expense item?
-		builder.setTitle( getString(R.string.deleteExpenseItemPromptTitle) );
-		builder.setMessage( getString(R.string.deleteExpenseItemPromptMessage) );
+		// -- Delete this destination?
+		builder.setTitle( getString(R.string.deleteDestinationItemPromptTitle) );
+		builder.setMessage( getString(R.string.deleteDestinationItemPromptMessage) );
 		// -- OK -- //
 		builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					// remove the expense
-					deleteExpenseAt(position);
+					// remove the Destination
+					deleteDestinationAt(position);
 					dialog.dismiss();
 					// Nullify the last opened dialog so we can tell it was dismissed
 					lastDialog = null;
@@ -147,23 +148,23 @@ public class DestinationListFragment extends Fragment implements IView<ExpenseCl
 	 * Opens the activity responsible for editing a claim
 	 * @param position the position in the listview to edit.
 	 */
-	public void editExpenseAt(int position) {
-		// Create an intent to edit an expense item
-		Intent intent = new Intent(getActivity(), ExpenseItemActivity.class);
+	public void editDestinationAt(int position) {
+		// Create an intent to edit an destination item
+		Intent intent = new Intent(getActivity(), AddDestinationActivity.class);
 		// --> Tell it that we're editing the index at this position
 		intent.putExtra("claimIndex", claimIndex);
-		intent.putExtra("expenseIndex", position);
+		intent.putExtra("destinationIndex", position);
 		
 		// Start the activity with our edit intent
 		startActivity(intent);
 	}
 	
 	/**
-	 * Deletes the expense at position without prompt
+	 * Deletes the destination at position without prompt
 	 * @param position
 	 */
-	public void deleteExpenseAt(int position) {
-		claim.removeExpense(position);
+	public void deleteDestinationAt(int position) {
+		claim.removeDestination(position);
 	}
 
 	@Override
@@ -175,7 +176,7 @@ public class DestinationListFragment extends Fragment implements IView<ExpenseCl
 	
 	/**
 	 * Sets visibility for the prompt informing the user that
-	 * there are no expenses. Should be called any time the list
+	 * there are no destinations. Should be called any time the list
 	 * needs refreshing.
 	 */
 	private void setPromptVisibility() {
@@ -184,17 +185,17 @@ public class DestinationListFragment extends Fragment implements IView<ExpenseCl
 			return;
 		}
 		
-		TextView noExpenses = (TextView) getView().findViewById(R.id.noExpensesTextView);
+		TextView noDestinations = (TextView) getView().findViewById(R.id.noDestinationsTextView);
 		
-		// Are there expenses to display?
-		if (claim.getExpenseCount() == 0) {
+		// Are there destinations to display?
+		if (claim.getDestinationCount() == 0) {
 			// No.
 			// Set the prompt to be visible
-			noExpenses.setVisibility(View.VISIBLE);
+			noDestinations.setVisibility(View.VISIBLE);
 		} else {
 			// Yes.
 			// Set the list to be visible
-			noExpenses.setVisibility(View.INVISIBLE);
+			noDestinations.setVisibility(View.INVISIBLE);
 		}
 	}
 	

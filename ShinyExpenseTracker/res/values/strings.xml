@@ -54,11 +54,16 @@
 
     <string name="deleteExpenseItemPromptTitle">Delete?</string>
     <string name="deleteExpenseItemPromptMessage">Delete this expense item?</string>
+    
+    <string name="deleteDestinationItemPromptTitle">Delete?</string>
+    <string name="deleteDestinationItemPromptMessage">Delete this destination?</string>
 
     <string name="no_expenses">No Expenses</string>
     <string name="claim_name">claim name</string>
     <string name="add_expense_item">Add Expense Item</string>
     <string name="add_destination">Add Destination</string>
+    
+    <string name="no_destinations">No Destinations</string>
 
     <string name="title_activity_expense_item_detail_view">ExpenseItemDetailView</string>
 

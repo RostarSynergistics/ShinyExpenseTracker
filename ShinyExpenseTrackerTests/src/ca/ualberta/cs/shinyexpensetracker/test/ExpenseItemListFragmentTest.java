@@ -1,5 +1,6 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+<<<<<<< Updated upstream
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -14,12 +15,24 @@ import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
+=======
+import java.util.Date;
+
+import android.test.ActivityInstrumentationTestCase2;
+import android.view.View;
+import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
+>>>>>>> Stashed changes
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemListFragment;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+<<<<<<< Updated upstream
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+=======
+import ca.ualberta.cs.shinyexpensetracker.models.Tag;
+import ca.ualberta.cs.shinyexpensetracker.models.TagList;
+>>>>>>> Stashed changes
 
 public class ExpenseItemListFragmentTest extends
 	ActivityInstrumentationTestCase2<TabbedSummaryActivity> {
@@ -30,8 +43,16 @@ public class ExpenseItemListFragmentTest extends
 
 	public ExpenseItemListFragmentTest(Class<TabbedSummaryActivity> activityClass) {
 		super(activityClass);
+		ExpenseClaim claim = new ExpenseClaim(
+				"My Cool Expense Claim",
+				new Date(123456),
+				new Date(234567)
+				);
 	}
+<<<<<<< Updated upstream
 	
+=======
+>>>>>>> Stashed changes
 	public ExpenseItemListFragmentTest() {
 		super(TabbedSummaryActivity.class);
 	}
@@ -87,14 +108,22 @@ public class ExpenseItemListFragmentTest extends
 	}
 	
 	/**
+<<<<<<< Updated upstream
 	 * Checks that we can access views within the fragment.
 	 */
 	public void testFragViewsNotNothing() {
 		// Try to fetch the list view in the fragment.
+=======
+	 * Checks that we can access views inside the fragment.
+	 */
+	public void testNothing() {
+		// Checks for swag money in the CoolFragment class
+>>>>>>> Stashed changes
 		assertNotNull(frag.getView()
 				.findViewById(R.id.expenseItemsListView));
 	}
 	
+<<<<<<< Updated upstream
 	/**
 	 * Checks that tapping an item in the list view will
 	 * open the appropriate activity
@@ -240,5 +269,12 @@ public class ExpenseItemListFragmentTest extends
 		// Nothing to display:
 		// --> Check that the prompt is visible
 		assertEquals(View.VISIBLE, noExpensePrompt.getVisibility());
+=======
+	public void testEditExpenseShowsActivity() {
+		frag.editExpenseAt()
+	}
+	public void testDeleteExpenseShowsDialog() {
+		
+>>>>>>> Stashed changes
 	}
 }

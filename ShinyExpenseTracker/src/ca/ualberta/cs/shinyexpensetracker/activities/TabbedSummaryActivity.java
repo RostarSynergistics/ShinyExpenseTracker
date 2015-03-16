@@ -174,10 +174,10 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 	 * Force selects the destination list tab
 	 * @return the corresponding fragment.
 	 */
-	public DestinationsListFragment selectDestinationListTab() {
+	public DestinationListFragment selectDestinationListTab() {
 		// Select the 2nd tab
 		getActionBar().selectTab(getActionBar().getTabAt(2));
-		return null;
+		return (DestinationListFragment) getCurrentFragment();
 	}
 	
 	/**

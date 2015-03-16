@@ -43,7 +43,7 @@ public class DestinationItemAdapter extends BaseAdapter implements ListAdapter {
 
 	@Override
 	public int getCount() {
-		return claim.getExpenses().size();
+		return claim.getDestinationCount();
 	}
 
 	@Override

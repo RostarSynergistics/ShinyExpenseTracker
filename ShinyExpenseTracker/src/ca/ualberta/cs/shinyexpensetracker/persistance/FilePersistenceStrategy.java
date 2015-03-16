@@ -12,9 +12,9 @@ import android.content.Context;
  * Handles saving and loading a string value from the contents of a specified
  * file.
  * 
- * Source: 	http://developer.android.com/training/basics/data-storage/files.html
- * (2015-03-15)
- * 			http://developer.android.com/guide/topics/data/data-storage.html#filesInternal (2015-03-15)
+ * Source: 	
+ * 	* http://developer.android.com/training/basics/data-storage/files.html (2015-03-15)
+ *  * http://developer.android.com/guide/topics/data/data-storage.html#filesInternal (2015-03-15)
  */
 public class FilePersistenceStrategy implements IPersistenceStrategy {
 	private final Context context;
@@ -47,6 +47,7 @@ public class FilePersistenceStrategy implements IPersistenceStrategy {
 			 * never be thrown, so this catch only exists to stop Java
 			 * from complaining.
 			 */
+			throw new RuntimeException(e);
 		}
 	}
 

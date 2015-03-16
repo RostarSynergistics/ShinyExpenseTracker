@@ -104,11 +104,7 @@ public class ClaimSummaryFragmentTest extends
 			
 			@Override
 			public void run() {
-				try {
-					frag.setClaimInfo(frag.getView());
-				} catch (IOException e) {
-					fail();
-				}
+				frag.setClaimInfo(frag.getView());
 			}
 			
 		});
@@ -138,11 +134,7 @@ public class ClaimSummaryFragmentTest extends
 
 			@Override
 			public void run() {
-				try {
-					frag.setClaimInfo(frag.getView());
-				} catch (IOException e) {
-					fail();
-				}
+				frag.setClaimInfo(frag.getView());
 			}
 
 		});
@@ -156,11 +148,7 @@ public class ClaimSummaryFragmentTest extends
 
 			@Override
 			public void run() {
-				try {
-					frag.setClaimInfo(frag.getView());
-				} catch (IOException e) {
-					fail();
-				}
+				frag.setClaimInfo(frag.getView());
 			}
 		});
 		TextView tags = (TextView) frag.getView().findViewById(R.id.claimTagsTextView);
@@ -180,11 +168,7 @@ public class ClaimSummaryFragmentTest extends
 
 			@Override
 			public void run() {
-				try {
-					frag.setClaimInfo(frag.getView());
-				} catch (IOException e) {
-					fail();
-				}
+				frag.setClaimInfo(frag.getView());
 			}
 		});
 		
@@ -200,11 +184,7 @@ public class ClaimSummaryFragmentTest extends
 
 			@Override
 			public void run() {
-				try {
-					frag.setClaimInfo(frag.getView());
-				} catch (IOException e) {
-					fail();
-				}
+				frag.setClaimInfo(frag.getView());
 			}
 		});
 		
@@ -221,11 +201,7 @@ public class ClaimSummaryFragmentTest extends
 
 			@Override
 			public void run() {
-				try {
-					frag.setClaimInfo(frag.getView());
-				} catch (IOException e) {
-					fail();
-				}
+				frag.setClaimInfo(frag.getView());
 			}
 		});
 		

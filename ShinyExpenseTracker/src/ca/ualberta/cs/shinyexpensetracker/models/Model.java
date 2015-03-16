@@ -22,8 +22,10 @@ public abstract class Model<M extends Model<M>> {
 	private transient ArrayList<IView<M>> views;
 	
 	/**
+	 * Returns a new list of views if the current one is null,
+	 * or the existing list otherwise.
 	 * 
-	 * @return
+	 * @return The list of views.
 	 */
 	private ArrayList<IView<M>> getViews() {
 		if (views == null) {

@@ -33,10 +33,10 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	}
 
 	private String name;
-
 	private Date startDate;
 	private Date endDate;
 	private Status status;
+	private ArrayList<Destination> destinations = new ArrayList<Destination>();
 	private TagList tagList;
 	private ArrayList<ExpenseItem> expenses = new ArrayList<ExpenseItem>();
 
@@ -50,11 +50,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	}
 	
 	public ExpenseClaim(String name, Date startDate, Date endDate) {
-		this.name = name;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.status = Status.IN_PROGRESS;
-		this.tagList = new TagList();
+		this(name, startDate, endDate, Status.IN_PROGRESS, null);
 	}
 	
 	public ExpenseClaim(String name, Date startDate, Date endDate,
@@ -102,6 +98,23 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		this.tagList = tagList;
 		notifyViews();
 	}
+	
+	public Destination getDestination(int index){
+		return destinations.get(index);
+	}
+	public void addDestination(Destination destination) {
+		destinations.add(destination);
+		notifyViews();
+	}
+	public void removeDestination(int index) {
+		destinations.remove(index);
+		notifyViews();
+	}
+	public void removeDestination(Destination destination) {
+		destinations.remove(destinations.indexOf(destination) );
+		notifyViews();
+	}
+	
 	public ArrayList<ExpenseItem> getExpenses(){
 		return expenses;
 	}
@@ -117,7 +130,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		notifyViews();
 	}
 	public void removeExpense(ExpenseItem expense) {
-		expenses.remove( expenses.indexOf(expense) );
+		expenses.remove(expenses.indexOf(expense) );
 		notifyViews();
 	}
 
@@ -134,8 +147,11 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	public String toString() {
 		return getName();
 	}
-
+	
 	public int getExpenseCount() {
 		return expenses.size();
+	}
+	public int getDestinationCount() {
+		return destinations.size();
 	}
 }

@@ -24,6 +24,9 @@ public class ExpenseClaimController {
 	/**
 	 * Default constructor.
 	 * 
+	 * Only use if you have a very good reason. Otherwise, just use
+	 * Application.getExpenseClaimController().
+	 * 
 	 * @param context The application's current context.
 	 * @throws IOException
 	 */
@@ -33,7 +36,7 @@ public class ExpenseClaimController {
 	}
 	
 	/**
-	 * Constructor.
+	 * Constructor. Use for testing only.
 	 * 
 	 * @param context The application's current context.
 	 * @throws IOException

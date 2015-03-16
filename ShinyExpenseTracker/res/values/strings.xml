@@ -55,6 +55,9 @@
 
     <string name="deleteExpenseItemPromptTitle">Delete?</string>
     <string name="deleteExpenseItemPromptMessage">Delete this expense item?</string>
+    
+    <string name="editOrViewExpenseItemPromptTitle">Choose Action</string>
+    <string name="editOrViewExpenseItemPromptMessage">Edit or View Details of this Expense?</string>
 
     <string name="no_expenses">No Expenses</string>
     <string name="claim_name">claim name</string>

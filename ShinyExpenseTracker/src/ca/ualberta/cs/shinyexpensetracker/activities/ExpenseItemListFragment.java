@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
+import ca.ualberta.cs.shinyexpensetracker.ExpenseItemDetailView;
 import ca.ualberta.cs.shinyexpensetracker.IView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -84,7 +85,7 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				editExpenseAt(position);
+				askEditOrViewDetailsOfExpenseAt(position);
 			}
 		});
 		
@@ -144,12 +145,63 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 	}
 
 	/**
+	 * Prompts the user for editing or viewing details of an expense at a given position
+	 * @param position the position in the list view with which to interact
+	 */
+	public void askEditOrViewDetailsOfExpenseAt(final int position) {
+		// Construct a new dialog to be displayed.
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		
+		// -- Delete this expense item?
+		builder.setTitle( getString(R.string.editOrViewExpenseItemPromptTitle) );
+		builder.setMessage( getString(R.string.editOrViewExpenseItemPromptMessage) );
+		// -- Edit -- //
+		builder.setNeutralButton("Edit", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// remove the expense
+					editExpenseAt(position);
+					dialog.dismiss();
+					// Nullify the last opened dialog so we can tell it was dismissed
+					lastDialog = null;
+				}
+			});
+		// -- View Details Of -- //
+		builder.setPositiveButton("View Details", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// view expense details
+					viewExpenseAt(position);
+					dialog.dismiss();
+					// Nullify the last opened dialog so we can tell it was dismissed
+					lastDialog = null;
+				}
+			});
+		
+		// Show the newly created dialog
+		lastDialog = builder.create();
+		lastDialog.show();
+	}
+	
+	/**
 	 * Opens the activity responsible for editing a claim
 	 * @param position the position in the listview to edit.
 	 */
 	public void editExpenseAt(int position) {
 		// Create an intent to edit an expense item
 		Intent intent = new Intent(getActivity(), ExpenseItemActivity.class);
+		// --> Tell it that we're editing the index at this position
+		intent.putExtra("claimIndex", claimIndex);
+		intent.putExtra("expenseIndex", position);
+		
+		// Start the activity with our edit intent
+		startActivity(intent);
+	}
+	
+	public void viewExpenseAt(int position) {
+		// Create an intent to edit an expense item
+		Intent intent = new Intent(getActivity(), ExpenseItemDetailView.class);
 		// --> Tell it that we're editing the index at this position
 		intent.putExtra("claimIndex", claimIndex);
 		intent.putExtra("expenseIndex", position);

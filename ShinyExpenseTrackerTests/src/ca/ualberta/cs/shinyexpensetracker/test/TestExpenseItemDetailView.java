@@ -58,7 +58,7 @@ public class TestExpenseItemDetailView extends
 
 		Intent intent = new Intent();
 		intent.putExtra("claimIndex", 0);
-		intent.putExtra("itemIndex", 0);
+		intent.putExtra("expenseIndex", 0);
 		setActivityIntent(intent);
 		activity = getActivity();
 	}

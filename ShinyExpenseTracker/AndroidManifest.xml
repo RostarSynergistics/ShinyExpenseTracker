@@ -31,7 +31,7 @@
             android:label="@string/title_activity_manage_tag" >
         </activity>
         <activity
-            android:name="ca.ualberta.cs.shinyexpensetracker.ViewExpenseClaimActivity"
+            android:name="ca.ualberta.cs.shinyexpensetracker.activities.ViewExpenseClaimActivity"
             android:label="@string/title_activity_view_expense_claim" >
         </activity>
         <activity
@@ -43,15 +43,15 @@
             android:label="@string/title_activity_expense_item" >
         </activity>
         <activity
-            android:name="ca.ualberta.cs.shinyexpensetracker.activities.AddDestinationActivityionActivity"
+            android:name="ca.ualberta.cs.shinyexpensetracker.activities.AddDestinationActivity"
             android:label="@string/title_activity_add_destination" >
         </activity>
         <activity
-            android:name=".activities.TabbedSummaryActivity"
+            android:name="ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity"
             android:label="@string/title_activity_tabbed_summary" >
         </activity>
         <activity
-            android:name=".ClaimSummaryActivity"
+            android:name="ca.ualberta.cs.shinyexpensetracker.activities.ClaimSummaryActivity"
             android:label="@string/title_activity_claim_summary" >
         </activity>
 		<activity

@@ -2,10 +2,8 @@
 
 package ca.ualberta.cs.shinyexpensetracker;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.OutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,7 +20,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -58,7 +55,6 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 * description and a photo of a receipt for expense items.
 * Also allows editing of a referred Expense Item, if there is any 
 */
-
 public class ExpenseItemActivity extends Activity implements OnClickListener{
 
 	// DatePickerDialog from: 
@@ -98,7 +94,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 			// we have to receive a Claim ID so that we know to what claim to save an item
 			int claimId = (Integer) bundle.get("claimIndex");
 			Integer expenseItemId = (Integer) bundle.get("expenseIndex");
-			controller = ExpenseClaimController.getInstance();
+			controller = Application.getExpenseClaimController();
 			claim = controller.getExpenseClaim(claimId);
 			// if we received an Item ID
 			// then we are editing an item
@@ -116,6 +112,13 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
         setDateTimeField();
 	}
 	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		
+		controller = Application.getExpenseClaimController();
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -266,9 +269,9 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
      * Gets inputed data from text fields and spinners, saving them in an expenseItem object.
      * @param v
      * @throws ParseException
+     * @throws IOException 
      */
 	public boolean createExpenseItem() throws ParseException {
-		
 		EditText nameText = (EditText) findViewById(R.id.expenseItemNameEditText);
 		EditText dateText = (EditText) findViewById(R.id.expenseItemDateEditText);
 		Spinner categorySpinner = (Spinner) findViewById(R.id.expenseItemCategorySpinner);
@@ -414,6 +417,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 	 * return to the previous activity (ExpenseItems Summary page)
 	 * @param v
 	 * @throws ParseException 
+	 * @throws IOException  
 	 */
 	public void doneExpenseItem(View v) throws ParseException{
 		

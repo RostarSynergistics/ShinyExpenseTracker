@@ -37,10 +37,10 @@ public class ExpenseItemDetailView extends Activity {
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
 		
-		if (bundle != null){
+		if (bundle != null) {
 			int claimId = (Integer) bundle.get("claimIndex");
 			int expenseItemId = (Integer) bundle.get("expenseIndex");
-			ExpenseClaimController controller = ExpenseClaimController.getInstance();
+			ExpenseClaimController controller = Application.getExpenseClaimController();
 			ExpenseClaim claim = controller.getExpenseClaim(claimId);
 			item = claim.getItemById(expenseItemId);
 			populateTextViews();

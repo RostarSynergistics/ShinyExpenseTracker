@@ -13,6 +13,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import ca.ualberta.cs.shinyexpensetracker.Application;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseItemDetailView;
@@ -32,18 +33,13 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 	private ExpenseItemAdapter adapter;
 	private AlertDialog lastDialog;
 	
-	/**
-	 * Returns a new instance of this fragment for the given section number.
-	 */
-	public static ExpenseItemListFragment newInstance(int sectionNumber) {
-		ExpenseItemListFragment fragment = new ExpenseItemListFragment();
+	public ExpenseItemListFragment() {
+	}
+	
+	public ExpenseItemListFragment(int sectionNumber) {
 		Bundle args = new Bundle();
 		args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-		fragment.setArguments(args);
-		return fragment;
-	}
-
-	public ExpenseItemListFragment() {
+		setArguments(args);
 	}
 
 	@Override
@@ -57,6 +53,8 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 	@Override
 	public void onStart() {
 		super.onStart();
+		
+		ExpenseClaimController controller = Application.getExpenseClaimController();
 
 		// Get the claim index to display
 		Intent intent = getActivity().getIntent();
@@ -66,7 +64,7 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 		}
 		
 		// Get the claim context
-		claim = ExpenseClaimController.getInstance().getExpenseClaim(claimIndex);
+		claim = controller.getExpenseClaim(claimIndex);
 
 		// Inform the model that we're listening for updates.
 		claim.addView(this);

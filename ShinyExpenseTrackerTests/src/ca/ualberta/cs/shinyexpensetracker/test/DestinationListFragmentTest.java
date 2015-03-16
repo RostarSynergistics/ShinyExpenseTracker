@@ -1,6 +1,5 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import android.app.AlertDialog;
@@ -13,15 +12,14 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.AddDestinationActivity;
+import ca.ualberta.cs.shinyexpensetracker.Application;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.DestinationListFragment;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 public class DestinationListFragmentTest extends
 	ActivityInstrumentationTestCase2<TabbedSummaryActivity> {
@@ -29,6 +27,8 @@ public class DestinationListFragmentTest extends
 	static DestinationListFragment frag;
 	TabbedSummaryActivity activity;
 	ExpenseClaim claim;
+	
+	private ExpenseClaimController controller;
 
 	public DestinationListFragmentTest(Class<TabbedSummaryActivity> activityClass) {
 		super(activityClass);
@@ -41,8 +41,9 @@ public class DestinationListFragmentTest extends
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		// Use a clean claimList
-		ExpenseClaimController.getInstance().setClaimList(new ExpenseClaimList());
+		
+		controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
+		Application.setExpenseClaimController(controller);
 		
 		claim = new ExpenseClaim(
 				"My Cool Expense Claim",
@@ -52,7 +53,7 @@ public class DestinationListFragmentTest extends
 		// Add a destination that we can look at
 		claim.addDestination(new Destination("Hell", "I'm on a highway."));
 		// Add the expense claim
-		ExpenseClaimController.getInstance().addExpenseClaim(claim);
+		controller.addExpenseClaim(claim);
 		
 		// Inject an intent that we have full control of.
 		// This MUST be called before the first call to getActivity()

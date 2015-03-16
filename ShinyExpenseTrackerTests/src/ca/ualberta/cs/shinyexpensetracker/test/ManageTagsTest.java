@@ -4,9 +4,10 @@ import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.ListView;
 import ca.ualberta.cs.shinyexpensetracker.activities.ManageTagActivity;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.TagController;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
-import ca.ualberta.cs.shinyexpensetracker.models.TagList;
+import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockTagListPersister;
 
 public class ManageTagsTest extends ActivityInstrumentationTestCase2<ManageTagActivity> {
 
@@ -22,8 +23,10 @@ public class ManageTagsTest extends ActivityInstrumentationTestCase2<ManageTagAc
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		tagController = TagController.getInstance();
-		tagController.setTagList(new TagList());
+
+		tagController = new TagController(new MockTagListPersister());
+		Application.setTagController(tagController);
+		
 		activity = getActivity();
 		instrumentation = getInstrumentation();
 		manageTagsListView = (ListView) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.listViewManageTags);

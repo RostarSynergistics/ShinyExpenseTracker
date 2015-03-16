@@ -90,7 +90,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		if (bundle != null){
 			// we have to receive a Claim ID so that we know to what claim to save an item
 			int claimId = (Integer) bundle.get("claimIndex");
-			Integer expenseItemId = (Integer) bundle.get("itemIndex");
+			Integer expenseItemId = (Integer) bundle.get("expenseIndex");
 			controller = ExpenseClaimController.getInstance();
 			claim = controller.getExpenseClaim(claimId);
 			// if we received an Item ID

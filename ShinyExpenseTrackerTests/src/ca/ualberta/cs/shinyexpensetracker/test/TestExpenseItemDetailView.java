@@ -52,7 +52,7 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 
 		Intent intent = new Intent();
 	    intent.putExtra("claimIndex", new Integer(0));
-	    intent.putExtra("itemIndex", new Integer(0));
+	    intent.putExtra("expenseIndex", new Integer(0));
 	    setActivityIntent(intent);
 	    activity = getActivity();
 	    

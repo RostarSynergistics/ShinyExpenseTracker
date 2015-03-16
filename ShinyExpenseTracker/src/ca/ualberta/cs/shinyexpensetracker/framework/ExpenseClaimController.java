@@ -1,4 +1,4 @@
-package ca.ualberta.cs.shinyexpensetracker;
+package ca.ualberta.cs.shinyexpensetracker.framework;
 
 import java.io.IOException;
 

@@ -7,8 +7,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.TagController;
 import ca.ualberta.cs.shinyexpensetracker.activities.ManageTagActivity;
+import ca.ualberta.cs.shinyexpensetracker.framework.TagController;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 

@@ -21,7 +21,7 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 
 import android.app.Instrumentation;
 import android.test.InstrumentationTestCase;
-import ca.ualberta.cs.shinyexpensetracker.TagController;
+import ca.ualberta.cs.shinyexpensetracker.framework.TagController;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 

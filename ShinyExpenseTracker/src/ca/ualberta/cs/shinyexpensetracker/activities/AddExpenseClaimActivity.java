@@ -30,12 +30,12 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import ca.ualberta.cs.shinyexpensetracker.Application;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.R.id;
 import ca.ualberta.cs.shinyexpensetracker.R.layout;
 import ca.ualberta.cs.shinyexpensetracker.R.menu;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
 // Source for DatePicker: http://androidopentutorials.com/android-datepickerdialog-on-edittext-click-event

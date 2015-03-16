@@ -1,5 +1,6 @@
 /**
  *  Test case for Issue 17
+ *  
  *  AddExpenseClaimActivityTest: Testing the AddExpenseClaimAcitivity representing the UI for adding/editing an Expense Claim. 
  *  No outstanding issues.
  * 
@@ -57,6 +58,7 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
         }
     };
     
+    @Override
     protected void setUp() throws Exception {
     	super.setUp();
         instrumentation = getInstrumentation();
@@ -73,6 +75,9 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
     	doneButton = (Button) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.addExpenseClaimDoneButton);
     }
     
+    /**
+     * test whether or not startDate dialog is opened
+     */
 	public void teststartDate() {
 		assertFalse(((AddExpenseClaimActivity) activity).getStartDateDialog().isShowing());
 		instrumentation.runOnMainSync(new Runnable() {
@@ -83,6 +88,9 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 		assertTrue(((AddExpenseClaimActivity) activity).getStartDateDialog().isShowing());
 	}
 	
+    /**
+     * test whether or not endDate dialog is opened
+     */
 	public void testendDate() {
 		assertFalse(((AddExpenseClaimActivity) activity).getEndDateDialog().isShowing());
 		instrumentation.runOnMainSync(new Runnable() {
@@ -93,6 +101,9 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 		assertTrue(((AddExpenseClaimActivity) activity).getEndDateDialog().isShowing());
 	}
 	
+	/**
+	 * test whether or not the textFields are set correctly
+	 */
 	public void testText() {
 		
 		instrumentation.runOnMainSync(new Runnable() {
@@ -108,6 +119,10 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 		assertEquals("01-04-2015", startDate.getText().toString());
 		assertEquals("08-04-2015", endDate.getText().toString());
 	}
+	
+	/**
+	 * test AddExpenseClaim functionality to see whether or not the expenseClaim is actually added or not
+	 */
 	
 	public void testAddExpenseClaim() {
 		
@@ -140,6 +155,11 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 		assertEquals("endDate != endDate", toDate, sampleExpenseClaim.getEndDate());
 		assertNotSame("false positive, endDate", "Wrong endDate", sampleExpenseClaim.getEndDate());
 }
+	
+	/**
+	 * UI test to see if the DoneButton adds the claim
+	 * @throws ParseException
+	 */
 	
 	public void testDoneButton() throws ParseException {
 		

@@ -2,6 +2,7 @@
  *  Covers issue 17. 
  *  AddExpenseClaimActivity: Activity representing the UI for adding/editing an Expense Claim. 
  *  No outstanding issues.
+ *  @author ramishsyed
  **/
 
 package ca.ualberta.cs.shinyexpensetracker;
@@ -130,6 +131,15 @@ public class AddExpenseClaimActivity extends Activity implements
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	/**
+	 * gets name, endDate, and startDate values from their respective EditTexts
+	 * handles exception in the case of invalid values for all three 
+	 * returns claim if all conditions are passed
+	 * @param v
+	 * @return
+	 * @throws ParseException
+	 */
 
 	public ExpenseClaim saveExpenseClaim(View v) throws ParseException {
 		EditText nameText = (EditText) findViewById(R.id.editTextExpenseClaimName);
@@ -199,6 +209,11 @@ public class AddExpenseClaimActivity extends Activity implements
 		return claim;
 	}
 	
+	/**
+	 * presets EditText with already existing claim for editing
+	 * @param claim
+	 */
+	
 	public void displayExpenseClaim(ExpenseClaim claim) {
 		EditText claimName = (EditText) findViewById(R.id.editTextExpenseClaimName);
 		
@@ -206,6 +221,12 @@ public class AddExpenseClaimActivity extends Activity implements
 		startDate.setText(dateFormatter.format(claim.getStartDate()));
 		endDate.setText(dateFormatter.format(claim.getEndDate()));
 	}
+	
+	/**
+	 * returns finish() method on successful added/edited claim
+	 * @param v
+	 * @throws ParseException
+	 */
 	
 	public void doneExpenseItem(View v) throws ParseException {
 		ExpenseClaim claim = saveExpenseClaim(v);
@@ -221,10 +242,18 @@ public class AddExpenseClaimActivity extends Activity implements
 		}
 	}
 
-	// for tests
+	/**
+	 * for handling test arguments. See activity_add_expense_claim
+	 * @return fromDatePickerDialog
+	 */
 	public DatePickerDialog getStartDateDialog() {
 		return fromDatePickerDialog;
 	}
+	
+	/**
+	 * for handling test arguments. See activity_add_expense_claim
+	 * @return toDatePickerDialog
+	 */
 
 	public DatePickerDialog getEndDateDialog() {
 		return toDatePickerDialog;

@@ -15,7 +15,11 @@ public class TagList extends Model<TagList> {
 		return tags;
 	}
 	
-	
+	/**
+	 * Adds a tag to the tag list
+	 * @param tag The tag to add
+	 * @return if it was added
+	 */
 	public boolean addTag(Tag tag) {
 		if(checkValidTag(tag)){
 			tags.add(tag);

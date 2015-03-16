@@ -15,6 +15,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import ca.ualberta.cs.shinyexpensetracker.Application;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.IView;
@@ -54,6 +55,8 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 	@Override
 	public void onStart() {
 		super.onStart();
+		
+		ExpenseClaimController controller = Application.getExpenseClaimController();
 
 		// Get the claim index to display
 		Intent intent = getActivity().getIntent();
@@ -63,11 +66,7 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 		}
 		
 		// Get the claim context
-		try {
-			claim = new ExpenseClaimController(getActivity()).getExpenseClaim(claimIndex);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		claim = controller.getExpenseClaim(claimIndex);
 
 		// Inform the model that we're listening for updates.
 		claim.addView(this);

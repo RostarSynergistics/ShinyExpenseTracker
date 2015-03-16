@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import ca.ualberta.cs.shinyexpensetracker.Application;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.R;
@@ -40,8 +41,7 @@ public class ExpenseItemListFragmentTest extends
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		// Use a clean claimList
-		ExpenseClaimController controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
+		Application.setExpenseClaimController(new ExpenseClaimController(new MockExpenseClaimListPersister()));
 		
 		claim = new ExpenseClaim(
 				"My Cool Expense Claim",
@@ -58,7 +58,7 @@ public class ExpenseItemListFragmentTest extends
 				"Something really shiny",
 				null));
 		// Add the expense claim
-		controller.addExpenseClaim(claim);
+		Application.getExpenseClaimController().addExpenseClaim(claim);
 		
 		// Inject an intent that we have full control of.
 		// This MUST be called before the first call to getActivity()

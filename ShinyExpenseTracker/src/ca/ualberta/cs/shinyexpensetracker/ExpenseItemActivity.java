@@ -64,6 +64,8 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
     private AlertDialog.Builder adb;
     public Dialog alertDialog;
     
+    private ExpenseClaimController controller;
+    
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,13 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
         
         button = (ImageButton) findViewById(R.id.expenseItemReceiptImageButton);
 
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		
+		controller = Application.getExpenseClaimController();
 	}
 
 	@Override
@@ -147,8 +156,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		
 		Intent intent = getIntent();
 		int claimIndex = intent.getIntExtra("claimIndex", -1);
-		ExpenseClaimController ecc = new ExpenseClaimController(this);
-		ExpenseClaim claim = ecc.getExpenseClaim(claimIndex);
+		ExpenseClaim claim = controller.getExpenseClaim(claimIndex);
 		
 		EditText nameText = (EditText) findViewById(R.id.expenseItemNameEditText);
 		EditText dateText = (EditText) findViewById(R.id.expenseItemDateEditText);
@@ -227,7 +235,8 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		
 		//Add expenseItem to claim
 		claim.addExpense(expense);
-				
+		// TODO: this claim needs to be saved somehow		
+		
 		return true;
 	}
 	

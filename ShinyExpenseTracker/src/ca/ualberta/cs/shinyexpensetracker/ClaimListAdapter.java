@@ -46,7 +46,7 @@ public class ClaimListAdapter extends BaseAdapter {
 		super();
 		this.dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
 		this.context = context;
-		this.controller = new ExpenseClaimController(context);
+		this.controller = Application.getExpenseClaimController();
 	}
 
 	@Override

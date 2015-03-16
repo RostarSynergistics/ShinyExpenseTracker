@@ -17,10 +17,20 @@ import ca.ualberta.cs.shinyexpensetracker.IView;
  * @param <M> The child class itself (required for IView<M> usage).
  */
 public abstract class Model<M extends Model<M>> {
+	// Do not use directly as it will be null after retrieval from file using GSON.
+	// Access via getViews() instead.
 	private transient ArrayList<IView<M>> views;
-
-	public Model() {
-		views = new ArrayList<IView<M>>();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private ArrayList<IView<M>> getViews() {
+		if (views == null) {
+			views = new ArrayList<IView<M>>();
+		}
+		
+		return views;
 	}
 
 	/**
@@ -29,8 +39,8 @@ public abstract class Model<M extends Model<M>> {
 	 * @param v The view to keep track of.
 	 */
 	public void addView(IView<M> v) {
-		if (!views.contains(v)) {
-			views.add(v);
+		if (!getViews().contains(v)) {
+			getViews().add(v);
 		}
 	}
 
@@ -40,7 +50,7 @@ public abstract class Model<M extends Model<M>> {
 	 * @param v The view to stop keeping track of.
 	 */
 	public void removeView(IView<M> v) {
-		views.remove(v);
+		getViews().remove(v);
 	}
 
 	/**
@@ -48,7 +58,7 @@ public abstract class Model<M extends Model<M>> {
 	 */
 	@SuppressWarnings("unchecked")
 	public void notifyViews() {
-		for (IView<M> view : views) {
+		for (IView<M> view : getViews()) {
 			/*
 			 * This cast is safe (and thus its warning is suppressed)
 			 * as this object must be of type M or the rule set at the top

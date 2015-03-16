@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import ca.ualberta.cs.shinyexpensetracker.Application;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -86,13 +87,15 @@ public class ExpenseItemActivityTest extends
     	super.setUp();
         instrumentation = getInstrumentation();
         
-        ExpenseClaimController controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
-        controller.addExpenseClaim(new ExpenseClaim("Test Claim"));
+        Application.setExpenseClaimController(new ExpenseClaimController(new MockExpenseClaimListPersister()));
+
+        activity = getActivity();
+
+        Application.getExpenseClaimController().addExpenseClaim(new ExpenseClaim("Test Claim"));
+
         Intent intent = new Intent();
         intent.putExtra("claimIndex", 0);
         setActivityIntent(intent);
-        
-        activity = getActivity();
         
         datePicker = new DatePickerDialog(instrumentation.getContext(), dateListener, TARGET_YEAR, TARGET_MONTH, TARGET_DAY);
         

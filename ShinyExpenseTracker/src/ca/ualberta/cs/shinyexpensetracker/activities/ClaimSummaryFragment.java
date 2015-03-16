@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import ca.ualberta.cs.shinyexpensetracker.Application;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseTotalsAdapter;
 import ca.ualberta.cs.shinyexpensetracker.IView;
@@ -29,10 +30,11 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
  *
  */
 public class ClaimSummaryFragment extends Fragment implements IView<ExpenseClaim> {
-
 	private ExpenseClaim claim;
 	private int claimIndex;
 	private ExpenseTotalsAdapter adapter;
+	
+	private ExpenseClaimController controller;
 	
 	/**
 	 * The fragment argument representing the section number for this
@@ -63,15 +65,17 @@ public class ClaimSummaryFragment extends Fragment implements IView<ExpenseClaim
 	public void onStart() {
 		super.onStart();
 		
-		//get the Claim we are working with
+		controller = Application.getExpenseClaimController();
+		
+		//get the ID of the Claim we are working with
 		Intent intent = getActivity().getIntent();
 		claimIndex = intent.getIntExtra("claimIndex", -1);
 		if (claimIndex == -1) {
 			throw new RuntimeException("Intent not passed: Got claim index of -1");
 		}
 		
-		// Get the claim context
-		claim = ExpenseClaimController.getInstance().getExpenseClaim(claimIndex);
+		// Get the claim itself
+        claim = controller.getExpenseClaim(claimIndex);
 		
 		// Inform the model that we're listening for updates.
 		claim.addView(this);
@@ -98,10 +102,10 @@ public class ClaimSummaryFragment extends Fragment implements IView<ExpenseClaim
 	 * @param view
 	 * @throws IOException 
 	 */
-	public void setClaimInfo(View view) {
+	public void setClaimInfo(View view) throws IOException {
 		// make sure that it is a valid claim
 		try {
-			claim = ExpenseClaimController.getInstance().getExpenseClaim(claimIndex);
+			claim = controller.getExpenseClaim(claimIndex);
 		} catch (IndexOutOfBoundsException e){
 			throw new RuntimeException();
 		}
@@ -145,5 +149,4 @@ public class ClaimSummaryFragment extends Fragment implements IView<ExpenseClaim
 	public void update(ExpenseClaim m) {
 		adapter.notifyDataSetChanged();
 	}
-	
 }

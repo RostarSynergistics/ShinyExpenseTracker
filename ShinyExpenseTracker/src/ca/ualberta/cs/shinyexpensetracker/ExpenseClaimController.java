@@ -105,9 +105,4 @@ public class ExpenseClaimController {
 	public ExpenseClaimList getExpenseClaimList() {
 		return claimList;
 	}
-	
-	public void addExpenseItem(ExpenseItem expense, int index) throws IOException	{
-		claimList.getClaim(index).addExpense(expense);
-		persister.saveExpenseClaims(claimList);
-	}
 }

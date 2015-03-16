@@ -37,6 +37,8 @@ import android.widget.EditText;
 
 public class AddExpenseClaimActivity extends Activity implements
 		OnClickListener {
+	
+	private ExpenseClaimController controller;
 
 	private EditText startDate, endDate;
 	private DatePickerDialog fromDatePickerDialog, toDatePickerDialog;
@@ -56,6 +58,13 @@ public class AddExpenseClaimActivity extends Activity implements
 		findViewsById();
 
 		setDateTimeField();
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		
+        controller = Application.getExpenseClaimController();
 	}
 
 	private void findViewsById() {
@@ -170,8 +179,7 @@ public class AddExpenseClaimActivity extends Activity implements
 			}
 
 		ExpenseClaim expenseClaim = new ExpenseClaim(name, startDate1, endDate);
-		ExpenseClaimList claimList = new ExpenseClaimController(this).getExpenseClaimList();
-		claimList.addClaim(expenseClaim);
+		controller.addExpenseClaim(expenseClaim);
 		
 		return true;
 	}
@@ -180,7 +188,7 @@ public class AddExpenseClaimActivity extends Activity implements
 		if (createExpenseClaim(v)){
 			finish();
 			Intent intent = new Intent(this, TabbedSummaryActivity.class);
-			intent.putExtra("claimIndex", ExpenseClaimController.getInstance().getCount() - 1);
+			intent.putExtra("claimIndex", controller.getCount() - 1);
 			startActivity(intent);
 		}
 	}

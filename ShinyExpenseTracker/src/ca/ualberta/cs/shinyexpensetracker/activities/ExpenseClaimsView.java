@@ -42,6 +42,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
+import ca.ualberta.cs.shinyexpensetracker.Application;
 import ca.ualberta.cs.shinyexpensetracker.ClaimListAdapter;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.IView;
@@ -59,17 +60,13 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_expense_claims_view);
-		try {
-			controller = new ExpenseClaimController(this);
-            controller.getExpenseClaimList().addView(this);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
 	}
 	
 	@Override
 	protected void onStart() {
 		super.onStart();
+        controller = Application.getExpenseClaimController();
+        controller.getExpenseClaimList().addView(this);
 		
 		// Set the list view to receive updates from the model
 		final ListView claim_list = (ListView) findViewById(R.id.expense_claim_list);

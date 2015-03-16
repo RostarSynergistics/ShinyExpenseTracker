@@ -27,13 +27,12 @@ import ca.ualberta.cs.shinyexpensetracker.models.*;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 public class ExpenseClaimControllerTest extends TestCase {
-
-	private static ExpenseClaimList claimList;
 	private ExpenseClaimController controller;
-
+	private ExpenseClaimList claimList;
+	
 	protected void setUp() throws Exception {
 		super.setUp();
-		claimList = new ExpenseClaimList();
+		ExpenseClaimList claimList = new ExpenseClaimList();
 		claimList.addClaim(new ExpenseClaim("Test"));
 		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(claimList));
 	}

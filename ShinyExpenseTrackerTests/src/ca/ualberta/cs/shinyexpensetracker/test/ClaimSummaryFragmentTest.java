@@ -9,6 +9,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import ca.ualberta.cs.shinyexpensetracker.Application;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ClaimSummaryFragment;
@@ -42,17 +43,20 @@ public class ClaimSummaryFragmentTest extends
 	}
 	
 	ExpenseClaim claim;
-	ExpenseClaimController ecc;
-	ExpenseClaimList claimList;
 	
 	String claimName = "test claim name";
 	Date startDate = new Date(1000);
 	Date endDate = new Date(2000);
 	ExpenseClaim.Status status = ExpenseClaim.Status.RETURNED;
 	
+	ExpenseClaimController controller;
+	
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
+		
+		controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
+		Application.setExpenseClaimController(controller);
 		
 		//Source: http://stackoverflow.com/questions/23728835/in-junit-test-activity-if-it-did-received-the-extra-from-intent
 		//On March 14 2015
@@ -63,12 +67,10 @@ public class ClaimSummaryFragmentTest extends
 		intent.putExtra("claimIndex", 0);
 		setActivityIntent(intent);
 		
-		ecc = new ExpenseClaimController(new MockExpenseClaimListPersister());
-		
 		//Add an expense claim to the expenseClaimController
-		ExpenseClaim claim = new ExpenseClaim(claimName, startDate, endDate);
+		claim = new ExpenseClaim(claimName, startDate, endDate);
 		claim.setStatus(status);
-		ecc.addExpenseClaim(claim);
+		controller.addExpenseClaim(claim);
 		
 		activity = getActivity();
 		getInstrumentation().runOnMainSync(new Runnable() {
@@ -88,15 +90,6 @@ public class ClaimSummaryFragmentTest extends
 
 	//Tests that setClaimInfo sets the correct information for the claim
 	public void testSetClaimInfo() throws IOException {
-		
-		claimList = new ExpenseClaimList();
-		ecc = new ExpenseClaimController(new MockExpenseClaimListPersister(claimList));
-		
-		//Add an expense claim to the expenseClaimController
-		ExpenseClaim claim = new ExpenseClaim(claimName, startDate, endDate);
-		claim.setStatus(status);
-		ecc.addExpenseClaim(claim);
-		
 		TagList tagList = new TagList();
 		Tag tag = new Tag("testTag");
 		tagList.addTag(tag);
@@ -174,23 +167,14 @@ public class ClaimSummaryFragmentTest extends
 		assertEquals("Tags showns", "Tags: ", tags.getText().toString());
 	}
 	
-
-	
 	//Test that the expeseTotals appear as expected
 	public void testExpenseTotals() throws IOException {
 		Date startDate = new Date(1000);
 		Date endDate = new Date(2000);
 		
-		ExpenseClaim claim = new ExpenseClaim("Test claim", startDate, endDate);
-		
 		BigDecimal amount = new BigDecimal(10);
 		ExpenseItem expense = new ExpenseItem("test Expense", startDate, Category.ACCOMODATION, amount, Currency.CAD);
-		
-		ExpenseClaimList claimList = new ExpenseClaimList();
-		ExpenseClaimController ecc = new ExpenseClaimController(new MockExpenseClaimListPersister(claimList));
-		
-		ecc.addExpenseClaim(claim);
-		ecc.addExpenseItem(expense, 0);
+		claim.addExpense(expense);
 
 		getInstrumentation().runOnMainSync(new Runnable() {
 
@@ -210,7 +194,7 @@ public class ClaimSummaryFragmentTest extends
 		
 		amount = new BigDecimal(20);
 		expense = new ExpenseItem ("test expense 2", startDate, Category.AIR_FARE, amount, Currency.CHF);
-		ecc.addExpenseItem(expense, 0);
+		claim.addExpense(expense);
 		
 		getInstrumentation().runOnMainSync(new Runnable() {
 
@@ -231,7 +215,7 @@ public class ClaimSummaryFragmentTest extends
 				expenseTotals.getItemAtPosition(1).toString());
 		
 		expense = new ExpenseItem("test expense 3", startDate, Category.FUEL, amount, Currency.CAD);
-		ecc.addExpenseItem(expense, 0);
+		claim.addExpense(expense);
 		
 		getInstrumentation().runOnMainSync(new Runnable() {
 

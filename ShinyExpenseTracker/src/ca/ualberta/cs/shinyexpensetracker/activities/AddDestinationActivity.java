@@ -1,4 +1,4 @@
-package ca.ualberta.cs.shinyexpensetracker;
+package ca.ualberta.cs.shinyexpensetracker.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,6 +10,12 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import ca.ualberta.cs.shinyexpensetracker.Application;
+import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.R.id;
+import ca.ualberta.cs.shinyexpensetracker.R.layout;
+import ca.ualberta.cs.shinyexpensetracker.R.menu;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 

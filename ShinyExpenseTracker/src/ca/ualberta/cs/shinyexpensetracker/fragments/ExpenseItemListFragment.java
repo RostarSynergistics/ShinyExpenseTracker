@@ -15,11 +15,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.Application;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseItemDetailView;
 import ca.ualberta.cs.shinyexpensetracker.IView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemAdapter;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemDetailView;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
 public class ExpenseItemListFragment extends Fragment implements IView<ExpenseClaim> {

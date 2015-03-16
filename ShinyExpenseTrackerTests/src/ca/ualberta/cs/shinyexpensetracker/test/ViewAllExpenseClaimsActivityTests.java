@@ -33,6 +33,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
+import ca.ualberta.cs.shinyexpensetracker.Application;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.R;
@@ -42,6 +43,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
+import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 public class ViewAllExpenseClaimsActivityTests extends
 		ActivityInstrumentationTestCase2<ExpenseClaimsView> {
@@ -64,7 +66,9 @@ public class ViewAllExpenseClaimsActivityTests extends
 		// Inject an empty list so that saving/loading doesn't interfere,
 		// just in case.
 		claimsList = new ExpenseClaimList();
-		ExpenseClaimController.getInstance().setClaimList(claimsList);
+		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(claimsList));
+		
+		Application.setExpenseClaimController(controller);
 		
 		activity = getActivity();
 		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
@@ -196,7 +200,7 @@ public class ViewAllExpenseClaimsActivityTests extends
 					addClaim(testingClaims[k]);
 
 					// Sanity check: 3 items in the list
-					assertEquals(3, ExpenseClaimController.getInstance().getCount());
+					assertEquals(3, controller.getCount());
 					
 					// check index 0 is newer than index 1
 					assertEquals("Comparison failed. Wanted <" + getClaim(0) + "> newer than <" + getClaim(1) + ">;",

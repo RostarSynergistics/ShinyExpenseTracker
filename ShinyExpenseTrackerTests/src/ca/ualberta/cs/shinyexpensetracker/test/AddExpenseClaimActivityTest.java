@@ -17,23 +17,22 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Instrumentation;
 import android.app.Instrumentation.ActivityMonitor;
 import android.test.ActivityInstrumentationTestCase2;
-import android.webkit.WebView.FindListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
+import ca.ualberta.cs.shinyexpensetracker.Application;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
+import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase2<AddExpenseClaimActivity> {
 	
     private static final int TARGET_YEAR = 2008;
     private static final int TARGET_MONTH = 11;
     private static final int TARGET_DAY = 7;
-    
-    private ExpenseClaimController controller;
     
 	Instrumentation instrumentation;
 	AddExpenseClaimActivity activity;
@@ -61,12 +60,11 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
     @Override
     protected void setUp() throws Exception {
     	super.setUp();
+
+        Application.setExpenseClaimController(new ExpenseClaimController(new MockExpenseClaimListPersister()));
+
         instrumentation = getInstrumentation();
         activity = getActivity();
-        
-        
-        controller = ExpenseClaimController.getInstance();
-        controller.setClaimList(new ExpenseClaimList());
     	
     	DatePickerDialog datePicker = new DatePickerDialog(instrumentation.getContext(), dateListener, TARGET_YEAR, TARGET_MONTH, TARGET_DAY);
     	name = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.editTextExpenseClaimName));
@@ -134,7 +132,7 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 		sdf.format(toDate);
 		
 		final ExpenseClaim sampleExpenseClaim = new ExpenseClaim(nameString, fromDate, toDate, null, null);
-		final ExpenseClaimList claimList = controller.getExpenseClaimList();
+		final ExpenseClaimList claimList = Application.getExpenseClaimController().getExpenseClaimList();
 		
 		instrumentation.runOnMainSync(new Runnable() {
 			
@@ -185,6 +183,8 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
 		Date startDateObject = sdf.parse(startDate.getText().toString());
 		Date endDateObject = sdf.parse(endDate.getText().toString());
+		
+		ExpenseClaimController controller = Application.getExpenseClaimController();
 		
 		assertEquals("The two names do not equal each other", "URoma", controller.getExpenseClaim(0).getName());
 		

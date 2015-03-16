@@ -1,16 +1,29 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+<<<<<<< HEAD
 import ca.ualberta.cs.shinyexpensetracker.AddDestinationActivity;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
+=======
+>>>>>>> e0ff02097fd1377ec206d5de2120b067efebc964
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
+import ca.ualberta.cs.shinyexpensetracker.AddDestinationActivity;
+import ca.ualberta.cs.shinyexpensetracker.Application;
+import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.models.Destination;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
+public class DestinationTest extends
+		ActivityInstrumentationTestCase2<AddDestinationActivity> {
+
+<<<<<<< HEAD
 /**
  * 
  * @author ramishsyed
@@ -19,10 +32,13 @@ import android.widget.EditText;
 public class DestinationTest extends 
 			ActivityInstrumentationTestCase2<AddDestinationActivity> {
 	
+=======
+>>>>>>> e0ff02097fd1377ec206d5de2120b067efebc964
 	AddDestinationActivity activity;
 	Instrumentation instrumentation;
 	EditText nameInput, reasonInput;
 	Button doneButton;
+<<<<<<< HEAD
     private ExpenseClaim claim;
 	
 		public DestinationTest(){
@@ -34,13 +50,28 @@ public class DestinationTest extends
 		}
 	
 	@Override
+=======
+	private ExpenseClaimController controller;
+	private ExpenseClaim claim;
+
+	public DestinationTest() {
+		super(AddDestinationActivity.class);
+	}
+
+	public DestinationTest(Class<AddDestinationActivity> activityClass) {
+		super(activityClass);
+	}
+
+>>>>>>> e0ff02097fd1377ec206d5de2120b067efebc964
 	protected void setUp() throws Exception {
-    	super.setUp();
-		
+		super.setUp();
+
+		controller = new ExpenseClaimController(
+				new MockExpenseClaimListPersister());
+		Application.setExpenseClaimController(controller);
+
 		ExpenseClaim claim = new ExpenseClaim("Example name");
-		ExpenseClaimController ecc = ExpenseClaimController.getInstance();
-		ecc.setClaimList(new ExpenseClaimList());
-		ecc.addExpenseClaim(claim);
+		controller.addExpenseClaim(claim);
 
 		instrumentation = getInstrumentation();
 
@@ -49,6 +80,7 @@ public class DestinationTest extends
 		setActivityIntent(intent);
 
 		activity = getActivity();
+<<<<<<< HEAD
         
         nameInput = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.destinationEditText));
         reasonInput = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.reasonEditText));
@@ -58,23 +90,40 @@ public class DestinationTest extends
 	/**
 	 * Tests whether a destination is successfully created or not
 	 */
+=======
+
+		nameInput = ((EditText) activity
+				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.destinationEditText));
+		reasonInput = ((EditText) activity
+				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.reasonEditText));
+		doneButton = (Button) activity
+				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.addDestinationDoneButton);
+	}
+
+	/* test if a Destination is made */
+>>>>>>> e0ff02097fd1377ec206d5de2120b067efebc964
 	public void testCreateDestination() {
-		instrumentation.runOnMainSync(new Runnable(){
+		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {
 				assertNotNull(doneButton);
-				 nameInput.setText("Miami");
-				 reasonInput.setText("Vacation");
-				 
-				 Destination destination = new Destination(nameInput.getText().toString(), 
-						 reasonInput.getText().toString());
-				 
-				 assertEquals("Name does not equal name", "Miami", destination.getName());
-				 assertNotSame("false positive name", "Wrong name", destination.getName());
-				 assertEquals("Reason does not equal Reason", "Vacation", destination.getReasonForTravel());
-				 assertNotSame("false positive reason", "Wrong reason", destination.getReasonForTravel());				 
+				nameInput.setText("Miami");
+				reasonInput.setText("Vacation");
+
+				Destination destination = new Destination(nameInput.getText()
+						.toString(), reasonInput.getText().toString());
+
+				assertEquals("Name does not equal name", "Miami",
+						destination.getName());
+				assertNotSame("false positive name", "Wrong name",
+						destination.getName());
+				assertEquals("Reason does not equal Reason", "Vacation",
+						destination.getReasonForTravel());
+				assertNotSame("false positive reason", "Wrong reason",
+						destination.getReasonForTravel());
 			}
 		});
 	}
+<<<<<<< HEAD
 	
 	public void testText() {
 		instrumentation.runOnMainSync(new Runnable() {
@@ -92,9 +141,16 @@ public class DestinationTest extends
 	/**
 	 * Tests if the data entered has been correctly saved to a Destination when the Done button is clicked 
 	 **/
+=======
+
+	/*
+	 * tests if the data entered has been correctly saved to a Destination when
+	 * the Done button is clicked
+	 */
+>>>>>>> e0ff02097fd1377ec206d5de2120b067efebc964
 	public void testDone() {
 		instrumentation.runOnMainSync(new Runnable() {
-			public void run() {				
+			public void run() {
 				nameInput.setText("Las Vegas");
 				reasonInput.setText("Vacation");
 				doneButton.performClick();
@@ -103,12 +159,15 @@ public class DestinationTest extends
 		});
 		instrumentation.waitForIdleSync();
 		assertTrue(activity != null);
-		
-		int claimIndex = ExpenseClaimController.getInstance().getIndexOf(claim) + 1;
-		
-		Destination dest= ExpenseClaimController.getInstance().getExpenseClaim(claimIndex).getDestination(0);
-		
-		assertEquals("Destination name does not equal 'Las Vegas'", "Las Vegas", dest.getName());
-		assertEquals("Deastination reason does not equal 'Vacation'", "Vacation", dest.getReasonForTravel());
+
+		int claimIndex = controller.getIndexOf(claim) + 1;
+
+		Destination dest = controller.getExpenseClaim(claimIndex)
+				.getDestination(0);
+
+		assertEquals("Destination name does not equal 'Las Vegas'",
+				"Las Vegas", dest.getName());
+		assertEquals("Deastination reason does not equal 'Vacation'",
+				"Vacation", dest.getReasonForTravel());
 	}
 }

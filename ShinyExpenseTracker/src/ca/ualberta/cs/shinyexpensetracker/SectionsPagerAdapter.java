@@ -41,11 +41,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		switch (position) {
 		case 0:
 			//ClaimSummary activity
-			frag = ClaimSummaryFragment.newInstance(position+1);
+			frag = new ClaimSummaryFragment(position+1);
 			break;
 		case 1:
 			//ExpenseItemList activity
-			frag = ExpenseItemListFragment.newInstance(position+1);
+			frag = new ExpenseItemListFragment(position+1);
 			break;
 		case 2:
 			//DestinationsList activity

@@ -7,6 +7,7 @@
 
 package ca.ualberta.cs.shinyexpensetracker;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -30,15 +31,15 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
 // Source for DatePicker: http://androidopentutorials.com/android-datepickerdialog-on-edittext-click-event
 
 public class AddExpenseClaimActivity extends Activity implements
 		OnClickListener {
+
+	private ExpenseClaimController controller;
 
 	private EditText startDate, endDate;
 	private DatePickerDialog fromDatePickerDialog, toDatePickerDialog;
@@ -61,15 +62,24 @@ public class AddExpenseClaimActivity extends Activity implements
 
 		setDateTimeField();
 		
+		controller = Application.getExpenseClaimController();
+
 		Intent intent = getIntent();
 		claimIndex = intent.getIntExtra("claimIndex", -1);
 		if (claimIndex == -1) {
 			claim = new ExpenseClaim("");
 		} else {
-			claim = ExpenseClaimController.getInstance().getExpenseClaim(claimIndex);
+			claim = controller.getExpenseClaim(claimIndex);
 			displayExpenseClaim(claim);
 		}
 		
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		controller = Application.getExpenseClaimController();
 	}
 
 	private void findViewsById() {
@@ -79,8 +89,8 @@ public class AddExpenseClaimActivity extends Activity implements
 
 		endDate = (EditText) findViewById(R.id.editTextEndDate);
 		endDate.setInputType(InputType.TYPE_NULL);
-		
-		doneButton = (Button)findViewById(R.id.addExpenseClaimDoneButton);
+
+		doneButton = (Button) findViewById(R.id.addExpenseClaimDoneButton);
 	}
 
 	private void setDateTimeField() {
@@ -88,24 +98,33 @@ public class AddExpenseClaimActivity extends Activity implements
 		endDate.setOnClickListener(this);
 
 		Calendar newCalendar = Calendar.getInstance();
-		
-		fromDatePickerDialog = new DatePickerDialog(this, new OnDateSetListener() {
 
-					public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+		fromDatePickerDialog = new DatePickerDialog(this,
+				new OnDateSetListener() {
+
+					public void onDateSet(DatePicker view, int year,
+							int monthOfYear, int dayOfMonth) {
 						Calendar newDate = Calendar.getInstance();
 						newDate.set(year, monthOfYear, dayOfMonth);
-						startDate.setText(dateFormatter.format(newDate.getTime()));
+						startDate.setText(dateFormatter.format(newDate
+								.getTime()));
 					}
-				}, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+				}, newCalendar.get(Calendar.YEAR),
+				newCalendar.get(Calendar.MONTH),
+				newCalendar.get(Calendar.DAY_OF_MONTH));
 
-		toDatePickerDialog = new DatePickerDialog(this, new OnDateSetListener() {
+		toDatePickerDialog = new DatePickerDialog(this,
+				new OnDateSetListener() {
 
-					public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+					public void onDateSet(DatePicker view, int year,
+							int monthOfYear, int dayOfMonth) {
 						Calendar newDate = Calendar.getInstance();
 						newDate.set(year, monthOfYear, dayOfMonth);
 						endDate.setText(dateFormatter.format(newDate.getTime()));
 					}
-				}, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+				}, newCalendar.get(Calendar.YEAR), newCalendar
+						.get(Calendar.MONTH), newCalendar
+						.get(Calendar.DAY_OF_MONTH));
 	}
 
 	@Override
@@ -113,7 +132,7 @@ public class AddExpenseClaimActivity extends Activity implements
 		getMenuInflater().inflate(R.menu.add_expense_claim, menu);
 		return true;
 	}
-	
+
 	@Override
 	public void onClick(View view) {
 		if (view == startDate) {
@@ -145,31 +164,32 @@ public class AddExpenseClaimActivity extends Activity implements
 		EditText nameText = (EditText) findViewById(R.id.editTextExpenseClaimName);
 		EditText endDateText = (EditText) findViewById(R.id.editTextEndDate);
 		EditText startDateText = (EditText) findViewById(R.id.editTextStartDate);
-		
+
 		String name = "";
 		if (nameText.getText().length() == 0) {
-		adb.setMessage("Expense Claim requires a name");
-		adb.setCancelable(true);
-		
-		adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {	
-			@Override
-			public void onClick(DialogInterface dialog, int which) { }
-		});
-		alertDialog = adb.create();
-		alertDialog.show();
-		return null;
+            adb.setMessage("Expense Claim requires a name");
+            adb.setCancelable(true);
+            
+            adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {	
+                @Override
+                public void onClick(DialogInterface dialog, int which) { }
+            });
+            alertDialog = adb.create();
+            alertDialog.show();
+            return null;
 		} else {
 			name = nameText.getText().toString();
 		}
-		
+
 		Date startDate1 = new Date();
 		if (startDateText.getText().length() == 0) {
 			adb.setMessage("Expense Claim requires a start date");
 			adb.setCancelable(true);
 			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which) { }
-				});
+				public void onClick(DialogInterface dialog, int which) {
+				}
+			});
 			alertDialog = adb.create();
 			alertDialog.show();
 			return null;
@@ -183,8 +203,9 @@ public class AddExpenseClaimActivity extends Activity implements
 			adb.setCancelable(true);
 			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which) { }
-				});
+				public void onClick(DialogInterface dialog, int which) {
+				}
+			});
 			alertDialog = adb.create();
 			alertDialog.show();
 			return null;
@@ -197,11 +218,15 @@ public class AddExpenseClaimActivity extends Activity implements
 		claim.setEndDate(endDate);
 		
 		if (claimIndex == -1) {
-			ExpenseClaimController.getInstance().addExpenseClaim(claim);
+			try {
+				controller.addExpenseClaim(claim);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 		
 		// Sanity check
-		if (ExpenseClaimController.getInstance().getIndexOf(claim) == -1) {
+		if (controller.getIndexOf(claim) == -1) {
 			Log.wtf("Add Claim", "Claim isn't in the claim list?");
 			throw new RuntimeException();
 		}
@@ -233,7 +258,7 @@ public class AddExpenseClaimActivity extends Activity implements
 		if (claim != null){
 			if (claimIndex == -1){
 				Intent intent = new Intent(this, TabbedSummaryActivity.class);
-				intent.putExtra("claimIndex", ExpenseClaimController.getInstance().getIndexOf(claim));
+				intent.putExtra("claimIndex", controller.getIndexOf(claim));
 				finish();
 				startActivity(intent);
 			} else {
@@ -259,5 +284,3 @@ public class AddExpenseClaimActivity extends Activity implements
 		return toDatePickerDialog;
 	}
 }
-
-

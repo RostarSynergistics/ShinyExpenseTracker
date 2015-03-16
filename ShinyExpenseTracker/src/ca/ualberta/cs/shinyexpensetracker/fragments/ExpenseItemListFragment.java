@@ -19,7 +19,7 @@ import ca.ualberta.cs.shinyexpensetracker.IView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemAdapter;
-import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemDetailView;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemDetailActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
 public class ExpenseItemListFragment extends Fragment implements IView<ExpenseClaim> {
@@ -199,7 +199,7 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 	
 	public void viewExpenseAt(int position) {
 		// Create an intent to edit an expense item
-		Intent intent = new Intent(getActivity(), ExpenseItemDetailView.class);
+		Intent intent = new Intent(getActivity(), ExpenseItemDetailActivity.class);
 		// --> Tell it that we're editing the index at this position
 		intent.putExtra("claimIndex", claimIndex);
 		intent.putExtra("expenseIndex", position);

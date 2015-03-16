@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme" >
         <!-- This replaces Main Activity. May change in the future or for testing. -->
         <activity
-            android:name="ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimsView"
+            android:name="ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimsActivity"
             android:label="@string/title_activity_expense_claims_view" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -55,7 +55,7 @@
             android:label="@string/title_activity_claim_summary" >
         </activity>
 		<activity
-            android:name="ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemDetailView"
+            android:name="ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemDetailActivity"
             android:label="@string/title_activity_expense_item_detail_view" >
         </activity>
     </application>

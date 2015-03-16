@@ -36,7 +36,7 @@ import ca.ualberta.cs.shinyexpensetracker.Application;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.AddExpenseClaimActivity;
-import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimsView;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimsActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -46,9 +46,9 @@ import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 public class ViewAllExpenseClaimsActivityTests extends
-		ActivityInstrumentationTestCase2<ExpenseClaimsView> {
+		ActivityInstrumentationTestCase2<ExpenseClaimsActivity> {
 	
-	ExpenseClaimsView activity;
+	ExpenseClaimsActivity activity;
 	ExpenseClaimList claimsList;
 	ExpenseClaimController controller;
 
@@ -58,7 +58,7 @@ public class ViewAllExpenseClaimsActivityTests extends
 	ListView claimListView;
 	
 	public ViewAllExpenseClaimsActivityTests() {
-		super(ExpenseClaimsView.class);
+		super(ExpenseClaimsActivity.class);
 	}
 
 	protected void setUp() throws Exception {

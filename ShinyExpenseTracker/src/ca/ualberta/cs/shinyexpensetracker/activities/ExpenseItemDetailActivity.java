@@ -30,10 +30,10 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
  * @since 2015-03-15
  */
 
-public class ExpenseItemDetailView extends Activity {
+public class ExpenseItemDetailActivity extends Activity {
 
 	private ExpenseItem item;
-	private Context context = ExpenseItemDetailView.this;
+	private Context context = ExpenseItemDetailActivity.this;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

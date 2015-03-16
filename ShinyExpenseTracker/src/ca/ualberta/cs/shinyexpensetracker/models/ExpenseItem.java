@@ -17,6 +17,7 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Date;
+
 import android.graphics.Bitmap;
 
 public class ExpenseItem extends Model <ExpenseItem> {

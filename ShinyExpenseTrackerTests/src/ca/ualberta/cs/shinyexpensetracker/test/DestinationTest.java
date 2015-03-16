@@ -1,13 +1,10 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
-<<<<<<< HEAD
 import ca.ualberta.cs.shinyexpensetracker.AddDestinationActivity;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
-=======
->>>>>>> e0ff02097fd1377ec206d5de2120b067efebc964
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
@@ -20,40 +17,22 @@ import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
-public class DestinationTest extends
-		ActivityInstrumentationTestCase2<AddDestinationActivity> {
-
-<<<<<<< HEAD
 /**
- * 
  * @author ramishsyed
  * Class for testing addDestination and testing the AddDestinations button
  */
 public class DestinationTest extends 
 			ActivityInstrumentationTestCase2<AddDestinationActivity> {
 	
-=======
->>>>>>> e0ff02097fd1377ec206d5de2120b067efebc964
+	
 	AddDestinationActivity activity;
 	Instrumentation instrumentation;
 	EditText nameInput, reasonInput;
 	Button doneButton;
-<<<<<<< HEAD
+	
     private ExpenseClaim claim;
-	
-		public DestinationTest(){
-			super(AddDestinationActivity.class);
-		}
-		 
-		public DestinationTest(Class<AddDestinationActivity> activityClass) {
-			super(activityClass);
-		}
-	
-	@Override
-=======
 	private ExpenseClaimController controller;
-	private ExpenseClaim claim;
-
+	
 	public DestinationTest() {
 		super(AddDestinationActivity.class);
 	}
@@ -61,8 +40,7 @@ public class DestinationTest extends
 	public DestinationTest(Class<AddDestinationActivity> activityClass) {
 		super(activityClass);
 	}
-
->>>>>>> e0ff02097fd1377ec206d5de2120b067efebc964
+	
 	protected void setUp() throws Exception {
 		super.setUp();
 
@@ -80,7 +58,6 @@ public class DestinationTest extends
 		setActivityIntent(intent);
 
 		activity = getActivity();
-<<<<<<< HEAD
         
         nameInput = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.destinationEditText));
         reasonInput = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.reasonEditText));
@@ -90,18 +67,7 @@ public class DestinationTest extends
 	/**
 	 * Tests whether a destination is successfully created or not
 	 */
-=======
 
-		nameInput = ((EditText) activity
-				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.destinationEditText));
-		reasonInput = ((EditText) activity
-				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.reasonEditText));
-		doneButton = (Button) activity
-				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.addDestinationDoneButton);
-	}
-
-	/* test if a Destination is made */
->>>>>>> e0ff02097fd1377ec206d5de2120b067efebc964
 	public void testCreateDestination() {
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {
@@ -123,7 +89,6 @@ public class DestinationTest extends
 			}
 		});
 	}
-<<<<<<< HEAD
 	
 	public void testText() {
 		instrumentation.runOnMainSync(new Runnable() {
@@ -141,13 +106,7 @@ public class DestinationTest extends
 	/**
 	 * Tests if the data entered has been correctly saved to a Destination when the Done button is clicked 
 	 **/
-=======
-
-	/*
-	 * tests if the data entered has been correctly saved to a Destination when
-	 * the Done button is clicked
-	 */
->>>>>>> e0ff02097fd1377ec206d5de2120b067efebc964
+	
 	public void testDone() {
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {

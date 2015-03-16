@@ -78,12 +78,12 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 		adapter = new ExpenseItemAdapter(claim, getActivity().getBaseContext());
 		expenses.setAdapter(adapter);
 		
-		// -- On Click : Edit -- //
+		// -- On Click : View -- //
 		expenses.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				askEditOrViewDetailsOfExpenseAt(position);
+				viewDetailsOfExpenseAt(position);
 			}
 		});
 		
@@ -143,43 +143,18 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 	}
 
 	/**
-	 * Prompts the user for editing or viewing details of an expense at a given position
-	 * @param position the position in the list view with which to interact
+	 * Displays the viewing details of an expense at a given position
+	 * @param position the expense item index to view, relative to the claim.
 	 */
-	public void askEditOrViewDetailsOfExpenseAt(final int position) {
-		// Construct a new dialog to be displayed.
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+	public void viewDetailsOfExpenseAt(final int position) {
+		// Create an intent to view an expense item
+		Intent intent = new Intent(getActivity(), ExpenseItemDetailActivity.class);
+		// --> Tell it that we're viewing the index at this position
+		intent.putExtra("claimIndex", claimIndex);
+		intent.putExtra("expenseIndex", position);
 		
-		// -- Delete this expense item?
-		builder.setTitle( getString(R.string.editOrViewExpenseItemPromptTitle) );
-		builder.setMessage( getString(R.string.editOrViewExpenseItemPromptMessage) );
-		// -- Edit -- //
-		builder.setNeutralButton("Edit", new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// remove the expense
-					editExpenseAt(position);
-					dialog.dismiss();
-					// Nullify the last opened dialog so we can tell it was dismissed
-					lastDialog = null;
-				}
-			});
-		// -- View Details Of -- //
-		builder.setPositiveButton("View Details", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// view expense details
-					viewExpenseAt(position);
-					dialog.dismiss();
-					// Nullify the last opened dialog so we can tell it was dismissed
-					lastDialog = null;
-				}
-			});
-		
-		// Show the newly created dialog
-		lastDialog = builder.create();
-		lastDialog.show();
+		// Start the activity with our edit intent
+		startActivity(intent);
 	}
 	
 	/**

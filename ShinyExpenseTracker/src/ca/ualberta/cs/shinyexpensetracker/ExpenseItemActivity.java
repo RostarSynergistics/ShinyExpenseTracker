@@ -232,7 +232,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
      * @param v
      * @throws ParseException
      */
-	public boolean createExpenseItem(View v) throws ParseException {
+	public boolean createExpenseItem() throws ParseException {
 		
 		EditText nameText = (EditText) findViewById(R.id.expenseItemNameEditText);
 		EditText dateText = (EditText) findViewById(R.id.expenseItemDateEditText);
@@ -377,7 +377,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 	 */
 	public void doneExpenseItem(View v) throws ParseException{
 		
-		if (createExpenseItem(v)){
+		if (createExpenseItem()){
 			finish();
 		}
 	}

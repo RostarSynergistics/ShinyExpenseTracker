@@ -12,6 +12,7 @@ import android.content.Context;
 public class Application extends android.app.Application {
 	private static Context context;
 	private static ExpenseClaimController expenseClaimController;
+	private static TagController tagController;
 	
 	@Override
 	public void onCreate() {
@@ -48,5 +49,32 @@ public class Application extends android.app.Application {
 		}
 		
 		return expenseClaimController;
+	}
+
+	/**
+	 * Sets the application's TagController to a specific instance.
+	 * 
+	 * Use only for testing purposes.
+	 * 
+	 * @param controller
+	 */
+	public static void setTagController(TagController controller) {
+		tagController = controller;
+	}
+	
+	/**
+	 * Gets the application's TagController. If it has not yet been set,
+	 * instantiate one using the default method.
+	 */
+	public static TagController getTagController() {
+		if(tagController == null) {
+			try {
+				setTagController(new TagController(context));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		
+		return tagController;
 	}
 }

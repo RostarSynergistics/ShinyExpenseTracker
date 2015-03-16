@@ -28,6 +28,8 @@ public class ExpenseItemDetailView extends Activity {
 
 	private ExpenseItem item;
 	private Context context = ExpenseItemDetailView.this;
+	int claimId;
+	int expenseItemId;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +40,8 @@ public class ExpenseItemDetailView extends Activity {
 		Bundle bundle = intent.getExtras();
 		
 		if (bundle != null) {
-			int claimId = (Integer) bundle.get("claimIndex");
-			int expenseItemId = (Integer) bundle.get("expenseIndex");
+			claimId = (Integer) bundle.get("claimIndex");
+			expenseItemId = (Integer) bundle.get("expenseIndex");
 			ExpenseClaimController controller = Application.getExpenseClaimController();
 			ExpenseClaim claim = controller.getExpenseClaim(claimId);
 			item = claim.getItemById(expenseItemId);
@@ -95,6 +97,13 @@ public class ExpenseItemDetailView extends Activity {
 		finish();
 	}
 
+	public void onReceiptThumbnailClick(View v){
+		Intent intent = new Intent(ExpenseItemDetailView.this, ReceiptViewActivity.class);
+		intent.putExtra("claimIndex", claimId);
+		intent.putExtra("expenseIndex", expenseItemId);
+		startActivity(intent);
+	}
+	
 	public Context getContext() {
 		return context;
 	}

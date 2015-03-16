@@ -62,11 +62,9 @@
     <string name="claim_name">claim name</string>
     <string name="add_expense_item">Add Expense Item</string>
     <string name="add_destination">Add Destination</string>
-    
+    <string name="edit_claim">Edit Claim</string>
     <string name="no_destinations">No Destinations</string>
-    
     <string name="delete_selected_tag">Delete selected tag?</string>
-
     <string name="title_activity_expense_item_detail_view">ExpenseItemDetailView</string>
 
 

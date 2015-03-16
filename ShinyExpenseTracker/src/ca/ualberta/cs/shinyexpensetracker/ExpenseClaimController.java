@@ -113,4 +113,8 @@ public class ExpenseClaimController {
 	public void addExpenseItem(ExpenseItem expense, int index)	{
 		claimList.getClaim(index).addExpense(expense);
 	}
+
+	public int getIndexOf(ExpenseClaim claim) {
+		return claimList.getClaims().indexOf(claim);
+	}
 }

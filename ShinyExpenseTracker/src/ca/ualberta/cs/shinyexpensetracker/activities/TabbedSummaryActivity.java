@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.AddDestinationActivity;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.R;
@@ -116,6 +117,18 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 		Intent intent = getIntent();
 		int claimIndex = intent.getIntExtra("claimIndex", -1);
 		intent = new Intent(TabbedSummaryActivity.this, AddDestinationActivity.class);
+		intent.putExtra("claimIndex", claimIndex);
+		startActivity(intent);
+	}
+	
+	/**
+	 * Called on MenuItem "Edit Claim" click
+	 * @param menu
+	 */
+	public void editClaimMenuItem(MenuItem menu) {
+		Intent intent = getIntent();
+		int claimIndex = intent.getIntExtra("claimIndex", -1);
+		intent = new Intent(this, AddExpenseClaimActivity.class);
 		intent.putExtra("claimIndex", claimIndex);
 		startActivity(intent);
 	}

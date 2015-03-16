@@ -27,10 +27,25 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
+/**
+ * Tests for the ExpenseClaimController.
+ * 
+ * The controller object acts as the central for all
+ * interactions within the app, providing a consistent
+ * storage for all stored claims. 
+ *
+ */
 public class ExpenseClaimControllerTest extends TestCase {
 	private ExpenseClaimController controller;
 	private ExpenseClaimList claimList;
 	
+	/**
+	 * Setup for the tests.
+	 * Creates a controller with a mock list object
+	 * that provides faked persistent storage.
+	 * Adds one claim for testing.
+	 */
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		claimList = new ExpenseClaimList();
@@ -39,10 +54,17 @@ public class ExpenseClaimControllerTest extends TestCase {
 	}
 
 	
+	/**
+	 * Check if we always get the same claim list.
+	 */
 	public void testGetExpenseClaimList() {
 		assertEquals(claimList, controller.getExpenseClaimList());
 	}
 
+	/**
+	 * Tests if adding an expense claim is reflected correctly in
+	 * the controller.
+	 */
 	public void testAddExpenseClaim() throws IOException {
 		assertEquals(claimList, controller.getExpenseClaimList());
 		ExpenseClaim newClaim = new ExpenseClaim("Test");
@@ -50,6 +72,9 @@ public class ExpenseClaimControllerTest extends TestCase {
 		assertEquals(controller.getExpenseClaimList().getClaim(1) , newClaim);	
 	}
 
+	/**
+	 * Tests if we get the correct claim after adding.
+	 */
 	public void testGetExpenseClaim() throws IOException {
 		ExpenseClaim claim = new ExpenseClaim("Test");
 		controller.addExpenseClaim(claim);

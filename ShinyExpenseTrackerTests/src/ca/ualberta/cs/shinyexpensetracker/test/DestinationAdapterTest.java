@@ -11,7 +11,9 @@ import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
 /**
- * Class for testing the ExpenseItemAdapter
+ * Test suite for the DestinationAdapter. This
+ * adapter is responsible for displaying destinations
+ * in lists that request it.
  */
 public class DestinationAdapterTest extends AndroidTestCase {
 	private DestinationItemAdapter adapter;
@@ -22,6 +24,12 @@ public class DestinationAdapterTest extends AndroidTestCase {
 	private Destination classyHotel;
 	private Destination bollywood;
 
+	/**
+	 * Setup for each test. Creates three expenses
+	 * but does not add them to the claim. Adapter
+	 * is set up to watch the claim. 
+	 */
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		// Create our own amazing claim
@@ -53,6 +61,7 @@ public class DestinationAdapterTest extends AndroidTestCase {
 	
 	/**
 	 * Check that the position is the expected position
+	 * when the item is added
 	 */
 	public void testGetItemId() {
 		claim.addDestination(classyHotel);
@@ -61,7 +70,7 @@ public class DestinationAdapterTest extends AndroidTestCase {
 	}
 	
 	/**
-	 * Check that the adapter can count the same as the claim
+	 * Check that the adapter can count the same as the claim does
 	 */
 	public void testGetCount() {
 		// Add just one item
@@ -90,7 +99,7 @@ public class DestinationAdapterTest extends AndroidTestCase {
 
 	/**
 	 * Check that adding then removing doesn't change what
-	 * we expect to see. 
+	 * we expect to see (consistent display)
 	 */
 	public void testConsistentGetItem() {
 		claim.addDestination(hollywood);

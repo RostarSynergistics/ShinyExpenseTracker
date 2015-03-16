@@ -1,11 +1,3 @@
-/**
- *  Test case for Issue 17
- *  
- *  AddExpenseClaimActivityTest: Testing the AddExpenseClaimAcitivity representing the UI for adding/editing an Expense Claim. 
- *  No outstanding issues.
- * 
- **/
-
 package ca.ualberta.cs.shinyexpensetracker.test;
 
 import java.text.ParseException;
@@ -27,13 +19,21 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
+/**
+ *  Test case for Issue 17
+ *  
+ *  AddExpenseClaimActivityTest: Testing the AddExpenseClaimAcitivity
+ *  representing the UI for adding/editing an Expense Claim.
+ *   
+ *  No outstanding issues.
+ * 
+ **/
 public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase2<AddExpenseClaimActivity> {
 	Instrumentation instrumentation;
 	AddExpenseClaimActivity activity;
 	DatePickerDialog fromDatePickerDialog, toDatePickerDialog;
 	EditText startDate, endDate, name;
 	Button doneButton;
-	
 	
 	public AddExpenseClaimActivityTest(Class<AddExpenseClaimActivity> activityClass) {
 		super(activityClass);

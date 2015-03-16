@@ -17,15 +17,16 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 /**
- * Test for editing an ExpenseClaim
- * @author Sarah Morris
+ * Test for editing an ExpenseClaim.
+ * Activity allows adding and editing of claims
+ * in the application.
+ * These tests are for editing existing claims
  */
 public class EditClaimActivityTest extends
 		ActivityInstrumentationTestCase2<AddExpenseClaimActivity> {
 
 	public EditClaimActivityTest(Class<AddExpenseClaimActivity> activityClass) {
 		super(activityClass);
-		// TODO Auto-generated constructor stub
 	}
 
 	public EditClaimActivityTest() {
@@ -42,6 +43,11 @@ public class EditClaimActivityTest extends
 	Date claimStartDate = new Date(1000);
 	Date claimEndDate = new Date(2000);
 
+	/**
+	 * Setup for each test. Creates a consistent date formatter
+	 * for all tests and puts 0 in the claimIndex intent.
+	 */
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 
@@ -64,6 +70,9 @@ public class EditClaimActivityTest extends
 		activity = getActivity();
 	}
 
+	/**
+	 * Checks if loaded data matches the real data.
+	 */
 	public void testDisplayExpenseClaim() {
 
 		EditText name = ((EditText) activity

@@ -1,0 +1,67 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".AddDestinationActivity" >
+
+    <EditText
+        android:id="@+id/destinationEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/destinationTextView"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/destinationTextView"
+        android:ems="10"
+        android:hint="Touch to enter..." />
+
+    <TextView
+        android:id="@+id/destinationTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="18dp"
+        android:text="Destination"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/reasonTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/destinationEditText"
+        android:layout_below="@+id/destinationEditText"
+        android:layout_marginTop="17dp"
+        android:text="Reason for travel"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:id="@+id/addDestinationDoneButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/reasonTextView"
+        android:onClick="doneCreateDestination"
+        android:text="Done" />
+
+    <EditText
+        android:id="@+id/reasonEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/addDestinationDoneButton"
+        android:layout_alignLeft="@+id/reasonTextView"
+        android:layout_alignRight="@+id/destinationEditText"
+        android:layout_below="@+id/reasonTextView"
+        android:layout_marginTop="17dp"
+        android:ems="10"
+        android:hint="Touch to enter..."
+        android:inputType="textMultiLine"
+        android:gravity="top" >
+
+        <requestFocus />
+    </EditText>
+
+</RelativeLayout>

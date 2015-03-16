@@ -1,63 +1,94 @@
+/* 
+ * Test suite for adding and removing a tag
+ * 
+ *  Copyright (C) 2015  github.com/RostarSynergistics
+ *  
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *  
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *  
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package ca.ualberta.cs.shinyexpensetracker.test;
 
-import junit.framework.TestCase;
+import android.app.Instrumentation;
+import android.test.InstrumentationTestCase;
+import ca.ualberta.cs.shinyexpensetracker.TagController;
+import ca.ualberta.cs.shinyexpensetracker.models.Tag;
+import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 
-public class TagTest extends TestCase {
-//
-//	TagList tagList = new TagList();
-//	
-//	// corresponds to issue #25
-//	public void testAddTag() {
-//		Tag tag = new Tag("tag");
-//		tagList.add(tag);
-//		assertTrue("Expected tagList to be of size 1, tagList not of size 1", tagList.size == 1);
-//		assertTrue("Expected to see tag added, tag not added", tagList.contains(tag));
-//	}
-//	
-//	public void testGetTag(){
-//		Tag tag = tagList.getTag("tag");
-//		assertTrue("Expected Tag = tag, Tag = null", tag.getTag().equals("tag"));
-//	}
-//	
-//	// corresponds to issue #27
-//	public void testEditTag() {
-//		Tag tag = tagList.getTag(tag);
-//		tag.edit("changed tag");
-//		assertTrue("Expected tag = changed tag, tag = tag", tagList.getTag(tag).equals("changed tag");
-//	}
-//	
-//	// corresponds to issue #26
-//	public void testRemoveTag() {
-//		tagList.remove("tag");
-//		assertTrue("Expected tagList size == 0, tagList size != 1", tagList.size() == 0);
-//		assertTrue("Expected tagList doesn't containt 'tag'", tagList.contains("tag"));
-//	}
-//	
-//	// corresponds to issue #23
-//	public void testAssignTagToClaim(){
-//		Claim claim = new Claim();
-//		Tag tag = new tag("tag");
-//		claim.addTag(tag);
-//		assertTrue("tagList of claim is empty", claim.tagList.size() == 0);
-//		assertTrue("tag not associated with claim", claim.getTag().equals(tag));
-//	}
-//	
-//	// corresponds to issue #28
-//	public void testFilterByTag(){
-//		Claim claim = new Claim();
-//		Tag tag = new tag("tag");
-//		claim.addTag(tag);
-//		ClaimList.filter(tag);
-//		Adapter adapter = ((ListView) activity.findViewById(R.id.claimsList)).getAdapter();
-//		int count = adapter.getCount;
-//		assertTrue("filter incorrect amount of claims", count == 1);
-//	}
-//	
-//	//corresponds to issue #24
-//	public void testManageTags() {
-//		Adapter adapter = ((ListView) activity.findViewById(R.id.tagsList)).getAdapter();
-//		int count = adapter.getCount;
-//		assertTrue("TagList not being displayed", count == 1);
-//	}
-//	
+
+/**
+ *
+ * 
+ * Covers Issue 25
+ * Things to implement: proper navigation back to Manage Tags Activity
+ * @author Oleg Oleynikov
+ * @version 1.0
+ * @since 2015-03-08
+ */
+
+public class TagTest extends InstrumentationTestCase {
+
+	TagController tagController; 
+	public void setUp(){
+		tagController = TagController.getInstance();
+		// inject an empty list so that other things don't interfere.
+		tagController.setTagList(new TagList());
+	}
+	
+	public void testAddAndRemoveTag(){
+		String[] tags = {"q1wert", "1qwert", "qwert", "12345"};
+		Instrumentation instrumentation = getInstrumentation();
+		
+		assertEquals("Tag controller not empty: ", 0, tagController.getTagCount());
+		
+		for (final String t : tags) {
+			Tag tag = new Tag(t);
+			
+			instrumentation.runOnMainSync(new Runnable() {
+				@Override
+				public void run() {
+					tagController.addTag(new Tag(t));
+				}
+			});
+			assertEquals("failed to add a tag: " + t, 1, tagController.getTagCount());
+			assertEquals("added a tag incorrectly", tag, tagController.getTagList().getTagById(0));
+
+			instrumentation.runOnMainSync(new Runnable() {
+				@Override
+				public void run() {
+					tagController.removeTag(t);
+				}
+			});
+			
+			assertEquals("failed to remove a tag: " + t, tagController.getTagCount(), 0);
+		}
+	}
+	
+	public void testAddInvalidTags(){
+		String[] invalidTags = { ("!@#$%"), ("qwe rty"), ("qwe!@#$%rty"),
+				("!@qwerty#$%"), (" qwerty "), (null), (""), (" "), ("\n") };
+		Instrumentation instrumentation = getInstrumentation();
+		for (final String s : invalidTags) {
+			instrumentation.runOnMainSync(new Runnable() {
+				
+				@Override
+				public void run() {
+					tagController.addTag(new Tag(s));					
+				}
+			});
+			
+			//The tag list will still be empty because nothing should be added   
+			assertEquals("should have discarded non-alphanumeric tag: " + s, tagController.getTagCount(), 0);
+		}
+	}
 }

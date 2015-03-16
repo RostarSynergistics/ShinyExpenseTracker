@@ -1,27 +1,91 @@
 package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import ca.ualberta.cs.shinyexpensetracker.IView;
-
-public class TagList implements IModel<IView<TagList>> {
-	private ArrayList<Tag> tags;
+public class TagList extends Model<TagList> {
+	private ArrayList<Tag> tags = new ArrayList<Tag>();
 	
-	private ArrayList<IView<TagList>> views; 
+	public TagList(){
+		tags = new ArrayList<Tag>();
+	}
 	
 	public ArrayList<Tag> getTags() {
 		return tags;
 	}
 	
-	/* FIXME
-	 * UML says addTag(String) and removeTag(String).
-	 * Should this go into the TagController object?
-	 */
-	public void addTag(Tag t) {
-		tags.add(t);
+	
+	public boolean addTag(Tag tag) {
+		if(checkValidTag(tag)){
+			tags.add(tag);
+			notifyViews();
+			return true;
+		}else {
+			return false;
+		}
 	}
-	public void addTag(String s) {
-		tags.add(new Tag(s));
+	
+	/**
+	 * Edits a tag in the tag list at a given position
+	 * @param position of tag to edit
+	 * @param newTag to change the old tag into 
+	 * @return boolean stating if change could be made
+	 */
+	public boolean editTag(int position, Tag newTag){
+		//Check for valid position
+		if(position >= tags.size()){
+			return false;
+		}
+		
+		//Check for valid tag
+		if(checkValidTag(newTag)){
+			tags.set(position, newTag);
+			notifyViews();
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	/**
+	 * Checks if the tag given is valid for this tag list e.g alphanumeric
+	 * @param tag 
+	 * @return boolean stating if the tag is vallid 
+	 */
+	private boolean checkValidTag(Tag tag) {
+		String tagString = tag.getValue();
+		if(contains(tag)){
+			return false;
+		}
+		if (tagString == null || tagString.equals("")){
+			return false;
+		}
+		Pattern p = Pattern.compile("^\\w*$");
+		Matcher m = p.matcher(tagString);
+		if (m.matches()) {
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	/**
+	 * Deletes a tag in the tag list at a given position
+	 * @param postion of tag to delete
+	 * @return boolean stating if change could be made
+	 */
+	public boolean deleteTag(int position){
+		//Check for valid position
+		if(position >= tags.size()){
+			return false;
+		}else {
+			tags.remove(position);
+			notifyViews();
+			return true;
+		}
+		
 	}
 	
 	public void removeTag(Tag t) {
@@ -31,23 +95,29 @@ public class TagList implements IModel<IView<TagList>> {
 	public void removeTag(String s) {
 		tags.remove(new Tag(s));
 	}
-
-	@Override
-	public void addView(IView<TagList> v) {
-		views.add(v);
+	
+	public int size(){
+		return tags.size();
 	}
 
-	@Override
-	public void removeView(IView<TagList> v) {
-		// FIXME May crash if v is not in views
-		views.remove(v);
+	public int getCount() {
+		return tags.size();
 	}
 
-	@Override
-	public void notifyViews() {
-		for (IView<TagList> v : views) {
-			v.update(this);
-		}
+	public Tag getTagById(int i) {
+		return tags.get(i);
 	}
 	
+	public boolean contains(Tag tag){
+		return tags.contains(tag);
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < tags.size(); i++) {
+			sb.append(tags.get(i));
+		}
+		return sb.toString();
+	}
 }

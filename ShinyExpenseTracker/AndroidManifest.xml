@@ -12,7 +12,7 @@
         android:targetSdkVersion="17" />
 
     <application
-        android:name=".Application"
+        android:name="ca.ualberta.cs.shinyexpensetracker.framework.Application"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -20,7 +20,7 @@
 
         <!-- This replaces Main Activity. May change in the future or for testing. -->
         <activity
-            android:name=".activities.ExpenseClaimsView"
+            android:name="ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimListActivity"
             android:label="@string/title_activity_expense_claims_view" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,35 +33,35 @@
             android:label="@string/title_activity_manage_tag" >
         </activity>
         <activity
-            android:name=".ViewExpenseClaimActivity"
+            android:name="ca.ualberta.cs.shinyexpensetracker.activities.ViewExpenseClaimActivity"
             android:label="@string/title_activity_view_expense_claim" >
         </activity>
         <activity
-            android:name=".AddExpenseClaimActivity"
+            android:name="ca.ualberta.cs.shinyexpensetracker.activities.AddExpenseClaimActivity"
             android:label="@string/title_activity_add_expense_claim" >
         </activity>
         <activity
-            android:name=".ExpenseItemActivity"
+            android:name="ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity"
             android:label="@string/title_activity_expense_item" >
         </activity>
         <activity
-            android:name=".AddDestinationActivity"
+            android:name="ca.ualberta.cs.shinyexpensetracker.activities.AddDestinationActivity"
             android:label="@string/title_activity_add_destination" >
         </activity>
         <activity
-            android:name=".activities.TabbedSummaryActivity"
+            android:name="ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity"
             android:label="@string/title_activity_tabbed_summary" >
         </activity>
         <activity
-            android:name=".ClaimSummaryActivity"
+            android:name="ca.ualberta.cs.shinyexpensetracker.activities.ClaimSummaryActivity"
             android:label="@string/title_activity_claim_summary" >
         </activity>
-        <activity
-            android:name=".ExpenseItemDetailView"
+		<activity
+            android:name="ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemDetailActivity"
             android:label="@string/title_activity_expense_item_detail_view" >
         </activity>
         <activity
-            android:name=".ReceiptViewActivity"
+            android:name="ca.ualberta.cs.shinyexpensetracker.activities.ReceiptViewActivity"
             android:label="@string/title_activity_receipt_view" >
         </activity>
     </application>

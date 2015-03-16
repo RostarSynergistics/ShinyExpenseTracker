@@ -11,10 +11,10 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.ImageView;
-import ca.ualberta.cs.shinyexpensetracker.Application;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.ReceiptViewActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.ReceiptViewActivity;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
@@ -46,8 +46,7 @@ public class TestReceiptView extends ActivityInstrumentationTestCase2<ReceiptVie
 		/* Set a test item in a claim list and ask the activity to fetch it */
 		super.setUp();
 		ExpenseClaimList claimList = new ExpenseClaimList();
-		controller = new ExpenseClaimController(
-				new MockExpenseClaimListPersister(claimList));
+		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(claimList));
 		Application.setExpenseClaimController(controller);
 
 		ExpenseClaim claim = new ExpenseClaim("test claim");

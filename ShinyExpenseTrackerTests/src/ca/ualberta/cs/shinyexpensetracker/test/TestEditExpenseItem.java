@@ -18,10 +18,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import ca.ualberta.cs.shinyexpensetracker.Application;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
@@ -53,12 +53,12 @@ public class TestEditExpenseItem extends
 	Bitmap imageBig;
 
 	Resources res;
-	
+
 	protected void setUp() throws Exception {
 		super.setUp();
 
 		ExpenseClaimList claimList = new ExpenseClaimList();
-		ExpenseClaimController controller = new ExpenseClaimController(
+		controller = new ExpenseClaimController(
 				new MockExpenseClaimListPersister(claimList));
 		Application.setExpenseClaimController(controller);
 
@@ -67,60 +67,58 @@ public class TestEditExpenseItem extends
 		newDate.set(2000, 00, 01);
 		res = getInstrumentation().getTargetContext().getResources();
 		imageSmall = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
-		imageBig = BitmapFactory.decodeResource(res, R.drawable.keyhole_nebula_hubble_1999);
+		imageBig = BitmapFactory.decodeResource(res,
+				R.drawable.keyhole_nebula_hubble_1999);
+
+		ExpenseItem item = new ExpenseItem("test item", newDate.getTime(),
+				Category.fromString("air fare"), new BigDecimal("0.125"),
+				Currency.CAD, "Test Item", imageBig);
 		
-		ExpenseItem item = new ExpenseItem("test item", newDate.getTime(), Category.fromString("air fare"), new BigDecimal("0.125"), Currency.CAD, "Test Item", imageBig);
 		claim.addExpense(item);
 		claimList.addClaim(claim);
-		Intent intent = new Intent();
 
+		Intent intent = new Intent();
 		intent.putExtra("claimIndex", 0);
 		intent.putExtra("expenseIndex", 0);
 
-	    setActivityIntent(intent);
-	    activity = getActivity();
+		setActivityIntent(intent);
+		activity = getActivity();
 	}
 
 	public void testNameValue() {
 		EditText name = (EditText) activity
 				.findViewById(R.id.expenseItemNameEditText);
-		assertEquals("name is not right", name.getText().toString(),
-				"test item");
+		assertEquals("name is not right", "test item", name.getText().toString());
 	}
 
 	public void testDateValue() {
 		EditText date = (EditText) activity
 				.findViewById(R.id.expenseItemDateEditText);
-		assertEquals("date is not right", date.getText().toString(),
-				"01-01-2000");
+		assertEquals("date is not right", "01-01-2000", date.getText().toString());
 	}
 
 	public void testCategoryValue() {
 		Spinner category = (Spinner) activity
 				.findViewById(R.id.expenseItemCategorySpinner);
-		assertEquals("category is not right", category.getSelectedItem()
-				.toString(), "air fare");
+		assertEquals("category is not right", "air fare", category.getSelectedItem().toString());
 	}
 
 	public void testAmountValue() {
 		EditText amount = (EditText) activity
 				.findViewById(R.id.expenseItemAmountEditText);
-		assertEquals("amount is not right", amount.getText().toString(),
-				"0.125");
+		assertEquals("amount is not right", "0.125", amount.getText().toString());
 	}
 
 	public void testCurrencyValue() {
 		Spinner currency = (Spinner) activity
 				.findViewById(R.id.expenseItemCurrencySpinner);
-		assertEquals("currency is not right", currency.getSelectedItem()
-				.toString(), "CAD");
+		assertEquals("currency is not right", "CAD", currency.getSelectedItem().toString());
 	}
 
 	public void testDescriptionValue() {
 		EditText description = (EditText) activity
 				.findViewById(R.id.expesenItemDescriptionEditText);
-		assertEquals("description is not right", description.getText()
-				.toString(), "Test Item");
+		assertEquals("description is not right", "Test Item", description.getText().toString());
 	}
 
 	public void testEdit() throws ParseException {
@@ -138,44 +136,55 @@ public class TestEditExpenseItem extends
 		Date dateToAssign = dateFormatter.parse(inputDate);
 
 		BitmapDrawable dr = new BitmapDrawable(res, imageBig);
-		Bitmap imageBigScaled = activity.convertToBitmap(dr, imageBig.getWidth(), imageBig.getHeight());
-		ExpenseItem editedItem = new ExpenseItem("test item", dateToAssign, Category.fromString("air fare"), new BigDecimal("0.125"), Currency.CAD, "Test Edit", imageBigScaled);
-		assertEquals("did not update item", controller.getExpenseClaim(0).getItemById(0), editedItem);
+		Bitmap imageBigScaled = activity.convertToBitmap(dr,
+				imageBig.getWidth(), imageBig.getHeight());
+		ExpenseItem editedItem = new ExpenseItem("test item", dateToAssign,
+				Category.fromString("air fare"), new BigDecimal("0.125"),
+				Currency.CAD, "Test Edit", imageBigScaled);
+		assertEquals("did not update item", editedItem, controller.getExpenseClaim(0)
+				.getItemById(0));
 	}
+
 	/**
 	 * This tests that the image is successfully drawn on the ImageButton
 	 */
 
-	public void testDrawImageButton(){
-		ImageButton button = (ImageButton) activity.findViewById(R.id.expenseItemReceiptImageButton);
+	public void testDrawImageButton() {
+		ImageButton button = (ImageButton) activity
+				.findViewById(R.id.expenseItemReceiptImageButton);
 		drawNewImage();
 		assertNotNull("no image on button", button.getDrawable());
 		Drawable dr = button.getDrawable();
-		Bitmap bm = activity.convertToBitmap(dr, imageSmall.getWidth(), imageSmall.getHeight());
+		Bitmap bm = activity.convertToBitmap(dr, imageSmall.getWidth(),
+				imageSmall.getHeight());
 		assertTrue("receipt is not right", bm.sameAs(imageSmall));
 	}
+
 	/**
 	 * This tests that the image is successfully scaled down
 	 */
-	public void testScale(){
+	public void testScale() {
 		BitmapDrawable dr = new BitmapDrawable(res, imageBig);
-		Bitmap imageBigScaled = activity.convertToBitmap(dr, imageBig.getWidth(), imageBig.getHeight());
-		assertTrue("image too big", imageBigScaled.getByteCount()<=65536);
+		Bitmap imageBigScaled = activity.convertToBitmap(dr,
+				imageBig.getWidth(), imageBig.getHeight());
+		assertTrue("image too big", imageBigScaled.getByteCount() <= 65536);
 	}
+
 	/**
 	 * Draw a new image on ImageButton
 	 */
-	private void drawNewImage(){
+	private void drawNewImage() {
 		getInstrumentation().runOnMainSync(new Runnable() {
 			@Override
 			public void run() {
-				ImageButton button = (ImageButton) activity.findViewById(R.id.expenseItemReceiptImageButton);
+				ImageButton button = (ImageButton) activity
+						.findViewById(R.id.expenseItemReceiptImageButton);
 				button.setImageBitmap(imageSmall);
 			}
 		});
 		getInstrumentation().waitForIdleSync();
 	}
-	
+
 	/**
 	 * Update the global Claim List in main thread
 	 */
@@ -192,7 +201,5 @@ public class TestEditExpenseItem extends
 			}
 		});
 		getInstrumentation().waitForIdleSync();
-
 	}
-
 }

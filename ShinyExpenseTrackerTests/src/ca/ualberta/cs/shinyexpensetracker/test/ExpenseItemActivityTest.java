@@ -29,9 +29,9 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import ca.ualberta.cs.shinyexpensetracker.Application;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
@@ -94,7 +94,7 @@ public class ExpenseItemActivityTest extends
     	super.setUp();
         instrumentation = getInstrumentation();
         
-        ExpenseClaimController controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
+        controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
         Application.setExpenseClaimController(controller);
         
         controller.addExpenseClaim(new ExpenseClaim("Test Claim"));

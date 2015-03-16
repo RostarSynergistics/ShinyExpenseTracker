@@ -6,10 +6,10 @@ import java.util.Calendar;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.TextView;
-import ca.ualberta.cs.shinyexpensetracker.Application;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseItemDetailView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemDetailActivity;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
@@ -28,13 +28,13 @@ import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersist
  * @since 2015-03-15
  */
 public class TestExpenseItemDetailView extends
-		ActivityInstrumentationTestCase2<ExpenseItemDetailView> {
+		ActivityInstrumentationTestCase2<ExpenseItemDetailActivity> {
 
 	public TestExpenseItemDetailView() {
-		super(ExpenseItemDetailView.class);
+		super(ExpenseItemDetailActivity.class);
 	}
 
-	ExpenseItemDetailView activity;
+	ExpenseItemDetailActivity activity;
 	ExpenseClaimController controller;
 
 	protected void setUp() throws Exception {

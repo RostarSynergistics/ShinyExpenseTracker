@@ -1,4 +1,4 @@
-package ca.ualberta.cs.shinyexpensetracker;
+package ca.ualberta.cs.shinyexpensetracker.activities;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -11,6 +11,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 
@@ -24,10 +27,10 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
  * @since 2015-03-15
  */
 
-public class ExpenseItemDetailView extends Activity {
+public class ExpenseItemDetailActivity extends Activity {
 
 	private ExpenseItem item;
-	private Context context = ExpenseItemDetailView.this;
+	private Context context = ExpenseItemDetailActivity.this;
 	int claimId;
 	int expenseItemId;
 	
@@ -98,7 +101,7 @@ public class ExpenseItemDetailView extends Activity {
 	}
 
 	public void onReceiptThumbnailClick(View v){
-		Intent intent = new Intent(ExpenseItemDetailView.this, ReceiptViewActivity.class);
+		Intent intent = new Intent(ExpenseItemDetailActivity.this, ReceiptViewActivity.class);
 		intent.putExtra("claimIndex", claimId);
 		intent.putExtra("expenseIndex", expenseItemId);
 		startActivity(intent);

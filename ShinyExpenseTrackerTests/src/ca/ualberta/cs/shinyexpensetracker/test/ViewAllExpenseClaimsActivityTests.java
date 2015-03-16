@@ -33,6 +33,7 @@ import android.test.UiThreadTest;
 import android.view.KeyEvent;
 import android.widget.ListView;
 import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
+import ca.ualberta.cs.shinyexpensetracker.Application;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimsView;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -61,6 +62,8 @@ public class ViewAllExpenseClaimsActivityTests extends
 		// just in case.
 		claimsList = new ExpenseClaimList();
 		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(claimsList));
+		
+		Application.setExpenseClaimController(controller);
 		
 		activity = getActivity();
 		claimListView = (ListView) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expense_claim_list);

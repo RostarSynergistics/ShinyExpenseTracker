@@ -19,76 +19,97 @@
 
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+import java.io.IOException;
+
 import android.app.Instrumentation;
 import android.test.InstrumentationTestCase;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.TagController;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
-import ca.ualberta.cs.shinyexpensetracker.models.TagList;
-
+import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockTagListPersister;
 
 /**
- *
  * 
- * Covers Issue 25
- * Things to implement: proper navigation back to Manage Tags Activity
- * @author Oleg Oleynikov
+ * 
+ * Covers Issue 25 Things to implement: proper navigation back to Manage Tags
+ * Activity
+ * 
  * @version 1.0
  * @since 2015-03-08
  */
 
 public class TagTest extends InstrumentationTestCase {
+	TagController controller;
 
-	TagController tagController; 
-	public void setUp(){
-		tagController = TagController.getInstance();
-		// inject an empty list so that other things don't interfere.
-		tagController.setTagList(new TagList());
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		
+		controller = new TagController(new MockTagListPersister());
+		Application.setTagController(controller);
 	}
-	
-	public void testAddAndRemoveTag(){
-		String[] tags = {"q1wert", "1qwert", "qwert", "12345"};
+
+	public void testAddAndRemoveTag() {
+		String[] tags = { "q1wert", "1qwert", "qwert", "12345" };
 		Instrumentation instrumentation = getInstrumentation();
-		
-		assertEquals("Tag controller not empty: ", 0, tagController.getTagCount());
-		
+
+		assertEquals("Tag controller not empty: ", 0,
+				controller.getTagCount());
+
 		for (final String t : tags) {
 			Tag tag = new Tag(t);
-			
-			instrumentation.runOnMainSync(new Runnable() {
-				@Override
-				public void run() {
-					tagController.addTag(new Tag(t));
-				}
-			});
-			assertEquals("failed to add a tag: " + t, 1, tagController.getTagCount());
-			assertEquals("added a tag incorrectly", tag, tagController.getTagList().getTagById(0));
 
 			instrumentation.runOnMainSync(new Runnable() {
 				@Override
 				public void run() {
-					tagController.removeTag(t);
+					try {
+						controller.addTag(new Tag(t));
+					} catch (IOException e) {
+						fail();
+					}
 				}
 			});
-			
-			assertEquals("failed to remove a tag: " + t, tagController.getTagCount(), 0);
+			assertEquals("failed to add a tag: " + t, 1,
+					controller.getTagCount());
+			assertEquals("added a tag incorrectly", tag, controller
+					.getTagList().getTagById(0));
+
+			instrumentation.runOnMainSync(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						controller.removeTag(t);
+					} catch (IOException e) {
+						fail();
+					}
+				}
+			});
+
+			assertEquals("failed to remove a tag: " + t,
+					controller.getTagCount(), 0);
 		}
 	}
-	
-	public void testAddInvalidTags(){
+
+	public void testAddInvalidTags() {
 		String[] invalidTags = { ("!@#$%"), ("qwe rty"), ("qwe!@#$%rty"),
 				("!@qwerty#$%"), (" qwerty "), (null), (""), (" "), ("\n") };
 		Instrumentation instrumentation = getInstrumentation();
 		for (final String s : invalidTags) {
 			instrumentation.runOnMainSync(new Runnable() {
-				
+
 				@Override
 				public void run() {
-					tagController.addTag(new Tag(s));					
+					try {
+						controller.addTag(new Tag(s));
+					} catch (IOException e) {
+						fail();
+					}
 				}
 			});
-			
-			//The tag list will still be empty because nothing should be added   
-			assertEquals("should have discarded non-alphanumeric tag: " + s, tagController.getTagCount(), 0);
+
+			// The tag list will still be empty because nothing should be added
+			assertEquals("should have discarded non-alphanumeric tag: " + s,
+					controller.getTagCount(), 0);
 		}
 	}
 }

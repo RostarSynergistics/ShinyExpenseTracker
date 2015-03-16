@@ -1,5 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+import java.io.IOException;
+
 import android.app.AlertDialog;
 import android.app.Instrumentation;
 import android.content.DialogInterface;
@@ -9,9 +11,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ManageTagActivity;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.TagController;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
-import ca.ualberta.cs.shinyexpensetracker.models.TagList;
+import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockTagListPersister;
 
 public class ManageTagActivityTests extends ActivityInstrumentationTestCase2<ManageTagActivity> {
 	ManageTagActivity activity;
@@ -25,8 +28,10 @@ public class ManageTagActivityTests extends ActivityInstrumentationTestCase2<Man
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		tagController = TagController.getInstance();
-		tagController.setTagList(new TagList());
+
+		tagController = new TagController(new MockTagListPersister());
+		Application.setTagController(tagController);
+		
 		activity = (ManageTagActivity)getActivity();
 		instrumentation = getInstrumentation();
 		manageTagsListView = (ListView) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.listViewManageTags);
@@ -171,7 +176,7 @@ public class ManageTagActivityTests extends ActivityInstrumentationTestCase2<Man
 		instrumentation.waitForIdleSync();
 	}
 	
-	//Clicks the list view at given postion
+	//Clicks the list view at given position
 	private void clickListView(int pos) {
 		instrumentation.runOnMainSync(new Runnable() {
 			
@@ -184,13 +189,17 @@ public class ManageTagActivityTests extends ActivityInstrumentationTestCase2<Man
 		instrumentation.waitForIdleSync();
 	}
 	
-	//Adds tag to the the tag contoller 
+	//Adds tag to the the tag controller 
 	private void addTagToController(final Tag tag){
 		instrumentation.runOnMainSync(new Runnable() {
 			
 			@Override
 			public void run() {
-				tagController.addTag(tag);	
+				try {
+					tagController.addTag(tag);
+				} catch (IOException e) {
+					fail();
+				}	
 			}
 		});
 		instrumentation.waitForIdleSync();

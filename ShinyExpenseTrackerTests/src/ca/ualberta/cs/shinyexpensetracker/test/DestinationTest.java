@@ -1,17 +1,20 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+import ca.ualberta.cs.shinyexpensetracker.activities.AddDestinationActivity;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.models.Destination;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
-import ca.ualberta.cs.shinyexpensetracker.activities.AddDestinationActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
-import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
-import ca.ualberta.cs.shinyexpensetracker.models.Destination;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
+/**
+ * Class for testing addDestination and testing the AddDestinations button
+ */
 public class DestinationTest extends
 		ActivityInstrumentationTestCase2<AddDestinationActivity> {
 
@@ -19,8 +22,9 @@ public class DestinationTest extends
 	Instrumentation instrumentation;
 	EditText nameInput, reasonInput;
 	Button doneButton;
-	private ExpenseClaimController controller;
+
 	private ExpenseClaim claim;
+	private ExpenseClaimController controller;
 
 	public DestinationTest() {
 		super(AddDestinationActivity.class);
@@ -56,7 +60,10 @@ public class DestinationTest extends
 				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.addDestinationDoneButton);
 	}
 
-	/* test if a Destination is made */
+	/**
+	 * Tests whether a destination is successfully created or not
+	 */
+
 	public void testCreateDestination() {
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {
@@ -79,10 +86,24 @@ public class DestinationTest extends
 		});
 	}
 
-	/*
-	 * tests if the data entered has been correctly saved to a Destination when
+	public void testText() {
+		instrumentation.runOnMainSync(new Runnable() {
+			@Override
+			public void run() {
+				nameInput.setText("Germany");
+				reasonInput.setText("Europe trip");
+			}
+		});
+
+		assertEquals("Germany", nameInput.getText().toString());
+		assertEquals("Europe trip", reasonInput.getText().toString());
+	}
+
+	/**
+	 * Tests if the data entered has been correctly saved to a Destination when
 	 * the Done button is clicked
-	 */
+	 **/
+
 	public void testDone() {
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {

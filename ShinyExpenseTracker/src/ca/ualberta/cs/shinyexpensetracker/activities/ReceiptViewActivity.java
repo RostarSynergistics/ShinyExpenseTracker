@@ -14,7 +14,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 /**
  * Covers Issue 30
- * @author Oleg Oleynikov
+ * 
  * @version 1.0
  * @since 2015-03-16
  * View receipt of a referred Expense Item, if there is any 
@@ -35,7 +35,7 @@ public class ReceiptViewActivity extends Activity {
 			int expenseItemId = intent.getIntExtra("expenseIndex", 0);
 			ExpenseClaimController controller = Application.getExpenseClaimController();
 			ExpenseClaim claim = controller.getExpenseClaim(claimId);
-			ExpenseItem item = claim.getItemById(expenseItemId);
+			ExpenseItem item = claim.getExpense(expenseItemId);
 			ImageView receiptView = (ImageView) findViewById(R.id.receiptImageView);
 			Bitmap receiptImage = item.getReceiptPhoto();
 			receiptView.setImageBitmap(receiptImage);

@@ -35,7 +35,6 @@ import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersist
  * 
  * Covers Issue 15
  * 
- * @author Oleg Oleynikov
  * @version 1.0
  * @since 2015-03-15
  */
@@ -142,7 +141,7 @@ public class TestEditExpenseItem extends
 				Category.fromString("air fare"), new BigDecimal("0.125"),
 				Currency.CAD, "Test Edit", imageBigScaled);
 		assertEquals("did not update item", editedItem, controller.getExpenseClaim(0)
-				.getItemById(0));
+				.getExpense(0));
 	}
 
 	/**

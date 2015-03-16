@@ -38,17 +38,17 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
-import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
-import ca.ualberta.cs.shinyexpensetracker.Application;
-import ca.ualberta.cs.shinyexpensetracker.ClaimListAdapter;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
-import ca.ualberta.cs.shinyexpensetracker.IView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.adapters.ClaimListAdapter;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
-public class ExpenseClaimsView extends Activity implements
-		IView<ExpenseClaimList> {
+public class ExpenseClaimListActivity 
+	extends Activity 
+	implements IView<ExpenseClaimList> {
 	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
 
@@ -74,7 +74,7 @@ public class ExpenseClaimsView extends Activity implements
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Intent intent = new Intent(ExpenseClaimsView.this,
+				Intent intent = new Intent(ExpenseClaimListActivity.this,
 						TabbedSummaryActivity.class);
 				intent.putExtra("claimIndex", position);
 				startActivity(intent);
@@ -123,7 +123,7 @@ public class ExpenseClaimsView extends Activity implements
 			// TODO #28
 			return true;
 		case R.id.action_manage_tags:
-			Intent manageTagsIntent = new Intent(ExpenseClaimsView.this,
+			Intent manageTagsIntent = new Intent(ExpenseClaimListActivity.this,
 					ManageTagActivity.class);
 			startActivity(manageTagsIntent);
 			return true;

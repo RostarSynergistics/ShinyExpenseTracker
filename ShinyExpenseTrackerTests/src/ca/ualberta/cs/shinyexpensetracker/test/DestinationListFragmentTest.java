@@ -11,12 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import ca.ualberta.cs.shinyexpensetracker.AddDestinationActivity;
-import ca.ualberta.cs.shinyexpensetracker.Application;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.activities.DestinationListFragment;
+import ca.ualberta.cs.shinyexpensetracker.activities.AddDestinationActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
+import ca.ualberta.cs.shinyexpensetracker.fragments.DestinationListFragment;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
@@ -29,6 +29,7 @@ public class DestinationListFragmentTest extends
 	ExpenseClaim claim;
 	
 	private ExpenseClaimController controller;
+	private Destination destination;
 
 	public DestinationListFragmentTest(Class<TabbedSummaryActivity> activityClass) {
 		super(activityClass);
@@ -51,7 +52,8 @@ public class DestinationListFragmentTest extends
 				new Date(234567)
 				);
 		// Add a destination that we can look at
-		claim.addDestination(new Destination("Hell", "I'm on a highway."));
+		destination = new Destination("Hell", "I'm on a highway.");
+		claim.addDestination(destination);
 		// Add the expense claim
 		controller.addExpenseClaim(claim);
 		
@@ -203,6 +205,9 @@ public class DestinationListFragmentTest extends
 		assertEquals(2, destinationList.getCount());
 	}
 	
+	/**
+	 * Checks that destinations are visible in the list
+	 */
 	public void testDestinationListVisibility() {
 		TextView noDestinationPrompt = (TextView) frag.getView().findViewById(R.id.noDestinationsTextView);
 
@@ -229,5 +234,67 @@ public class DestinationListFragmentTest extends
 		// Nothing to display:
 		// --> Check that the prompt is visible
 		assertEquals(View.VISIBLE, noDestinationPrompt.getVisibility());
+	}
+	
+	/**
+	 * Check that editing the destination updates the list view.
+	 */
+	public void testEditDestination() {
+		// monitor for destination activity
+		ActivityMonitor monitor = getInstrumentation().addMonitor(AddDestinationActivity.class.getName(), null, false);
+		
+		// This is what we want to see.
+		final String newDest = "outta here";
+		
+		// Add a destination to edit
+		final ListView listview = (ListView) frag.getView().findViewById(R.id.destinationsListView);
+		
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				// Edit the destination
+				View view = listview.getAdapter().getView(0, null, listview);
+				listview.performItemClick(view, 0, listview.getItemIdAtPosition(0));
+			}
+		});
+		// sync
+		getInstrumentation().waitForIdleSync();
+		
+		// Get the new activity
+		final AddDestinationActivity editDestination = (AddDestinationActivity) getInstrumentation().waitForMonitorWithTimeout(monitor, 3);
+		assertTrue(getInstrumentation().checkMonitorHit(monitor, 1));
+		
+		// Get the name textview
+		final TextView name = (TextView) editDestination.findViewById(R.id.destinationEditText);
+		
+		// Make sure that it loaded the right data
+		assertEquals(destination.getName(), name.getText().toString());
+		
+		// Change the values
+		editDestination.runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// Change the value
+				name.setText(newDest);
+				
+				// Close the activity
+				editDestination.doneCreateDestination( editDestination.findViewById(R.id.addDestinationDoneButton));				
+			}
+		});
+		// Wait for sync
+		getInstrumentation().waitForIdleSync();
+		
+		// Make sure the destination was updated correctly
+		assertEquals(newDest, destination.getName());
+		
+		// Make sure the listview shows the right value
+		assertEquals(1, listview.getCount());
+		assertEquals(destination, listview.getItemAtPosition(0));
+
+		// Sync for fun.
+		getInstrumentation().waitForIdleSync();
+		
+		// Pass.
 	}
 }

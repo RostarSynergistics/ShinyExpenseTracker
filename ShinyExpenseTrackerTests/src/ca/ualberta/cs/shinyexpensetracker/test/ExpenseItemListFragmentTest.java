@@ -3,6 +3,7 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Instrumentation.ActivityMonitor;
 import android.content.DialogInterface;
@@ -12,12 +13,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import ca.ualberta.cs.shinyexpensetracker.Application;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemListFragment;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemDetailActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
+import ca.ualberta.cs.shinyexpensetracker.fragments.ExpenseItemListFragment;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
@@ -99,14 +100,14 @@ public class ExpenseItemListFragmentTest extends
 	 * Checks that tapping an item in the list view will
 	 * open the appropriate activity
 	 */
-	public void testEditExpenseShowsActivity() {
+	public void testViewExpenseShowsActivity() {
 		final ListView listview = (ListView) frag.getView().findViewById(R.id.expenseItemsListView);
 		
 		// http://stackoverflow.com/questions/9405561/test-if-a-button-starts-a-new-activity-in-android-junit-pref-without-robotium
 		// March 13, 2015
 		
 		// Use a monitor to listen for activity changes
-		ActivityMonitor monitor = getInstrumentation().addMonitor(ExpenseItemActivity.class.getName(), null, false);
+		ActivityMonitor monitor = getInstrumentation().addMonitor(ExpenseItemDetailActivity.class.getName(), null, false);
 
 		activity.runOnUiThread(new Runnable() {
 			
@@ -123,8 +124,8 @@ public class ExpenseItemListFragmentTest extends
 		
 		// Wait up to 5 seconds for the next activity open, if available,
 		// timing out if it blocks.
-		ExpenseItemActivity nextActivity = (ExpenseItemActivity) getInstrumentation().waitForMonitorWithTimeout(monitor, 5);
-		assertNotNull("Next activity wasn't opened", nextActivity);
+		Activity nextActivity = (Activity) getInstrumentation().waitForMonitorWithTimeout(monitor, 5);
+		assertTrue("Next activity wasn't opened", getInstrumentation().checkMonitorHit(monitor, 1));
 		nextActivity.finish();
 	}
 	
@@ -188,7 +189,7 @@ public class ExpenseItemListFragmentTest extends
 		ListView expenseList = (ListView) frag.getView().findViewById(R.id.expenseItemsListView);
 		// Make sure we still have that one claim from before
 		// - Sanity check
-		assertEquals(1, claim.getExpenses().size());
+		assertEquals(1, claim.getExpenseCount());
 		// - Check the list view for the same number of things  
 		assertEquals(1, expenseList.getCount());
 		
@@ -209,7 +210,7 @@ public class ExpenseItemListFragmentTest extends
 		getInstrumentation().waitForIdleSync();
 		// Make sure we have a new claim
 		// - Sanity check
-		assertEquals(2, claim.getExpenses().size());
+		assertEquals(2, claim.getExpenseCount());
 		// - Check the list view for the new number of things
 		assertEquals(2, expenseList.getCount());
 	}

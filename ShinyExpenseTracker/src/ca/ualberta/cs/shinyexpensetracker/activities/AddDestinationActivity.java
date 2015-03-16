@@ -1,4 +1,4 @@
-package ca.ualberta.cs.shinyexpensetracker;
+package ca.ualberta.cs.shinyexpensetracker.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -8,8 +8,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
@@ -32,27 +35,54 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
  */
 public class AddDestinationActivity extends Activity {
 
-	private EditText destinationEditText, reasonForTravelEditText;
-	private Button doneButton;
-	int claimIndex;
-
+	private EditText destinationEditText;
+	private EditText reasonForTravelEditText;
+	
 	public Dialog dialog;
 
 	private ExpenseClaimController controller;
+	
+	private ExpenseClaim claim; 
+	private int claimIndex;
+	
+	private Destination destination;
+	private int destinationIndex;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_destination);
 
-		doneButton = (Button) findViewById(R.id.addDestinationDoneButton);
+		Intent intent = getIntent();
+		claimIndex = intent.getIntExtra("claimIndex", -1);
+		controller = Application.getExpenseClaimController();
+		claim = controller.getExpenseClaim(claimIndex);
+		
+		destinationIndex = getIntent().getIntExtra("destinationIndex", -1);
+		// Is this a new destination?
+		if (destinationIndex == -1) {
+			// Yes.
+			// Destination object will be created later.
+			destination = null;
+		} else {
+			// No.
+			// Set the destination object to the existing object
+			destination = claim.getDestination(destinationIndex);
+		}
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
-
-		controller = Application.getExpenseClaimController();
+		
+		if (destination != null) {
+			// If we loaded a destination, load the values
+			TextView dest = (TextView) findViewById(R.id.destinationEditText);
+			TextView reason = (TextView) findViewById(R.id.reasonEditText);
+			
+			dest.setText(destination.getName());
+			reason.setText(destination.getReasonForTravel());
+		}
 	}
 
 	@Override
@@ -63,16 +93,12 @@ public class AddDestinationActivity extends Activity {
 	}
 
 	/**
-	 * Creates the new destination, returning True on success or false
-	 * otherwise.
+	 * Creates the new destination if this activity is opened without
+	 * a destination index, or save it to the existing destination.
 	 * 
 	 * @return true if destination input was valid, false otherwise.
 	 */
-	public boolean createDestination() {
-		Intent intent = getIntent();
-		int claimIndex = intent.getIntExtra("claimIndex", -1);
-		ExpenseClaim claim = controller.getExpenseClaim(claimIndex);
-
+	public boolean saveDestination() {
 		destinationEditText = (EditText) findViewById(R.id.destinationEditText);
 		reasonForTravelEditText = (EditText) findViewById(R.id.reasonEditText);
 
@@ -94,9 +120,16 @@ public class AddDestinationActivity extends Activity {
 
 		String dest = destinationEditText.getText().toString();
 		String reason = reasonForTravelEditText.getText().toString();
-
-		Destination destination = new Destination(dest, reason);
-		claim.addDestination(destination);
+		
+		if (destination == null) {
+			// If new, create a new one
+			destination = new Destination(dest, reason);
+			claim.addDestination(destination);
+		} else {
+			// If old, update the data.
+			destination.setName(dest);
+			destination.setReasonForTravel(reason);
+		}
 		return true;
 	}
 
@@ -108,7 +141,7 @@ public class AddDestinationActivity extends Activity {
 	 * @param v
 	 */
 	public void doneCreateDestination(View v) {
-		if (createDestination()) {
+		if (saveDestination()) {
 			finish();
 		}
 	}

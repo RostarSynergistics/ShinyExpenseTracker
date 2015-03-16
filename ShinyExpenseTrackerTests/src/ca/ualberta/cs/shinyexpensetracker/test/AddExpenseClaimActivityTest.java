@@ -1,5 +1,6 @@
 /**
  *  Test case for Issue 17
+ *  
  *  AddExpenseClaimActivityTest: Testing the AddExpenseClaimAcitivity representing the UI for adding/editing an Expense Claim. 
  *  No outstanding issues.
  * 
@@ -11,28 +12,22 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Instrumentation;
 import android.app.Instrumentation.ActivityMonitor;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
-import ca.ualberta.cs.shinyexpensetracker.Application;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.activities.AddExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase2<AddExpenseClaimActivity> {
-	
-    private static final int TARGET_YEAR = 2008;
-    private static final int TARGET_MONTH = 11;
-    private static final int TARGET_DAY = 7;
-    
 	Instrumentation instrumentation;
 	AddExpenseClaimActivity activity;
 	DatePickerDialog fromDatePickerDialog, toDatePickerDialog;
@@ -47,15 +42,8 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 	public AddExpenseClaimActivityTest() {
 		super(AddExpenseClaimActivity.class);
 	}
-	
-    private OnDateSetListener dateListener = new OnDateSetListener(){
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        	int yr = year;
-            int month = monthOfYear;
-            int day = dayOfMonth;
-        }
-    };
     
+    @Override
     protected void setUp() throws Exception {
     	super.setUp();
 
@@ -64,13 +52,15 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
         instrumentation = getInstrumentation();
         activity = getActivity();
     	
-    	DatePickerDialog datePicker = new DatePickerDialog(instrumentation.getContext(), dateListener, TARGET_YEAR, TARGET_MONTH, TARGET_DAY);
     	name = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.editTextExpenseClaimName));
     	startDate = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.editTextStartDate));
     	endDate = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.editTextEndDate));
     	doneButton = (Button) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.addExpenseClaimDoneButton);
     }
     
+    /**
+     * test whether or not startDate dialog is opened
+     */
 	public void teststartDate() {
 		assertFalse(((AddExpenseClaimActivity) activity).getStartDateDialog().isShowing());
 		instrumentation.runOnMainSync(new Runnable() {
@@ -81,6 +71,9 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 		assertTrue(((AddExpenseClaimActivity) activity).getStartDateDialog().isShowing());
 	}
 	
+    /**
+     * test whether or not endDate dialog is opened
+     */
 	public void testendDate() {
 		assertFalse(((AddExpenseClaimActivity) activity).getEndDateDialog().isShowing());
 		instrumentation.runOnMainSync(new Runnable() {
@@ -91,6 +84,9 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 		assertTrue(((AddExpenseClaimActivity) activity).getEndDateDialog().isShowing());
 	}
 	
+	/**
+	 * test whether or not the textFields are set correctly
+	 */
 	public void testText() {
 		
 		instrumentation.runOnMainSync(new Runnable() {
@@ -107,6 +103,10 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 		assertEquals("08-04-2015", endDate.getText().toString());
 	}
 	
+	/**
+	 * test AddExpenseClaim functionality to see whether or not the expenseClaim is actually added or not
+	 */
+	@SuppressLint("SimpleDateFormat")
 	public void testAddExpenseClaim() {
 		
 		final String nameString = "URoma";
@@ -139,6 +139,12 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 		assertNotSame("false positive, endDate", "Wrong endDate", sampleExpenseClaim.getEndDate());
 }
 	
+	/**
+	 * UI test to see if the DoneButton adds the claim
+	 * @throws ParseException
+	 */
+	
+	@SuppressLint("SimpleDateFormat")
 	public void testDoneButton() throws ParseException {
 		
 		ActivityMonitor monitor = instrumentation.addMonitor(TabbedSummaryActivity.class.getName(), null, false);

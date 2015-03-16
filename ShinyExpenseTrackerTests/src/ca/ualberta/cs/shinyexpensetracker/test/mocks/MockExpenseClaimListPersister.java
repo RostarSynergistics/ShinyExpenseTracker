@@ -3,7 +3,7 @@ package ca.ualberta.cs.shinyexpensetracker.test.mocks;
 import java.io.IOException;
 
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
-import ca.ualberta.cs.shinyexpensetracker.persistance.IExpenseClaimListPersister;
+import ca.ualberta.cs.shinyexpensetracker.persistence.IExpenseClaimListPersister;
 
 public class MockExpenseClaimListPersister 
 implements IExpenseClaimListPersister {

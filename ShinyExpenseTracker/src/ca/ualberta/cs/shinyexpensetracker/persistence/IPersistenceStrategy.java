@@ -1,4 +1,4 @@
-package ca.ualberta.cs.shinyexpensetracker.persistance;
+package ca.ualberta.cs.shinyexpensetracker.persistence;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package ca.ualberta.cs.shinyexpensetracker.activities;
+package ca.ualberta.cs.shinyexpensetracker.fragments;
 
 import java.io.IOException;
 
@@ -10,11 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
-import ca.ualberta.cs.shinyexpensetracker.Application;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseTotalsAdapter;
-import ca.ualberta.cs.shinyexpensetracker.IView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.adapters.ExpenseTotalsAdapter;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
 /**
@@ -139,7 +139,7 @@ public class ClaimSummaryFragment extends Fragment implements
 		claimTags.setText("Tags: " + tags);
 
 		// display the expense totals
-		if (claim.getExpenses().size() != 0) {
+		if (claim.getExpenseCount() != 0) {
 			// Need to get a list currencies and their total amount of all
 			// expenses in claim
 			ListView expenseTotals = (ListView) view

@@ -26,7 +26,6 @@ package ca.ualberta.cs.shinyexpensetracker.activities;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Random;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -50,11 +49,9 @@ import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
-// TODO #55 ?
 public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimList> {
 	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
-	static int debug_addedID = 0;	// XXX Remove this when #17 is merged
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,15 +67,7 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 		
 		// Set the list view to receive updates from the model
 		final ListView claim_list = (ListView) findViewById(R.id.expense_claim_list);
-		// TODO #61 - adapter should be a custom adapter that can
-		// watch the ExpenseClaimsList object, rather than an
-		// ArrayList object
-		try {
-			adapter = new ClaimListAdapter(this);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-
+		adapter = new ClaimListAdapter(this);
 		claim_list.setAdapter(adapter);
 		
 		claim_list.setOnItemClickListener(new OnItemClickListener() {
@@ -130,11 +119,14 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 			
 			return true;
 		case R.id.action_sort:
+			return true;
 		case R.id.action_filter:
+			//TODO #28
+			return true;
 		case R.id.action_manage_tags:
-			// TODO #22, #28
-			Toast.makeText(this, "Not Yet Implemented.", Toast.LENGTH_SHORT).show();
-			return false;
+			Intent manageTagsIntent = new Intent(ExpenseClaimsView.this, ManageTagActivity.class);
+			startActivity(manageTagsIntent);
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}

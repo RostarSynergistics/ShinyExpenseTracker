@@ -108,12 +108,26 @@ public class TagController {
 		return list.contains(tag);
 		
 	}
+	
 	/**
 	 * Sets a new tag list for the singleton object
 	 * @param tagList a new tag list for the singleton
 	 */
 	public void setTagList(TagList tagList){
 		list = tagList;
+	}
+	
+	/**
+	 * Will return the tag at the given index in the list
+	 * @param index the index of the tag to get in the list
+	 * @return the Tag at the given index
+	 */
+	public Tag getTag(int index){
+		return list.getTagById(index);
+	}
+	
+	public boolean editTag(int index, Tag newTag){
+		return list.editTag(index, newTag);
 	}
 
 }

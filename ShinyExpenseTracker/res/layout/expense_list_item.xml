@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp" >
+
+	<TextView
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:textAppearance="?android:attr/textAppearanceMedium"
+	android:id="@+id/expenseItemName">
+	</TextView>
+	<TextView
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:textAppearance="?android:attr/textAppearanceMedium"
+	android:id="@+id/expenseItemValue">
+	</TextView>
+	<TextView
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:textAppearance="?android:attr/textAppearanceMedium"
+	android:id="@+id/expenseItemDate">
+	</TextView>
+	<TextView
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:textAppearance="?android:attr/textAppearanceMedium"
+	android:id="@+id/expenseItemCategory">
+	</TextView>
+</LinearLayout>

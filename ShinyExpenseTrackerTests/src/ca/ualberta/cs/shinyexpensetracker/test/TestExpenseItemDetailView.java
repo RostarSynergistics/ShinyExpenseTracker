@@ -49,14 +49,16 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 		newDate.set(2000, 00, 01);
 
 		ExpenseItem item = new ExpenseItem("test item", newDate.getTime(), Category.fromString("air fare"), new BigDecimal("0.125"), Currency.CAD, "Test Item", null);
-		claim.addItem(item);
+
+		claim.addExpense(item);
 		ExpenseClaimList claimList = new ExpenseClaimList();
 		claimList.addClaim(claim);
 		ExpenseClaimController.getInstance().setClaimList(claimList);
 		controller = ExpenseClaimController.getInstance();
-		Intent intent = new Intent(getInstrumentation().getTargetContext(), ExpenseItemDetailView.class);
-	    intent.putExtra("Claim ID", new Integer(0));
-	    intent.putExtra("Item ID", new Integer(0));
+
+		Intent intent = new Intent();
+	    intent.putExtra("claimIndex", new Integer(0));
+	    intent.putExtra("itemIndex", new Integer(0));
 	    setActivityIntent(intent);
 	    activity = getActivity();
 	    

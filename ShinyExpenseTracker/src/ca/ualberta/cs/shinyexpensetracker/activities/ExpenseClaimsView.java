@@ -23,21 +23,21 @@
 
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
-import java.util.Date;
-import java.util.Random;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
+import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.ClaimListAdapter;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.IView;
@@ -45,11 +45,9 @@ import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
-// TODO #55 ?
 public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimList> {
 	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
-	static int debug_addedID = 0;	// XXX Remove this when #17 is merged
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +63,23 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 		
 		// Set the list view to receive updates from the model
 		final ListView claim_list = (ListView) findViewById(R.id.expense_claim_list);
-		// TODO #61 - adapter should be a custom adapter that can
-		// watch the ExpenseClaimsList object, rather than an
-		// ArrayList object
 		adapter = new ClaimListAdapter(this);
 		claim_list.setAdapter(adapter);
+		
+		
+		claim_list.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				Intent intent = new Intent(ExpenseClaimsView.this, TabbedSummaryActivity.class);
+				intent.putExtra("claimIndex", position);
+				startActivity(intent);
+				
+			}
+			
+		});
+		
 		
 		// -- Long Press of ListView Item
 		claim_list.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -100,29 +110,20 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 		int id = item.getItemId();
 		switch (id) {
 		case R.id.action_new_claim:
-			// TODO Depends on #17
-
-			// Add randomly dated claim
-			// XXX Begin -- REMOVE ME
-			// Replace this code with something that opens an activity. (#76)
-			Date sd = new Date(System.currentTimeMillis() + new Random().nextInt(2000000000));
-			Date ed = null;
-			if (new Random().nextBoolean()) {
-				ed = new Date(System.currentTimeMillis() + 2000000000  + new Random().nextInt(2000000000));
-			}
 			
-			controller.addExpenseClaim(
-					new ExpenseClaim("Test ["+debug_addedID++ +"]", sd, ed));
+			Intent intent = new Intent(this, AddExpenseClaimActivity.class);
+			startActivity(intent);
 			
 			return true;
-			// XXX REMOVE ME -- End
-			
 		case R.id.action_sort:
+			return true;
 		case R.id.action_filter:
+			//TODO #28
+			return true;
 		case R.id.action_manage_tags:
-			// TODO #22, #28
-			Toast.makeText(this, "Not Yet Implemented.", Toast.LENGTH_SHORT).show();
-			return false;
+			Intent manageTagsIntent = new Intent(ExpenseClaimsView.this, ManageTagActivity.class);
+			startActivity(manageTagsIntent);
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -144,7 +145,6 @@ public class ExpenseClaimsView extends Activity implements IView<ExpenseClaimLis
 		// Alert Dialog (Mar 7, 2015):
 		//  http://www.androidhive.info/2011/09/how-to-show-alert-dialog-in-android/
 		//  http://stackoverflow.com/questions/15020878/i-want-to-show-ok-and-cancel-button-in-my-alert-dialog
-		
 		// Get a final copy of the requested claim
 		final ExpenseClaim claimToDelete = controller.getExpenseClaim(position);
 		

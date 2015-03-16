@@ -1,13 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Locale;
-
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimsRepository;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 
 /**
  * Activity that lets the user view 
@@ -41,8 +37,8 @@ public class ExpenseItemDetailView extends Activity {
 		Bundle bundle = intent.getExtras();
 		
 		if (bundle != null){
-			int claimId = (Integer) bundle.get("Claim ID");
-			int expenseItemId = (Integer) bundle.get("Item ID");
+			int claimId = (Integer) bundle.get("claimIndex");
+			int expenseItemId = (Integer) bundle.get("itemIndex");
 			ExpenseClaimController controller = ExpenseClaimController.getInstance();
 			ExpenseClaim claim = controller.getExpenseClaim(claimId);
 			item = claim.getItemById(expenseItemId);
@@ -59,10 +55,9 @@ public class ExpenseItemDetailView extends Activity {
 	private void populateTextViews(){
 		SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.CANADA);
 		
-
 		setTextViewValue(R.id.expenseItemNameValue, item.getName().toString());
 		setTextViewValue(R.id.expenseItemDateValue, dateFormatter.format(item.getDate()));
-		setTextViewValue(R.id.expenseItemCategoryValue, item.getCategory().getText());
+		setTextViewValue(R.id.expenseItemCategoryValue, item.getCategory().toString());
 		setTextViewValue(R.id.expenseItemDescriptionValue, item.getDescription().toString());
 		setTextViewValue(R.id.expenseItemAmountValue, item.getAmountSpent().toString());
 		setTextViewValue(R.id.expenseItemCurrencyValue, item.getCurrency().name());

@@ -1,4 +1,4 @@
-package ca.ualberta.cs.shinyexpensetracker.activities;
+package ca.ualberta.cs.shinyexpensetracker.fragments;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -13,12 +13,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
-import ca.ualberta.cs.shinyexpensetracker.AddDestinationActivity;
-import ca.ualberta.cs.shinyexpensetracker.Application;
-import ca.ualberta.cs.shinyexpensetracker.DestinationItemAdapter;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
-import ca.ualberta.cs.shinyexpensetracker.IView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.AddDestinationActivity;
+import ca.ualberta.cs.shinyexpensetracker.adapters.DestinationItemAdapter;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
 /**

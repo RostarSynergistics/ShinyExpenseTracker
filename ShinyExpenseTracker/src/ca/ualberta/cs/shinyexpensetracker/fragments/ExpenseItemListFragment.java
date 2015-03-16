@@ -1,4 +1,4 @@
-package ca.ualberta.cs.shinyexpensetracker.activities;
+package ca.ualberta.cs.shinyexpensetracker.fragments;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -13,12 +13,13 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
-import ca.ualberta.cs.shinyexpensetracker.Application;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseItemDetailView;
-import ca.ualberta.cs.shinyexpensetracker.IView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemDetailActivity;
+import ca.ualberta.cs.shinyexpensetracker.adapters.ExpenseItemAdapter;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
 public class ExpenseItemListFragment extends Fragment implements IView<ExpenseClaim> {
@@ -147,7 +148,7 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 	 */
 	public void viewDetailsOfExpenseAt(final int position) {
 		// Create an intent to view an expense item
-		Intent intent = new Intent(getActivity(), ExpenseItemDetailView.class);
+		Intent intent = new Intent(getActivity(), ExpenseItemDetailActivity.class);
 		// --> Tell it that we're viewing the index at this position
 		intent.putExtra("claimIndex", claimIndex);
 		intent.putExtra("expenseIndex", position);
@@ -173,7 +174,7 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 	
 	public void viewExpenseAt(int position) {
 		// Create an intent to edit an expense item
-		Intent intent = new Intent(getActivity(), ExpenseItemDetailView.class);
+		Intent intent = new Intent(getActivity(), ExpenseItemDetailActivity.class);
 		// --> Tell it that we're editing the index at this position
 		intent.putExtra("claimIndex", claimIndex);
 		intent.putExtra("expenseIndex", position);

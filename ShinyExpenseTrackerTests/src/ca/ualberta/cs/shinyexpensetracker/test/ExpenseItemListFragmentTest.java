@@ -13,12 +13,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import ca.ualberta.cs.shinyexpensetracker.Application;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseItemDetailView;
 import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemListFragment;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemDetailActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
+import ca.ualberta.cs.shinyexpensetracker.fragments.ExpenseItemListFragment;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
@@ -107,7 +107,7 @@ public class ExpenseItemListFragmentTest extends
 		// March 13, 2015
 		
 		// Use a monitor to listen for activity changes
-		ActivityMonitor monitor = getInstrumentation().addMonitor(ExpenseItemDetailView.class.getName(), null, false);
+		ActivityMonitor monitor = getInstrumentation().addMonitor(ExpenseItemDetailActivity.class.getName(), null, false);
 
 		activity.runOnUiThread(new Runnable() {
 			

@@ -1,4 +1,4 @@
-package ca.ualberta.cs.shinyexpensetracker;
+package ca.ualberta.cs.shinyexpensetracker.adapters;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

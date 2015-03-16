@@ -32,13 +32,13 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
-import ca.ualberta.cs.shinyexpensetracker.Application;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimsView;
+import ca.ualberta.cs.shinyexpensetracker.activities.AddExpenseClaimActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimListActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
@@ -46,9 +46,9 @@ import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 public class ViewAllExpenseClaimsActivityTests extends
-		ActivityInstrumentationTestCase2<ExpenseClaimsView> {
+		ActivityInstrumentationTestCase2<ExpenseClaimListActivity> {
 	
-	ExpenseClaimsView activity;
+	ExpenseClaimListActivity activity;
 	ExpenseClaimList claimsList;
 	ExpenseClaimController controller;
 
@@ -58,7 +58,7 @@ public class ViewAllExpenseClaimsActivityTests extends
 	ListView claimListView;
 	
 	public ViewAllExpenseClaimsActivityTests() {
-		super(ExpenseClaimsView.class);
+		super(ExpenseClaimListActivity.class);
 	}
 
 	protected void setUp() throws Exception {
@@ -382,7 +382,6 @@ public class ViewAllExpenseClaimsActivityTests extends
 		createExpense.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				Button done = (Button) createExpense.findViewById(R.id.expenseItemDoneButton);
 				EditText name = (EditText) createExpense.findViewById(R.id.expenseItemNameEditText);
 				EditText date = (EditText) createExpense.findViewById(R.id.expenseItemDateEditText);
 				EditText amount = (EditText) createExpense.findViewById(R.id.expenseItemAmountEditText);

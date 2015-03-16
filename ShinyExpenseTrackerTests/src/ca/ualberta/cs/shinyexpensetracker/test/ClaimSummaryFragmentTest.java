@@ -9,11 +9,11 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-import ca.ualberta.cs.shinyexpensetracker.Application;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.activities.ClaimSummaryFragment;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
+import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
@@ -179,7 +179,6 @@ public class ClaimSummaryFragmentTest extends
 	 */
 	public void testExpenseTotals() throws IOException {
 		Date startDate = new Date(1000);
-		Date endDate = new Date(2000);
 		
 		BigDecimal amount = new BigDecimal(10);
 		final ExpenseItem expense = new ExpenseItem("test Expense", startDate, Category.ACCOMODATION, amount, Currency.CAD);

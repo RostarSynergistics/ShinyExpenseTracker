@@ -55,7 +55,6 @@
     <string name="deleteExpenseItemPromptTitle">Delete?</string>
     <string name="deleteExpenseItemPromptMessage">Delete this expense item?</string>
     
-
     <string name="deleteDestinationItemPromptTitle">Delete?</string>
     <string name="deleteDestinationItemPromptMessage">Delete this destination?</string>
 

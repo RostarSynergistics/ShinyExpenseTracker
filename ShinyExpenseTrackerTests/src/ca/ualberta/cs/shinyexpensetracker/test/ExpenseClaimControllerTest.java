@@ -32,7 +32,7 @@ public class ExpenseClaimControllerTest extends TestCase {
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		ExpenseClaimList claimList = new ExpenseClaimList();
+		claimList = new ExpenseClaimList();
 		claimList.addClaim(new ExpenseClaim("Test"));
 		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(claimList));
 	}

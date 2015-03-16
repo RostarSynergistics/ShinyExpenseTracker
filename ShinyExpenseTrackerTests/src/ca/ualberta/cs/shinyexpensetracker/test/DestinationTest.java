@@ -1,33 +1,15 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import ca.ualberta.cs.shinyexpensetracker.AddDestinationActivity;
-import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
-import ca.ualberta.cs.shinyexpensetracker.Application;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
-import ca.ualberta.cs.shinyexpensetracker.models.Destination;
-import ca.ualberta.cs.shinyexpensetracker.models.DestinationList;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
-import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
-import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
 import android.app.Instrumentation;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.InstrumentationTestCase;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.Spinner;
+import ca.ualberta.cs.shinyexpensetracker.AddDestinationActivity;
+import ca.ualberta.cs.shinyexpensetracker.Application;
+import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.models.Destination;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 public class DestinationTest extends ActivityInstrumentationTestCase2<AddDestinationActivity> {
 	AddDestinationActivity activity;

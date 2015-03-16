@@ -6,10 +6,6 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
 import com.google.gson.Gson;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-
 /**
  * Handles the persistence of {@link ExpenseClaimList} to a file for offline usage.
  * 

@@ -3,6 +3,7 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
 import android.app.DatePickerDialog;
 import android.app.Instrumentation;
 import android.content.Intent;
@@ -13,7 +14,6 @@ import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.Application;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 /**

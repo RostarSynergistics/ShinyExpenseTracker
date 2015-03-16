@@ -1,6 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.ArrayList;
+
 import ca.ualberta.cs.shinyexpensetracker.IView;
 
 /**

@@ -14,14 +14,6 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import ca.ualberta.cs.shinyexpensetracker.Application;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
-import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -37,6 +29,14 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import ca.ualberta.cs.shinyexpensetracker.Application;
+import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
+import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 public class ExpenseItemActivityTest extends
 		ActivityInstrumentationTestCase2<ExpenseItemActivity> {

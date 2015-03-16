@@ -22,8 +22,9 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 import java.io.IOException;
 
 import junit.framework.TestCase;
-import ca.ualberta.cs.shinyexpensetracker.*;
-import ca.ualberta.cs.shinyexpensetracker.models.*;
+import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 public class ExpenseClaimControllerTest extends TestCase {

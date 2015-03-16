@@ -2,12 +2,12 @@ package ca.ualberta.cs.shinyexpensetracker.test.models;
 
 import java.io.IOException;
 
+import junit.framework.TestCase;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.persistance.ExpenseClaimListPersister;
 import ca.ualberta.cs.shinyexpensetracker.persistance.IExpenseClaimListPersister;
 import ca.ualberta.cs.shinyexpensetracker.persistance.IPersistenceStrategy;
-import junit.framework.TestCase;
 
 /**
  * Tests ExpenseClaimListPersister's ability to save and load an

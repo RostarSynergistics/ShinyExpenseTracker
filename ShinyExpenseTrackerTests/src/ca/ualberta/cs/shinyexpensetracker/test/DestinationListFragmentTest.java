@@ -1,6 +1,5 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import android.app.AlertDialog;
@@ -15,14 +14,11 @@ import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.AddDestinationActivity;
 import ca.ualberta.cs.shinyexpensetracker.Application;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
-import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.DestinationListFragment;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 public class DestinationListFragmentTest extends

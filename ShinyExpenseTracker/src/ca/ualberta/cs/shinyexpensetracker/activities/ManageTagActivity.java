@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -52,6 +53,7 @@ public class ManageTagActivity extends Activity implements IView<TagList> {
 	private TagController tagController;
 	protected static AlertDialog alertDialogAddTag;
 	protected static AlertDialog alertDialogEditTag;
+	protected static AlertDialog alertDialogDeleteTag;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +90,18 @@ public class ManageTagActivity extends Activity implements IView<TagList> {
 			}
 		
 		});
+		
+		manageTags.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+					int position, long arg3) {
+				deleteTagFromDialog(position);
+				return true;
+			}
+		
+		});
+		
 	}
 
 	@Override
@@ -150,6 +164,11 @@ public class ManageTagActivity extends Activity implements IView<TagList> {
 		return true;
 	}
 	
+	/**
+	 * Extracted method from the listview onClickListener
+	 * dialog to edit a tag if the tag is pressed from the listview
+	 * @param pos of the list view clicked
+	 */
 	private void editTagFromDialog(final int pos){
 		//Creating the dialog from a custom layout and getting all the widgets needed 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -166,6 +185,7 @@ public class ManageTagActivity extends Activity implements IView<TagList> {
 		final EditText tagNameTextBox = (EditText)dialogView.findViewById(R.id.EditTextDialogTag);
 		tagNameTextBox.setText(tagController.getTag(pos).getValue());
 		
+		//Setting the buttons
 		builder.setPositiveButton("Edit Tag", new android.content.DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -193,6 +213,40 @@ public class ManageTagActivity extends Activity implements IView<TagList> {
 		
 	}
 	
+	/**
+	 * Extracted method from the listview onLongItemClickListener
+	 * dialog to delete a tag if the tag is long pressed from the listview
+	 * @param pos of the list view clicked
+	 */
+	public void deleteTagFromDialog(final int position){
+		//Creating a delete dialog
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		LayoutInflater layoutInflater = this.getLayoutInflater();
+		View dialogView = layoutInflater.inflate(R.layout.dialog_delete_tag, null);
+		builder.setView(dialogView);
+		
+
+		//Setting buttons
+		builder.setPositiveButton("Delete Tag", new android.content.DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				if(!tagController.deleteTag(position)){
+					Toast.makeText(getApplicationContext(), "Tag could not be deleted", Toast.LENGTH_LONG).show();
+				}
+			}
+		});
+		
+		builder.setNegativeButton("Cancel", new android.content.DialogInterface.OnClickListener(){
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+			}
+		});
+		
+		alertDialogDeleteTag = builder.create();
+		alertDialogDeleteTag.show();
+		
+	}
+	
 	@Override
 	public void update(TagList m) {
 		tagListAdapter.notifyDataSetChanged();
@@ -204,5 +258,9 @@ public class ManageTagActivity extends Activity implements IView<TagList> {
 	
 	public static AlertDialog getEditDialog(){
 		return alertDialogEditTag;
+	}
+
+	public static AlertDialog getDeleteDialog(){
+		return alertDialogDeleteTag;
 	}
 }

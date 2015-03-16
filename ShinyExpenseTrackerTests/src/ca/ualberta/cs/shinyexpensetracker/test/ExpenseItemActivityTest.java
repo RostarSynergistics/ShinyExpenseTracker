@@ -81,58 +81,42 @@ public class ExpenseItemActivityTest extends
 	public ExpenseItemActivityTest(Class<ExpenseItemActivity> activityClass) {
 		super(activityClass);
 	}
+	
+    private OnDateSetListener dateListener = new OnDateSetListener(){
+        public void onDateSet(DatePicker view, int Year, int monthOfYear, int dayOfMonth) {
+        	year = Year;
+            month = monthOfYear;
+            day = dayOfMonth;
+        }
+    };
 
-	private OnDateSetListener dateListener = new OnDateSetListener() {
-		public void onDateSet(DatePicker view, int Year, int monthOfYear,
-				int dayOfMonth) {
-			year = Year;
-			month = monthOfYear;
-			day = dayOfMonth;
-		}
-	};
-
-	protected void setUp() throws Exception {
-		super.setUp();
-		
-		controller = new ExpenseClaimController(
-				new MockExpenseClaimListPersister());
-		
-		Application.setExpenseClaimController(controller);
-
-		controller.addExpenseClaim(new ExpenseClaim("Test Claim"));
-
-		Intent intent = new Intent();
-		intent.putExtra("claimIndex", 0);
-		setActivityIntent(intent);
-
-		instrumentation = getInstrumentation();
-		activity = getActivity();
-
-		datePicker = new DatePickerDialog(instrumentation.getContext(),
-				dateListener, TARGET_YEAR, TARGET_MONTH, TARGET_DAY);
-
-		nameInput = ((EditText) activity
-				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemNameEditText));
-		dateInput = ((EditText) activity
-				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemDateEditText));
-		categoryInput = ((Spinner) activity
-				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemCategorySpinner));
-		amountInput = ((EditText) activity
-				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemAmountEditText));
-		currencyInput = ((Spinner) activity
-				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemCurrencySpinner));
-		descriptionInput = ((EditText) activity
-				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expesenItemDescriptionEditText));
-		photoInput = ((ImageButton) activity
-				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemReceiptImageButton));
-		doneButton = (Button) activity
-				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemDoneButton);
-	}
-
-	/*
-	 * Tests that when the ExpenseItemDateTextView is clicked a DatePickerDialog
-	 * is shown
-	 */
+    protected void setUp() throws Exception {
+    	super.setUp();
+        instrumentation = getInstrumentation();
+        
+        ExpenseClaimController controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
+        Application.setExpenseClaimController(controller);
+        
+        controller.addExpenseClaim(new ExpenseClaim("Test Claim"));
+        Intent intent = new Intent();
+        intent.putExtra("claimIndex", 0);
+        setActivityIntent(intent);
+        
+        activity = getActivity();
+        
+        datePicker = new DatePickerDialog(instrumentation.getContext(), dateListener, TARGET_YEAR, TARGET_MONTH, TARGET_DAY);
+        
+        nameInput = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemNameEditText));
+        dateInput = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemDateEditText));
+        categoryInput = ((Spinner) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemCategorySpinner));
+        amountInput = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemAmountEditText));
+        currencyInput = ((Spinner) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemCurrencySpinner));
+        descriptionInput = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expesenItemDescriptionEditText));
+        photoInput = ((ImageButton) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemReceiptImageButton));
+        doneButton = ((Button) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemDoneButton));
+    }
+    
+    /* Tests that when the ExpenseItemDateTextView is clicked a DatePickerDialog is shown */
 	public void testSetDateTimeField() {
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {

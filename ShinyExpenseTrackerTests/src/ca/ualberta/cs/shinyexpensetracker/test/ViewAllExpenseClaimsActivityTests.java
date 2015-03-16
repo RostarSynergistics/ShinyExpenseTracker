@@ -23,19 +23,22 @@
 
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+import java.text.ParseException;
 import java.util.Date;
-import java.util.Random;
 
 import android.app.Activity;
 import android.app.Instrumentation.ActivityMonitor;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.UiThreadTest;
-import android.view.KeyEvent;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import ca.ualberta.cs.shinyexpensetracker.AddExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.Application;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
+import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimsView;
+import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
@@ -48,7 +51,9 @@ public class ViewAllExpenseClaimsActivityTests extends
 	ExpenseClaimsView activity;
 	ExpenseClaimList claimsList;
 	ExpenseClaimController controller;
-	static int debug_addedID = 0;
+
+	// Flag for thread crashes
+	static boolean failed;
 	
 	ListView claimListView;
 	
@@ -66,7 +71,7 @@ public class ViewAllExpenseClaimsActivityTests extends
 		Application.setExpenseClaimController(controller);
 		
 		activity = getActivity();
-		claimListView = (ListView) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expense_claim_list);
+		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
 	}
 	
 	/**
@@ -76,7 +81,7 @@ public class ViewAllExpenseClaimsActivityTests extends
 	 */
 	private ExpenseClaim addClaim(final ExpenseClaim claim) {
 		// Run on the activity thread.
-		getInstrumentation().runOnMainSync(new Runnable() {
+		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				claimsList.addClaim(claim);
@@ -92,7 +97,7 @@ public class ViewAllExpenseClaimsActivityTests extends
 	 */
 	private void deleteClaim(final ExpenseClaim claim) {
 		// Run on the activity thread
-		getInstrumentation().runOnMainSync(new Runnable() {
+		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				claimsList.removeClaim(claim);
@@ -288,7 +293,7 @@ public class ViewAllExpenseClaimsActivityTests extends
 		// Code taken from: stackoverflow.com/questions/3084891/how-to-test-menu
 				
 		ActivityMonitor am = getInstrumentation().addMonitor(AddExpenseClaimActivity.class.getName(), null, false);
-		getInstrumentation().invokeMenuActionSync(activity, ca.ualberta.cs.shinyexpensetracker.R.id.action_new_claim, 0);
+		getInstrumentation().invokeMenuActionSync(activity, R.id.action_new_claim, 0);
 		
 		Activity a = getInstrumentation().waitForMonitorWithTimeout(am, 1000);
 		assertEquals(true, getInstrumentation().checkMonitorHit(am, 1));
@@ -297,5 +302,126 @@ public class ViewAllExpenseClaimsActivityTests extends
 		// Wait for the application to become idle
 		getInstrumentation().waitForIdleSync();
 
+	}
+	
+	/**
+	 * Test for crash on new expense claim.
+	 * See #91 for details.
+	 */
+	public void testCrashOnNewExpense() {
+		// Monitor for AddExpenseClaimActivity
+		ActivityMonitor claimMonitor = getInstrumentation().addMonitor(AddExpenseClaimActivity.class.getName(), null, false);
+
+		// Press the "New Claim" button
+		getInstrumentation().invokeMenuActionSync(activity, R.id.action_new_claim, 0);
+
+		// Get the create claim activity
+		final AddExpenseClaimActivity createClaim = (AddExpenseClaimActivity) getInstrumentation().waitForMonitorWithTimeout(claimMonitor, 1000);
+		assertEquals(true, getInstrumentation().checkMonitorHit(claimMonitor, 1));
+		
+		// Fill in the data
+		createClaim.runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+		    	EditText name = ((EditText) createClaim.findViewById(R.id.editTextExpenseClaimName));
+		    	EditText startDate = ((EditText) createClaim.findViewById(R.id.editTextStartDate));
+		    	EditText endDate = ((EditText) createClaim.findViewById(R.id.editTextEndDate));
+		    	Button doneButton = (Button) createClaim.findViewById(R.id.addExpenseClaimDoneButton);
+		    	
+		    	// Set values
+		    	name.setText("Test Claim");
+		    	startDate.setText("03-05-2015");
+		    	endDate.setText("04-05-2015");
+		    	
+		    	// Close the activity
+		    	doneButton.performClick();
+				
+			}
+		});
+		
+		// Monitor for TabbedSummaryActivity
+		ActivityMonitor summaryMonitor = getInstrumentation().addMonitor(TabbedSummaryActivity.class.getName(), null, false);
+		
+		// Get the summary activity
+		TabbedSummaryActivity summaryActivity = (TabbedSummaryActivity) getInstrumentation().waitForMonitorWithTimeout(summaryMonitor, 1000);
+		assertEquals(true, getInstrumentation().checkMonitorHit(summaryMonitor, 1));
+		
+		// Close the summary
+		summaryActivity.finish();
+
+		// Monitor for TabbedSummaryActivity again
+		summaryMonitor = getInstrumentation().addMonitor(TabbedSummaryActivity.class.getName(), null, false);
+		
+		// Tap an item in the list view this time to display the summary
+		final ListView claimsList = (ListView) activity.findViewById(R.id.expense_claim_list);
+		activity.runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				claimsList.performItemClick(claimsList.getChildAt(0), 0, 0);
+			}
+		});
+		
+		// Get the summary activity
+		summaryActivity = (TabbedSummaryActivity) getInstrumentation().waitForMonitorWithTimeout(summaryMonitor, 1000);
+		assertEquals(true, getInstrumentation().checkMonitorHit(summaryMonitor, 1));
+		
+		// Monitor for ExpenseItemActivity
+		ActivityMonitor expenseMonitor = getInstrumentation().addMonitor(ExpenseItemActivity.class.getName(), null, false);
+		
+		// Press the "Add Expense" button
+		getInstrumentation().invokeMenuActionSync(summaryActivity, R.id.addExpenseItem, 0);
+		
+		// Get the expense item activity
+		final ExpenseItemActivity createExpense = (ExpenseItemActivity) getInstrumentation().waitForMonitorWithTimeout(expenseMonitor, 1000);
+		assertEquals(true, getInstrumentation().checkMonitorHit(expenseMonitor, 1));
+		
+		// Try to close the createExpense activity
+		failed = false;
+		createExpense.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				Button done = (Button) createExpense.findViewById(R.id.expenseItemDoneButton);
+				EditText name = (EditText) createExpense.findViewById(R.id.expenseItemNameEditText);
+				EditText date = (EditText) createExpense.findViewById(R.id.expenseItemDateEditText);
+				EditText amount = (EditText) createExpense.findViewById(R.id.expenseItemAmountEditText);
+				
+				// Set values
+				name.setText("Test Expense");
+				date.setText("03-05-2015");
+				amount.setText("100");
+				
+				// Create the expense item
+				try {
+					assertTrue(createExpense.createExpenseItem());
+				} catch (ParseException e) {
+					fail("Parse Exception :(");
+					e.printStackTrace();
+				} catch (NullPointerException e) {
+					failed = true;
+					e.printStackTrace();
+				}
+				
+			}
+		});
+		
+		// Close the activity safely outside of a thread
+		// Source: Email from Alex Wilson (March 15, 2015)
+		try {
+			createExpense.finish();
+		} catch (NullPointerException e) {
+			failed = true;
+		}
+		// Clean up
+		summaryActivity.finish();
+		
+		// Check if there were problems
+		assertFalse("Bug #91 reproduced", failed); 
+		
+		// Wait for the application to become idle
+		getInstrumentation().waitForIdleSync();
+
+		
 	}
 }

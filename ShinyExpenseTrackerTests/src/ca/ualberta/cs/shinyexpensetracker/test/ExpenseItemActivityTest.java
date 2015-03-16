@@ -189,7 +189,6 @@ public class ExpenseItemActivityTest extends
 				activity = getActivity();
 				nameInput = (EditText) activity
 						.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemNameEditText);
-
 			}
 		});
 		instrumentation.waitForIdleSync();

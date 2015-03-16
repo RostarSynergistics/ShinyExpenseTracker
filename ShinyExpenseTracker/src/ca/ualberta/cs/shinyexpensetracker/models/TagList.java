@@ -28,19 +28,19 @@ public class TagList extends Model<TagList> {
 	
 	/**
 	 * Edits a tag in the tag list at a given position
-	 * @param postion of tag to edit
+	 * @param position of tag to edit
 	 * @param newTag to change the old tag into 
 	 * @return boolean stating if change could be made
 	 */
-	public boolean editTag(int postion, Tag newTag){
+	public boolean editTag(int position, Tag newTag){
 		//Check for valid position
-		if(postion >= tags.size()){
+		if(position >= tags.size()){
 			return false;
 		}
 		
 		//Check for valid tag
 		if(checkValidTag(newTag)){
-			tags.set(postion, newTag);
+			tags.set(position, newTag);
 			notifyViews();
 			return true;
 		}else{
@@ -71,6 +71,22 @@ public class TagList extends Model<TagList> {
 		}
 	}
 	
+	/**
+	 * Deletes a tag in the tag list at a given position
+	 * @param postion of tag to delete
+	 * @return boolean stating if change could be made
+	 */
+	public boolean deleteTag(int position){
+		//Check for valid position
+		if(position >= tags.size()){
+			return false;
+		}else {
+			tags.remove(position);
+			notifyViews();
+			return true;
+		}
+		
+	}
 	
 	public void removeTag(Tag t) {
 		tags.remove(t);

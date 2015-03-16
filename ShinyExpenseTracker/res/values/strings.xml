@@ -64,6 +64,8 @@
     <string name="add_destination">Add Destination</string>
     
     <string name="no_destinations">No Destinations</string>
+    
+    <string name="delete_selected_tag">Delete selected tag?</string>
 
     <string name="title_activity_expense_item_detail_view">ExpenseItemDetailView</string>
 

@@ -13,6 +13,7 @@ public class AllTests {
 		suite.addTestSuite(ExpenseItemActivityTest.class);
 		suite.addTestSuite(ExpenseItemListFragmentTest.class);
 		suite.addTestSuite(ExpenseItemAdapterTest.class);
+
 		//$JUnit-END$
 		return suite;
 	}

@@ -12,27 +12,29 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import ca.ualberta.cs.shinyexpensetracker.AddDestinationActivity;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemListFragment;
+import ca.ualberta.cs.shinyexpensetracker.activities.DestinationListFragment;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
+import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 
-public class ExpenseItemListFragmentTest extends
+public class DestinationListFragmentTest extends
 	ActivityInstrumentationTestCase2<TabbedSummaryActivity> {
 	
-	static ExpenseItemListFragment frag;
+	static DestinationListFragment frag;
 	TabbedSummaryActivity activity;
 	ExpenseClaim claim;
 
-	public ExpenseItemListFragmentTest(Class<TabbedSummaryActivity> activityClass) {
+	public DestinationListFragmentTest(Class<TabbedSummaryActivity> activityClass) {
 		super(activityClass);
 	}
 	
-	public ExpenseItemListFragmentTest() {
+	public DestinationListFragmentTest() {
 		super(TabbedSummaryActivity.class);
 	}
 	
@@ -47,15 +49,8 @@ public class ExpenseItemListFragmentTest extends
 				new Date(123456),
 				new Date(234567)
 				);
-		// Add an expense that we can look at
-		claim.addExpense(new ExpenseItem(
-				"Really expensive thing",
-				new Date(159371),
-				ExpenseItem.Category.SUPPLIES,
-				new BigDecimal(33000),
-				ExpenseItem.Currency.CAD,
-				"Something really shiny",
-				null));
+		// Add a destination that we can look at
+		claim.addDestination(new Destination("Hell", "I'm on a highway."));
 		// Add the expense claim
 		ExpenseClaimController.getInstance().addExpenseClaim(claim);
 		
@@ -75,8 +70,8 @@ public class ExpenseItemListFragmentTest extends
 			
 			@Override
 			public void run() {
-				// Get me a shiny expense list tab
-				ExpenseItemListFragmentTest.frag = activity.selectExpenseListTab();
+				// Get me a shiny destination list tab
+				DestinationListFragmentTest.frag = activity.selectDestinationListTab();
 			}
 		});
 		getInstrumentation().waitForIdleSync();
@@ -92,21 +87,21 @@ public class ExpenseItemListFragmentTest extends
 	public void testFragViewsNotNothing() {
 		// Try to fetch the list view in the fragment.
 		assertNotNull(frag.getView()
-				.findViewById(R.id.expenseItemsListView));
+				.findViewById(R.id.destinationsListView));
 	}
 	
 	/**
 	 * Checks that tapping an item in the list view will
 	 * open the appropriate activity
 	 */
-	public void testEditExpenseShowsActivity() {
-		final ListView listview = (ListView) frag.getView().findViewById(R.id.expenseItemsListView);
+	public void testEditDestinationShowsActivity() {
+		final ListView listview = (ListView) frag.getView().findViewById(R.id.destinationsListView);
 		
 		// http://stackoverflow.com/questions/9405561/test-if-a-button-starts-a-new-activity-in-android-junit-pref-without-robotium
 		// March 13, 2015
 		
 		// Use a monitor to listen for activity changes
-		ActivityMonitor monitor = getInstrumentation().addMonitor(ExpenseItemActivity.class.getName(), null, false);
+		ActivityMonitor monitor = getInstrumentation().addMonitor(AddDestinationActivity.class.getName(), null, false);
 
 		activity.runOnUiThread(new Runnable() {
 			
@@ -123,30 +118,30 @@ public class ExpenseItemListFragmentTest extends
 		
 		// Wait up to 5 seconds for the next activity open, if available,
 		// timing out if it blocks.
-		ExpenseItemActivity nextActivity = (ExpenseItemActivity) getInstrumentation().waitForMonitorWithTimeout(monitor, 5);
+		AddDestinationActivity nextActivity = (AddDestinationActivity) getInstrumentation().waitForMonitorWithTimeout(monitor, 5);
 		assertNotNull("Next activity wasn't opened", nextActivity);
 		nextActivity.finish();
 	}
 	
 	/**
-	 * Test deleting an existing expense.
+	 * Test deleting an existing destination.
 	 * @throws InterruptedException 
 	 */
-	public void testDeleteExpense() throws InterruptedException {
+	public void testDeleteDestination() throws InterruptedException {
 		// Fake the functionality of long pressing the listview
 		// because that method doesn't seem to be exposed.
  		
-		ListView expenseList = (ListView) frag.getView().findViewById(R.id.expenseItemsListView);
+		ListView destinationList = (ListView) frag.getView().findViewById(R.id.destinationsListView);
 		
 		// Make sure we have 1 thing before
-		assertEquals(1, expenseList.getCount());
-		assertEquals(1, claim.getExpenseCount());
+		assertEquals(1, destinationList.getCount());
+		assertEquals(1, claim.getDestinationCount());
 
 		// Make sure the dialog isn't real
 		assertNull(frag.getLastDialog());
 
-		// Delete the expense at index 0		
-		frag.askDeleteExpenseAt(0);
+		// Delete the destination at index 0		
+		frag.askDeleteDestinationAt(0);
 
 		// Get a dialog
 		AlertDialog deleteDialog = frag.getLastDialog();
@@ -170,75 +165,68 @@ public class ExpenseItemListFragmentTest extends
 				
 				@Override
 				public void run() {
-					frag.deleteExpenseAt(0);
+					frag.deleteDestinationAt(0);
 				}
 			});
 		}
 		
 		// Check that the controller removed an item (UI -> Model)
-		assertEquals(0, claim.getExpenseCount());
+		assertEquals(0, claim.getDestinationCount());
 		// Check that the list view removed an item (UI -> UI)
-		assertEquals(0, expenseList.getCount());
+		assertEquals(0, destinationList.getCount());
 	}
 	
 	/**
-	 * Tests that new expenses update the interface
+	 * Tests that new destinations update the interface
 	 */
 	public void testNewExpensesAreAdded() {
-		ListView expenseList = (ListView) frag.getView().findViewById(R.id.expenseItemsListView);
+		ListView destinationList = (ListView) frag.getView().findViewById(R.id.destinationsListView);
 		// Make sure we still have that one claim from before
 		// - Sanity check
-		assertEquals(1, claim.getExpenses().size());
+		assertEquals(1, claim.getDestinationCount());
 		// - Check the list view for the same number of things  
-		assertEquals(1, expenseList.getCount());
+		assertEquals(1, destinationList.getCount());
 		
-		// Add another expense
+		// Add another destination
 		getInstrumentation().runOnMainSync(new Runnable() {
 			@Override
 			public void run() {
-				claim.addExpense(new ExpenseItem(
-						"TDD things",
-						new Date(123123),
-						ExpenseItem.Category.ACCOMODATION,
-						new BigDecimal(1000000),
-						ExpenseItem.Currency.CAD,
-						"Look out! It's TDD!",
-						null));
+				claim.addDestination(new Destination("Copy-Paste world", "Laziness"));;
 			}
 		});
 		getInstrumentation().waitForIdleSync();
 		// Make sure we have a new claim
 		// - Sanity check
-		assertEquals(2, claim.getExpenses().size());
+		assertEquals(2, claim.getDestinationCount());
 		// - Check the list view for the new number of things
-		assertEquals(2, expenseList.getCount());
+		assertEquals(2, destinationList.getCount());
 	}
 	
-	public void testExpenseListVisibility() {
-		TextView noExpensePrompt = (TextView) frag.getView().findViewById(R.id.noExpensesTextView);
+	public void testDestinationListVisibility() {
+		TextView noDestinationPrompt = (TextView) frag.getView().findViewById(R.id.noDestinationsTextView);
 
 		// Sanity check
-		assertEquals(1, claim.getExpenseCount());
+		assertEquals(1, claim.getDestinationCount());
 		
 		// Stuff to display:
 		// --> Check that the list is visible
-		assertEquals(View.INVISIBLE, noExpensePrompt.getVisibility());
+		assertEquals(View.INVISIBLE, noDestinationPrompt.getVisibility());
 		
 		// Remove the item
 		getInstrumentation().runOnMainSync(new Runnable() {
 			
 			@Override
 			public void run() {
-				claim.removeExpense(0);
+				claim.removeDestination(0);
 			}
 		});
 		getInstrumentation().waitForIdleSync();
 
 		// Sanity check
-		assertEquals(0, claim.getExpenseCount());
+		assertEquals(0, claim.getDestinationCount());
 		
 		// Nothing to display:
 		// --> Check that the prompt is visible
-		assertEquals(View.VISIBLE, noExpensePrompt.getVisibility());
+		assertEquals(View.VISIBLE, noDestinationPrompt.getVisibility());
 	}
 }

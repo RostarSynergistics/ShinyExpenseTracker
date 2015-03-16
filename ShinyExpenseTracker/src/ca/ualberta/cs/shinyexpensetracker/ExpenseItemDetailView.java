@@ -25,7 +25,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 
 public class ExpenseItemDetailView extends Activity implements IView<ExpenseItem> {
 
-	public ExpenseItem item;
+	private ExpenseItem item;
 	
 	private int claimIndex;
 	private int expenseItemIndex;

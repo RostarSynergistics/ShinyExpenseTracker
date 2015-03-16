@@ -148,6 +148,7 @@ public class TestExpenseItemDetailView extends
 	public void testEditUpdatesViews() throws ParseException {
 		// Monitor for ExpenseItemActivity
 		ActivityMonitor expenseMonitor = getInstrumentation().addMonitor(ExpenseItemActivity.class.getName(), null, false);
+
 		
 		// Press "Edit Claim"
 		getInstrumentation().invokeMenuActionSync(activity, R.id.editClaim, 0);
@@ -182,7 +183,6 @@ public class TestExpenseItemDetailView extends
 		TextView name = (TextView) activity.findViewById(R.id.expenseItemNameValue);
 		
 		// Check that the data was updated
-		assertEquals(veryDifferentName, activity.item.getName());
 		assertEquals(veryDifferentName, name.getText().toString());
 	}
 }

@@ -12,7 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.SectionsPagerAdapter;
+import ca.ualberta.cs.shinyexpensetracker.adapters.SectionsPagerAdapter;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
 import ca.ualberta.cs.shinyexpensetracker.fragments.DestinationListFragment;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ExpenseItemListFragment;

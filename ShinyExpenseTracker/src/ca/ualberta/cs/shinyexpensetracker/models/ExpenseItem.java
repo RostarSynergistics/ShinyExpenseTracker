@@ -15,8 +15,8 @@
 package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.Date;
-
 import android.graphics.Bitmap;
 
 public class ExpenseItem extends Model <ExpenseItem> {
@@ -105,7 +105,7 @@ public class ExpenseItem extends Model <ExpenseItem> {
 		return this.name;
 	}
 
-	public void setDate(Date date){
+	public void setDate(Date date) throws ParseException{
 		this.date = date;
 	}
 	
@@ -152,7 +152,7 @@ public class ExpenseItem extends Model <ExpenseItem> {
 	public Bitmap getReceiptPhoto(){
 		return this.receiptPhoto;
 	}
-	
+
 	// XXX: #69 <- This should return the formatted JodaMoney string
 	public String getValueString() {
 		return new StringBuilder()
@@ -161,4 +161,43 @@ public class ExpenseItem extends Model <ExpenseItem> {
 					.append(getCurrency().toString())
 			.toString();
 	}
+
+	public boolean doesHavePhoto() {
+		return this.receiptPhoto != null;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		else if (obj == null)
+			return false;
+		else if (getClass() != obj.getClass())
+			return false;
+		ExpenseItem other = (ExpenseItem) obj;
+		if (!this.getName().equals(other.getName()) ){
+			return false;
+		}
+		else if(!this.getDate().equals(other.getDate())){
+			return false;
+		}
+		else if(!this.getDescription().equals(other.getDescription())){
+			return false;
+		}
+		else if(!this.getCategory().equals(other.getCategory())){
+			return false;
+		}
+		else if(!this.getAmountSpent().equals(other.getAmountSpent())){
+			return false;
+		}
+		else if(!this.getCurrency().equals(other.getCurrency())){
+			return false;
+		}
+		else if(!this.getReceiptPhoto().sameAs(other.getReceiptPhoto())){
+			return false;
+		}
+		return true;
+	}
+	
+	
 }

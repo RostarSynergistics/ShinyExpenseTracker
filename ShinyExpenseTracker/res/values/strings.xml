@@ -40,6 +40,8 @@
         <item>CNY</item>
     </string-array>
 
+
+
     <string name="title_activity_tabbed_summary">Claim Summary</string>
     <string name="title_section1">Summary</string>
     <string name="title_section2">Expenses</string>
@@ -59,5 +61,8 @@
     <string name="add_expense_item">Add Expense Item</string>
     <string name="add_destination">Add Destination</string>
     <string name="delete_selected_tag">Delete selected tag?</string>
+
+    <string name="title_activity_expense_item_detail_view">ExpenseItemDetailView</string>
+
 
 </resources>

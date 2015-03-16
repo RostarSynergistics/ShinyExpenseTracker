@@ -1,28 +1,15 @@
- /** 
- * Covers Issue 5
- * Things to implement: saving of an expenseItem to an expenseClaim
- * @author Sarah Morris
- * @version 1.0
- * @since 2015-03-09
- *
- * 
- * Displays activity_create_expense_item activity, to give the user an 
- * interface to add the name, date, category, amount spent, currency, 
- * description and a photo of a receipt for expense items. 
- */
+
 
 package ca.ualberta.cs.shinyexpensetracker;
 
+import java.io.File;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
-
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -30,6 +17,8 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,9 +34,24 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 
-import java.io.File;
-import java.math.BigDecimal;
+/** 
+* Covers Issues 5 and 15
+* @author Sarah Morris
+* @author Oleg Oleynikov
+* @version 1.1
+* @since 2015-03-15
+*
+* 
+* Displays activity_create_expense_item activity, to give the user an 
+* interface to add the name, date, category, amount spent, currency, 
+* description and a photo of a receipt for expense items.
+* Also allows editing of a referred Expense Item, if there is any 
+*/
 
 public class ExpenseItemActivity extends Activity implements OnClickListener{
 
@@ -62,7 +66,12 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private AlertDialog.Builder adb;
     public Dialog alertDialog;
-    
+    private boolean isEditing = false;
+    private ExpenseItem item;
+    private ExpenseClaim claim;
+    private HashMap<String, Integer> categoriesMap = new HashMap<String, Integer>();
+    private HashMap<String, Integer> currenciesMap = new HashMap<String, Integer>();
+    private ExpenseClaimController controller;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,16 +79,35 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		setContentView(R.layout.activity_create_expense_item);
 		
 		dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.CANADA);
+
+        
+        button = (ImageButton) findViewById(R.id.expenseItemReceiptImageButton);
+        
+        Intent intent = getIntent();
+		Bundle bundle = intent.getExtras();
+		
+		if (bundle != null){
+			// we have to receive a Claim ID so that we know to what claim to save an item
+			int claimId = (Integer) bundle.get("claimIndex");
+			Integer expenseItemId = (Integer) bundle.get("itemIndex");
+			controller = ExpenseClaimController.getInstance();
+			claim = controller.getExpenseClaim(claimId);
+			// if we received an Item ID
+			// then we are editing an item
+			// fetch the item and preset all fields with its values
+			if (expenseItemId != null){
+				item = claim.getItemById(expenseItemId);
+				isEditing = true;
+				populateTextViews();
+			}
+		}
 		adb = new AlertDialog.Builder(this);
         
         findViewsById();
         
         setDateTimeField();
-        
-        button = (ImageButton) findViewById(R.id.expenseItemReceiptImageButton);
-
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -99,6 +127,69 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		return super.onOptionsItemSelected(item);
 	}
 	
+	/**
+	 * Pre-set fields with a loaded ExpenseItem info
+	 */
+	private void populateTextViews(){
+		populateHashMaps();
+		
+		setEditTextValue(R.id.expenseItemNameEditText, item.getName().toString());
+		setEditTextValue(R.id.expenseItemDateEditText, dateFormatter.format(item.getDate()));
+		setEditTextValue(R.id.expesenItemDescriptionEditText, item.getDescription().toString());
+		setEditTextValue(R.id.expenseItemAmountEditText, item.getAmountSpent().toString());
+		Spinner s = (Spinner) findViewById(R.id.expenseItemCategorySpinner);
+		s.setSelection(categoriesMap.get(item.getCategory().toString()));
+		s = (Spinner) findViewById(R.id.expenseItemCurrencySpinner);
+		s.setSelection(currenciesMap.get(item.getCurrency().name()));
+		
+		if (item.doesHavePhoto()){
+			button.setImageBitmap(item.getReceiptPhoto());
+		}
+	}
+	
+	private void setEditTextValue(int textViewId, String value){
+		EditText tv = (EditText) findViewById(textViewId);
+		tv.setText(value);
+	}
+	
+	private void populateHashMaps() {
+		categoriesMap.put("air fare", 0);
+		categoriesMap.put("ground transport", 1);
+		categoriesMap.put("vehicle rental", 2);
+		categoriesMap.put("private automobile", 3);
+		categoriesMap.put("fuel", 4);
+		categoriesMap.put("parking", 5);
+		categoriesMap.put("registration", 6);
+		categoriesMap.put("accomodation", 7);
+		categoriesMap.put("meal", 8);
+		categoriesMap.put("supplies", 9);
+
+		currenciesMap.put("CAD", 0);
+		currenciesMap.put("USD", 1);
+		currenciesMap.put("GBP", 2);
+		currenciesMap.put("EUR", 3);
+		currenciesMap.put("CHF", 4);
+		currenciesMap.put("JPY", 5);
+		currenciesMap.put("CNY", 6);
+		
+	}
+	
+	// copied from https://stackoverflow.com/questions/26842530/roundedimageview-add-border-and-shadow
+	// on March 15, 2015
+	/** 
+	 * Convert a Drawable object to Bitmap 
+	 */
+	public Bitmap convertToBitmap(Drawable drawable, int widthPixels, int heightPixels) {
+        Bitmap mutableBitmap = Bitmap.createBitmap(widthPixels, heightPixels, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(mutableBitmap);
+        drawable.setBounds(0, 0, widthPixels, heightPixels);
+        drawable.draw(canvas);
+
+        return mutableBitmap;
+    }
+	
+	
+
 	private void findViewsById() {
     	date = (EditText) findViewById(R.id.expenseItemDateEditText);
         date.setInputType(InputType.TYPE_NULL);
@@ -141,12 +232,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
      * @param v
      * @throws ParseException
      */
-	public boolean createExpenseItem(View v) throws ParseException {
-		
-		Intent intent = getIntent();
-		int claimIndex = intent.getIntExtra("claimIndex", -1);
-		ExpenseClaimController ecc = ExpenseClaimController.getInstance();
-		ExpenseClaim claim = ecc.getExpenseClaim(claimIndex);
+	public boolean createExpenseItem() throws ParseException {
 		
 		EditText nameText = (EditText) findViewById(R.id.expenseItemNameEditText);
 		EditText dateText = (EditText) findViewById(R.id.expenseItemDateEditText);
@@ -220,14 +306,24 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 			description = descriptionText.getText().toString();
 		}
 		
-		ExpenseItem expense = new ExpenseItem(name, date, category, amount, 
-				currency, description, button.getDrawingCache()); 
+		// convert ImageButton image to bitmap
+		Drawable dr = button.getDrawable();
+		Bitmap bm = convertToBitmap(dr, dr.getMinimumWidth(), dr.getMinimumHeight());
 		
-		//Add expenseItem to claim
-		claim.addExpense(expense);
-				
+		ExpenseItem expense = new ExpenseItem(name, date, category, amount, 
+				currency, description, bm); 
+		
+		if (isEditing){
+			claim.removeExpense(item);
+			claim.addExpense(expense);
+		}
+		else{
+			claim.addExpense(expense);
+		}
+		
 		return true;
 	}
+
 	
 	/** 
 	 * Runs on click of the expenseItemImageButton.  Opens Camera app to allow user to take a 
@@ -281,7 +377,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 	 */
 	public void doneExpenseItem(View v) throws ParseException{
 		
-		if (createExpenseItem(v)){
+		if (createExpenseItem()){
 			finish();
 		}
 	}

@@ -1,5 +1,6 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;

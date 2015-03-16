@@ -319,6 +319,8 @@ public class ViewAllExpenseClaimsActivityTests extends
 		final AddExpenseClaimActivity createClaim = (AddExpenseClaimActivity) getInstrumentation().waitForMonitorWithTimeout(claimMonitor, 1000);
 		assertEquals(true, getInstrumentation().checkMonitorHit(claimMonitor, 1));
 		
+		getInstrumentation().waitForIdleSync();
+		
 		// Fill in the data
 		createClaim.runOnUiThread(new Runnable() {
 			

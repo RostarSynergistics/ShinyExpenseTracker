@@ -150,15 +150,33 @@
         android:layout_marginLeft="22dp"
         android:text="Expense Item Name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <Button
+        android:id="@+id/removeReceiptButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/expenseItemDetailViewBackButton"
+        android:layout_alignParentEnd="true"
+        android:onClick="onClickRemoveReceipt"
+        android:text="Remove Receipt" />
 
     <ImageButton
         android:id="@+id/expenseItemDetailImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/expenseItemDetailViewBackButton"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="18dp"
+        android:layout_below="@+id/expenseItemCompletenessValue"
+        android:layout_marginTop="26dp"
         android:onClick="onReceiptThumbnailClick"
         android:src="@android:drawable/alert_light_frame" />
+
+    <Button
+        android:id="@+id/removeReceiptButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/expenseItemDetailViewBackButton"
+        android:layout_alignParentEnd="true"
+        android:onClick="onClickRemoveReceipt"
+        android:text="Remove Receipt" />
 
 </RelativeLayout>

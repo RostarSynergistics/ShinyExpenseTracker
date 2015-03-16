@@ -17,8 +17,14 @@
 
 
 package ca.ualberta.cs.shinyexpensetracker.framework;
+import java.io.IOException;
+
+import android.content.Context;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
+import ca.ualberta.cs.shinyexpensetracker.persistence.FilePersistenceStrategy;
+import ca.ualberta.cs.shinyexpensetracker.persistence.ITagListPersister;
+import ca.ualberta.cs.shinyexpensetracker.persistence.TagListPersister;
 
 /**
  * TagController object that stores a list
@@ -30,26 +36,32 @@ import ca.ualberta.cs.shinyexpensetracker.models.TagList;
  * @since 2015-03-10
  */
 public class TagController {
+	private ITagListPersister persister;
 	private TagList list;
-	private static TagController tagController;
-
-
-	private TagController() {
-		list = new TagList();
-	}
 
 	/**
-	 * Creates an instance of TagController if one does not already exist. 
-	 * If one does exist it is within the class it is returned
-	 * @return A tag controller
+	 * Default constructor.
+	 * 
+	 * Only use if you have a very good reason. Otherwise, just use
+	 * Application.getTagController().
+	 * 
+	 * @param context The application's current context.
+	 * @throws IOException
 	 */
-	public static TagController getInstance() {
-		if (tagController == null) {
-			tagController = new TagController();
-			return tagController;
-		} else {
-			return tagController;
-		}
+	public TagController(Context context) throws IOException {
+		this(new TagListPersister(
+				new FilePersistenceStrategy(context, "tags")));
+	}
+	
+	/**
+	 * Constructor. Use for testing only.
+	 * 
+	 * @param context The application's current context.
+	 * @throws IOException
+	 */
+	public TagController(ITagListPersister persister) throws IOException {
+		this.persister = persister;
+		list = persister.loadTags();
 	}
 	
 	/**
@@ -58,8 +70,10 @@ public class TagController {
 	 * @param The tag object to add
 	 * @return boolean stating if the tag was added
 	 */
-	public boolean addTag(Tag tag){
-		return list.addTag(tag);
+	public boolean addTag(Tag tag) throws IOException {
+		boolean result = list.addTag(tag);
+		persister.saveTags(list);
+		return result;
 	}
 
 	/**
@@ -75,9 +89,11 @@ public class TagController {
 	 * Remove a tag from the current tag list
 	 * <p>
 	 *@param s the string value of the tag to be removed
+	 * @throws IOException 
 	 */
-	public void removeTag(String s) {
+	public void removeTag(String s) throws IOException {
 		list.removeTag(s);
+		persister.saveTags(list);
 	}
 	
 	/**
@@ -102,14 +118,6 @@ public class TagController {
 	}
 	
 	/**
-	 * Sets a new tag list for the singleton object
-	 * @param tagList a new tag list for the singleton
-	 */
-	public void setTagList(TagList tagList){
-		list = tagList;
-	}
-	
-	/**
 	 * Will return the tag at the given index in the list
 	 * @param index the index of the tag to get in the list
 	 * @return the Tag at the given index
@@ -118,13 +126,19 @@ public class TagController {
 		return list.getTagById(index);
 	}
 	
+
+
+	
+
 	/**
 	 * Deletes a tag from the master tagList
 	 * @param index
 	 * @return
 	 */
-	public boolean deleteTag(int index){
-		return list.deleteTag(index);
+	public boolean deleteTag(int index) throws IOException {
+		boolean result = list.deleteTag(index);
+		persister.saveTags(list);
+		return result;
 	}
 	
 	/**
@@ -133,8 +147,10 @@ public class TagController {
 	 * @param newTag
 	 * @return
 	 */
-	public boolean editTag(int index, Tag newTag){
-		return list.editTag(index, newTag);
+	public boolean editTag(int index, Tag newTag) throws IOException {
+		boolean result = list.editTag(index, newTag);
+		persister.saveTags(list);
+		return result;
 	}
 
 }

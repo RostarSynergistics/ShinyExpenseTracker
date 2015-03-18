@@ -30,10 +30,15 @@ public class ExpenseClaimListPersisterTests extends TestCase {
 			persister.saveExpenseClaims(list);
 			ExpenseClaimList newList = persister.loadExpenseClaims();
 			assertEquals(1, newList.getCount());
-			assertEquals(claim.getName(), newList.getClaim(0).getName());
+			ExpenseClaim loadedClaim = newList.getClaim(0);
+			compareExpenseClaims(claim, loadedClaim);
 		} catch (IOException e) {
 			fail();
 		}
+	}
+	
+	private void compareExpenseClaims(ExpenseClaim oldClaim, ExpenseClaim newClaim) {
+		assertEquals(oldClaim.getName(), newClaim.getName());
 	}
 
 	private class MockPersistenceStrategy implements IPersistenceStrategy {

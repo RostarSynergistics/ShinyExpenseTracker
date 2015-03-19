@@ -219,8 +219,9 @@ public class AddExpenseClaimActivity extends Activity implements
 			endDate = dateFormatter.parse(endDateText.getText().toString());
 		}
 
-		if (startDate.after(endDate) || endDate.before(startDate)) {
-			adb.setMessage("Invalid range of dates. Start Date cannot be set to after the End Date");
+		if (startDate.after(endDate)) {
+			adb.setMessage("Invalid range of dates");
+			adb.setMessage("Start Date cannot be set to after the End Date");
 			adb.setCancelable(true);
 			adb.setNeutralButton("Back", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {

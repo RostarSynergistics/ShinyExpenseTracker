@@ -48,6 +48,7 @@
         android:layout_alignStart="@+id/textViewStartDate"
         android:layout_alignEnd="@+id/editTextExpenseClaimName"
         android:layout_below="@+id/textViewStartDate"
+        android:focusable="false"
         android:ems="10"
         android:hint="@string/tap_to_enter"
         android:inputType="date" />
@@ -59,6 +60,7 @@
         android:layout_alignStart="@+id/textViewEndDate"
         android:layout_alignEnd="@+id/editTextStartDate"
         android:layout_below="@+id/textViewEndDate"
+        android:focusable="false"
         android:ems="10"
         android:hint="@string/tap_to_enter"
         android:inputType="date" />

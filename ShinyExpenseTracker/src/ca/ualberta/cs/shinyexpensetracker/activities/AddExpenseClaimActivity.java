@@ -60,7 +60,7 @@ public class AddExpenseClaimActivity extends Activity implements
 		findViewsById();
 
 		setDateTimeField();
-		
+
 		controller = Application.getExpenseClaimController();
 
 		Intent intent = getIntent();
@@ -71,7 +71,7 @@ public class AddExpenseClaimActivity extends Activity implements
 			claim = controller.getExpenseClaim(claimIndex);
 			displayExpenseClaim(claim);
 		}
-		
+
 	}
 
 	@Override
@@ -94,8 +94,8 @@ public class AddExpenseClaimActivity extends Activity implements
 	}
 
 	/**
-	 * Creates a date picker and sets it to the edit text views 
-	 * for picking dates
+	 * Creates a date picker and sets it to the edit text views for picking
+	 * dates
 	 */
 	private void setDateTimeField() {
 		startDate.setOnClickListener(this);
@@ -154,11 +154,12 @@ public class AddExpenseClaimActivity extends Activity implements
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	/**
 	 * gets name, endDate, and startDate values from their respective EditTexts
-	 * handles exception in the case of invalid values for all three 
-	 * returns claim if all conditions are passed
+	 * handles exception in the case of invalid values for all three returns
+	 * claim if all conditions are passed
+	 * 
 	 * @param v
 	 * @return
 	 * @throws ParseException
@@ -171,21 +172,22 @@ public class AddExpenseClaimActivity extends Activity implements
 
 		String name = "";
 		if (nameText.getText().length() == 0) {
-            adb.setMessage("Expense Claim requires a name");
-            adb.setCancelable(true);
-            
-            adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {	
-                @Override
-                public void onClick(DialogInterface dialog, int which) { }
-            });
-            alertDialog = adb.create();
-            alertDialog.show();
-            return null;
+			adb.setMessage("Expense Claim requires a name");
+			adb.setCancelable(true);
+
+			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+				}
+			});
+			alertDialog = adb.create();
+			alertDialog.show();
+			return null;
 		} else {
 			name = nameText.getText().toString();
 		}
 
-		Date startDate1 = new Date();
+		Date startDate = new Date();
 		if (startDateText.getText().length() == 0) {
 			adb.setMessage("Expense Claim requires a start date");
 			adb.setCancelable(true);
@@ -198,9 +200,9 @@ public class AddExpenseClaimActivity extends Activity implements
 			alertDialog.show();
 			return null;
 		} else {
-			startDate1 = dateFormatter.parse(startDateText.getText().toString());
+			startDate = dateFormatter.parse(startDateText.getText().toString());
 		}
-		
+
 		Date endDate = new Date();
 		if (endDateText.getText().length() == 0) {
 			adb.setMessage("Expense Claim requires an end date");
@@ -213,14 +215,27 @@ public class AddExpenseClaimActivity extends Activity implements
 			alertDialog = adb.create();
 			alertDialog.show();
 			return null;
-			} else {
-				endDate = dateFormatter.parse(endDateText.getText().toString());
-			}
+		} else {
+			endDate = dateFormatter.parse(endDateText.getText().toString());
+		}
+
+		if (startDate.after(endDate)) {
+			adb.setMessage("Invalid range of dates");
+			adb.setMessage("Start Date cannot be set to after the End Date");
+			adb.setCancelable(true);
+			adb.setNeutralButton("Back", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+				}
+			});
+			alertDialog = adb.create();
+			alertDialog.show();
+			return null;
+		}
 
 		claim.setName(name);
-		claim.setStartDate(startDate1);
+		claim.setStartDate(startDate);
 		claim.setEndDate(endDate);
-		
+
 		if (claimIndex == -1) {
 			try {
 				controller.addExpenseClaim(claim);
@@ -228,39 +243,41 @@ public class AddExpenseClaimActivity extends Activity implements
 				throw new RuntimeException(e);
 			}
 		}
-		
+
 		// Sanity check
 		if (controller.getIndexOf(claim) == -1) {
 			Log.wtf("Add Claim", "Claim isn't in the claim list?");
 			throw new RuntimeException();
 		}
-		
+
 		return claim;
 	}
-	
+
 	/**
 	 * presets EditText with already existing claim for editing
+	 * 
 	 * @param claim
 	 */
-	
+
 	public void displayExpenseClaim(ExpenseClaim claim) {
 		EditText claimName = (EditText) findViewById(R.id.editTextExpenseClaimName);
-		
+
 		claimName.setText(claim.getName().toString());
 		startDate.setText(dateFormatter.format(claim.getStartDate()));
 		endDate.setText(dateFormatter.format(claim.getEndDate()));
 	}
-	
+
 	/**
 	 * returns finish() method on successful added/edited claim
+	 * 
 	 * @param v
 	 * @throws ParseException
 	 */
-	
+
 	public void doneExpenseItem(View v) throws ParseException {
 		ExpenseClaim claim = saveExpenseClaim(v);
-		if (claim != null){
-			if (claimIndex == -1){
+		if (claim != null) {
+			if (claimIndex == -1) {
 				Intent intent = new Intent(this, TabbedSummaryActivity.class);
 				intent.putExtra("claimIndex", controller.getIndexOf(claim));
 				finish();
@@ -272,19 +289,30 @@ public class AddExpenseClaimActivity extends Activity implements
 	}
 
 	/**
-	 * for handling test arguments. See activity_add_expense_claim
+	 * for handling test arguments. See ExpenseItemActivityTest
+	 * 
 	 * @return fromDatePickerDialog
 	 */
 	public DatePickerDialog getStartDateDialog() {
 		return fromDatePickerDialog;
 	}
-	
+
 	/**
-	 * for handling test arguments. See activity_add_expense_claim
+	 * for handling test arguments. See ExpenseItemActivityTest
+	 * 
 	 * @return toDatePickerDialog
 	 */
 
 	public DatePickerDialog getEndDateDialog() {
 		return toDatePickerDialog;
+	}
+
+	/**
+	 * for handling test arguments. See ExpenseItemActivityTest
+	 * 
+	 * @return alertDialog;
+	 */
+	public Dialog getAlertDialog() {
+		return alertDialog;
 	}
 }

@@ -231,15 +231,6 @@ public class AddExpenseClaimActivity extends Activity implements
 			return null;
 		}
 
-		/*if (endDate.before(startDate)) {
-			adb.setMessage("endDate cannot be set to before the startDate ");
-			adb.setCancelable(true);
-			adb.setNeutralButton("Back", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-				}
-			}).show();
-		}*/
-
 		claim.setName(name);
 		claim.setStartDate(startDate);
 		claim.setEndDate(endDate);
@@ -314,7 +305,7 @@ public class AddExpenseClaimActivity extends Activity implements
 	public DatePickerDialog getEndDateDialog() {
 		return toDatePickerDialog;
 	}
-	
+
 	/**
 	 * for handling test arguments. See ExpenseItemActivityTest
 	 * 

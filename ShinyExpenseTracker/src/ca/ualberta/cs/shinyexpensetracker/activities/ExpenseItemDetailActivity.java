@@ -5,6 +5,8 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -163,6 +166,11 @@ public class ExpenseItemDetailActivity extends Activity implements
 	 * @param v
 	 */
 	public void onReceiptThumbnailClick(View v) {
+		ImageView iv = (ImageView) findViewById(R.id.expenseItemDetailImageButton);
+		if (iv.getDrawable()==null){
+			Toast.makeText(this, "No receipt to display", Toast.LENGTH_SHORT).show();
+			return;
+		}
 		Intent intent = new Intent(ExpenseItemDetailActivity.this,
 				ReceiptViewActivity.class);
 		intent.putExtra("claimIndex", claimIndex);
@@ -170,7 +178,9 @@ public class ExpenseItemDetailActivity extends Activity implements
 		startActivity(intent);
 	}
 	public void onClickRemoveReceipt(View v){
-		item.setReceiptPhoto(null);	
+		item.setReceiptPhoto(null);
+		ImageView iv = (ImageView) findViewById(R.id.expenseItemDetailImageButton);
+		iv.setImageDrawable(null);
 	}
 
 }

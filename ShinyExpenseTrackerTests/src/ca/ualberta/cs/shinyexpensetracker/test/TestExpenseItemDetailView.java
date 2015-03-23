@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
@@ -152,6 +153,12 @@ public class TestExpenseItemDetailView extends
 		assertNotNull("receipt not present in item", item.getReceiptPhoto());
 		clickRemoveReceipt();
 		assertNull("did not remove receipt photo", item.getReceiptPhoto());
+		ImageView iv = (ImageView) activity.findViewById(R.id.expenseItemDetailImageButton);
+		assertNull("did not remove receipt photo from screen", iv.getDrawable());
+		TextView receipt = (TextView) activity
+				.findViewById(R.id.expenseItemReceiptValue);
+		assertEquals("receipt is not right", receipt.getText().toString(),
+				"Not Present");
 	}
 	
 	private void clickRemoveReceipt() {

@@ -5,8 +5,6 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -177,6 +175,10 @@ public class ExpenseItemDetailActivity extends Activity implements
 		intent.putExtra("expenseIndex", expenseItemIndex);
 		startActivity(intent);
 	}
+	/**
+	 * Remove receipt from item and thumbnail, update the fields
+	 * @param v
+	 */
 	public void onClickRemoveReceipt(View v){
 		item.setReceiptPhoto(null);
 		ImageView iv = (ImageView) findViewById(R.id.expenseItemDetailImageButton);

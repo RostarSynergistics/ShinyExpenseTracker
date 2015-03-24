@@ -220,7 +220,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 			return false;
 		}
 		ExpenseClaim rhs = (ExpenseClaim) obj;
-		return new EqualsBuilder().appendSuper(super.equals(obj))
+		return new EqualsBuilder()
 				.append(getName(), rhs.getName())
 				.append(getStartDate(), rhs.getStartDate())
 				.append(getEndDate(), rhs.getEndDate())

@@ -20,7 +20,7 @@ public class ExpenseClaimEqualsTests extends TestCase {
 	}
 	
 	private ExpenseItem getTestExpenseItem() {
-		return new ExpenseItem("test", new Date(),
+		return new ExpenseItem("test", new Date(500),
 				ExpenseItem.Category.ACCOMODATION, new BigDecimal("20.00"),
 				ExpenseItem.Currency.CAD);
 	}

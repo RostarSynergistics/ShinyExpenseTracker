@@ -18,6 +18,9 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Date;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import android.graphics.Bitmap;
 
 /**
@@ -37,14 +40,14 @@ public class ExpenseItem extends Model <ExpenseItem> {
 
 	public enum Category { 
 		AIR_FARE("air fare"),
-		GROUND_TRANSPORT("ground transport"), 
-		VEHICLE_RENTAL("vehicle rental"), 
-		PRIVATE_AUTOMOBILE("private automobile"), 
-		FUEL("fuel"), 
-		PARKING("parking"), 
-		REGISTRATION("registration"), 
-		ACCOMODATION("accomodation"), 
-		MEAL("meal"), 
+		GROUND_TRANSPORT("ground transport"),
+		VEHICLE_RENTAL("vehicle rental"),
+		PRIVATE_AUTOMOBILE("private automobile"),
+		FUEL("fuel"),
+		PARKING("parking"),
+		REGISTRATION("registration"),
+		ACCOMODATION("accomodation"),
+		MEAL("meal"),
 		SUPPLIES("supplies");
 
 		private final String text;
@@ -119,7 +122,7 @@ public class ExpenseItem extends Model <ExpenseItem> {
 		return this.name;
 	}
 
-	public void setDate(Date date) throws ParseException{
+	public void setDate(Date date) {
 		this.date = date;
 	}
 	
@@ -187,36 +190,30 @@ public class ExpenseItem extends Model <ExpenseItem> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
 			return true;
-		else if (obj == null)
-			return false;
-		else if (getClass() != obj.getClass())
-			return false;
-		ExpenseItem other = (ExpenseItem) obj;
-		if (!this.getName().equals(other.getName()) ){
+		}
+		if (obj.getClass() != getClass()) {
 			return false;
 		}
-		else if(!this.getDate().equals(other.getDate())){
-			return false;
-		}
-		else if(!this.getDescription().equals(other.getDescription())){
-			return false;
-		}
-		else if(!this.getCategory().equals(other.getCategory())){
-			return false;
-		}
-		else if(!this.getAmountSpent().equals(other.getAmountSpent())){
-			return false;
-		}
-		else if(!this.getCurrency().equals(other.getCurrency())){
-			return false;
-		}
-		else if(!this.getReceiptPhoto().sameAs(other.getReceiptPhoto())){
-			return false;
-		}
-		return true;
+		ExpenseItem rhs = (ExpenseItem) obj;
+		return new EqualsBuilder()
+				.append(getName(), rhs.getName())
+				.append(getDate(), rhs.getDate())
+				.append(getCategory(), rhs.getCategory())
+				.append(getAmountSpent(), rhs.getAmountSpent())
+				.append(getCurrency(), rhs.getCurrency())
+				.append(getDescription(), rhs.getDescription())
+				.isEquals();
 	}
 	
-	
+	// Source:
+	// http://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/builder/ToStringBuilder.html
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
+	}
 }

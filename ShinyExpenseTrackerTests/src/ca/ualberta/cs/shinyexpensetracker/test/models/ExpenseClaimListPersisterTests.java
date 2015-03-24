@@ -1,7 +1,11 @@
 package ca.ualberta.cs.shinyexpensetracker.test.models;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Date;
+
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 
 import junit.framework.TestCase;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -20,7 +24,7 @@ public class ExpenseClaimListPersisterTests extends TestCase {
 	 * Tests ExpenseClaimListPersister's ability to save and load an
 	 * ExpenseClaimList.
 	 */
-	public void testPersistanceOfExpenseClaims() {
+	public void testPersistenceOfExpenseClaims() {
 		ExpenseClaimList list = new ExpenseClaimList();
 		ExpenseClaim claim = getTestClaim();
 		list.addClaim(claim);
@@ -33,7 +37,7 @@ public class ExpenseClaimListPersisterTests extends TestCase {
 			ExpenseClaimList newList = persister.loadExpenseClaims();
 			assertEquals(1, newList.getCount());
 			ExpenseClaim loadedClaim = newList.getClaim(0);
-			compareExpenseClaims(claim, loadedClaim);
+			assertEquals(claim, loadedClaim);
 		} catch (IOException e) {
 			fail();
 		}
@@ -46,12 +50,12 @@ public class ExpenseClaimListPersisterTests extends TestCase {
 		ExpenseClaim claim = new ExpenseClaim("test", startDate, endDate,
 				ExpenseClaim.Status.IN_PROGRESS);
 		
+		int[] colors = new int[] { 1, 2, 3, 4 };
+		claim.addExpense(new ExpenseItem("test", new Date(5000),
+				ExpenseItem.Category.ACCOMODATION, new BigDecimal("20.00"),
+				ExpenseItem.Currency.CAD, "Description", Bitmap.createBitmap(colors, 2, 2, Config.ALPHA_8)));
 		
 		return claim;
-	}
-	
-	private void compareExpenseClaims(ExpenseClaim oldClaim, ExpenseClaim newClaim) {
-		assertEquals(oldClaim.getName(), newClaim.getName());
 	}
 
 	private class MockPersistenceStrategy implements IPersistenceStrategy {

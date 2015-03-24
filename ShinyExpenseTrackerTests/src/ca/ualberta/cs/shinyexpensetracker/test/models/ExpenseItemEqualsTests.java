@@ -68,6 +68,14 @@ public class ExpenseItemEqualsTests extends TestCase {
 		assertNotEqual();
 	}
 
+	public void testThatTwoItemsWithDifferentReceiptPhotosAreNotEqual() {
+		int[] colors = new int[] { 1 };
+		
+		item2.setReceiptPhoto(Bitmap.createBitmap(colors, 1, 1, Config.ALPHA_8));
+		
+		assertNotEqual();
+	}
+
 	private void assertEquals() {
 		assertEquals(item1, item2);
 	}

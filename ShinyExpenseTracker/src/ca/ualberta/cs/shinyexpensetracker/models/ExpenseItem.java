@@ -200,7 +200,7 @@ public class ExpenseItem extends Model <ExpenseItem> {
 			return false;
 		}
 		ExpenseItem rhs = (ExpenseItem) obj;
-		return new EqualsBuilder()
+		Boolean equal = new EqualsBuilder()
 				.append(getName(), rhs.getName())
 				.append(getDate(), rhs.getDate())
 				.append(getCategory(), rhs.getCategory())
@@ -208,8 +208,29 @@ public class ExpenseItem extends Model <ExpenseItem> {
 				.append(getCurrency(), rhs.getCurrency())
 				.append(getDescription(), rhs.getDescription())
 				.isEquals();
+		
+		// Calling .equals() on two Bitmaps doesn't do what we want
+		// So, need to used .sameAs() instead
+		return equal && hasSameReceiptPhoto(rhs);
 	}
 	
+	/**
+	 * Returns true if this ExpenseItem and the other
+	 * have the exact same receipt photo.
+	 * 
+	 * @param rhs The other ExpenseItem.
+	 * @return True if the two have the exact same receipt photo.
+	 */
+	private boolean hasSameReceiptPhoto(ExpenseItem rhs) {
+		if (getReceiptPhoto() == null) {
+			return rhs.getReceiptPhoto() == null;
+		}
+		if (rhs.getReceiptPhoto() == null) {
+			return false;
+		}
+		return getReceiptPhoto().sameAs(rhs.getReceiptPhoto());
+	}
+
 	// Source:
 	// http://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/builder/ToStringBuilder.html
 	@Override

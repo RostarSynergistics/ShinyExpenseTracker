@@ -6,10 +6,14 @@ import java.util.Locale;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
@@ -61,7 +65,7 @@ public class ExpenseItemAdapter extends BaseAdapter implements ListAdapter {
 	public long getItemId(int position) {
 		return position;
 	}
-
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// Are we recycling an existing view?
@@ -79,16 +83,44 @@ public class ExpenseItemAdapter extends BaseAdapter implements ListAdapter {
 		TextView expenseItemValue = (TextView) convertView.findViewById(R.id.expenseItemValue);
 		TextView expenseItemDate = (TextView) convertView.findViewById(R.id.expenseItemDate);
 		TextView expenseItemCategory = (TextView) convertView.findViewById(R.id.expenseItemCategory);
+		TextView expenseItemDescTextView = (TextView) convertView.findViewById(R.id.expenseItemDescription);
+		ImageView expenseItemReceiptIndicator = (ImageView) convertView.findViewById(R.id.expenseItemReceiptIndicator);
+		CheckBox expenseItemFlagCheckBox = (CheckBox) convertView.findViewById(R.id.expenseItemCompletenessFlag);
 		
 		// Get the expense item context for this view
-		ExpenseItem expense = getItem(position);
+		final ExpenseItem expense = getItem(position);
+		
+		// Handle the incompleteness flag here
+		expenseItemFlagCheckBox.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				CheckBox ch = (CheckBox) v;
+				expense.setIncompletenessMarker(ch.isChecked());
+				/// XXX Make this into a test
+				Toast.makeText(context, "Incomplete = "+expense.isMarkedIncomplete(), Toast.LENGTH_SHORT).show();
+			}
+		});
+		
+		expenseItemFlagCheckBox.setChecked(expense.isMarkedIncomplete());
 		
 		// Fill in the values
 		SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
+		
 		expenseItemName.setText(expense.getName().toString());
 		expenseItemValue.setText(expense.getValueString().toString());
 		expenseItemDate.setText(df.format(expense.getDate()));
 		expenseItemCategory.setText(expense.getCategory().toString());
+		expenseItemDescTextView.setText(expense.getDescription().toString());
+		
+		// Is expense marked incomplete?
+		if (expense.doesHavePhoto()) {
+			// Yes. Display indicator
+			expenseItemReceiptIndicator
+					.setImageResource(android.R.drawable.ic_menu_camera);
+		} else {
+			// No. Hide indicator
+			expenseItemReceiptIndicator.setImageBitmap(null);
+		}
 
 		// Return the converted view
 		return convertView;

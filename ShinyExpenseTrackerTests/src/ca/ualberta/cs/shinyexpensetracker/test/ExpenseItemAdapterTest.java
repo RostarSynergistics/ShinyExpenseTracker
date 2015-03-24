@@ -187,11 +187,11 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 		incompletenessFlag = (CheckBox) view.findViewById(R.id.expenseItemCompletenessFlag);
 
 		// Ensure that the photo indicator is set (photo exists)
-		assertNotNull(scrumptiousFood.getReceiptPhoto());
+		assertNotNull(classyHotel.getReceiptPhoto());
 		assertNotNull(((BitmapDrawable)receiptIndicator.getDrawable()).getBitmap());
 		
 		// Ensure that the manual flag is not flagged (not incomplete)
-		assertFalse(scrumptiousFood.isMarkedIncomplete());
+		assertFalse(classyHotel.isMarkedIncomplete());
 		assertFalse(incompletenessFlag.isChecked());
 	}
 	

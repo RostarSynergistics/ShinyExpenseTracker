@@ -2,31 +2,80 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dp" >
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:descendantFocusability="blocksDescendants" >
+    <!-- Blocks Descendants: 
+    	Source: http://stackoverflow.com/questions/1821871/how-to-fire-onlistitemclick-in-listactivity-with-buttons-in-list
+    			March 23, 2015 -->
 
-	<TextView
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:textAppearance="?android:attr/textAppearanceMedium"
-	android:id="@+id/expenseItemName">
-	</TextView>
-	<TextView
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:textAppearance="?android:attr/textAppearanceMedium"
-	android:id="@+id/expenseItemValue">
-	</TextView>
-	<TextView
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:textAppearance="?android:attr/textAppearanceMedium"
-	android:id="@+id/expenseItemDate">
-	</TextView>
-	<TextView
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:textAppearance="?android:attr/textAppearanceMedium"
-	android:id="@+id/expenseItemCategory">
-	</TextView>
+    <!-- Text details -->
+
+    <LinearLayout
+        android:id="@+id/expenseItemDetailsLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/expenseItemName"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceMedium" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/expenseItemValue"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/expenseItemDate"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/expenseItemCategory"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/expenseItemDescription"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall" >
+        </TextView>
+    </LinearLayout>
+
+    <!-- Indicators -->
+
+    <LinearLayout
+        android:id="@+id/expenseItemIndicators"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <CheckBox
+            android:id="@+id/expenseItemCompletenessFlag"
+            style="?android:attr/starStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true" />
+
+        <ImageView
+            android:id="@+id/expenseItemReceiptIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/expense_item_thumbnail_desc" />
+    </LinearLayout>
+
 </LinearLayout>

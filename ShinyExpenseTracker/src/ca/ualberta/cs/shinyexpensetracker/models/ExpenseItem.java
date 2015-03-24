@@ -161,6 +161,7 @@ public class ExpenseItem extends Model <ExpenseItem> {
 	
 	public void setReceiptPhoto(Bitmap photo) {
 		this.receiptPhoto = photo;
+		notifyViews();
 	}
 	
 	public Bitmap getReceiptPhoto(){

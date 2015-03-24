@@ -85,9 +85,10 @@ public class TestExpenseItemDetailView extends
 		ActivityMonitor expenseMonitor = getInstrumentation().addMonitor(ExpenseItemActivity.class.getName(), null, false);
 		
 		// Press "Edit Claim"
-		getInstrumentation().invokeMenuActionSync(activity, R.id.editClaim, 0);
+		getInstrumentation().invokeMenuActionSync(activity, R.id.editExpenseItem, 0);
 		
 		// Get the activity
+		getInstrumentation().waitForIdleSync();
 		final ExpenseItemActivity expenseActivity = (ExpenseItemActivity) getInstrumentation().waitForMonitorWithTimeout(expenseMonitor, 1000);
 		assertEquals("Did not open the expense activity", true, getInstrumentation().checkMonitorHit(expenseMonitor, 1));
 		
@@ -185,9 +186,10 @@ public class TestExpenseItemDetailView extends
 
 		
 		// Press "Edit Claim"
-		getInstrumentation().invokeMenuActionSync(activity, R.id.editClaim, 0);
+		getInstrumentation().invokeMenuActionSync(activity, R.id.editExpenseItem, 0);
 		
 		// Get the activity
+		getInstrumentation().waitForIdleSync();
 		final ExpenseItemActivity expenseActivity = (ExpenseItemActivity) getInstrumentation().waitForMonitorWithTimeout(expenseMonitor, 1000);
 		assertEquals("Did not open the expense activity", true, getInstrumentation().checkMonitorHit(expenseMonitor, 1));
 		

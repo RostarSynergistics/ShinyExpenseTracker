@@ -79,4 +79,5 @@
     <string name="expense_item_date">Date</string>
     <string name="expense_item_receipt">Receipt</string>
     <string name="title_activity_receipt_view">ReceiptViewActivity</string>
+    <string name="edit_expense_item">Edit Expense Item</string>
 </resources>

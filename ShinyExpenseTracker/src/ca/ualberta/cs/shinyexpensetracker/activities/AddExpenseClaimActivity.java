@@ -146,15 +146,6 @@ public class AddExpenseClaimActivity extends Activity implements
 		}
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-	
 	/**
 	 * gets name, endDate, and startDate values from their respective EditTexts
 	 * handles exception in the case of invalid values for all three 
@@ -163,7 +154,6 @@ public class AddExpenseClaimActivity extends Activity implements
 	 * @return
 	 * @throws ParseException
 	 */
-
 	public ExpenseClaim saveExpenseClaim(View v) throws ParseException {
 		EditText nameText = (EditText) findViewById(R.id.editTextExpenseClaimName);
 		EditText endDateText = (EditText) findViewById(R.id.editTextEndDate);

@@ -160,6 +160,10 @@ public class AddExpenseClaimActivityTest extends
 		assertNotSame("false positive, endDate", "Wrong endDate",
 				sampleExpenseClaim.getEndDate());
 	}
+	
+	/**
+	 * UI test to see if adding the claim with a reversed startDate and endDate opens up a AlertDialog. 
+	 */
 
 	public void testDateRange() {
 
@@ -177,6 +181,34 @@ public class AddExpenseClaimActivityTest extends
 		assertTrue("Date Range error AlertDialog is not showing",
 				((AddExpenseClaimActivity) activity).getAlertDialog()
 						.isShowing());
+	}
+	
+	/**
+	 * UI test to see if adding the claim with the right ordered startDate and endDate doesn't open up a AlertDialog. 
+	 */
+	
+	public void testRightDateRange() {
+		
+		ActivityMonitor monitor = instrumentation.addMonitor(
+				TabbedSummaryActivity.class.getName(), null, false);
+
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				startDate.setText("01-01-2015");
+				endDate.setText("01-10-2015");
+				name.setText("URoma Trip");
+				doneButton.performClick();
+			}
+		});
+		instrumentation.waitForIdleSync();
+		TabbedSummaryActivity nextActivity = (TabbedSummaryActivity) instrumentation
+				.waitForMonitor(monitor);
+		assertNotNull("Next activity not started", nextActivity);
+		
+		
+		
+		nextActivity.finish();
 	}
 
 	/**

@@ -50,7 +50,6 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 * @version 1.2
 * @since 2015-03-15
 *
-* 
 * Displays activity_create_expense_item activity, to give the user an 
 * interface to add the name, date, category, amount spent, currency, 
 * description and a photo of a receipt for expense items.
@@ -127,18 +126,6 @@ public class ExpenseItemActivity extends Activity implements OnClickListener{
 		return true;
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-	
 	/**
 	 * Pre-set fields with a loaded ExpenseItem info
 	 */

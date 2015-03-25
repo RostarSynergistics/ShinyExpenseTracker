@@ -1,2 +1,2 @@
-ShinyExpenseTracker/doc linguist-documentation
-ShinyExpenseTrackerTests/doc linguist-documentation
+ShinyExpenseTracker/doc/* linguist-documentation
+ShinyExpenseTrackerTests/doc/* linguist-documentation

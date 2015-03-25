@@ -51,7 +51,10 @@
             android:id="@+id/expenseItemDescription"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceSmall" >
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:lines="2"
+            android:ellipsize="end"
+            android:scrollHorizontally="true" >
         </TextView>
     </LinearLayout>
 

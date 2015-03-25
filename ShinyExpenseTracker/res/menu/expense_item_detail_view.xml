@@ -3,9 +3,9 @@
     tools:context="ca.ualberta.cs.shinyexpensetracker.ExpenseItemDetailView" >
 
     <item
-        android:id="@+id/editClaim"
+        android:id="@+id/editExpenseItem"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/edit_claim"/>
+        android:title="@string/edit_expense_item" />
 
 </menu>

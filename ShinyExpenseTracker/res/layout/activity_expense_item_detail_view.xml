@@ -167,16 +167,8 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/expenseItemCompletenessValue"
         android:layout_marginTop="26dp"
-        android:onClick="onReceiptThumbnailClick"
-        android:src="@android:drawable/alert_light_frame" />
+        android:onClick="onReceiptThumbnailClick" />
 
-    <Button
-        android:id="@+id/removeReceiptButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/expenseItemDetailViewBackButton"
-        android:layout_alignParentEnd="true"
-        android:onClick="onClickRemoveReceipt"
-        android:text="Remove Receipt" />
+
 
 </RelativeLayout>

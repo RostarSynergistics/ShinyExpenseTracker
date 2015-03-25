@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -123,10 +124,8 @@ public class ExpenseItemDetailActivity extends Activity implements
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		switch (item.getItemId()) {
-		case R.id.editClaim:
+		case R.id.editExpenseItem:
 			editExpense();
-			return true;
-		case R.id.action_settings:
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -163,14 +162,25 @@ public class ExpenseItemDetailActivity extends Activity implements
 	 * @param v
 	 */
 	public void onReceiptThumbnailClick(View v) {
+		ImageView iv = (ImageView) findViewById(R.id.expenseItemDetailImageButton);
+		if (iv.getDrawable()==null){
+			Toast.makeText(this, "No receipt to display", Toast.LENGTH_SHORT).show();
+			return;
+		}
 		Intent intent = new Intent(ExpenseItemDetailActivity.this,
 				ReceiptViewActivity.class);
 		intent.putExtra("claimIndex", claimIndex);
 		intent.putExtra("expenseIndex", expenseItemIndex);
 		startActivity(intent);
 	}
+	/**
+	 * Remove receipt from item and thumbnail, update the fields
+	 * @param v
+	 */
 	public void onClickRemoveReceipt(View v){
-		item.setReceiptPhoto(null);	
+		item.setReceiptPhoto(null);
+		ImageView iv = (ImageView) findViewById(R.id.expenseItemDetailImageButton);
+		iv.setImageDrawable(null);
 	}
 
 }

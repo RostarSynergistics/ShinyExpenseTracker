@@ -29,7 +29,6 @@ import android.provider.MediaStore;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.DatePicker;

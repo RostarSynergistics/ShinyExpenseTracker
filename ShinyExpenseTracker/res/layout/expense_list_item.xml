@@ -15,47 +15,48 @@
     <LinearLayout
         android:id="@+id/expenseItemDetailsLayout"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical" >
 
         <TextView
             android:id="@+id/expenseItemName"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium" >
-        </TextView>
-
-        <TextView
-            android:id="@+id/expenseItemValue"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceSmall" >
         </TextView>
 
         <TextView
             android:id="@+id/expenseItemDate"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall" >
         </TextView>
 
         <TextView
             android:id="@+id/expenseItemCategory"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/expenseItemValue"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall" >
         </TextView>
 
         <TextView
             android:id="@+id/expenseItemDescription"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:lines="2"
             android:ellipsize="end"
             android:scrollHorizontally="true" >
         </TextView>
+        
     </LinearLayout>
 
     <!-- Indicators -->
@@ -63,7 +64,7 @@
     <LinearLayout
         android:id="@+id/expenseItemIndicators"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical" >
 
         <CheckBox

@@ -13,7 +13,6 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
@@ -96,12 +95,10 @@ public class ExpenseItemAdapter extends BaseAdapter implements ListAdapter {
 			public void onClick(View v) {
 				CheckBox ch = (CheckBox) v;
 				expense.setIncompletenessMarker(ch.isChecked());
-				/// XXX Make this into a test
-				Toast.makeText(context, "Incomplete = "+expense.isMarkedIncomplete(), Toast.LENGTH_SHORT).show();
 			}
 		});
 		
-		expenseItemFlagCheckBox.setChecked(expense.isMarkedIncomplete());
+		expenseItemFlagCheckBox.setChecked(expense.getIsMarkedIncomplete());
 		
 		// Fill in the values
 		SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);

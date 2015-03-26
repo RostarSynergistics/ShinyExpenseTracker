@@ -239,7 +239,8 @@ public class ExpenseItem extends Model <ExpenseItem> {
 	/**
 	 * Sets the incompleteness markers. You should use ExpenseItem.COMPLETE
 	 * or ExpenseItem.INCOMPLETE for clarity.
-	 * @param isIncomplete
+	 * @param isIncomplete boolean value representing the completeness of
+	 * the claim. This is marked manually by the user through the UI.
 	 */
 	public void setIncompletenessMarker(boolean isIncomplete) {
 		incompletenessMarker = isIncomplete;
@@ -247,35 +248,21 @@ public class ExpenseItem extends Model <ExpenseItem> {
 	}
 	
 	/**
-	 * Mark as complete (turn off marker)
+	 * @return true if the expense is marked incomplete, false otherwise.
 	 */
-	public void markComplete() {
-		setIncompletenessMarker(COMPLETE);
-	}
-	
-	/**
-	 * Mark as incomplete (turn on marker)
-	 */
-	public void markIncomplete() {
-		setIncompletenessMarker(INCOMPLETE);
+	public boolean getIsMarkedIncomplete() {
+		return incompletenessMarker;
 	}
 	
 	/**
 	 * Toggles the incompleteness marker
 	 */
 	public void toggleIncompletenessMarker() {
-		if (isMarkedIncomplete()) {
-			markComplete();
+		if (getIsMarkedIncomplete()) {
+			setIncompletenessMarker(COMPLETE);
 		} else {
-			markIncomplete();
+			setIncompletenessMarker(INCOMPLETE);
 		}
-	}
-	
-	/**
-	 * @return true if the expense is marked incomplete, false otherwise.
-	 */
-	public boolean isMarkedIncomplete() {
-		return incompletenessMarker;
 	}
 	
 }

@@ -137,17 +137,16 @@
             </TableRow>
         </TableLayout>
 
-        <!-- TODO: Change this to just an image -->
-
         <ImageButton
             android:id="@+id/expenseItemDetailImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/expenseItemTableLayout"
             android:contentDescription="@string/expense_item_receipt"
-            android:onClick="onReceiptThumbnailClick" />
+            android:onClick="onReceiptThumbnailClick"
+            android:background="@null" />
 
-        <!-- Remove this (change delete to hold press button) -->
+        <!-- Remove this (change delete to hold press button) See #153 -->
 
         <Button
             android:id="@+id/removeReceiptButton"

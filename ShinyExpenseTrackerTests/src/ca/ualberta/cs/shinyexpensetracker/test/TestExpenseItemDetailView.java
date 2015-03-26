@@ -126,14 +126,7 @@ public class TestExpenseItemDetailView extends
 		TextView amount = (TextView) activity
 				.findViewById(R.id.expenseItemAmountValue);
 		assertEquals("amount is not right", amount.getText().toString(),
-				"0.125");
-	}
-
-	public void testCurrencyValue() {
-		TextView currency = (TextView) activity
-				.findViewById(R.id.expenseItemCurrencyValue);
-		assertEquals("currency is not right", currency.getText().toString(),
-				"CAD");
+				item.getValueString());
 	}
 
 	public void testDescriptionValue() {
@@ -144,22 +137,25 @@ public class TestExpenseItemDetailView extends
 	}
 
 	public void testReceiptValue() {
-
-		TextView receipt = (TextView) activity
-				.findViewById(R.id.expenseItemReceiptValue);
-		assertEquals("receipt is not right", receipt.getText().toString(),
-				"Present");
+		fail();
+		// XXX: Indicator of receipt is the presence of the receipt
+//		TextView receipt = (TextView) activity
+//				.findViewById(R.id.expenseItemReceiptValue);
+//		assertEquals("receipt is not right", receipt.getText().toString(),
+//				"Present");
 	}
+	
 	public void testRemoveReceipt(){
 		assertNotNull("receipt not present in item", item.getReceiptPhoto());
 		clickRemoveReceipt();
 		assertNull("did not remove receipt photo", item.getReceiptPhoto());
 		ImageView iv = (ImageView) activity.findViewById(R.id.expenseItemDetailImageButton);
 		assertNull("did not remove receipt photo from screen", iv.getDrawable());
-		TextView receipt = (TextView) activity
-				.findViewById(R.id.expenseItemReceiptValue);
-		assertEquals("receipt is not right", receipt.getText().toString(),
-				"Not Present");
+		// FIXME: Change this to some other indication
+//		TextView receipt = (TextView) activity
+//				.findViewById(R.id.expenseItemReceiptValue);
+//		assertEquals("receipt is not right", receipt.getText().toString(),
+//				"Not Present");
 	}
 	
 	private void clickRemoveReceipt() {
@@ -190,7 +186,7 @@ public class TestExpenseItemDetailView extends
 		
 		// Get the activity
 		getInstrumentation().waitForIdleSync();
-		final ExpenseItemActivity expenseActivity = (ExpenseItemActivity) getInstrumentation().waitForMonitorWithTimeout(expenseMonitor, 1000);
+		final ExpenseItemActivity expenseActivity =   (ExpenseItemActivity) getInstrumentation().waitForMonitorWithTimeout(expenseMonitor, 1000);
 		assertEquals("Did not open the expense activity", true, getInstrumentation().checkMonitorHit(expenseMonitor, 1));
 		
 		// Fill the activity

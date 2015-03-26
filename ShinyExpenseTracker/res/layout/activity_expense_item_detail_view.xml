@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <!-- Make this activity scrollable -->
+    <!-- This activity is scrollable -->
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,8 +21,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:text="Expense Item Name"
             android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <!-- Completeness Indicator -->
+
+        <CheckBox
+            android:id="@+id/expenseItemCompletenessFlag"
+            style="?android:attr/starStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onToggleCompletenessFlag"
+            android:adjustViewBounds="true" />
 
         <!-- 2 row table layout -->
 
@@ -136,7 +145,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/expenseItemDetailImageButton"
             android:onClick="onClickRemoveReceipt"
-            android:text="Remove Receipt" />
+            android:text="@string/remove_receipt" />
     </RelativeLayout>
 
 </ScrollView>

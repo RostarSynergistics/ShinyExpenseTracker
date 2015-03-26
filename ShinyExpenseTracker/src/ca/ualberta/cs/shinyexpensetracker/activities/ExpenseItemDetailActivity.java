@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -104,6 +105,10 @@ public class ExpenseItemDetailActivity extends Activity implements
 		// Update the image button picture
 		ImageButton img = (ImageButton) findViewById(R.id.expenseItemDetailImageButton);
 		img.setImageBitmap(item.getReceiptPhoto());
+		
+		// Update the incompleteness indicator
+		CheckBox flag = (CheckBox) findViewById(R.id.expenseItemCompletenessFlag);
+		flag.setChecked(item.getIsMarkedIncomplete());
 	}
 
 	@Override
@@ -176,6 +181,15 @@ public class ExpenseItemDetailActivity extends Activity implements
 		item.setReceiptPhoto(null);
 		ImageView iv = (ImageView) findViewById(R.id.expenseItemDetailImageButton);
 		iv.setImageDrawable(null);
+	}
+	
+	/**
+	 * Toggles the completeness flag for the item
+	 * @param v CheckBox view that represents the flag
+	 */
+	public void onToggleCompletenessFlag(View v) {
+		// Precondition: v is a CheckBox view.
+		item.setIncompletenessMarker(((CheckBox) v).isChecked());
 	}
 
 }

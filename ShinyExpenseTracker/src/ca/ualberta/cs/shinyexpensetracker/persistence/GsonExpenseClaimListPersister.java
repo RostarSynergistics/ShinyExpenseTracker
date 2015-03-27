@@ -7,12 +7,13 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import com.google.gson.Gson;
 
 /**
- * Handles the persistence of {@link ExpenseClaimList} to a file for offline usage.
+ * Handles the persistence of {@link ExpenseClaimList} to a file for offline usage,
+ * using Gson to serialize it.
  * 
  * Source: https://www.youtube.com/watch?v=gmNfc6u1qk0 (2015-01-31)
  * https://www.youtube.com/watch?v=uat-8Z6U_Co (2015-02-01)
  */
-public class ExpenseClaimListPersister implements IExpenseClaimListPersister {
+public class GsonExpenseClaimListPersister implements IExpenseClaimListPersister {
 	private final IPersistenceStrategy persistenceStrategy;
 	private final Gson gson;
 
@@ -21,7 +22,7 @@ public class ExpenseClaimListPersister implements IExpenseClaimListPersister {
 	 * 
 	 * @param persistenceStrategy The desired persistence strategy.
 	 */
-	public ExpenseClaimListPersister(IPersistenceStrategy persistenceStrategy) {
+	public GsonExpenseClaimListPersister(IPersistenceStrategy persistenceStrategy) {
 		this.persistenceStrategy = persistenceStrategy;
 		this.gson = new Gson();
 	}

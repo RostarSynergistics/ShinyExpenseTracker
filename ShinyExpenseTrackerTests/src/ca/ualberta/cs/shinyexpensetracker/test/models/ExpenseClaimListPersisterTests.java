@@ -11,7 +11,7 @@ import junit.framework.TestCase;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
-import ca.ualberta.cs.shinyexpensetracker.persistence.ExpenseClaimListPersister;
+import ca.ualberta.cs.shinyexpensetracker.persistence.GsonExpenseClaimListPersister;
 import ca.ualberta.cs.shinyexpensetracker.persistence.IExpenseClaimListPersister;
 import ca.ualberta.cs.shinyexpensetracker.persistence.IPersistenceStrategy;
 
@@ -29,7 +29,7 @@ public class ExpenseClaimListPersisterTests extends TestCase {
 		ExpenseClaim claim = getTestClaim();
 		list.addClaim(claim);
 
-		IExpenseClaimListPersister persister = new ExpenseClaimListPersister(
+		IExpenseClaimListPersister persister = new GsonExpenseClaimListPersister(
 				new MockPersistenceStrategy());
 
 		try {

@@ -6,7 +6,7 @@ import android.content.Context;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
-import ca.ualberta.cs.shinyexpensetracker.persistence.ExpenseClaimListPersister;
+import ca.ualberta.cs.shinyexpensetracker.persistence.GsonExpenseClaimListPersister;
 import ca.ualberta.cs.shinyexpensetracker.persistence.FilePersistenceStrategy;
 import ca.ualberta.cs.shinyexpensetracker.persistence.IExpenseClaimListPersister;
 
@@ -31,7 +31,7 @@ public class ExpenseClaimController {
 	 * @throws IOException
 	 */
 	public ExpenseClaimController(Context context) throws IOException {
-		this(new ExpenseClaimListPersister(
+		this(new GsonExpenseClaimListPersister(
 				new FilePersistenceStrategy(context, "expenseClaims")));
 	}
 	

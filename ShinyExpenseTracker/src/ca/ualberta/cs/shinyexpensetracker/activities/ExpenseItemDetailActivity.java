@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,7 +68,7 @@ public class ExpenseItemDetailActivity extends Activity implements
 		super.onResume();
 		// Update the text views
 		Log.d("ExpenseItemDetailView", "Resuming activity.");
-		populateTextViews();
+		populateViews();
 	}
 
 	@Override
@@ -88,7 +90,7 @@ public class ExpenseItemDetailActivity extends Activity implements
 	 * Sets expenseName, date, category, amount spent, currency, 
 	 * and the receipt value (has receipt or not) of the expenseItem being used
 	 */
-	private void populateTextViews() {
+	private void populateViews() {
 		Log.d("ExpenseItemDetailView", "Updating text views.");
 
 		SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy",
@@ -98,17 +100,15 @@ public class ExpenseItemDetailActivity extends Activity implements
 		setTextViewValue(R.id.expenseItemDateValue, dateFormatter.format(item.getDate()));
 		setTextViewValue(R.id.expenseItemCategoryValue, item.getCategory().toString());
 		setTextViewValue(R.id.expenseItemDescriptionValue, item.getDescription().toString());
-		setTextViewValue(R.id.expenseItemAmountValue, item.getAmountSpent().toString());
-		setTextViewValue(R.id.expenseItemCurrencyValue, item.getCurrency().name());
-		if (item.doesHavePhoto()){
-			setTextViewValue(R.id.expenseItemReceiptValue,"Present");
-			ImageView iv = (ImageView) findViewById(R.id.expenseItemDetailImageButton);
-			iv.setImageBitmap(item.getReceiptPhoto());
-		}
-		else{
-			setTextViewValue(R.id.expenseItemReceiptValue,"Not Present");
-		}
-
+		setTextViewValue(R.id.expenseItemAmountValue, item.getValueString().toString());
+		
+		// Update the image button picture
+		ImageButton img = (ImageButton) findViewById(R.id.expenseItemDetailImageButton);
+		img.setImageBitmap(item.getReceiptPhoto());
+		
+		// Update the incompleteness indicator
+		CheckBox flag = (CheckBox) findViewById(R.id.expenseItemCompletenessFlag);
+		flag.setChecked(item.getIsMarkedIncomplete());
 	}
 
 	@Override
@@ -153,7 +153,7 @@ public class ExpenseItemDetailActivity extends Activity implements
 	public void update(ExpenseItem m) {
 		// If the claim changed, update the text views
 		Log.d("ExpenseItemDetailView", "Received update.");
-		populateTextViews();
+		populateViews();
 	}
 
 	/**
@@ -181,6 +181,15 @@ public class ExpenseItemDetailActivity extends Activity implements
 		item.setReceiptPhoto(null);
 		ImageView iv = (ImageView) findViewById(R.id.expenseItemDetailImageButton);
 		iv.setImageDrawable(null);
+	}
+	
+	/**
+	 * Toggles the completeness flag for the item
+	 * @param v CheckBox view that represents the flag
+	 */
+	public void onToggleCompletenessFlag(View v) {
+		// Precondition: v is a CheckBox view.
+		item.setIncompletenessMarker(((CheckBox) v).isChecked());
 	}
 
 }

@@ -7,18 +7,15 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
- * ExpenseClaim objects extend Model and implement Comparable
- * 
- * Has a name: String, startDate: Date, endDate: Date, Status: enum Status
- * Destinations: ArrayList<Destination> TagList: TagList Expenses:
- * ArrayList<ExpenseItem>
- * 
+ * Class that represents an expense claim created by a user.
  */
 public class ExpenseClaim extends Model<ExpenseClaim> implements
 		Comparable<ExpenseClaim> {
 	public enum Status {
-		IN_PROGRESS("In Progress"), SUBMITTED("Submitted"), RETURNED("Returned"), APPROVED(
-				"Approved");
+		IN_PROGRESS("In Progress"),
+		SUBMITTED("Submitted"),
+		RETURNED("Returned"),
+		APPROVED( "Approved");
 
 		private final String text;
 

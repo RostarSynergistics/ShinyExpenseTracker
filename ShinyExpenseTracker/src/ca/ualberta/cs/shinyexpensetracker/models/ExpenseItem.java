@@ -37,7 +37,6 @@ import android.graphics.Bitmap;
  *
  */
 public class ExpenseItem extends Model <ExpenseItem> {
-
 	public enum Category { 
 		AIR_FARE("air fare"),
 		GROUND_TRANSPORT("ground transport"),
@@ -83,9 +82,25 @@ public class ExpenseItem extends Model <ExpenseItem> {
 	public Currency currency;
 	public String description;
 	public Bitmap receiptPhoto;
+	public boolean incompletenessMarker;
 	
+	public static final boolean COMPLETE = false;
+	public static final boolean INCOMPLETE = true;
+	
+	/**
+	 * Generalized constructor.
+	 * @param name
+	 * @param date
+	 * @param category
+	 * @param amountSpent
+	 * @param currency
+	 * @param description
+	 * @param photo
+	 * @param completenessFlag
+	 */
 	public ExpenseItem (String name, Date date, Category category, 
-			BigDecimal amountSpent, Currency currency, String description, Bitmap photo){
+			BigDecimal amountSpent, Currency currency, String description,
+			Bitmap photo, boolean completenessFlag) {
 		this.name = name;
 		this.date = date;
 		this.category = category;
@@ -93,25 +108,28 @@ public class ExpenseItem extends Model <ExpenseItem> {
 		this.currency = currency;
 		this.description = description;
 		this.receiptPhoto = photo;
+		this.incompletenessMarker = completenessFlag;
 	}
 	
+	
 	public ExpenseItem (String name, Date date, Category category, 
-			BigDecimal amountSpent, Currency currency, String description){
-		this.name = name;
-		this.date = date;
-		this.category = category;
-		this.amountSpent = amountSpent;
-		this.currency = currency;
-		this.description = description;
+			BigDecimal amountSpent, Currency currency, String description, Bitmap photo) {
+		// Call to more specific constructor
+		this(name, date, category, amountSpent, currency, description,
+				photo, false);
+	}
+
+	
+	public ExpenseItem (String name, Date date, Category category, 
+			BigDecimal amountSpent, Currency currency, String description) {
+		// Call to more specific constructor
+		this(name, date, category, amountSpent, currency, description, null, false);
 	}
 	
 	public ExpenseItem(String name, Date date, Category category,
 			BigDecimal amount, Currency currency) {
-		this.name = name;
-		this.date = date;
-		this.category = category;
-		this.amountSpent = amount;
-		this.currency = currency;
+		// Call to more specific constructor
+		this(name, date, category, amount, currency, "", null, false);
 	}
 
 	public void setName(String name){
@@ -237,4 +255,34 @@ public class ExpenseItem extends Model <ExpenseItem> {
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
+	
+	/**
+	 * Sets the incompleteness markers. You should use ExpenseItem.COMPLETE
+	 * or ExpenseItem.INCOMPLETE for clarity.
+	 * @param isIncomplete boolean value representing the completeness of
+	 * the claim. This is marked manually by the user through the UI.
+	 */
+	public void setIncompletenessMarker(boolean isIncomplete) {
+		incompletenessMarker = isIncomplete;
+		notifyViews();
+	}
+	
+	/**
+	 * @return true if the expense is marked incomplete, false otherwise.
+	 */
+	public boolean getIsMarkedIncomplete() {
+		return incompletenessMarker;
+	}
+	
+	/**
+	 * Toggles the incompleteness marker
+	 */
+	public void toggleIncompletenessMarker() {
+		if (getIsMarkedIncomplete()) {
+			setIncompletenessMarker(COMPLETE);
+		} else {
+			setIncompletenessMarker(INCOMPLETE);
+		}
+	}
+	
 }

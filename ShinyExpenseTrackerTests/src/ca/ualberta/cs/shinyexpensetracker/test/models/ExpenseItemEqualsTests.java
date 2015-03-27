@@ -9,6 +9,10 @@ import android.graphics.Bitmap.Config;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import junit.framework.TestCase;
 
+/**
+ * Tests that verify that ExpenseItem.equals(...) works.
+ * ExpenseItems are equal if and only if all of its fields are equal
+ */
 public class ExpenseItemEqualsTests extends TestCase {
 	ExpenseItem item1;
 	ExpenseItem item2;

@@ -16,12 +16,12 @@ import ca.ualberta.cs.shinyexpensetracker.persistence.IExpenseClaimListPersister
 import ca.ualberta.cs.shinyexpensetracker.persistence.IPersistenceStrategy;
 
 /**
- * Tests ExpenseClaimListPersister's ability to save and load an
+ * Tests GsonExpenseClaimListPersister's ability to save and load an
  * ExpenseClaimList.
  */
-public class ExpenseClaimListPersisterTests extends TestCase {
+public class GsonExpenseClaimListPersisterTests extends TestCase {
 	/**
-	 * Tests ExpenseClaimListPersister's ability to save and load an
+	 * Tests GsonExpenseClaimListPersister's ability to save and load an
 	 * ExpenseClaimList.
 	 */
 	public void testPersistenceOfExpenseClaims() {

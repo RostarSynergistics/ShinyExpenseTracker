@@ -7,6 +7,10 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import junit.framework.TestCase;
 
+/**
+ * Tests that verify that ExpenseClaim.equals(...) works.
+ * ExpenseClaims are equal if and only if all of its fields are equal
+ */
 public class ExpenseClaimEqualsTests extends TestCase {
 	ExpenseClaim claim1;
 	ExpenseClaim claim2;
@@ -83,14 +87,17 @@ public class ExpenseClaimEqualsTests extends TestCase {
 	}
 
 	public void testThatTwoClaimsWithIdenticalNonEmptyTagListsAreEqual() {
+		// Tag association is not fully implemented yet.
 		fail();
 	}
 
 	public void testThatOneClaimWithOneWithAnEmptyTagListAndTheOtherNotEmptyAreNotEqual() {
+		// Tag association is not fully implemented yet.
 		fail();
 	}
 	
 	public void testThatTwoClaimsWithNonIdenticalNonEmptyTagListsAreNotEqual() {
+		// Tag association is not fully implemented yet.
 		fail();
 	}
 

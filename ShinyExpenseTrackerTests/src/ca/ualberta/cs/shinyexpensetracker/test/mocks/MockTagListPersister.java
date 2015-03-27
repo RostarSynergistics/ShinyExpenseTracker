@@ -5,8 +5,11 @@ import java.io.IOException;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 import ca.ualberta.cs.shinyexpensetracker.persistence.ITagListPersister;
 
-public class MockTagListPersister 
-implements ITagListPersister {
+/**
+ * Implementation of ITagListPersister that just saves and loads it from
+ * an instance variable.
+ */
+public class MockTagListPersister implements ITagListPersister {
 	private TagList list;
 	
 	public MockTagListPersister() {

@@ -12,10 +12,15 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.adapters.ExpenseItemAdapter;
 import ca.ualberta.cs.shinyexpensetracker.adapters.SectionsPagerAdapter;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
 import ca.ualberta.cs.shinyexpensetracker.fragments.DestinationListFragment;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ExpenseItemListFragment;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
 
 // Source: https://github.com/astuetz/PagerSlidingTabStrip
 // on March 11 2015
@@ -120,6 +125,7 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 	
 	/** 
 	 * Called on MenuItem "Add Destination" click
+	 * Takes user to add destination screen
 	 * @param menu
 	 */
 	public void addDestinationMenuItem(MenuItem menu) {
@@ -132,6 +138,7 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 	
 	/**
 	 * Called on MenuItem "Edit Claim" click
+	 * Takes user to edit claim screen
 	 * @param menu
 	 */
 	public void editClaimMenuItem(MenuItem menu) {
@@ -140,6 +147,21 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 		intent = new Intent(this, AddExpenseClaimActivity.class);
 		intent.putExtra("claimIndex", claimIndex);
 		startActivity(intent);
+	}
+	
+	/**
+	 * Called on MenuItem "Submit Claim" click
+	 * Changes status of claim to "Submitted" if claim is complete
+	 * @param menu
+	 */
+	public void submitClaimMenuItem(MenuItem menu) {
+		
+		ExpenseClaimController ecc = Application.getExpenseClaimController();
+		
+		Intent intent = getIntent();
+		int claimIndex = intent.getIntExtra("claimIndex", -1);
+		ecc.getExpenseClaim(claimIndex).setStatus(Status.SUBMITTED);
+		
 	}
 
 	@Override

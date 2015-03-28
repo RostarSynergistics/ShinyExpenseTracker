@@ -33,6 +33,7 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 	DatePickerDialog		fromDatePickerDialog, toDatePickerDialog;
 	EditText				startDate, endDate, name;
 	Button					doneButton;
+	ExpenseClaimController	controller;
 
 	public AddExpenseClaimActivityTest(Class<AddExpenseClaimActivity> activityClass) {
 		super(activityClass);
@@ -46,7 +47,8 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		Application.setExpenseClaimController(new ExpenseClaimController(new MockExpenseClaimListPersister()));
+		controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
+		Application.setExpenseClaimController(controller);
 
 		instrumentation = getInstrumentation();
 		activity = (AddExpenseClaimActivity) getActivity();
@@ -123,6 +125,7 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 				doneButton.performClick();
 			}
 		});
+
 		instrumentation.waitForIdleSync();
 
 		assertTrue("Date Range error AlertDialog is not showing", activity.getAlertDialog().isShowing());
@@ -150,7 +153,6 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 
 	@SuppressLint("SimpleDateFormat")
 	public void testThatTappingDoneWhileCreatingNewExpenseClaimCreatesANewExpenseClaim() throws ParseException {
-
 		ActivityMonitor monitor = instrumentation.addMonitor(TabbedSummaryActivity.class.getName(), null, false);
 
 		final String claimName = "URoma";
@@ -176,7 +178,6 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 		Date startDateObject = sdf.parse(startDate.getText().toString());
 		Date endDateObject = sdf.parse(endDate.getText().toString());
 
-		ExpenseClaimController controller = Application.getExpenseClaimController();
 		ExpenseClaim claim = controller.getExpenseClaim(0);
 
 		assertEquals("The two names do not equal each other", claimName, claim.getName());

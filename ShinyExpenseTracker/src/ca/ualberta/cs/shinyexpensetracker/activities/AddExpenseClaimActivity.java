@@ -1,9 +1,3 @@
-/**
- *  Covers issue 17. 
- *  AddExpenseClaimActivity: Activity representing the UI for adding/editing an Expense Claim. 
- *  No outstanding issues.
- **/
-
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
 import java.io.IOException;
@@ -24,7 +18,6 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.DatePicker;
@@ -34,8 +27,12 @@ import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
-// Source for DatePicker: http://androidopentutorials.com/android-datepickerdialog-on-edittext-click-event
-
+/**
+ * Activity that handles the creation of new ExpenseClaims
+ * and the editing of existing ExpenseClaims.
+ * 
+ * Source for DatePicker: http://androidopentutorials.com/android-datepickerdialog-on-edittext-click-event
+ */
 public class AddExpenseClaimActivity extends Activity implements
 		OnClickListener {
 

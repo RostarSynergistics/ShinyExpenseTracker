@@ -22,14 +22,14 @@ import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersist
  * in the application.
  * These tests are for editing existing claims
  */
-public class EditClaimActivityTest extends
+public class AddExpenseClaimActivityTests extends
 		ActivityInstrumentationTestCase2<AddExpenseClaimActivity> {
 
-	public EditClaimActivityTest(Class<AddExpenseClaimActivity> activityClass) {
+	public AddExpenseClaimActivityTests(Class<AddExpenseClaimActivity> activityClass) {
 		super(activityClass);
 	}
 
-	public EditClaimActivityTest() {
+	public AddExpenseClaimActivityTests() {
 		super(AddExpenseClaimActivity.class);
 	}
 

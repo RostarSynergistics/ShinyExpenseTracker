@@ -33,8 +33,9 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
  * 
  * Source for DatePicker: http://androidopentutorials.com/android-datepickerdialog-on-edittext-click-event
  */
-public class ExpenseClaimActivity extends Activity implements
-		OnClickListener {
+public class ExpenseClaimActivity extends Activity implements OnClickListener {
+
+	public static final String	CLAIM_INDEX	= "claimIndex";
 
 	private ExpenseClaimController controller;
 
@@ -61,7 +62,7 @@ public class ExpenseClaimActivity extends Activity implements
 		controller = Application.getExpenseClaimController();
 
 		Intent intent = getIntent();
-		claimIndex = intent.getIntExtra("claimIndex", -1);
+		claimIndex = intent.getIntExtra(CLAIM_INDEX, -1);
 		if (claimIndex == -1) {
 			claim = new ExpenseClaim("");
 		} else {
@@ -266,7 +267,7 @@ public class ExpenseClaimActivity extends Activity implements
 		if (claim != null) {
 			if (claimIndex == -1) {
 				Intent intent = new Intent(this, TabbedSummaryActivity.class);
-				intent.putExtra("claimIndex", controller.getIndexOf(claim));
+				intent.putExtra(CLAIM_INDEX, controller.getIndexOf(claim));
 				finish();
 				startActivity(intent);
 			} else {

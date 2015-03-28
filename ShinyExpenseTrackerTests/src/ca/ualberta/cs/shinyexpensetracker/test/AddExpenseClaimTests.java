@@ -16,21 +16,20 @@ import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 import ca.ualberta.cs.shinyexpensetracker.R;
 
 /**
- * Tests various parts of the functionality of ExpenseClaimActivity that relates to 
- * creating new ExpenseClaims.
+ * Tests various parts of the functionality of ExpenseClaimActivity that relates
+ * to creating new ExpenseClaims.
  **/
 public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<ExpenseClaimActivity> {
 	ExpenseClaimController	controller;
 	Instrumentation			instrumentation;
 	ExpenseClaimActivity	activity;
-	
+
 	DatePickerDialog		fromDatePickerDialog, toDatePickerDialog;
-	EditText				startDate, endDate, name;
+	EditText				startDateField, endDateField, nameField;
 	Button					doneButton;
 
 	public AddExpenseClaimTests(Class<ExpenseClaimActivity> activityClass) {
@@ -51,9 +50,9 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 		instrumentation = getInstrumentation();
 		activity = (ExpenseClaimActivity) getActivity();
 
-		name = (EditText) activity.findViewById(R.id.editTextExpenseClaimName);
-		startDate = (EditText) activity.findViewById(R.id.editTextStartDate);
-		endDate = (EditText) activity.findViewById(R.id.editTextEndDate);
+		nameField = (EditText) activity.findViewById(R.id.editTextExpenseClaimName);
+		startDateField = (EditText) activity.findViewById(R.id.editTextStartDate);
+		endDateField = (EditText) activity.findViewById(R.id.editTextEndDate);
 		doneButton = (Button) activity.findViewById(R.id.addExpenseClaimDoneButton);
 	}
 
@@ -62,7 +61,7 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {
-				startDate.performClick();
+				startDateField.performClick();
 			}
 		});
 
@@ -74,52 +73,20 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {
-				endDate.performClick();
+				endDateField.performClick();
 			}
 		});
 
 		assertTrue(activity.getEndDateDialog().isShowing());
 	}
 
-	@SuppressLint("SimpleDateFormat")
-	public void testThatAddingANewExpenseClaimToModelUpdatesActivity() {
-		final String nameString = "URoma";
-		SimpleDateFormat sdf = new SimpleDateFormat();
-		final Date toDate = new Date();
-		final Date fromDate = new Date();
-		sdf.format(fromDate);
-		sdf.format(toDate);
-
-		final ExpenseClaim sampleExpenseClaim = new ExpenseClaim(nameString, fromDate, toDate, null, null);
-		final ExpenseClaimList claimList = Application.getExpenseClaimController().getExpenseClaimList();
-
-		instrumentation.runOnMainSync(new Runnable() {
-
-			@Override
-			public void run() {
-				claimList.addClaim(sampleExpenseClaim);
-			}
-		});
-
-		assertEquals(1, claimList.size());
-
-		assertEquals("name != name", "URoma", sampleExpenseClaim.getName());
-		assertNotSame("false positive, name", "Wrong Name", sampleExpenseClaim.getName());
-
-		assertEquals("fromDate != fromDate", fromDate, sampleExpenseClaim.getStartDate());
-		assertNotSame("false positive, startDate", "Wrong startDate", sampleExpenseClaim.getStartDate());
-
-		assertEquals("endDate != endDate", toDate, sampleExpenseClaim.getEndDate());
-		assertNotSame("false positive, endDate", "Wrong endDate", sampleExpenseClaim.getEndDate());
-	}
-
 	public void testThatInputtingAnEndDateThatIsBeforeTheStartDateShowsAnAlert() {
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				startDate.setText("01-10-2015");
-				endDate.setText("01-01-2015");
-				name.setText("URoma Trip");
+				startDateField.setText("01-10-2015");
+				endDateField.setText("01-01-2015");
+				nameField.setText("URoma Trip");
 				doneButton.performClick();
 			}
 		});
@@ -135,9 +102,9 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				startDate.setText("01-01-2015");
-				endDate.setText("01-10-2015");
-				name.setText("URoma Trip");
+				startDateField.setText("01-01-2015");
+				endDateField.setText("01-10-2015");
+				nameField.setText("URoma Trip");
 				doneButton.performClick();
 			}
 		});
@@ -158,9 +125,9 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 			@Override
 			public void run() {
 
-				startDate.setText("01-01-2015");
-				endDate.setText("01-10-2015");
-				name.setText(claimName);
+				startDateField.setText("01-01-2015");
+				endDateField.setText("01-10-2015");
+				nameField.setText(claimName);
 
 				doneButton.performClick();
 
@@ -173,25 +140,21 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 		assertNotNull("Next activity not started", nextActivity);
 
 		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
-		Date startDateObject = sdf.parse(startDate.getText().toString());
-		Date endDateObject = sdf.parse(endDate.getText().toString());
+		Date startDateObject = sdf.parse(startDateField.getText().toString());
+		Date endDateObject = sdf.parse(endDateField.getText().toString());
 
 		ExpenseClaim claim = controller.getExpenseClaim(0);
 
 		assertEquals("The two names do not equal each other", claimName, claim.getName());
 
-		assertEquals("The two startDates do not equal each other", 
-				startDateObject, 
-				claim.getStartDate());
+		assertEquals("The two startDates do not equal each other", startDateObject, claim.getStartDate());
 
-		assertEquals("The two endDates do not equal each other", 
-				endDateObject, 
-				claim.getEndDate());
+		assertEquals("The two endDates do not equal each other", endDateObject, claim.getEndDate());
 
 		nextActivity.finish();
 	}
-	
+
 	public void testThatTappingDoneWhileEditingAnExistingExpenseClaimUpdatesThatClaim() {
-		
+
 	}
 }

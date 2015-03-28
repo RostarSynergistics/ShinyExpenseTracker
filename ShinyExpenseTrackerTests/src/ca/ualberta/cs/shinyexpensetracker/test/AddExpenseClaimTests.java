@@ -11,7 +11,7 @@ import android.app.Instrumentation.ActivityMonitor;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
-import ca.ualberta.cs.shinyexpensetracker.activities.AddExpenseClaimActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -21,26 +21,24 @@ import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersist
 import ca.ualberta.cs.shinyexpensetracker.R;
 
 /**
- * AddExpenseClaimActivityTest: Testing the AddExpenseClaimAcitivity
- * representing the UI for adding/editing an Expense Claim.
- * 
- * No outstanding issues.
- * 
+ * Tests various parts of the functionality of ExpenseClaimActivity that relates to 
+ * creating new ExpenseClaims.
  **/
-public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase2<AddExpenseClaimActivity> {
+public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<ExpenseClaimActivity> {
+	ExpenseClaimController	controller;
 	Instrumentation			instrumentation;
-	AddExpenseClaimActivity	activity;
+	ExpenseClaimActivity	activity;
+	
 	DatePickerDialog		fromDatePickerDialog, toDatePickerDialog;
 	EditText				startDate, endDate, name;
 	Button					doneButton;
-	ExpenseClaimController	controller;
 
-	public AddExpenseClaimActivityTest(Class<AddExpenseClaimActivity> activityClass) {
+	public AddExpenseClaimTests(Class<ExpenseClaimActivity> activityClass) {
 		super(activityClass);
 	}
 
-	public AddExpenseClaimActivityTest() {
-		super(AddExpenseClaimActivity.class);
+	public AddExpenseClaimTests() {
+		super(ExpenseClaimActivity.class);
 	}
 
 	@Override
@@ -51,7 +49,7 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 		Application.setExpenseClaimController(controller);
 
 		instrumentation = getInstrumentation();
-		activity = (AddExpenseClaimActivity) getActivity();
+		activity = (ExpenseClaimActivity) getActivity();
 
 		name = (EditText) activity.findViewById(R.id.editTextExpenseClaimName);
 		startDate = (EditText) activity.findViewById(R.id.editTextStartDate);
@@ -191,5 +189,9 @@ public class AddExpenseClaimActivityTest extends ActivityInstrumentationTestCase
 				claim.getEndDate());
 
 		nextActivity.finish();
+	}
+	
+	public void testThatTappingDoneWhileEditingAnExistingExpenseClaimUpdatesThatClaim() {
+		
 	}
 }

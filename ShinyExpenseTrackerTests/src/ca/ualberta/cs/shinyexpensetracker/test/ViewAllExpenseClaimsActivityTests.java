@@ -33,7 +33,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.activities.AddExpenseClaimActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimListActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
@@ -292,7 +292,7 @@ public class ViewAllExpenseClaimsActivityTests extends
 		// Check to see if AddExpenseActivity is visible once the MenuItem is clicked.
 		// Code taken from: stackoverflow.com/questions/3084891/how-to-test-menu
 				
-		ActivityMonitor am = getInstrumentation().addMonitor(AddExpenseClaimActivity.class.getName(), null, false);
+		ActivityMonitor am = getInstrumentation().addMonitor(ExpenseClaimActivity.class.getName(), null, false);
 		getInstrumentation().invokeMenuActionSync(activity, R.id.action_new_claim, 0);
 		
 		Activity a = getInstrumentation().waitForMonitorWithTimeout(am, 1000);
@@ -310,13 +310,13 @@ public class ViewAllExpenseClaimsActivityTests extends
 	 */
 	public void testCrashOnNewExpense() {
 		// Monitor for AddExpenseClaimActivity
-		ActivityMonitor claimMonitor = getInstrumentation().addMonitor(AddExpenseClaimActivity.class.getName(), null, false);
+		ActivityMonitor claimMonitor = getInstrumentation().addMonitor(ExpenseClaimActivity.class.getName(), null, false);
 
 		// Press the "New Claim" button
 		getInstrumentation().invokeMenuActionSync(activity, R.id.action_new_claim, 0);
 
 		// Get the create claim activity
-		final AddExpenseClaimActivity createClaim = (AddExpenseClaimActivity) getInstrumentation().waitForMonitorWithTimeout(claimMonitor, 1000);
+		final ExpenseClaimActivity createClaim = (ExpenseClaimActivity) getInstrumentation().waitForMonitorWithTimeout(claimMonitor, 1000);
 		assertEquals(true, getInstrumentation().checkMonitorHit(claimMonitor, 1));
 		
 		getInstrumentation().waitForIdleSync();

@@ -30,19 +30,11 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 /**
- * Tests activity that lets the user edit information of the selected
- * ExpenseItem
- * 
- * Covers Issue 15
- * 
- * @version 1.0
- * @since 2015-03-15
- */
-
-public class TestEditExpenseItem extends
-		ActivityInstrumentationTestCase2<ExpenseItemActivity> {
-
-	public TestEditExpenseItem() {
+ * Tests various parts of the functionality of ExpenseItemActivity that relates
+ * to editing existing ExpenseItems.
+ **/
+public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<ExpenseItemActivity> {
+	public EditExpenseItemTests() {
 		super(ExpenseItemActivity.class);
 	}
 
@@ -57,8 +49,7 @@ public class TestEditExpenseItem extends
 		super.setUp();
 
 		ExpenseClaimList claimList = new ExpenseClaimList();
-		controller = new ExpenseClaimController(
-				new MockExpenseClaimListPersister(claimList));
+		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(claimList));
 		Application.setExpenseClaimController(controller);
 
 		ExpenseClaim claim = new ExpenseClaim("test claim");
@@ -66,13 +57,11 @@ public class TestEditExpenseItem extends
 		newDate.set(2000, 00, 01);
 		res = getInstrumentation().getTargetContext().getResources();
 		imageSmall = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
-		imageBig = BitmapFactory.decodeResource(res,
-				R.drawable.keyhole_nebula_hubble_1999);
+		imageBig = BitmapFactory.decodeResource(res, R.drawable.keyhole_nebula_hubble_1999);
 
-		ExpenseItem item = new ExpenseItem("test item", newDate.getTime(),
-				Category.fromString("air fare"), new BigDecimal("0.125"),
-				Currency.CAD, "Test Item", imageBig);
-		
+		ExpenseItem item = new ExpenseItem("test item", newDate.getTime(), Category.fromString("air fare"),
+				new BigDecimal("0.125"), Currency.CAD, "Test Item", imageBig);
+
 		claim.addExpense(item);
 		claimList.addClaim(claim);
 
@@ -85,38 +74,32 @@ public class TestEditExpenseItem extends
 	}
 
 	public void testNameValue() {
-		EditText name = (EditText) activity
-				.findViewById(R.id.expenseItemNameEditText);
+		EditText name = (EditText) activity.findViewById(R.id.expenseItemNameEditText);
 		assertEquals("name is not right", "test item", name.getText().toString());
 	}
 
 	public void testDateValue() {
-		EditText date = (EditText) activity
-				.findViewById(R.id.expenseItemDateEditText);
+		EditText date = (EditText) activity.findViewById(R.id.expenseItemDateEditText);
 		assertEquals("date is not right", "01-01-2000", date.getText().toString());
 	}
 
 	public void testCategoryValue() {
-		Spinner category = (Spinner) activity
-				.findViewById(R.id.expenseItemCategorySpinner);
+		Spinner category = (Spinner) activity.findViewById(R.id.expenseItemCategorySpinner);
 		assertEquals("category is not right", "air fare", category.getSelectedItem().toString());
 	}
 
 	public void testAmountValue() {
-		EditText amount = (EditText) activity
-				.findViewById(R.id.expenseItemAmountEditText);
+		EditText amount = (EditText) activity.findViewById(R.id.expenseItemAmountEditText);
 		assertEquals("amount is not right", "0.125", amount.getText().toString());
 	}
 
 	public void testCurrencyValue() {
-		Spinner currency = (Spinner) activity
-				.findViewById(R.id.expenseItemCurrencySpinner);
+		Spinner currency = (Spinner) activity.findViewById(R.id.expenseItemCurrencySpinner);
 		assertEquals("currency is not right", "CAD", currency.getSelectedItem().toString());
 	}
 
 	public void testDescriptionValue() {
-		EditText description = (EditText) activity
-				.findViewById(R.id.expesenItemDescriptionEditText);
+		EditText description = (EditText) activity.findViewById(R.id.expesenItemDescriptionEditText);
 		assertEquals("description is not right", "Test Item", description.getText().toString());
 	}
 
@@ -129,19 +112,15 @@ public class TestEditExpenseItem extends
 		Date date = newDate.getTime();
 		// without this, date is saved as DateTime
 		// so format date into string and parse it back to get date at midnight;
-		SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy",
-				Locale.CANADA);
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.CANADA);
 		String inputDate = dateFormatter.format(date);
 		Date dateToAssign = dateFormatter.parse(inputDate);
 
 		BitmapDrawable dr = new BitmapDrawable(res, imageBig);
-		Bitmap imageBigScaled = activity.convertToBitmap(dr,
-				imageBig.getWidth(), imageBig.getHeight());
-		ExpenseItem editedItem = new ExpenseItem("test item", dateToAssign,
-				Category.fromString("air fare"), new BigDecimal("0.125"),
-				Currency.CAD, "Test Edit", imageBigScaled);
-		assertEquals("did not update item", editedItem, controller.getExpenseClaim(0)
-				.getExpense(0));
+		Bitmap imageBigScaled = activity.convertToBitmap(dr, imageBig.getWidth(), imageBig.getHeight());
+		ExpenseItem editedItem = new ExpenseItem("test item", dateToAssign, Category.fromString("air fare"),
+				new BigDecimal("0.125"), Currency.CAD, "Test Edit", imageBigScaled);
+		assertEquals("did not update item", editedItem, controller.getExpenseClaim(0).getExpense(0));
 	}
 
 	/**
@@ -149,13 +128,11 @@ public class TestEditExpenseItem extends
 	 */
 
 	public void testDrawImageButton() {
-		ImageButton button = (ImageButton) activity
-				.findViewById(R.id.expenseItemReceiptImageButton);
+		ImageButton button = (ImageButton) activity.findViewById(R.id.expenseItemReceiptImageButton);
 		drawNewImage();
 		assertNotNull("no image on button", button.getDrawable());
 		Drawable dr = button.getDrawable();
-		Bitmap bm = activity.convertToBitmap(dr, imageSmall.getWidth(),
-				imageSmall.getHeight());
+		Bitmap bm = activity.convertToBitmap(dr, imageSmall.getWidth(), imageSmall.getHeight());
 		assertTrue("receipt is not right", bm.sameAs(imageSmall));
 	}
 
@@ -164,8 +141,7 @@ public class TestEditExpenseItem extends
 	 */
 	public void testScale() {
 		BitmapDrawable dr = new BitmapDrawable(res, imageBig);
-		Bitmap imageBigScaled = activity.convertToBitmap(dr,
-				imageBig.getWidth(), imageBig.getHeight());
+		Bitmap imageBigScaled = activity.convertToBitmap(dr, imageBig.getWidth(), imageBig.getHeight());
 		assertTrue("image too big", imageBigScaled.getByteCount() <= 65536);
 	}
 
@@ -176,8 +152,7 @@ public class TestEditExpenseItem extends
 		getInstrumentation().runOnMainSync(new Runnable() {
 			@Override
 			public void run() {
-				ImageButton button = (ImageButton) activity
-						.findViewById(R.id.expenseItemReceiptImageButton);
+				ImageButton button = (ImageButton) activity.findViewById(R.id.expenseItemReceiptImageButton);
 				button.setImageBitmap(imageSmall);
 			}
 		});
@@ -191,11 +166,9 @@ public class TestEditExpenseItem extends
 		getInstrumentation().runOnMainSync(new Runnable() {
 			@Override
 			public void run() {
-				EditText description = (EditText) activity
-						.findViewById(R.id.expesenItemDescriptionEditText);
+				EditText description = (EditText) activity.findViewById(R.id.expesenItemDescriptionEditText);
 				description.setText("Test Edit");
-				Button doneButton = (Button) activity
-						.findViewById(R.id.expenseItemDoneButton);
+				Button doneButton = (Button) activity.findViewById(R.id.expenseItemDoneButton);
 				doneButton.callOnClick();
 			}
 		});

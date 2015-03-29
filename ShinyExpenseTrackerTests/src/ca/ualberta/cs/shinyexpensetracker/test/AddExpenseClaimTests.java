@@ -48,7 +48,7 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 		Application.setExpenseClaimController(controller);
 
 		instrumentation = getInstrumentation();
-		activity = (ExpenseClaimActivity) getActivity();
+		activity = getActivity();
 
 		nameField = (EditText) activity.findViewById(R.id.editTextExpenseClaimName);
 		startDateField = (EditText) activity.findViewById(R.id.editTextStartDate);

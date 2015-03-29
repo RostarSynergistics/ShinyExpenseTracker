@@ -24,18 +24,18 @@ import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersist
  **/
 @SuppressLint("SimpleDateFormat")
 public class EditExpenseClaimTests extends ActivityInstrumentationTestCase2<ExpenseClaimActivity> {
-	static final SimpleDateFormat	sdf	= new SimpleDateFormat("MM-dd-yyyy");
+	static final SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
 
-	MockExpenseClaimListPersister 	persister;
-	ExpenseClaimController			controller;
-	Instrumentation					instrumentation;
-	ExpenseClaimActivity			activity;
+	MockExpenseClaimListPersister persister;
+	ExpenseClaimController controller;
+	Instrumentation instrumentation;
+	ExpenseClaimActivity activity;
 
-	EditText						startDateField, endDateField, nameField;
-	Button							doneButton;
+	EditText startDateField, endDateField, nameField;
+	Button doneButton;
 
-	ExpenseClaimList				list;
-	ExpenseClaim					claim;
+	ExpenseClaimList list;
+	ExpenseClaim claim;
 
 	public EditExpenseClaimTests(Class<ExpenseClaimActivity> activityClass) {
 		super(activityClass);
@@ -65,13 +65,13 @@ public class EditExpenseClaimTests extends ActivityInstrumentationTestCase2<Expe
 		setActivityIntent(i);
 
 		instrumentation = getInstrumentation();
-		activity = (ExpenseClaimActivity) getActivity();
+		activity = getActivity();
 
 		nameField = (EditText) activity.findViewById(R.id.editTextExpenseClaimName);
 		startDateField = (EditText) activity.findViewById(R.id.editTextStartDate);
 		endDateField = (EditText) activity.findViewById(R.id.editTextEndDate);
 		doneButton = (Button) activity.findViewById(R.id.addExpenseClaimDoneButton);
-		
+
 		assertFalse(persister.wasSaveCalled());
 	}
 
@@ -80,12 +80,12 @@ public class EditExpenseClaimTests extends ActivityInstrumentationTestCase2<Expe
 		assertEquals(claim.getStartDate(), getDate(startDateField));
 		assertEquals(claim.getEndDate(), getDate(endDateField));
 	}
-	
-	public void testThatTappingDoneWhileEditingAnExistingExpenseClaimUpdatesThatExpenseClaim() throws ParseException { 
+
+	public void testThatTappingDoneWhileEditingAnExistingExpenseClaimUpdatesThatExpenseClaim() throws ParseException {
 		final String newName = "URoma";
 		final String newStartDateText = "2015-03-01";
 		final String newEndDateText = "2015-03-07";
-		
+
 		Date newStartDate = sdf.parse(newStartDateText);
 		Date newEndDate = sdf.parse(newEndDateText);
 
@@ -103,13 +103,13 @@ public class EditExpenseClaimTests extends ActivityInstrumentationTestCase2<Expe
 
 		instrumentation.waitForIdleSync();
 
-		assertTrue("Persister's .save() was never called", persister.wasSaveCalled());
-
 		ExpenseClaim updatedClaim = controller.getExpenseClaim(0);
 
-		assertEquals(newName, updatedClaim);
-		assertEquals(newStartDate, claim.getStartDate());
-		assertEquals(newEndDate, claim.getEndDate());
+		assertEquals(newName, updatedClaim.getName());
+		assertEquals(newStartDate, updatedClaim.getStartDate());
+		assertEquals(newEndDate, updatedClaim.getEndDate());
+
+		assertTrue("Persister's .save() was never called", persister.wasSaveCalled());
 	}
 
 	private ExpenseClaim getStartingClaim() throws ParseException {

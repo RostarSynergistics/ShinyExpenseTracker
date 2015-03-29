@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -33,10 +34,9 @@ import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersist
  * Tests various parts of the functionality of ExpenseItemActivity that relates
  * to editing existing ExpenseItems.
  **/
+@SuppressLint("SimpleDateFormat")
 public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<ExpenseItemActivity> {
-	public EditExpenseItemTests() {
-		super(ExpenseItemActivity.class);
-	}
+	static final SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
 
 	ExpenseItemActivity activity;
 	ExpenseClaimController controller;
@@ -44,83 +44,106 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 	Bitmap imageBig;
 
 	Resources res;
+	private EditText nameField;
+	private EditText dateField;
+	private Spinner categorySpinner;
+	private EditText amountField;
+	private Spinner currencySpinner;
+	private EditText descriptionField;
+	private Button doneButton;
+
+	private MockExpenseClaimListPersister persister;
+
+	private ExpenseItem item;
+
+	public EditExpenseItemTests(Class<ExpenseItemActivity> activityClass) {
+		super(activityClass);
+	}
+
+	public EditExpenseItemTests() {
+		super(ExpenseItemActivity.class);
+	}
 
 	protected void setUp() throws Exception {
 		super.setUp();
 
 		ExpenseClaimList claimList = new ExpenseClaimList();
-		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(claimList));
+		persister = new MockExpenseClaimListPersister(claimList);
+		controller = new ExpenseClaimController(persister);
 		Application.setExpenseClaimController(controller);
 
 		ExpenseClaim claim = new ExpenseClaim("test claim");
-		Calendar newDate = Calendar.getInstance();
-		newDate.set(2000, 00, 01);
 		res = getInstrumentation().getTargetContext().getResources();
 		imageSmall = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
 		imageBig = BitmapFactory.decodeResource(res, R.drawable.keyhole_nebula_hubble_1999);
 
-		ExpenseItem item = new ExpenseItem("test item", newDate.getTime(), Category.fromString("air fare"),
+		item = new ExpenseItem("test item", sdf.parse("2001-01-01"), Category.fromString("air fare"),
 				new BigDecimal("0.125"), Currency.CAD, "Test Item", imageBig);
 
 		claim.addExpense(item);
 		claimList.addClaim(claim);
 
 		Intent intent = new Intent();
-		intent.putExtra("claimIndex", 0);
-		intent.putExtra("expenseIndex", 0);
+		intent.putExtra(ExpenseItemActivity.CLAIM_INDEX, 0);
+		intent.putExtra(ExpenseItemActivity.EXPENSE_INDEX, 0);
 
 		setActivityIntent(intent);
 		activity = getActivity();
+
+		nameField = (EditText) activity.findViewById(R.id.expenseItemNameEditText);
+		dateField = (EditText) activity.findViewById(R.id.expenseItemDateEditText);
+		categorySpinner = (Spinner) activity.findViewById(R.id.expenseItemCategorySpinner);
+		amountField = (EditText) activity.findViewById(R.id.expenseItemAmountEditText);
+		currencySpinner = (Spinner) activity.findViewById(R.id.expenseItemCurrencySpinner);
+		descriptionField = (EditText) activity.findViewById(R.id.expesenItemDescriptionEditText);
+		doneButton = (Button) activity.findViewById(R.id.expenseItemDoneButton);
 	}
 
-	public void testNameValue() {
-		EditText name = (EditText) activity.findViewById(R.id.expenseItemNameEditText);
-		assertEquals("name is not right", "test item", name.getText().toString());
+	public void testThatFieldsWerePopulatedProperlyOnStart() throws ParseException {
+		assertEquals("name is not right", item.getName(), nameField.getText().toString());
+		assertEquals("date is not right", item.getDate(), getDate(dateField));
+		assertEquals("category is not right", item.getCategory().toString(), categorySpinner.getSelectedItem().toString());
+		assertEquals("amount is not right", item.getAmountSpent().toString(), amountField.getText().toString());
+		assertEquals("currency is not right", item.getCurrency().toString(), currencySpinner.getSelectedItem().toString());
+		assertEquals("description is not right", item.getDescription(), descriptionField.getText().toString());
 	}
 
-	public void testDateValue() {
-		EditText date = (EditText) activity.findViewById(R.id.expenseItemDateEditText);
-		assertEquals("date is not right", "01-01-2000", date.getText().toString());
-	}
+	public void testThatTappingDoneWhileEditingAnExistingExpenseClaimUpdatesThatExpenseClaim() throws ParseException {
+		final int newSpinnerPosition = 3;
+		final String newName = "McDonald's";
+		final String newDateString = "2015-01-01";
+		final String newCategory = (String) categorySpinner.getItemAtPosition(newSpinnerPosition);
+		final BigDecimal newAmount = new BigDecimal("5000");
+		final String newCurrency = (String) currencySpinner.getItemAtPosition(newSpinnerPosition);
+		final String newDescription = "FooBarBaz";
+		
+		final Date newDate = sdf.parse(newDateString);
+		
+		getInstrumentation().runOnMainSync(new Runnable() {
+			@Override
+			public void run() {
+				nameField.setText(newName);
+				dateField.setText(newDateString);
+				categorySpinner.setSelection(newSpinnerPosition);
+				amountField.setText(newAmount.toString());
+				currencySpinner.setSelection(newSpinnerPosition);
+				descriptionField.setText(newDescription);
+				
+				doneButton.performClick();
+			}
+		});
+		
+		getInstrumentation().waitForIdleSync();
 
-	public void testCategoryValue() {
-		Spinner category = (Spinner) activity.findViewById(R.id.expenseItemCategorySpinner);
-		assertEquals("category is not right", "air fare", category.getSelectedItem().toString());
-	}
+		final ExpenseItem updatedItem = controller.getExpenseClaim(0).getExpense(0);
+		assertEquals(newName, updatedItem.getName());
+		assertEquals(newDate, updatedItem.getDate());
+		assertEquals(newCategory, updatedItem.getCategory().toString());
+		assertEquals(newAmount, updatedItem.getAmountSpent());
+		assertEquals(newCurrency, updatedItem.getCurrency().toString());
+		assertEquals(newDescription, updatedItem.getDescription());
 
-	public void testAmountValue() {
-		EditText amount = (EditText) activity.findViewById(R.id.expenseItemAmountEditText);
-		assertEquals("amount is not right", "0.125", amount.getText().toString());
-	}
-
-	public void testCurrencyValue() {
-		Spinner currency = (Spinner) activity.findViewById(R.id.expenseItemCurrencySpinner);
-		assertEquals("currency is not right", "CAD", currency.getSelectedItem().toString());
-	}
-
-	public void testDescriptionValue() {
-		EditText description = (EditText) activity.findViewById(R.id.expesenItemDescriptionEditText);
-		assertEquals("description is not right", "Test Item", description.getText().toString());
-	}
-
-	public void testEdit() throws ParseException {
-
-		clickDone();
-
-		Calendar newDate = Calendar.getInstance();
-		newDate.set(2000, 00, 01);
-		Date date = newDate.getTime();
-		// without this, date is saved as DateTime
-		// so format date into string and parse it back to get date at midnight;
-		SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.CANADA);
-		String inputDate = dateFormatter.format(date);
-		Date dateToAssign = dateFormatter.parse(inputDate);
-
-		BitmapDrawable dr = new BitmapDrawable(res, imageBig);
-		Bitmap imageBigScaled = activity.convertToBitmap(dr, imageBig.getWidth(), imageBig.getHeight());
-		ExpenseItem editedItem = new ExpenseItem("test item", dateToAssign, Category.fromString("air fare"),
-				new BigDecimal("0.125"), Currency.CAD, "Test Edit", imageBigScaled);
-		assertEquals("did not update item", editedItem, controller.getExpenseClaim(0).getExpense(0));
+		assertTrue("Persister's .save() was never called", persister.wasSaveCalled());
 	}
 
 	/**
@@ -159,19 +182,7 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 		getInstrumentation().waitForIdleSync();
 	}
 
-	/**
-	 * Update the global Claim List in main thread
-	 */
-	private void clickDone() {
-		getInstrumentation().runOnMainSync(new Runnable() {
-			@Override
-			public void run() {
-				EditText description = (EditText) activity.findViewById(R.id.expesenItemDescriptionEditText);
-				description.setText("Test Edit");
-				Button doneButton = (Button) activity.findViewById(R.id.expenseItemDoneButton);
-				doneButton.callOnClick();
-			}
-		});
-		getInstrumentation().waitForIdleSync();
+	private Date getDate(EditText dateField) throws ParseException {
+		return sdf.parse(dateField.getText().toString());
 	}
 }

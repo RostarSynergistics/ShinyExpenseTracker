@@ -5,8 +5,11 @@ import java.io.IOException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.persistence.IExpenseClaimListPersister;
 
-public class MockExpenseClaimListPersister 
-implements IExpenseClaimListPersister {
+/**
+ * Implementation of IExpenseClaimListPersister that just saves and loads it from
+ * an instance variable.
+ */
+public class MockExpenseClaimListPersister implements IExpenseClaimListPersister {
 	private ExpenseClaimList list;
 	
 	public MockExpenseClaimListPersister() {

@@ -24,7 +24,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 import ca.ualberta.cs.shinyexpensetracker.persistence.FilePersistenceStrategy;
 import ca.ualberta.cs.shinyexpensetracker.persistence.ITagListPersister;
-import ca.ualberta.cs.shinyexpensetracker.persistence.TagListPersister;
+import ca.ualberta.cs.shinyexpensetracker.persistence.GsonTagListPersister;
 
 /**
  * TagController object that stores a list
@@ -49,7 +49,7 @@ public class TagController {
 	 * @throws IOException
 	 */
 	public TagController(Context context) throws IOException {
-		this(new TagListPersister(
+		this(new GsonTagListPersister(
 				new FilePersistenceStrategy(context, "tags")));
 	}
 	

@@ -83,4 +83,5 @@
     <string name="expense_item_completeness_flag">Completeness Flag Picture</string>
     <string name="edit_expense_item">Edit Expense Item</string>
     <string name="submit_claim">Submit Claim</string>
+    <string name="remove_receipt">Remove Receipt</string>
 </resources>

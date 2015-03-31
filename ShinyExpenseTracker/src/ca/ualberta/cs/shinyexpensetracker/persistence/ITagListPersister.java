@@ -4,6 +4,10 @@ import java.io.IOException;
 
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 
+/**
+ * Defines an interface for classes that can handle the saving and loading 
+ * of a TagList.
+ */
 public interface ITagListPersister {
 
 	/**

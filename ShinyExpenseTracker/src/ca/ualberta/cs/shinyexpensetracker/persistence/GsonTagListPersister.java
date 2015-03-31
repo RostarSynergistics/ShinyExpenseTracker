@@ -7,12 +7,13 @@ import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 import com.google.gson.Gson;
 
 /**
- * Handles the persistence of {@link TagList} to a file for offline usage.
+ * Handles the persistence of {@link TagList} to a file for offline usage,
+ * using Gson to serialize it.
  * 
  * Source: https://www.youtube.com/watch?v=gmNfc6u1qk0 (2015-01-31)
  * https://www.youtube.com/watch?v=uat-8Z6U_Co (2015-02-01)
  */
-public class TagListPersister implements ITagListPersister {
+public class GsonTagListPersister implements ITagListPersister {
 	private final IPersistenceStrategy persistenceStrategy;
 	private final Gson gson;
 
@@ -21,7 +22,7 @@ public class TagListPersister implements ITagListPersister {
 	 * 
 	 * @param persistenceStrategy The desired persistence strategy.
 	 */
-	public TagListPersister(IPersistenceStrategy persistenceStrategy) {
+	public GsonTagListPersister(IPersistenceStrategy persistenceStrategy) {
 		this.persistenceStrategy = persistenceStrategy;
 		this.gson = new Gson();
 	}

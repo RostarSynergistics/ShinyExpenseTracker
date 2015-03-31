@@ -4,6 +4,10 @@ import java.io.IOException;
 
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
+/**
+ * Defines an interface for classes that can handle the saving and loading 
+ * of an ExpenseClaimList.
+ */
 public interface IExpenseClaimListPersister {
 
 	/**

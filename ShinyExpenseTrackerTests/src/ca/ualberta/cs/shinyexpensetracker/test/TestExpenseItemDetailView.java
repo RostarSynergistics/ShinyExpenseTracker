@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -65,7 +66,7 @@ public class TestExpenseItemDetailView extends
 		
 		item = new ExpenseItem("test item", newDate.getTime(),
 				Category.fromString("air fare"), new BigDecimal("0.125"),
-				Currency.CAD, "Test Item", imageSmall);
+				Currency.CAD, "Test Item", imageSmall, true);
 
 		claim.addExpense(item);
 		claimList.addClaim(claim);
@@ -126,14 +127,7 @@ public class TestExpenseItemDetailView extends
 		TextView amount = (TextView) activity
 				.findViewById(R.id.expenseItemAmountValue);
 		assertEquals("amount is not right", amount.getText().toString(),
-				"0.125");
-	}
-
-	public void testCurrencyValue() {
-		TextView currency = (TextView) activity
-				.findViewById(R.id.expenseItemCurrencyValue);
-		assertEquals("currency is not right", currency.getText().toString(),
-				"CAD");
+				item.getValueString());
 	}
 
 	public void testDescriptionValue() {
@@ -143,23 +137,18 @@ public class TestExpenseItemDetailView extends
 				.toString(), "Test Item");
 	}
 
-	public void testReceiptValue() {
-
-		TextView receipt = (TextView) activity
-				.findViewById(R.id.expenseItemReceiptValue);
-		assertEquals("receipt is not right", receipt.getText().toString(),
-				"Present");
-	}
+	/**
+	 * Checks if the indicator of a photo is present and
+	 * behaves correctly.
+	 * The indicator in this view is the existence of
+	 * an attached photo.
+	 */
 	public void testRemoveReceipt(){
 		assertNotNull("receipt not present in item", item.getReceiptPhoto());
 		clickRemoveReceipt();
 		assertNull("did not remove receipt photo", item.getReceiptPhoto());
 		ImageView iv = (ImageView) activity.findViewById(R.id.expenseItemDetailImageButton);
 		assertNull("did not remove receipt photo from screen", iv.getDrawable());
-		TextView receipt = (TextView) activity
-				.findViewById(R.id.expenseItemReceiptValue);
-		assertEquals("receipt is not right", receipt.getText().toString(),
-				"Not Present");
 	}
 	
 	private void clickRemoveReceipt() {
@@ -190,7 +179,7 @@ public class TestExpenseItemDetailView extends
 		
 		// Get the activity
 		getInstrumentation().waitForIdleSync();
-		final ExpenseItemActivity expenseActivity = (ExpenseItemActivity) getInstrumentation().waitForMonitorWithTimeout(expenseMonitor, 1000);
+		final ExpenseItemActivity expenseActivity =   (ExpenseItemActivity) getInstrumentation().waitForMonitorWithTimeout(expenseMonitor, 1000);
 		assertEquals("Did not open the expense activity", true, getInstrumentation().checkMonitorHit(expenseMonitor, 1));
 		
 		// Fill the activity
@@ -220,5 +209,31 @@ public class TestExpenseItemDetailView extends
 		
 		// Check that the data was updated
 		assertEquals(veryDifferentName, name.getText().toString());
+	}
+	
+	/**
+	 * Checks if the incompleteness marker behaves correctly
+	 */
+	public void testMarkIncomplete() {
+		final CheckBox incompletenessFlag = (CheckBox) activity.findViewById(R.id.expenseItemCompletenessFlag);
+		
+		// False positive check : Marked Incomplete = True
+		assertTrue(item.getIsMarkedIncomplete());
+		assertEquals(item.getIsMarkedIncomplete(),
+				incompletenessFlag.isChecked());
+		
+		// Toggle the value
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				incompletenessFlag.performClick();
+			}
+		});
+		getInstrumentation().waitForIdleSync();
+		
+		// Check if value changed : MarkedIncomplete = False
+		assertFalse(item.getIsMarkedIncomplete());
+		assertEquals(item.getIsMarkedIncomplete(),
+				incompletenessFlag.isChecked());
 	}
 }

@@ -23,6 +23,7 @@
 
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -402,8 +403,10 @@ public class ViewAllExpenseClaimsActivityTests extends
 				} catch (NullPointerException e) {
 					failed = true;
 					e.printStackTrace();
+				} catch (IOException e) {
+					fail();
+					e.printStackTrace();
 				}
-				
 			}
 		});
 		

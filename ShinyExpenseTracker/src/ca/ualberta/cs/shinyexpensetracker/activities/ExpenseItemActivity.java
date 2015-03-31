@@ -272,7 +272,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 	 * @throws ParseException
 	 * @throws IOException
 	 */
-	public boolean createExpenseItem() throws ParseException {
+	public boolean createExpenseItem() throws ParseException, IOException {
 		EditText nameText = (EditText) findViewById(R.id.expenseItemNameEditText);
 		EditText dateText = (EditText) findViewById(R.id.expenseItemDateEditText);
 		Spinner categorySpinner = (Spinner) findViewById(R.id.expenseItemCategorySpinner);
@@ -364,6 +364,8 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 			item.setCurrency(currency);
 			item.setDescription(description);
 			item.setReceiptPhoto(bm);
+			
+			controller.update();
 		} else {
 			// Add a new expense
 			ExpenseItem expense = new ExpenseItem(name, date, category, amount, currency, description, bm);
@@ -427,8 +429,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 	 * @throws ParseException
 	 * @throws IOException
 	 */
-	public void doneExpenseItem(View v) throws ParseException {
-
+	public void doneExpenseItem(View v) throws ParseException, IOException {
 		if (createExpenseItem()) {
 			finish();
 		}

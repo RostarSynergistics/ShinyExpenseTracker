@@ -1,5 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -98,8 +100,9 @@ public class AddDestinationActivity extends Activity {
 	 * a destination index, or save it to the existing destination.
 	 * 
 	 * @return true if destination input was valid, false otherwise.
+	 * @throws IOException 
 	 */
-	public boolean saveDestination() {
+	public boolean saveDestination() throws IOException {
 		destinationEditText = (EditText) findViewById(R.id.destinationEditText);
 		reasonForTravelEditText = (EditText) findViewById(R.id.reasonEditText);
 
@@ -131,6 +134,9 @@ public class AddDestinationActivity extends Activity {
 			destination.setName(dest);
 			destination.setReasonForTravel(reason);
 		}
+		
+		controller.update();
+		
 		return true;
 	}
 
@@ -140,8 +146,9 @@ public class AddDestinationActivity extends Activity {
 	 * activity is closed.
 	 * 
 	 * @param v
+	 * @throws IOException 
 	 */
-	public void doneCreateDestination(View v) {
+	public void doneCreateDestination(View v) throws IOException {
 		if (saveDestination()) {
 			finish();
 		}

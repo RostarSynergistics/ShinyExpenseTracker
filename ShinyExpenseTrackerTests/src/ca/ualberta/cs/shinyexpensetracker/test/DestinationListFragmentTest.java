@@ -1,5 +1,6 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+import java.io.IOException;
 import java.util.Date;
 
 import android.app.AlertDialog;
@@ -292,9 +293,14 @@ public class DestinationListFragmentTest extends
 				name.setText(newDest);
 				
 				// Close the activity
-				editDestination.doneCreateDestination( editDestination.findViewById(R.id.addDestinationDoneButton));				
+				try {
+					editDestination.doneCreateDestination( editDestination.findViewById(R.id.addDestinationDoneButton));
+				} catch (IOException e) {
+					fail();
+				}
 			}
 		});
+		
 		// Wait for sync
 		getInstrumentation().waitForIdleSync();
 		

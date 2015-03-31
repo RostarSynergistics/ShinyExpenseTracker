@@ -1,5 +1,6 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Calendar;
@@ -196,6 +197,9 @@ public class TestExpenseItemDetailView extends
 				try {
 					expenseActivity.doneExpenseItem(expenseActivity.findViewById(R.id.expenseItemDoneButton));
 				} catch (ParseException e) {
+					fail();
+					e.printStackTrace();
+				} catch (IOException e) {
 					fail();
 					e.printStackTrace();
 				}

@@ -1,5 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -34,6 +36,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
  * 
  */
 public class AddDestinationActivity extends Activity {
+	public static final String DESTINATION_INDEX = "destinationIndex";
 
 	private EditText destinationEditText;
 	private EditText reasonForTravelEditText;
@@ -54,11 +57,11 @@ public class AddDestinationActivity extends Activity {
 		setContentView(R.layout.activity_add_destination);
 
 		Intent intent = getIntent();
-		claimIndex = intent.getIntExtra("claimIndex", -1);
+		claimIndex = intent.getIntExtra(ExpenseClaimActivity.CLAIM_INDEX, -1);
 		controller = Application.getExpenseClaimController();
 		claim = controller.getExpenseClaim(claimIndex);
 		
-		destinationIndex = getIntent().getIntExtra("destinationIndex", -1);
+		destinationIndex = getIntent().getIntExtra(DESTINATION_INDEX, -1);
 		// Is this a new destination?
 		if (destinationIndex == -1) {
 			// Yes.
@@ -97,8 +100,9 @@ public class AddDestinationActivity extends Activity {
 	 * a destination index, or save it to the existing destination.
 	 * 
 	 * @return true if destination input was valid, false otherwise.
+	 * @throws IOException 
 	 */
-	public boolean saveDestination() {
+	public boolean saveDestination() throws IOException {
 		destinationEditText = (EditText) findViewById(R.id.destinationEditText);
 		reasonForTravelEditText = (EditText) findViewById(R.id.reasonEditText);
 
@@ -130,6 +134,9 @@ public class AddDestinationActivity extends Activity {
 			destination.setName(dest);
 			destination.setReasonForTravel(reason);
 		}
+		
+		controller.update();
+		
 		return true;
 	}
 
@@ -139,8 +146,9 @@ public class AddDestinationActivity extends Activity {
 	 * activity is closed.
 	 * 
 	 * @param v
+	 * @throws IOException 
 	 */
-	public void doneCreateDestination(View v) {
+	public void doneCreateDestination(View v) throws IOException {
 		if (saveDestination()) {
 			finish();
 		}

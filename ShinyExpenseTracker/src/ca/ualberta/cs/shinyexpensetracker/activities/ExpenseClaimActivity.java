@@ -1,9 +1,3 @@
-/**
- *  Covers issue 17. 
- *  AddExpenseClaimActivity: Activity representing the UI for adding/editing an Expense Claim. 
- *  No outstanding issues.
- **/
-
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
 import java.io.IOException;
@@ -33,10 +27,16 @@ import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
-// Source for DatePicker: http://androidopentutorials.com/android-datepickerdialog-on-edittext-click-event
-
-public class AddExpenseClaimActivity extends Activity implements
-		OnClickListener {
+/**
+ * Activity that handles the creation of new ExpenseClaims and the editing of
+ * existing ExpenseClaims.
+ * 
+ * Source for DatePicker:
+ * http://androidopentutorials.com/android-datepickerdialog
+ * -on-edittext-click-event
+ */
+public class ExpenseClaimActivity extends Activity implements OnClickListener {
+	public static final String CLAIM_INDEX = "claimIndex";
 
 	private ExpenseClaimController controller;
 
@@ -63,7 +63,7 @@ public class AddExpenseClaimActivity extends Activity implements
 		controller = Application.getExpenseClaimController();
 
 		Intent intent = getIntent();
-		claimIndex = intent.getIntExtra("claimIndex", -1);
+		claimIndex = intent.getIntExtra(CLAIM_INDEX, -1);
 		if (claimIndex == -1) {
 			claim = new ExpenseClaim("");
 		} else {
@@ -102,32 +102,23 @@ public class AddExpenseClaimActivity extends Activity implements
 
 		Calendar newCalendar = Calendar.getInstance();
 
-		fromDatePickerDialog = new DatePickerDialog(this,
-				new OnDateSetListener() {
+		fromDatePickerDialog = new DatePickerDialog(this, new OnDateSetListener() {
 
-					public void onDateSet(DatePicker view, int year,
-							int monthOfYear, int dayOfMonth) {
-						Calendar newDate = Calendar.getInstance();
-						newDate.set(year, monthOfYear, dayOfMonth);
-						startDate.setText(dateFormatter.format(newDate
-								.getTime()));
-					}
-				}, newCalendar.get(Calendar.YEAR),
-				newCalendar.get(Calendar.MONTH),
-				newCalendar.get(Calendar.DAY_OF_MONTH));
+			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+				Calendar newDate = Calendar.getInstance();
+				newDate.set(year, monthOfYear, dayOfMonth);
+				startDate.setText(dateFormatter.format(newDate.getTime()));
+			}
+		}, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
-		toDatePickerDialog = new DatePickerDialog(this,
-				new OnDateSetListener() {
+		toDatePickerDialog = new DatePickerDialog(this, new OnDateSetListener() {
 
-					public void onDateSet(DatePicker view, int year,
-							int monthOfYear, int dayOfMonth) {
-						Calendar newDate = Calendar.getInstance();
-						newDate.set(year, monthOfYear, dayOfMonth);
-						endDate.setText(dateFormatter.format(newDate.getTime()));
-					}
-				}, newCalendar.get(Calendar.YEAR), newCalendar
-						.get(Calendar.MONTH), newCalendar
-						.get(Calendar.DAY_OF_MONTH));
+			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+				Calendar newDate = Calendar.getInstance();
+				newDate.set(year, monthOfYear, dayOfMonth);
+				endDate.setText(dateFormatter.format(newDate.getTime()));
+			}
+		}, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 	}
 
 	@Override
@@ -166,8 +157,7 @@ public class AddExpenseClaimActivity extends Activity implements
 
 			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which) {
-				}
+				public void onClick(DialogInterface dialog, int which) {}
 			});
 			alertDialog = adb.create();
 			alertDialog.show();
@@ -182,8 +172,7 @@ public class AddExpenseClaimActivity extends Activity implements
 			adb.setCancelable(true);
 			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which) {
-				}
+				public void onClick(DialogInterface dialog, int which) {}
 			});
 			alertDialog = adb.create();
 			alertDialog.show();
@@ -198,8 +187,7 @@ public class AddExpenseClaimActivity extends Activity implements
 			adb.setCancelable(true);
 			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which) {
-				}
+				public void onClick(DialogInterface dialog, int which) {}
 			});
 			alertDialog = adb.create();
 			alertDialog.show();
@@ -213,8 +201,7 @@ public class AddExpenseClaimActivity extends Activity implements
 			adb.setMessage("Start Date cannot be set to after the End Date");
 			adb.setCancelable(true);
 			adb.setNeutralButton("Back", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-				}
+				public void onClick(DialogInterface dialog, int which) {}
 			});
 			alertDialog = adb.create();
 			alertDialog.show();
@@ -225,12 +212,14 @@ public class AddExpenseClaimActivity extends Activity implements
 		claim.setStartDate(startDate);
 		claim.setEndDate(endDate);
 
-		if (claimIndex == -1) {
-			try {
+		try {
+			if (claimIndex == -1) {
 				controller.addExpenseClaim(claim);
-			} catch (IOException e) {
-				throw new RuntimeException(e);
+			} else {
+				controller.update();
 			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 
 		// Sanity check
@@ -268,7 +257,7 @@ public class AddExpenseClaimActivity extends Activity implements
 		if (claim != null) {
 			if (claimIndex == -1) {
 				Intent intent = new Intent(this, TabbedSummaryActivity.class);
-				intent.putExtra("claimIndex", controller.getIndexOf(claim));
+				intent.putExtra(CLAIM_INDEX, controller.getIndexOf(claim));
 				finish();
 				startActivity(intent);
 			} else {

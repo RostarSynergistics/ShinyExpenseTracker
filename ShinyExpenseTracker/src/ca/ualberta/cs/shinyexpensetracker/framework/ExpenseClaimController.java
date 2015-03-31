@@ -7,8 +7,8 @@ import android.content.Context;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
-import ca.ualberta.cs.shinyexpensetracker.persistence.GsonExpenseClaimListPersister;
 import ca.ualberta.cs.shinyexpensetracker.persistence.FilePersistenceStrategy;
+import ca.ualberta.cs.shinyexpensetracker.persistence.GsonExpenseClaimListPersister;
 import ca.ualberta.cs.shinyexpensetracker.persistence.IExpenseClaimListPersister;
 
 /**
@@ -75,14 +75,9 @@ public class ExpenseClaimController {
 	}
 	
 	/**
-	 * Replaces the old claim with the new claim
-	 * @param oldClaim
-	 * @param newClaim
+	 * Call when an existing ExpenseClaim has been updated.
 	 */
-	
-	public void updateExpenseClaim(ExpenseClaim oldClaim, ExpenseClaim newClaim) 
-	throws IOException {
-		claimList.updateExpenseClaim(oldClaim, newClaim);
+	public void update() throws IOException {
 		persister.saveExpenseClaims(claimList);
 	}
 

@@ -3,9 +3,7 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;

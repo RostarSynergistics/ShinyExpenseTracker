@@ -16,24 +16,25 @@ import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersist
 
 /**
  * Tests various parts of the functionality of AddDestinationActivity that relates
- * to creating new Destinations.
+ * to editing existing Destinations.
  **/
-public class AddDestinationTests extends
+public class EditDestinationTests extends
 		ActivityInstrumentationTestCase2<AddDestinationActivity> {
 
 	AddDestinationActivity activity;
 	Instrumentation instrumentation;
-	EditText nameInput, reasonInput;
+	EditText nameField, reasonField;
 	Button doneButton;
 
 	private ExpenseClaimController controller;
 	private MockExpenseClaimListPersister persister;
+	private Destination destination;
 
-	public AddDestinationTests() {
+	public EditDestinationTests() {
 		super(AddDestinationActivity.class);
 	}
 
-	public AddDestinationTests(Class<AddDestinationActivity> activityClass) {
+	public EditDestinationTests(Class<AddDestinationActivity> activityClass) {
 		super(activityClass);
 	}
 
@@ -49,6 +50,9 @@ public class AddDestinationTests extends
 
 		ExpenseClaim claim = new ExpenseClaim("Example name");
 		claimList.addClaim(claim);
+		
+		destination = new Destination("Indianapolis", "Gen Con");
+		claim.addDestination(destination);
 
 		persister = new MockExpenseClaimListPersister(claimList);
 		controller = new ExpenseClaimController(persister);
@@ -58,23 +62,29 @@ public class AddDestinationTests extends
 
 		Intent intent = new Intent();
 		intent.putExtra(ExpenseClaimActivity.CLAIM_INDEX, 0);
+		intent.putExtra(AddDestinationActivity.DESTINATION_INDEX, 0);
 		setActivityIntent(intent);
 
 		activity = getActivity();
 
-		nameInput = (EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.destinationEditText);
-		reasonInput = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.reasonEditText));
+		nameField = (EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.destinationEditText);
+		reasonField = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.reasonEditText));
 		doneButton = (Button) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.addDestinationDoneButton);
 	}
+	
+	public void testThatFieldsWerePopulatedProperlyOnStart() {
+		assertEquals(destination.getName(), nameField.getText().toString());
+		assertEquals(destination.getReasonForTravel(), reasonField.getText().toString());
+	}
 
-	public void testThatTappingDoneCreatesANewDestination() {
+	public void testThatTappingDoneUpdatesTheExistingDestination() {
 		final String name = "Las Vegas";
 		final String reason = "Vacation";
 		
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {
-				nameInput.setText(name);
-				reasonInput.setText(reason);
+				nameField.setText(name);
+				reasonField.setText(reason);
 				doneButton.performClick();
 			}
 		});

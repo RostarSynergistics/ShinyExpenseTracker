@@ -112,7 +112,7 @@ public class ExpenseClaimListActivity
 		switch (id) {
 		case R.id.action_new_claim:
 
-			Intent intent = new Intent(this, AddExpenseClaimActivity.class);
+			Intent intent = new Intent(this, ExpenseClaimActivity.class);
 			startActivity(intent);
 
 			return true;

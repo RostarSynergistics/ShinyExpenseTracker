@@ -153,8 +153,4 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 
 		nextActivity.finish();
 	}
-
-	public void testThatTappingDoneWhileEditingAnExistingExpenseClaimUpdatesThatClaim() {
-
-	}
 }

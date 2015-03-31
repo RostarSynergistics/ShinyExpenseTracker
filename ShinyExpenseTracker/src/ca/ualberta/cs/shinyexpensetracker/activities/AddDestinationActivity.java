@@ -34,6 +34,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
  * 
  */
 public class AddDestinationActivity extends Activity {
+	public static final String DESTINATION_INDEX = "destinationIndex";
 
 	private EditText destinationEditText;
 	private EditText reasonForTravelEditText;
@@ -54,11 +55,11 @@ public class AddDestinationActivity extends Activity {
 		setContentView(R.layout.activity_add_destination);
 
 		Intent intent = getIntent();
-		claimIndex = intent.getIntExtra("claimIndex", -1);
+		claimIndex = intent.getIntExtra(ExpenseClaimActivity.CLAIM_INDEX, -1);
 		controller = Application.getExpenseClaimController();
 		claim = controller.getExpenseClaim(claimIndex);
 		
-		destinationIndex = getIntent().getIntExtra("destinationIndex", -1);
+		destinationIndex = getIntent().getIntExtra(DESTINATION_INDEX, -1);
 		// Is this a new destination?
 		if (destinationIndex == -1) {
 			// Yes.

@@ -152,5 +152,21 @@ public class TagController {
 		persister.saveTags(list);
 		return result;
 	}
+	
+	/** 
+	 * Returns a list of all the tags that are in the tagController but
+	 * not in the given tag list 
+	 * @param tagList
+	 * @return a tag list of the different tags 
+	 */
+	public TagList getTagsNotIn(TagList tagList){
+		TagList differentTags = new TagList();
+		for(Tag tag : list){
+			if(!tagList.contains(tag)){
+				differentTags.addTag(tag);
+			}
+		}
+		return differentTags;
+	}
 
 }

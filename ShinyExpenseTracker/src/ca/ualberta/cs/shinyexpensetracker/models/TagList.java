@@ -1,6 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,7 +15,7 @@ import java.util.regex.Pattern;
  * Has tags: ArrayList<Tag>
  *
  */
-public class TagList extends Model<TagList> {
+public class TagList extends Model<TagList> implements Iterable<Tag> {
 	private ArrayList<Tag> tags = new ArrayList<Tag>();
 	
 	public TagList(){
@@ -131,7 +132,14 @@ public class TagList extends Model<TagList> {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < tags.size(); i++) {
 			sb.append(tags.get(i));
+			sb.append("  ");
 		}
 		return sb.toString();
+	}
+
+	//Method required for iterable. Used to use TagList in a for each loop 
+	@Override
+	public Iterator<Tag> iterator() {
+		return tags.iterator();
 	}
 }

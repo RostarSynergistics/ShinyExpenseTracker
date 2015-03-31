@@ -165,6 +165,10 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		return expenses.get(index);
 	}
 	
+	public ArrayList<ExpenseItem> getExpenses() {
+		return expenses;
+	}
+	
 	/**
 	 * Comparison of two claims is the comparison of their start date.
 	 */

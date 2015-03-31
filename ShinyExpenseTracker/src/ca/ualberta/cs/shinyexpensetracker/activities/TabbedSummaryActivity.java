@@ -1,9 +1,14 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import java.util.ArrayList;
+
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
@@ -12,15 +17,14 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.adapters.ExpenseItemAdapter;
 import ca.ualberta.cs.shinyexpensetracker.adapters.SectionsPagerAdapter;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
 import ca.ualberta.cs.shinyexpensetracker.fragments.DestinationListFragment;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ExpenseItemListFragment;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 
 // Source: https://github.com/astuetz/PagerSlidingTabStrip
 // on March 11 2015
@@ -53,6 +57,8 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 	 */
 	ViewPager mViewPager;
 	Context context;
+	private AlertDialog.Builder adb;
+	public Dialog alertDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +70,8 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		context = getBaseContext();
+		
+		adb = new AlertDialog.Builder(this);
 		
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the activity.
@@ -160,8 +168,34 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 		
 		Intent intent = getIntent();
 		int claimIndex = intent.getIntExtra("claimIndex", -1);
-		ecc.getExpenseClaim(claimIndex).setStatus(Status.SUBMITTED);
-		
+		ArrayList<ExpenseItem> expenses = ecc.getExpenseItems(ecc.getExpenseClaim(claimIndex));
+		boolean incomplete = false;
+		for (ExpenseItem expense : expenses) {
+			if (expense.getIsMarkedIncomplete()) {
+				adb.setMessage("Cannot submit an incomplete claim");
+				adb.setCancelable(true);
+
+				adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) { }
+				});
+				alertDialog = adb.create();
+				alertDialog.show();
+				incomplete = true;
+			}
+		}
+		if (!incomplete) {
+			ecc.getExpenseClaim(claimIndex).setStatus(Status.SUBMITTED);
+			adb.setMessage("Claim Submitted for Approval");
+			adb.setCancelable(true);
+			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) { }
+			});
+			alertDialog = adb.create();
+			alertDialog.show();
+		}
 	}
 
 	@Override
@@ -222,6 +256,10 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 		SectionsPagerAdapter adapter = ((SectionsPagerAdapter) mViewPager.getAdapter());
 		Fragment fragment = adapter.getFragment(index);
 		return fragment;
+	}
+	
+	public Dialog getDialog() {
+		return alertDialog;
 	}
 	
 }

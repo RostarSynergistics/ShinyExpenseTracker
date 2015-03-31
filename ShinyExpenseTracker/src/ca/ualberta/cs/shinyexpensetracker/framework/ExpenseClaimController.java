@@ -1,6 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.framework;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import android.content.Context;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -125,5 +126,9 @@ public class ExpenseClaimController {
 	 */
 	public int getIndexOf(ExpenseClaim claim) {
 		return claimList.getClaims().indexOf(claim);
+	}
+	
+	public ArrayList<ExpenseItem> getExpenseItems(ExpenseClaim claim) {
+		return claim.getExpenses();
 	}
 }

@@ -5,6 +5,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
@@ -46,13 +47,15 @@ public class AddDestinationTests extends
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-
-		persister = new MockExpenseClaimListPersister();
-		controller = new ExpenseClaimController(persister);
-		Application.setExpenseClaimController(controller);
+		
+		ExpenseClaimList claimList = new ExpenseClaimList();
 
 		ExpenseClaim claim = new ExpenseClaim("Example name");
-		controller.addExpenseClaim(claim);
+		claimList.addClaim(claim);
+
+		persister = new MockExpenseClaimListPersister(claimList);
+		controller = new ExpenseClaimController(persister);
+		Application.setExpenseClaimController(controller);
 
 		instrumentation = getInstrumentation();
 

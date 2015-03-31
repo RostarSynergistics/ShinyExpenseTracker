@@ -46,6 +46,15 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 	private ArrayList<Destination> destinations = new ArrayList<Destination>();
 	private TagList tagList;
 	private ArrayList<ExpenseItem> expenses = new ArrayList<ExpenseItem>();
+	public int id;
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public ExpenseClaim(String name) {
 		this(name, new Date(), null, Status.IN_PROGRESS, null);

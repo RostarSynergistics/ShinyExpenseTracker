@@ -59,6 +59,10 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 	Context context;
 	private AlertDialog.Builder adb;
 	public Dialog alertDialog;
+	ExpenseClaimController controller = Application.getExpenseClaimController();
+	Intent intent;
+	int claimIndex;
+	Menu m;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -102,12 +106,16 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 					.setText(mSectionsPagerAdapter.getPageTitle(i, context))
 					.setTabListener(this));
 		}
+		
+		intent = getIntent();
+		claimIndex = intent.getIntExtra("claimIndex", -1);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.tabbed_summary, menu);
+		m = menu;
 		return true;
 	}
 	
@@ -117,8 +125,6 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 	 * @param menu
 	 */
 	public void addExpenseItemMenuItem(MenuItem menu) {
-		Intent intent = getIntent();
-		int claimIndex = intent.getIntExtra("claimIndex", -1);
 		intent = new Intent(TabbedSummaryActivity.this, ExpenseItemActivity.class);
 		intent.putExtra("claimIndex", claimIndex);
 		startActivity(intent);
@@ -152,6 +158,11 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 	public void editClaimMenuItem(MenuItem menu) {
 		Intent intent = getIntent();
 		int claimIndex = intent.getIntExtra("claimIndex", -1);
+		
+		
+		
+		if (controller.getExpenseClaim(claimIndex).getStatus().equals(Status.SUBMITTED)) {
+		}
 		intent = new Intent(this, AddExpenseClaimActivity.class);
 		intent.putExtra("claimIndex", claimIndex);
 		startActivity(intent);
@@ -160,6 +171,7 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 	/**
 	 * Called on MenuItem "Submit Claim" click
 	 * Changes status of claim to "Submitted" if claim is complete
+	 * Disables 'Submit Claim' menu item once claim is submitted
 	 * @param menu
 	 */
 	public void submitClaimMenuItem(MenuItem menu) {
@@ -195,6 +207,12 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 			});
 			alertDialog = adb.create();
 			alertDialog.show();
+			
+			// set menu items to false, so claim cannot be edited or submitted again
+			m.getItem(0).setEnabled(false);
+			m.getItem(2).setEnabled(false);
+			m.getItem(3).setEnabled(false);
+			m.getItem(4).setEnabled(false);
 		}
 	}
 

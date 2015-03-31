@@ -3,10 +3,8 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import android.app.Instrumentation.ActivityMonitor;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
-import android.view.View;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
@@ -111,6 +109,20 @@ public class TabbedSummaryActivityTest extends
 		getInstrumentation().waitForIdleSync();
 		
 		assertEquals("Claim not submitted", Status.SUBMITTED, claim.getStatus());
+		
+		//make sure menu items to edit claim are disabled
+		assertFalse("'Submit claim' menu item still enabled", 
+				getInstrumentation().invokeMenuActionSync(activity, R.id.submitClaim, 0));		
+		assertFalse("'edit claim' menu item still enabled", 
+				getInstrumentation().invokeMenuActionSync(activity, R.id.editClaim, 0));		
+		assertFalse("'Add Expense Item' menu item still enabled", 
+				getInstrumentation().invokeMenuActionSync(activity, R.id.addExpenseItem, 0));		
+		assertFalse("'Add Destination' menu item still enabled", 
+				getInstrumentation().invokeMenuActionSync(activity, R.id.addDestination, 0));	
+		
+		// make sure you can still add a tag to the claim
+		assertTrue("'Add Tag' menu item disabled", 
+				getInstrumentation().invokeMenuActionSync(activity, R.id.addTag, 0));
 	}
 	
 }

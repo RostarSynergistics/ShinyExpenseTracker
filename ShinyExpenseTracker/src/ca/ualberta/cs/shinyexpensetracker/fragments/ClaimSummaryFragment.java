@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.adapters.ExpenseTotalsAdapter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -66,10 +67,9 @@ public class ClaimSummaryFragment extends Fragment implements
 
 		// get the ID of the Claim we are working with
 		Intent intent = getActivity().getIntent();
-		claimIndex = intent.getIntExtra("claimIndex", -1);
+		claimIndex = intent.getIntExtra(ExpenseClaimActivity.CLAIM_INDEX, -1);
 		if (claimIndex == -1) {
-			throw new RuntimeException(
-					"Intent not passed: Got claim index of -1");
+			throw new RuntimeException("Intent not passed: Got claim index of -1");
 		}
 
 		// Get the claim itself

@@ -136,15 +136,6 @@ public class ExpenseClaimListActivity
 	}
 
 	/**
-	 * Adds a claim to the claim list controller
-	 * @param claim
-	 * @throws IOException
-	 */
-	public void addClaim(ExpenseClaim claim) throws IOException {
-		controller.addExpenseClaim(claim);
-	}
-
-	/**
 	 * Deletes a claim from the claim list controller
 	 * @param claim
 	 * @throws IOException

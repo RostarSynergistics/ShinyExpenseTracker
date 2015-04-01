@@ -15,6 +15,7 @@ import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
@@ -61,7 +62,8 @@ public class ClaimSummaryFragmentTest extends
 	public void setUp() throws Exception {
 		super.setUp();
 		
-		controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
+		ExpenseClaimList list = new ExpenseClaimList();
+		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(list));
 		Application.setExpenseClaimController(controller);
 		
 		//Source: http://stackoverflow.com/questions/23728835/in-junit-test-activity-if-it-did-received-the-extra-from-intent
@@ -76,7 +78,7 @@ public class ClaimSummaryFragmentTest extends
 		//Add an expense claim to the expenseClaimController
 		claim = new ExpenseClaim(claimName, startDate, endDate);
 		claim.setStatus(status);
-		controller.addExpenseClaim(claim);
+		list.addClaim(claim);
 		
 		activity = getActivity();
 		getInstrumentation().runOnMainSync(new Runnable() {

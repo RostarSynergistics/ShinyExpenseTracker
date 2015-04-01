@@ -20,6 +20,7 @@ import ca.ualberta.cs.shinyexpensetracker.fragments.ExpenseItemListFragment;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
@@ -41,7 +42,11 @@ public class ExpenseItemListFragmentTest extends
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		Application.setExpenseClaimController(new ExpenseClaimController(new MockExpenseClaimListPersister()));
+		
+		ExpenseClaimList list = new ExpenseClaimList();
+		
+		final ExpenseClaimController controller = new ExpenseClaimController(new MockExpenseClaimListPersister(list));
+		Application.setExpenseClaimController(controller);
 		
 		claim = new ExpenseClaim(
 				"My Cool Expense Claim",
@@ -58,7 +63,7 @@ public class ExpenseItemListFragmentTest extends
 				"Something really shiny",
 				null));
 		// Add the expense claim
-		Application.getExpenseClaimController().addExpenseClaim(claim);
+		list.addClaim(claim);
 		
 		// Inject an intent that we have full control of.
 		// This MUST be called before the first call to getActivity()

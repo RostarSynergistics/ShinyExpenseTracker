@@ -2,6 +2,7 @@ package ca.ualberta.cs.shinyexpensetracker.test.models;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
@@ -15,12 +16,11 @@ public class ExpenseClaimEqualsTests extends TestCase {
 	ExpenseClaim claim1;
 	ExpenseClaim claim2;
 
-	private ExpenseClaim getStartingClaim() {
+	private ExpenseClaim getStartingClaim(UUID id) {
 		Date startDate = new Date(5000);
 		Date endDate = new Date(6000);
 
-		return new ExpenseClaim("test", startDate, endDate,
-				ExpenseClaim.Status.IN_PROGRESS);
+		return new ExpenseClaim(id, "test", startDate, endDate, ExpenseClaim.Status.IN_PROGRESS);
 	}
 	
 	private ExpenseItem getTestExpenseItem() {
@@ -31,15 +31,23 @@ public class ExpenseClaimEqualsTests extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
+		
+		UUID id = UUID.randomUUID();
 
-		claim1 = getStartingClaim();
-		claim2 = getStartingClaim();
+		claim1 = getStartingClaim(id);
+		claim2 = getStartingClaim(id);
 	}
 
 	public void testThatTwoIdenticalClaimsAreEqual() {
 		assertEquals();
 	}
 
+	public void testThatTwoClaimsWithDifferentIDsAreNotEqual() {
+		claim2 = getStartingClaim(UUID.randomUUID());
+
+		assertNotEqual();
+	}
+	
 	public void testThatTwoClaimsWithDifferentNamesAreNotEqual() {
 		claim2.setName("a different name");
 

@@ -20,6 +20,7 @@ import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 /**
@@ -55,7 +56,8 @@ public class DestinationListFragmentTest extends
 	public void setUp() throws Exception {
 		super.setUp();
 		
-		controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
+		ExpenseClaimList list = new ExpenseClaimList();
+		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(list));
 		Application.setExpenseClaimController(controller);
 		
 		claim = new ExpenseClaim(
@@ -67,7 +69,7 @@ public class DestinationListFragmentTest extends
 		destination = new Destination("Hell", "I'm on a highway.");
 		claim.addDestination(destination);
 		// Add the expense claim
-		controller.addExpenseClaim(claim);
+		list.addClaim(claim);
 		
 		// Inject an intent that we have full control of.
 		// This MUST be called before the first call to getActivity()

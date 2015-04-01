@@ -2,20 +2,16 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * Class that represents an expense claim created by a user.
  */
-public class ExpenseClaim extends Model<ExpenseClaim> implements
-		Comparable<ExpenseClaim> {
+public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<ExpenseClaim> {
 	public enum Status {
-		IN_PROGRESS("In Progress"),
-		SUBMITTED("Submitted"),
-		RETURNED("Returned"),
-		APPROVED( "Approved");
+		IN_PROGRESS("In Progress"), SUBMITTED("Submitted"), RETURNED("Returned"), APPROVED("Approved");
 
 		private final String text;
 
@@ -39,6 +35,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 		}
 	}
 
+	private final UUID id;
 	private String name;
 	private Date startDate;
 	private Date endDate;
@@ -63,14 +60,26 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 		this(name, startDate, endDate, status, null);
 	}
 
-	public ExpenseClaim(String name, Date startDate, Date endDate,
-			Status status, TagList tagList) {
+	public ExpenseClaim(UUID id, String name, Date startDate, Date endDate, Status status) {
+		this(id, name, startDate, endDate, status, null);
+	}
+
+	public ExpenseClaim(String name, Date startDate, Date endDate, Status status, TagList tagList) {
+		this(UUID.randomUUID(), name, startDate, endDate, status, tagList);
+	}
+
+	public ExpenseClaim(UUID id, String name, Date startDate, Date endDate, Status status, TagList tagList) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.status = status;
 		this.tagList = tagList;
+	}
+
+	public UUID getID() {
+		return id;
 	}
 
 	public String getName() {
@@ -217,29 +226,11 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 			return false;
 		}
 		ExpenseClaim rhs = (ExpenseClaim) obj;
-		return new EqualsBuilder()
-				.append(getName(), rhs.getName())
-				.append(getStartDate(), rhs.getStartDate())
-				.append(getEndDate(), rhs.getEndDate())
-				.append(getStatus(), rhs.getStatus())
-				.append(getExpenseItems(), rhs.getExpenseItems())
+		return new EqualsBuilder().append(getID(), rhs.getID()).append(getName(), rhs.getName())
+				.append(getStartDate(), rhs.getStartDate()).append(getEndDate(), rhs.getEndDate())
+				.append(getStatus(), rhs.getStatus()).append(getExpenseItems(), rhs.getExpenseItems())
 				.append(getDestinations(), rhs.getDestinations())
 				// .append(getTagList(), rhs.getTagList())
 				.isEquals();
-	}
-
-	// Source:
-	// https://commons.apache.org/proper/commons-lang/javadocs/api-3.3.2/org/apache/commons/lang3/builder/HashCodeBuilder.html
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder(17, 37)
-		.append(getName())
-		.append(getStartDate())
-		.append(getEndDate())
-		.append(getStatus())
-		.append(getExpenseItems())
-		.append(getDestinations())
-		//.append(getTagList())
-		.toHashCode();
 	}
 }

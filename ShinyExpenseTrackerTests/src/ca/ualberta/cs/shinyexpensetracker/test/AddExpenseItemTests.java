@@ -23,6 +23,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
@@ -88,11 +89,13 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 	protected void setUp() throws Exception {
 		super.setUp();
 		instrumentation = getInstrumentation();
+		
+		ExpenseClaimList list = new ExpenseClaimList();
 
-		controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
+		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(list));
 		Application.setExpenseClaimController(controller);
 
-		controller.addExpenseClaim(new ExpenseClaim("Test Claim"));
+		list.addClaim(new ExpenseClaim("Test Claim"));
 		Intent intent = new Intent();
 		intent.putExtra("claimIndex", 0);
 		setActivityIntent(intent);

@@ -348,6 +348,9 @@ public class ViewAllExpenseClaimsActivityTests extends
 		
 		// Get the summary activity
 		TabbedSummaryActivity summaryActivity = (TabbedSummaryActivity) getInstrumentation().waitForMonitorWithTimeout(summaryMonitor, 1000);
+		
+		assertNotNull(summaryActivity);
+		
 		assertEquals(true, getInstrumentation().checkMonitorHit(summaryMonitor, 1));
 		
 		// Close the summary

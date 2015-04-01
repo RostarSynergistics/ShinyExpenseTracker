@@ -1,6 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.framework;
 
 import java.io.IOException;
+import java.util.Date;
 
 import android.content.Context;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -49,10 +50,14 @@ public class ExpenseClaimController {
 	/**
 	 * Adds a claim to the ClaimList model
 	 * @param claim
+	 * @throws IOException 
 	 */
-	public void addExpenseClaim(ExpenseClaim claim) throws IOException {
-		claimList.addClaim(claim);
+	public ExpenseClaim addExpenseClaim(String name, Date startDate, Date endDate) throws IOException {
+		ExpenseClaim newClaim = new ExpenseClaim(name, startDate, endDate);
+
+		claimList.addClaim(newClaim);
 		persister.saveExpenseClaims(claimList);
+		return newClaim;
 	}
 	
 	/**

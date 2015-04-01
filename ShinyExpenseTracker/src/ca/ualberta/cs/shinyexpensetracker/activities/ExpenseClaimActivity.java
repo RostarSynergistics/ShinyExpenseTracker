@@ -16,7 +16,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -64,13 +63,10 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 
 		Intent intent = getIntent();
 		claimIndex = intent.getIntExtra(CLAIM_INDEX, -1);
-		if (claimIndex == -1) {
-			claim = new ExpenseClaim("");
-		} else {
+		if (claimIndex != -1) {
 			claim = controller.getExpenseClaim(claimIndex);
 			displayExpenseClaim(claim);
 		}
-
 	}
 
 	@Override
@@ -208,24 +204,17 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 			return null;
 		}
 
-		claim.setName(name);
-		claim.setStartDate(startDate);
-		claim.setEndDate(endDate);
-
 		try {
 			if (claimIndex == -1) {
-				controller.addExpenseClaim(claim);
+				claim = controller.addExpenseClaim(name, startDate, endDate);
 			} else {
+				claim.setName(name);
+				claim.setStartDate(startDate);
+				claim.setEndDate(endDate);
 				controller.update();
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
-		}
-
-		// Sanity check
-		if (controller.getIndexOf(claim) == -1) {
-			Log.wtf("Add Claim", "Claim isn't in the claim list?");
-			throw new RuntimeException();
 		}
 
 		return claim;

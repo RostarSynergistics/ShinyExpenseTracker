@@ -12,5 +12,6 @@
 	<classpathentry kind="lib" path="C:/Users/Oleg/CMPUT301/testImport/ShinyExpenseTracker/ShinyExpenseTracker/libs/osmdroid-android-4.2-javadoc.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Oleg/CMPUT301/testImport/ShinyExpenseTracker/ShinyExpenseTracker/libs/osmdroid-android-4.2-sources.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Oleg/CMPUT301/testImport/ShinyExpenseTracker/ShinyExpenseTracker/libs/slf4j-android-1.5.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Oleg/CMPUT301/testImport/ShinyExpenseTracker/ShinyExpenseTracker/libs/osmbonuspack_v5.1.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

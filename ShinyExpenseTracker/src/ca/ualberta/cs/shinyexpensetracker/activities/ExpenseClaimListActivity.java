@@ -127,6 +127,11 @@ public class ExpenseClaimListActivity
 					ManageTagActivity.class);
 			startActivity(manageTagsIntent);
 			return true;
+		case R.id.set_home_geolocation:
+			Intent geolocationViewIntent = new Intent(ExpenseClaimListActivity.this,
+					GeolocationViewActivity.class);
+			startActivity(geolocationViewIntent);
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}

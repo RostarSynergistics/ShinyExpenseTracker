@@ -24,6 +24,8 @@ package ca.ualberta.cs.shinyexpensetracker.activities;
 
 import java.io.IOException;
 
+import org.osmdroid.views.MapView;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;

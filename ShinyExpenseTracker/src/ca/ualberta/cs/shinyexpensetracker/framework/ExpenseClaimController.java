@@ -75,14 +75,9 @@ public class ExpenseClaimController {
 	}
 	
 	/**
-	 * Replaces the old claim with the new claim
-	 * @param oldClaim
-	 * @param newClaim
+	 * Call when an existing ExpenseClaim has been updated.
 	 */
-	
-	public void updateExpenseClaim(ExpenseClaim oldClaim, ExpenseClaim newClaim) 
-	throws IOException {
-		claimList.updateExpenseClaim(oldClaim, newClaim);
+	public void update() throws IOException {
 		persister.saveExpenseClaims(claimList);
 	}
 

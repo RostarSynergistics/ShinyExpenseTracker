@@ -25,8 +25,8 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 import ca.ualberta.cs.shinyexpensetracker.persistence.FilePersistenceStrategy;
-import ca.ualberta.cs.shinyexpensetracker.persistence.ITagListPersister;
 import ca.ualberta.cs.shinyexpensetracker.persistence.GsonTagListPersister;
+import ca.ualberta.cs.shinyexpensetracker.persistence.ITagListPersister;
 
 /**
  * TagController object that stores a list

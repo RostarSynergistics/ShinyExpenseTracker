@@ -32,7 +32,6 @@ public class ClaimSummaryFragment extends Fragment implements
 		IView<ExpenseClaim> {
 	private ExpenseClaim claim;
 	private int claimIndex;
-	private ExpenseTotalsAdapter adapter;
 
 	private ExpenseClaimController controller;
 

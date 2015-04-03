@@ -37,7 +37,9 @@
             android:label="@string/title_activity_view_expense_claim" >
         </activity>
         <activity
-            android:name=".activities.AddExpenseClaimActivity"
+
+            android:name="ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity"
+
             android:label="@string/title_activity_add_expense_claim" >
         </activity>
         <activity

@@ -1,5 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -117,6 +119,7 @@ public class AddTagToClaimActivity extends Activity implements IView<TagList> {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				addTagsToClaim();
+				
 				finish();
 			}
 		});
@@ -135,7 +138,7 @@ public class AddTagToClaimActivity extends Activity implements IView<TagList> {
 
 	
 	//Adds the check marked tags to the current claim
-	private void addTagsToClaim(){
+	private void addTagsToClaim() {
 		if (manageTags.getCheckedItemCount() == 0 ){
 			Toast.makeText(AddTagToClaimActivity.this, "Error no items selected", Toast.LENGTH_LONG).show();
 			return; 
@@ -153,6 +156,13 @@ public class AddTagToClaimActivity extends Activity implements IView<TagList> {
 				Tag tag = (Tag) manageTags.getItemAtPosition(i);
 				claim.addTag(tag);
 			}
+		}
+		
+		try {
+			expenseClaimController.update();
+		} catch (IOException e) {
+
+			e.printStackTrace();
 		}
 		
 	}

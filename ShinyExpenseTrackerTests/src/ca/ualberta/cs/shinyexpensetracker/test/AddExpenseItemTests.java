@@ -28,15 +28,11 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
-/** 
- * Tests ExpenseItemActivity.
- * 
- *  ExpenseItemActivity is responsible for adding and
- *  editing expense items.
- */
-public class ExpenseItemActivityTest extends
-		ActivityInstrumentationTestCase2<ExpenseItemActivity> {
-
+/**
+ * Tests various parts of the functionality of ExpenseItemActivity that relates
+ * to creating new ExpenseItems.
+ **/
+public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<ExpenseItemActivity> {
 	private static final int TARGET_YEAR = 2008;
 	private static final int TARGET_MONTH = 11;
 	private static final int TARGET_DAY = 7;
@@ -50,84 +46,88 @@ public class ExpenseItemActivityTest extends
 	Spinner currencyInput, categoryInput;
 	ImageButton photoInput;
 	Button doneButton;
+
 	Drawable image = new Drawable() {
 		@Override
-		public void setColorFilter(ColorFilter arg0) {
-		}
+		public void setColorFilter(ColorFilter arg0) {}
 
 		@Override
-		public void setAlpha(int arg0) {
-		}
+		public void setAlpha(int arg0) {}
 
 		@Override
 		public int getOpacity() {
 			return 0;
 		}
 
-		public void draw(Canvas arg0) {
-		}
+		public void draw(Canvas arg0) {}
 	};
-	
+
 	private ExpenseClaimController controller;
 
-	public ExpenseItemActivityTest() {
+	public AddExpenseItemTests() {
 		super(ExpenseItemActivity.class);
 	}
 
-	public ExpenseItemActivityTest(Class<ExpenseItemActivity> activityClass) {
+	public AddExpenseItemTests(Class<ExpenseItemActivity> activityClass) {
 		super(activityClass);
 	}
-	
-    private OnDateSetListener dateListener = new OnDateSetListener(){
-        public void onDateSet(DatePicker view, int Year, int monthOfYear, int dayOfMonth) {
-        	year = Year;
-            month = monthOfYear;
-            day = dayOfMonth;
-        }
-    };
 
-    /**
-     * Setup for each test. Creates a new claim and passes
-     * the intent for the 0 index. Sets up input fields
-     */
-    @Override
-    protected void setUp() throws Exception {
-    	super.setUp();
-        instrumentation = getInstrumentation();
-        
-        controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
-        Application.setExpenseClaimController(controller);
-        
-        controller.addExpenseClaim(new ExpenseClaim("Test Claim"));
-        Intent intent = new Intent();
-        intent.putExtra("claimIndex", 0);
-        setActivityIntent(intent);
-        
-        activity = getActivity();
-        
-        datePicker = new DatePickerDialog(instrumentation.getContext(), dateListener, TARGET_YEAR, TARGET_MONTH, TARGET_DAY);
-        
-        nameInput = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemNameEditText));
-        dateInput = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemDateEditText));
-        categoryInput = ((Spinner) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemCategorySpinner));
-        amountInput = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemAmountEditText));
-        currencyInput = ((Spinner) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemCurrencySpinner));
-        descriptionInput = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expesenItemDescriptionEditText));
-        photoInput = ((ImageButton) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemReceiptImageButton));
-        doneButton = ((Button) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemDoneButton));
-    }
-    
-    /** Tests that when the ExpenseItemDateTextView is clicked
-     *  a DatePickerDialog is shown
-     */
+	private OnDateSetListener dateListener = new OnDateSetListener() {
+		public void onDateSet(DatePicker view, int Year, int monthOfYear, int dayOfMonth) {
+			year = Year;
+			month = monthOfYear;
+			day = dayOfMonth;
+		}
+	};
+
+	/**
+	 * Setup for each test. Creates a new claim and passes the intent for the 0
+	 * index. Sets up input fields
+	 */
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		instrumentation = getInstrumentation();
+
+		controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
+		Application.setExpenseClaimController(controller);
+
+		controller.addExpenseClaim(new ExpenseClaim("Test Claim"));
+		Intent intent = new Intent();
+		intent.putExtra("claimIndex", 0);
+		setActivityIntent(intent);
+
+		activity = getActivity();
+
+		datePicker = new DatePickerDialog(instrumentation.getContext(), dateListener, TARGET_YEAR, TARGET_MONTH,
+				TARGET_DAY);
+
+		nameInput = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemNameEditText));
+		dateInput = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemDateEditText));
+		categoryInput = ((Spinner) activity
+				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemCategorySpinner));
+		amountInput = ((EditText) activity
+				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemAmountEditText));
+		currencyInput = ((Spinner) activity
+				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemCurrencySpinner));
+		descriptionInput = ((EditText) activity
+				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expesenItemDescriptionEditText));
+		photoInput = ((ImageButton) activity
+				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemReceiptImageButton));
+		doneButton = ((Button) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemDoneButton));
+	}
+
+	/**
+	 * Tests that when the ExpenseItemDateTextView is clicked a DatePickerDialog
+	 * is shown
+	 */
 	public void testSetDateTimeField() {
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {
 				dateInput.performClick();
 			}
 		});
-		assertTrue("datepicker dialog is showing",
-				((ExpenseItemActivity) activity).getDialog().isShowing());
+		assertTrue("datepicker dialog is showing", ((ExpenseItemActivity) activity).getDialog().isShowing());
 	}
 
 	/** test if an expense Item is successfully created */
@@ -143,36 +143,23 @@ public class ExpenseItemActivityTest extends
 				BigDecimal amount = new BigDecimal(10.00);
 				Bitmap bitmap = null;
 
-				ExpenseItem expense = new ExpenseItem("name", date,
-						Category.ACCOMODATION, amount, Currency.CAD,
+				ExpenseItem expense = new ExpenseItem("name", date, Category.ACCOMODATION, amount, Currency.CAD,
 						"description", bitmap);
 
 				assertEquals("name != name", "name", expense.getName());
-				assertNotSame("false positive, name", "Wrong Name",
-						expense.getName());
+				assertNotSame("false positive, name", "Wrong Name", expense.getName());
 				assertEquals("date != date", date, expense.getDate());
-				assertNotSame("false positive date", "wrong date",
-						expense.getDate());
-				assertEquals("category != accomodation", Category.ACCOMODATION,
-						expense.getCategory());
-				assertNotSame("false positive, category", "wrong category",
-						expense.getCategory());
-				assertEquals("amount != 10.00", amount,
-						expense.getAmountSpent());
-				assertNotSame("false positive, amount", new BigDecimal(5.00),
-						expense.getAmountSpent());
-				assertEquals("currnency != CAD", Currency.CAD,
-						expense.getCurrency());
-				assertNotSame("false positive, currency", "wrong currency",
-						expense.getCurrency());
-				assertEquals("description != description", "description",
-						expense.getDescription());
-				assertNotSame("false positibe description",
-						"wrong description", expense.getDescription());
-				assertEquals("bitmap != bitmap", bitmap,
-						expense.getReceiptPhoto());
-				assertNotSame("false posibive, photo", "not bitmap",
-						expense.getReceiptPhoto());
+				assertNotSame("false positive date", "wrong date", expense.getDate());
+				assertEquals("category != accomodation", Category.ACCOMODATION, expense.getCategory());
+				assertNotSame("false positive, category", "wrong category", expense.getCategory());
+				assertEquals("amount != 10.00", amount, expense.getAmountSpent());
+				assertNotSame("false positive, amount", new BigDecimal(5.00), expense.getAmountSpent());
+				assertEquals("currnency != CAD", Currency.CAD, expense.getCurrency());
+				assertNotSame("false positive, currency", "wrong currency", expense.getCurrency());
+				assertEquals("description != description", "description", expense.getDescription());
+				assertNotSame("false positibe description", "wrong description", expense.getDescription());
+				assertEquals("bitmap != bitmap", bitmap, expense.getReceiptPhoto());
+				assertNotSame("false posibive, photo", "not bitmap", expense.getReceiptPhoto());
 			}
 		});
 	}
@@ -198,8 +185,7 @@ public class ExpenseItemActivityTest extends
 
 		assertTrue(activity != null);
 		assertEquals("length != 0", 0, nameInput.getText().length());
-		assertEquals("nameInput == expenseItem.name", "name", nameInput
-				.getText().toString());
+		assertEquals("nameInput == expenseItem.name", "name", nameInput.getText().toString());
 		fail();
 
 	}
@@ -217,8 +203,7 @@ public class ExpenseItemActivityTest extends
 		});
 
 		assertNotNull("no name dialog", activity.alertDialog);
-		assertTrue("Name dialog is not showing",
-				activity.alertDialog.isShowing());
+		assertTrue("Name dialog is not showing", activity.alertDialog.isShowing());
 	}
 
 	/**
@@ -234,8 +219,7 @@ public class ExpenseItemActivityTest extends
 		});
 
 		assertNotNull("no date dialog", activity.alertDialog);
-		assertTrue("Date dialog is not showing",
-				activity.alertDialog.isShowing());
+		assertTrue("Date dialog is not showing", activity.alertDialog.isShowing());
 	}
 
 	/**
@@ -251,8 +235,7 @@ public class ExpenseItemActivityTest extends
 		});
 
 		assertNotNull("no amount spent dialog", activity.alertDialog);
-		assertTrue("Dialog amount spent is not showing",
-				activity.alertDialog.isShowing());
+		assertTrue("Dialog amount spent is not showing", activity.alertDialog.isShowing());
 	}
 
 }

@@ -142,7 +142,7 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 	public void editClaimMenuItem(MenuItem menu) {
 		Intent intent = getIntent();
 		int claimIndex = intent.getIntExtra("claimIndex", -1);
-		intent = new Intent(this, AddExpenseClaimActivity.class);
+		intent = new Intent(this, ExpenseClaimActivity.class);
 		intent.putExtra("claimIndex", claimIndex);
 		startActivity(intent);
 	}

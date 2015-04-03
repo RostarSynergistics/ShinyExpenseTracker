@@ -37,6 +37,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.adapters.ClaimListAdapter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
@@ -48,6 +49,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 public class ExpenseClaimListActivity 
 	extends Activity 
 	implements IView<ExpenseClaimList> {
+	private static final int SET_HOME_GEOLCATION = 1;
 	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
 
@@ -130,12 +132,29 @@ public class ExpenseClaimListActivity
 		case R.id.set_home_geolocation:
 			Intent geolocationViewIntent = new Intent(ExpenseClaimListActivity.this,
 					GeolocationViewActivity.class);
-			startActivity(geolocationViewIntent);
+			startActivityForResult(geolocationViewIntent, SET_HOME_GEOLCATION);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
+	/*
+	 * Get result back from setting geolocation
+	 * Put it in a Toast until there is a Claimant class
+	 * where the values can actually be stored
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// Check result is ok
+		if (resultCode == RESULT_OK) {
+			double latitude = data.getDoubleExtra("latitude", 39.03808);
+			double longitude = data.getDoubleExtra("longitude", 125.7296);
+			String geolocationValueText = "Latitude: " + String.valueOf(latitude) + "\n" 
+					+ "Longitude: " + String.valueOf(longitude);
+			Toast.makeText(this, geolocationValueText, Toast.LENGTH_SHORT).show();
+		}
+	}
+	
 	@Override
 	public void update(ExpenseClaimList m) {
 		adapter.notifyDataSetChanged();

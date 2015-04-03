@@ -26,6 +26,7 @@ package ca.ualberta.cs.shinyexpensetracker.activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -39,11 +40,15 @@ import ca.ualberta.cs.shinyexpensetracker.R;
 public class GeolocationViewActivity extends Activity {
 
 	private LocationManager lm;
+	private double latitude;
+	private double longitude;
+	static final int SET_GEOLOCATION = 1;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_geolocation_view);
 		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, listener);
 	}
 
 	@Override
@@ -66,29 +71,68 @@ public class GeolocationViewActivity extends Activity {
 	}
 	
 	public void clickSetGeolocationAutomatically(View v) {
-		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, listener);
+		TextView geolocationValue = (TextView) findViewById(R.id.geolocationValue);
+		String geolocationValueText = "Latitude: " + String.valueOf(latitude) + "\n" 
+				+ "Longitude: " + String.valueOf(longitude);
+		geolocationValue.setText(geolocationValueText);
+		geolocationValue.invalidate();
 	}
 	
 	public void clickSetGeolocationUsingMap(View v) {
-		lm.removeUpdates(listener);
-		// TODO: launch OpenStreetMapsActivity for result
+		Intent mapViewIntent = new Intent(GeolocationViewActivity.this, MapViewActivity.class);
+		mapViewIntent.putExtra("latitude", latitude);
+		mapViewIntent.putExtra("longitude", longitude);
+		startActivityForResult(mapViewIntent, SET_GEOLOCATION);
 	}
+	
+	public void clickSaveGeolocation(View v)
+	{
+		returnCoordinatesToParentActivity();
+	}
+	
+	/**
+	 * Accept result from the map activity and immediately return it
+	 * to the parent activity
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// Check result is ok
+		lm.removeUpdates(listener);
+		if (resultCode == RESULT_OK) {
+			latitude = data.getDoubleExtra("latitude", 39.03808);
+			longitude = data.getDoubleExtra("longitude", 125.7296);
+			returnCoordinatesToParentActivity();
+		}
+		else {
+			lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, listener);
+		}
+	}
+	
+	
+	private void returnCoordinatesToParentActivity() {
+		Intent geolocationResultIntent = new Intent(GeolocationViewActivity.this, MapViewActivity.class);
+		geolocationResultIntent.putExtra("latitude", latitude);
+		geolocationResultIntent.putExtra("longitude", longitude);
+		setResult(ExpenseClaimListActivity.RESULT_OK, geolocationResultIntent);
+		finish();
+	}
+	
 	/**
 	 * Location listener that fires every time a location update is requested.
 	 * Updates geolocation in the text view until the listener is unbound from
 	 * its location manager  
 	 */
 	private final LocationListener listener = new LocationListener() {
+		/*
+		 * Adapted from joshua2ua's fork of MockLocationTester, file MockLocationTesterActivity.java
+		 * source at: https://github.com/joshua2ua/MockLocationTester/blob/master/src/ualberta/cmput301/mocklocationtester/MockLocationTesterActivity.java
+		 */
 		public void onLocationChanged (Location location) {
 			TextView geolocationValue = (TextView) findViewById(R.id.geolocationValue);
 			if (location != null) {
-				double lattitude = location.getLatitude();
-				double longitude = location.getLongitude();
-				String geolocationValueText = "Latitude: " + String.valueOf(lattitude) + "\n " 
-											+ "Longitude: " + String.valueOf(longitude);
-				geolocationValue.setText(geolocationValueText);
-				geolocationValue.invalidate();
+				latitude = location.getLatitude();
+				longitude = location.getLongitude();
+				
 			} else {
 				geolocationValue.setText("Cannot get the location");
 			}

@@ -70,8 +70,12 @@
             android:label="@string/title_activity_receipt_view" >
         </activity>
         <activity
-            android:name="ca.ualberta.cs.shinyexpensetracker.activities.GeolocationViewActivity"
+            android:name=".activities.GeolocationViewActivity"
             android:label="@string/title_activity_geolocation_view" >
+        </activity>
+        <activity
+            android:name="ca.ualberta.cs.shinyexpensetracker.activities.MapViewActivity"
+            android:label="@string/title_activity_map_view" >
         </activity>
     </application>
 

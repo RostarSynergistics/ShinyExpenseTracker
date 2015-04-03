@@ -89,5 +89,7 @@
     <string name="geolocationValueDefault">None Selected</string>
     <string name="automaticGeolocationSetupButtonText">Set Automatically Using GPS</string>
     <string name="mapAssistedGeolocationSetupButtonText">Set Location Using Map</string>
+    <string name="title_activity_map_view">Map View</string>
+    <string name="saveGeolocationButtonText">Save Geolocation</string>
 
 </resources>

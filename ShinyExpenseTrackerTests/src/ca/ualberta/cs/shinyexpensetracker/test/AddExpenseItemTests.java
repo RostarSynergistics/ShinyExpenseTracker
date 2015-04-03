@@ -1,6 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -23,16 +24,21 @@ import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
+import ca.ualberta.cs.shinyexpensetracker.R;
 
 /**
  * Tests various parts of the functionality of ExpenseItemActivity that relates
  * to creating new ExpenseItems.
  **/
+@SuppressLint("SimpleDateFormat")
 public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<ExpenseItemActivity> {
+	static final SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+	
 	private static final int TARGET_YEAR = 2008;
 	private static final int TARGET_MONTH = 11;
 	private static final int TARGET_DAY = 7;
@@ -42,9 +48,9 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 	Instrumentation instrumentation;
 	ExpenseItemActivity activity;
 	DatePickerDialog datePicker;
-	EditText nameInput, dateInput, amountInput, descriptionInput;
-	Spinner currencyInput, categoryInput;
-	ImageButton photoInput;
+	EditText nameField, dateField, amountField, descriptionField;
+	Spinner currencySpinner, categorySpinner;
+	ImageButton photoField;
 	Button doneButton;
 
 	Drawable image = new Drawable() {
@@ -79,6 +85,7 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 			day = dayOfMonth;
 		}
 	};
+	private MockExpenseClaimListPersister persister;
 
 	/**
 	 * Setup for each test. Creates a new claim and passes the intent for the 0
@@ -89,10 +96,13 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 		super.setUp();
 		instrumentation = getInstrumentation();
 
-		controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
+		ExpenseClaimList list = new ExpenseClaimList();
+		list.addClaim(new ExpenseClaim("Test Claim"));
+
+		persister = new MockExpenseClaimListPersister(list);
+		controller = new ExpenseClaimController(persister);
 		Application.setExpenseClaimController(controller);
 
-		controller.addExpenseClaim(new ExpenseClaim("Test Claim"));
 		Intent intent = new Intent();
 		intent.putExtra("claimIndex", 0);
 		setActivityIntent(intent);
@@ -102,19 +112,14 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 		datePicker = new DatePickerDialog(instrumentation.getContext(), dateListener, TARGET_YEAR, TARGET_MONTH,
 				TARGET_DAY);
 
-		nameInput = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemNameEditText));
-		dateInput = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemDateEditText));
-		categoryInput = ((Spinner) activity
-				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemCategorySpinner));
-		amountInput = ((EditText) activity
-				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemAmountEditText));
-		currencyInput = ((Spinner) activity
-				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemCurrencySpinner));
-		descriptionInput = ((EditText) activity
-				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expesenItemDescriptionEditText));
-		photoInput = ((ImageButton) activity
-				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemReceiptImageButton));
-		doneButton = ((Button) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemDoneButton));
+		nameField = (EditText) activity.findViewById(R.id.expenseItemNameEditText);
+		dateField = (EditText) activity.findViewById(R.id.expenseItemDateEditText);
+		categorySpinner = (Spinner) activity.findViewById(R.id.expenseItemCategorySpinner);
+		amountField = (EditText) activity.findViewById(R.id.expenseItemAmountEditText);
+		currencySpinner = (Spinner) activity.findViewById(R.id.expenseItemCurrencySpinner);
+		descriptionField = (EditText) activity.findViewById(R.id.expesenItemDescriptionEditText);
+		photoField = (ImageButton) activity.findViewById(R.id.expenseItemReceiptImageButton);
+		doneButton = (Button) activity.findViewById(R.id.expenseItemDoneButton);
 	}
 
 	/**
@@ -124,9 +129,12 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 	public void testSetDateTimeField() {
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {
-				dateInput.performClick();
+				dateField.performClick();
 			}
 		});
+
+		instrumentation.waitForIdleSync();
+
 		assertTrue("datepicker dialog is showing", ((ExpenseItemActivity) activity).getDialog().isShowing());
 	}
 
@@ -147,47 +155,60 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 						"description", bitmap);
 
 				assertEquals("name != name", "name", expense.getName());
-				assertNotSame("false positive, name", "Wrong Name", expense.getName());
 				assertEquals("date != date", date, expense.getDate());
-				assertNotSame("false positive date", "wrong date", expense.getDate());
 				assertEquals("category != accomodation", Category.ACCOMODATION, expense.getCategory());
-				assertNotSame("false positive, category", "wrong category", expense.getCategory());
 				assertEquals("amount != 10.00", amount, expense.getAmountSpent());
-				assertNotSame("false positive, amount", new BigDecimal(5.00), expense.getAmountSpent());
-				assertEquals("currnency != CAD", Currency.CAD, expense.getCurrency());
-				assertNotSame("false positive, currency", "wrong currency", expense.getCurrency());
+				assertEquals("currency != CAD", Currency.CAD, expense.getCurrency());
 				assertEquals("description != description", "description", expense.getDescription());
-				assertNotSame("false positibe description", "wrong description", expense.getDescription());
 				assertEquals("bitmap != bitmap", bitmap, expense.getReceiptPhoto());
-				assertNotSame("false posibive, photo", "not bitmap", expense.getReceiptPhoto());
 			}
 		});
+
+		instrumentation.waitForIdleSync();
 	}
 
 	/**
 	 * tests if the data entered has been correctly saved to an expenseItem when
 	 * the Done button is clicked
+	 * @throws ParseException 
 	 */
-	public void testDone() {
+	public void testDone() throws ParseException {
+		final int newSpinnerPosition = 3;
+		final String newName = "McDonald's";
+		final String newDateString = "2015-01-01";
+		final String newCategory = (String) categorySpinner.getItemAtPosition(newSpinnerPosition);
+		final BigDecimal newAmount = new BigDecimal("5000");
+		final String newCurrency = (String) currencySpinner.getItemAtPosition(newSpinnerPosition);
+		final String newDescription = "FooBarBaz";
 
-		// TODO: Test not done being implemented, needs to check to see if
-		// loaded expenseItem is what was entered
-		instrumentation.runOnMainSync(new Runnable() {
+		final Date newDate = sdf.parse(newDateString);
+
+		getInstrumentation().runOnMainSync(new Runnable() {
+			@Override
 			public void run() {
-				nameInput.setText("name");
+				nameField.setText(newName);
+				dateField.setText(newDateString);
+				categorySpinner.setSelection(newSpinnerPosition);
+				amountField.setText(newAmount.toString());
+				currencySpinner.setSelection(newSpinnerPosition);
+				descriptionField.setText(newDescription);
+
 				doneButton.performClick();
-				activity = getActivity();
-				nameInput = (EditText) activity
-						.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemNameEditText);
 			}
 		});
-		instrumentation.waitForIdleSync();
 
-		assertTrue(activity != null);
-		assertEquals("length != 0", 0, nameInput.getText().length());
-		assertEquals("nameInput == expenseItem.name", "name", nameInput.getText().toString());
-		fail();
+		getInstrumentation().waitForIdleSync();
 
+		final ExpenseItem updatedItem = controller.getExpenseClaim(0).getExpense(0);
+		assertNotNull(updatedItem);
+		assertEquals(newName, updatedItem.getName());
+		assertEquals(newDate, updatedItem.getDate());
+		assertEquals(newCategory, updatedItem.getCategory().toString());
+		assertEquals(newAmount, updatedItem.getAmountSpent());
+		assertEquals(newCurrency, updatedItem.getCurrency().toString());
+		assertEquals(newDescription, updatedItem.getDescription());
+
+		assertTrue("Persister's .save() was never called", persister.wasSaveCalled());
 	}
 
 	/**

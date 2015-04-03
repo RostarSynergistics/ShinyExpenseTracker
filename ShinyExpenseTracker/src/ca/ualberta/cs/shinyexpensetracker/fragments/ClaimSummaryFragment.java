@@ -15,6 +15,7 @@ import ca.ualberta.cs.shinyexpensetracker.adapters.ExpenseTotalsAdapter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.IView;
+import ca.ualberta.cs.shinyexpensetracker.framework.TagController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
 /**
@@ -31,7 +32,6 @@ public class ClaimSummaryFragment extends Fragment implements
 		IView<ExpenseClaim> {
 	private ExpenseClaim claim;
 	private int claimIndex;
-	private ExpenseTotalsAdapter adapter;
 
 	private ExpenseClaimController controller;
 
@@ -56,6 +56,7 @@ public class ClaimSummaryFragment extends Fragment implements
 		View rootView = inflater.inflate(R.layout.tab_claim_summary, container,
 				false);
 		view = rootView;
+
 		return rootView;
 	}
 

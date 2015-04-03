@@ -26,6 +26,10 @@ public class Tag extends Model<Tag> {
 		return value;
 	}
 	
+	public void setValue(String value){
+		this.value = value;
+	}
+	
 	@Override
 	public boolean equals(Object other) {
 		if (!(other instanceof Tag))

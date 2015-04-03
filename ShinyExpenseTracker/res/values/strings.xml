@@ -82,5 +82,8 @@
     <string name="expense_item_thumbnail_desc">Receipt Thumbnail</string>
     <string name="expense_item_completeness_flag">Completeness Flag Picture</string>
     <string name="edit_expense_item">Edit Expense Item</string>
+    <string name="submit_claim">Submit Claim</string>
     <string name="remove_receipt">Remove Receipt</string>
+    <string name="title_activity_add_tag_to_claim">AddTagToClaimActivity</string>
+
 </resources>

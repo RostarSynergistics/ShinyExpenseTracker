@@ -82,6 +82,7 @@ public class GeolocationViewActivity extends Activity {
 		Intent mapViewIntent = new Intent(GeolocationViewActivity.this, MapViewActivity.class);
 		mapViewIntent.putExtra("latitude", latitude);
 		mapViewIntent.putExtra("longitude", longitude);
+		mapViewIntent.putExtra("requestCode", SET_GEOLOCATION);
 		startActivityForResult(mapViewIntent, SET_GEOLOCATION);
 	}
 	

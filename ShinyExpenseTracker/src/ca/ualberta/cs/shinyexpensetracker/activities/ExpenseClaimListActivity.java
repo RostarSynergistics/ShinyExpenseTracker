@@ -53,6 +53,11 @@ public class ExpenseClaimListActivity
 	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
 
+	// TODO: these have to be moved to another object,
+	// like Claimant or something, when that class is created
+	private double homeLocationLatitude;
+	private double homeLocationLongitude;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -149,8 +154,10 @@ public class ExpenseClaimListActivity
 		if (resultCode == RESULT_OK) {
 			double latitude = data.getDoubleExtra("latitude", 39.03808);
 			double longitude = data.getDoubleExtra("longitude", 125.7296);
-			String geolocationValueText = "Latitude: " + String.valueOf(latitude) + "\n" 
-					+ "Longitude: " + String.valueOf(longitude);
+			homeLocationLatitude = latitude;
+			homeLocationLongitude = longitude;
+			String geolocationValueText = "Latitude: " + String.valueOf(homeLocationLatitude) + "\n" 
+					+ "Longitude: " + String.valueOf(homeLocationLongitude);
 			Toast.makeText(this, geolocationValueText, Toast.LENGTH_SHORT).show();
 		}
 	}
@@ -220,4 +227,12 @@ public class ExpenseClaimListActivity
 		return dialog;
 	}
 
+	public double getHomeLocationLatitude() {
+		return homeLocationLatitude;
+	}
+
+	public double getHomeLocationLongitude() {
+		return homeLocationLongitude;
+	}
+	
 }

@@ -46,15 +46,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 	private ArrayList<Destination> destinations = new ArrayList<Destination>();
 	private TagList tagList;
 	private ArrayList<ExpenseItem> expenses = new ArrayList<ExpenseItem>();
-	public int id;
-	
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
+	public String id;
 
 	public ExpenseClaim(String name) {
 		this(name, new Date(), null, Status.IN_PROGRESS, null);
@@ -71,10 +63,20 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 	public ExpenseClaim(String name, Date startDate, Date endDate, Status status) {
 		this(name, startDate, endDate, status, null);
 	}
+	
+	public ExpenseClaim(String name, Date startDate, Date endDate, Status status, TagList tagList, String id) {
+		super();
+		this.name = name;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.status = status;
+		this.tagList = tagList;
+		this.id = id;
+	}
 
 	public ExpenseClaim(String name, Date startDate, Date endDate,
 			Status status, TagList tagList) {
-		super();
+		//super();
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
@@ -102,6 +104,15 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 
 	public Date getEndDate() {
 		return endDate;
+	}
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+		notifyViews();
 	}
 
 	public void setEndDate(Date endDate) {

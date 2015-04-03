@@ -1,5 +1,3 @@
-// Code take from: https://github.com/ramish94/AndroidElasticSearch, March 29, 2015
-
 package ca.ualberta.cs.shinyexpensetracker.es;
 
 import java.io.BufferedReader;
@@ -7,9 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -18,201 +18,166 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import android.content.Context;
+import android.content.Entity;
 import android.util.Log;
+import ca.ualberta.cs.shinyexpensetracker.es.data.ElasticSearchResponse;
+import ca.ualberta.cs.shinyexpensetracker.es.data.ElasticSearchSearchResponse;
 import ca.ualberta.cs.shinyexpensetracker.es.data.Hits;
-import ca.ualberta.cs.shinyexpensetracker.es.data.SearchHit;
-import ca.ualberta.cs.shinyexpensetracker.es.data.SearchResponse;
-import ca.ualberta.cs.shinyexpensetracker.es.data.SimpleSearchCommand;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
-public class ESClaimManager implements IClaimManager {
+public class ESClaimManager {
 	
-	private static final String SEARCH_URL = "http://cmput301.softwareprocess.es:8080/cmput301w15t08/claim/_search";
-	private static final String RESOURCE_URL = "http://cmput301.softwareprocess.es:8080/cmput301w15t08/claim/";
-	private static final String TAG = "ClaimSearch";
+	// HTTP Connector
+	private HttpClient httpclient = new DefaultHttpClient();
 
-	private Gson gson;
-
-	public ESClaimManager() {
-		gson = new Gson();
-	}
+	// JSON Utilities
+	private Gson gson = new Gson();
 	
+	private static final String RESOURCE_URI = "http://cmput301.softwareprocess.es:8080/cmput301w15t08/";
+	public static final String CLAIM_INDEX = "claim/";
+	public static final String SEARCH_PRETTY = "?pretty=1&q=";
+
 	/**
-	 * Get claims with the specified search string. If the search does not
-	 * specify fields, it searches on all the fields.
+	 * Consumes the POST/Insert operation of the service
+	 * @throws IOException 
+	 * @throws IllegalStateException 
 	 */
-	public List<ExpenseClaim> searchClaim(String searchString, String field) {
-		List<ExpenseClaim> result = new ArrayList<ExpenseClaim>();
-
-		HttpClient httpClient = new DefaultHttpClient();
-		HttpPost httpPost; 
+	
+	public void insertClaim(ExpenseClaim claim) throws IllegalStateException, IOException{
+		HttpPost httpPost = new HttpPost(RESOURCE_URI+CLAIM_INDEX+claim.getId()+SEARCH_PRETTY);
+		StringEntity stringentity = null;
 		try {
-			httpPost = createSearchRequest(searchString, field);
-
-			HttpResponse response;
-			
-			response = httpClient.execute(httpPost);
-			SearchResponse<ExpenseClaim> sr = parseSearchResponse(response);
-			Hits<ExpenseClaim> hits = sr.getHits();
-			result.add(hits.getHits().get(1).getSource());
-			
-			} catch (UnsupportedEncodingException e) {
-				throw new RuntimeException(e);
-			} catch (ClientProtocolException e) {
-				throw new RuntimeException(e);
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-		return result;
-	}
-	
-	/**
-	 * 
-	 * @param response
-	 * @return
-	 * @throws IOException
-	 */
-	
-	private SearchResponse<ExpenseClaim> parseSearchResponse(
-			HttpResponse response) throws IOException {
-		String json;
-		json = getEntityContent(response);
-
-		Type searchResponseType = new TypeToken<SearchResponse<ExpenseClaim>>() {
-		}.getType();
-		
-		SearchResponse<ExpenseClaim> esResponse = gson.fromJson(json, searchResponseType);
-
-		return esResponse;
-	}
-	
-	/**
-	 * Creates a search request from a search string and a field
-	 * @throws UnsupportedEncodingException 
-	 */
-	private HttpPost createSearchRequest(String searchString, String field) throws UnsupportedEncodingException {
-		HttpPost searchRequest = new HttpPost(SEARCH_URL);
-
-		String[] fields = null;
-		if (field != null) {
-			fields = new String[1];
-			fields[0] = field;
-		}
-		
-		SimpleSearchCommand command = new SimpleSearchCommand(searchString,	fields);
-		
-		String query = command.getJsonCommand();
-		Log.i(TAG, "Json command: " + query);
-
-		StringEntity stringEntity;
-		stringEntity = new StringEntity(query);
-
-		searchRequest.setHeader("Accept", "application/json");
-		searchRequest.setEntity(stringEntity);
-
-		return searchRequest;
-	}
-	
-	/**
-	 * Return claim with a specific id
-	 */
-	public ExpenseClaim getClaim(int id) {
-		HttpClient httpClient = new DefaultHttpClient();
-		HttpGet httpGet = new HttpGet(RESOURCE_URL + id);
-
-		HttpResponse response;
-
-		try {
-			response = httpClient.execute(httpGet);
-			SearchHit<ExpenseClaim> sr = parseClaimHit(response);
-			return sr.getSource();
-
-		} catch (Exception e) {
+			stringentity = new StringEntity(gson.toJson(claim));
+		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
-		} 
+		}
+		httpPost.setHeader("Accept","application/json");
 
-		return null;
+		httpPost.setEntity(stringentity);
+		HttpResponse response = null;
+		try {
+			response = httpclient.execute(httpPost);
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		String status = response.getStatusLine().toString();
+		System.out.println(status);
+		HttpEntity entity = response.getEntity();
+		BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
+		String output;
+		System.err.println("Output from Server -> ");
+		while ((output = br.readLine()) != null) {
+			System.err.println(output);
+		}
 	}
 	
-	/**
-	 * Parses a claim hit from JSON
-	 * @param response
-	 * @return
-	 */
+	public ExpenseClaim getClaim(String claimID){
+		ExpenseClaim claim = null;
+		try{
+			HttpGet getRequest = new HttpGet(RESOURCE_URI+CLAIM_INDEX+claimID);
 
-	private SearchHit<ExpenseClaim> parseClaimHit(
-			HttpResponse response) {
-		try {
+			getRequest.addHeader("Accept","application/json");
+
+			HttpResponse response = httpclient.execute(getRequest);
+
+			String status = response.getStatusLine().toString();
+			System.out.println(status);
+
 			String json = getEntityContent(response);
-			Type searchHitType = new TypeToken<SearchHit<ExpenseClaim>>() {}.getType();
-			
-			SearchHit<ExpenseClaim> sr = gson.fromJson(json, searchHitType);
-			return sr;
-		} 
-		catch (IOException e) {
+
+			Type elasticSearchResponseType = new TypeToken<ElasticSearchResponse<ExpenseClaim>>(){}.getType();
+			ElasticSearchResponse<ExpenseClaim> esResponse = gson.fromJson(json, elasticSearchResponseType);
+			claim = esResponse.getSource();
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return claim;
 	}
+	
+	public void searchClaims(String str) throws ClientProtocolException, IOException {
+		HttpGet searchRequest = new HttpGet(RESOURCE_URI+SEARCH_PRETTY+java.net.URLEncoder.encode(str,"UTF-8"));
+		searchRequest.setHeader("Accept","application/json");
+		HttpResponse response = httpclient.execute(searchRequest);
+		String status = response.getStatusLine().toString();
+		System.out.println(status);
 
-	/**
-	 * Add a new claim
-	 */
-	public void addClaim(ExpenseClaim expenseClaim) {
-		HttpClient httpClient = new DefaultHttpClient();
+		String json = getEntityContent(response);
 
-		try {
-			HttpPost addRequest = new HttpPost(RESOURCE_URL + expenseClaim.getId());
+		Type elasticSearchSearchResponseType = new TypeToken<ElasticSearchSearchResponse<ExpenseClaim>>(){}.getType();
+		ElasticSearchSearchResponse<ExpenseClaim> esResponse = gson.fromJson(json, elasticSearchSearchResponseType);
+		System.err.println(esResponse);
+		for (ElasticSearchResponse<ExpenseClaim> r : esResponse.getHits()) {
+			ExpenseClaim claim = r.getSource();
+			System.err.println(claim);
+		}
+		//searchRequest.releaseConnection();
+	}
+	
+	public void searchsearchClaims(String str) throws ClientProtocolException, IOException {
+		HttpPost searchRequest = new HttpPost(RESOURCE_URI+SEARCH_PRETTY);
+		String query = 	"{\"query\" : {\"query_string\" : {\"default_field\" : \"ingredients\",\"query\" : \"" + str + "\"}}}";
+		StringEntity stringentity = new StringEntity(query);
 
-			StringEntity stringEntity = new StringEntity(gson.toJson(expenseClaim));
-			addRequest.setEntity(stringEntity);
-			addRequest.setHeader("Accept", "application/json");
+		searchRequest.setHeader("Accept","application/json");
+		searchRequest.setEntity(stringentity);
 
-			HttpResponse response = httpClient.execute(addRequest);
-			String status = response.getStatusLine().toString();
-			Log.i(TAG, status);
+		HttpResponse response = httpclient.execute(searchRequest);
+		String status = response.getStatusLine().toString();
+		System.out.println(status);
 
-		} catch (Exception e) {
-			e.printStackTrace();
+		String json = getEntityContent(response);
+
+		Type elasticSearchSearchResponseType = new TypeToken<ElasticSearchSearchResponse<ExpenseClaim>>(){}.getType();
+		ElasticSearchSearchResponse<ExpenseClaim> esResponse = gson.fromJson(json, elasticSearchSearchResponseType);
+		System.err.println(esResponse);
+		for (ElasticSearchResponse<ExpenseClaim> r : esResponse.getHits()) {
+			ExpenseClaim claim = r.getSource();
+			System.err.println(claim);
+		}
+		//searchRequest.releaseConnection();
+	}
+	
+	public void deleteClaim(String claimID) throws IOException {
+		HttpDelete httpDelete = new HttpDelete(RESOURCE_URI+CLAIM_INDEX+claimID);
+		httpDelete.addHeader("Accept","application/json");
+
+		HttpResponse response = httpclient.execute(httpDelete);
+
+		String status = response.getStatusLine().toString();
+		System.out.println(status);
+
+		HttpEntity entity = response.getEntity();
+		BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
+		String output;
+		System.err.println("Output from Server -> ");
+		while ((output = br.readLine()) != null) {
+			System.err.println(output);
 		}
 	}
 	
-	/**
-	 * Deletes a Claim at a given id
-	 */
-	public void deleteClaim(int id) {
-		HttpClient httpClient = new DefaultHttpClient();
-
-		try {
-			HttpDelete deleteRequest = new HttpDelete(RESOURCE_URL + id);
-			deleteRequest.setHeader("Accept", "application/json");
-
-			HttpResponse response = httpClient.execute(deleteRequest);
-			String status = response.getStatusLine().toString();
-			Log.i(TAG, status);
-
-		} catch (Exception e) {
-			e.printStackTrace();
+	String getEntityContent(HttpResponse response) throws IOException {
+		BufferedReader br = new BufferedReader(
+				new InputStreamReader((response.getEntity().getContent())));
+		String output;
+		System.err.println("Output from Server -> ");
+		String json = "";
+		while ((output = br.readLine()) != null) {
+			System.err.println(output);
+			json += output;
 		}
+		System.err.println("JSON:"+json);
+		return json;
 	}
-	
-	/**
-	 * Gets content from an HTTP response
-	 */
-	public String getEntityContent(HttpResponse response) throws IOException {
-		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-
-		StringBuffer result = new StringBuffer();
-		String line = "";
-		while ((line = rd.readLine()) != null) {
-			result.append(line);
-		}
-
-		return result.toString();
-	}
-		
 }

@@ -193,6 +193,7 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 				alertDialog = adb.create();
 				alertDialog.show();
 				incomplete = true;
+				break;
 			}
 		}
 		if (!incomplete) {

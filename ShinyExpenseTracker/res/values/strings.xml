@@ -85,5 +85,10 @@
     <string name="submit_claim">Submit Claim</string>
     <string name="remove_receipt">Remove Receipt</string>
     <string name="title_activity_add_tag_to_claim">AddTagToClaimActivity</string>
+    <string name="title_activity_sign_in_as_approver_or_claimant">SignInAsApproverOrClaimant</string>
+    <string name="claimant">Claimant</string>
+    <string name="approver">Approver</string>
+    <string name="login_as">Login as:</string>
+    <string name="continue_button">Continue</string>
 
 </resources>

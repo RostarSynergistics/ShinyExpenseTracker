@@ -19,7 +19,7 @@
         android:text="@string/geolocationTitle" />
 
     <TextView
-        android:id="@+id/gelocationValue"
+        android:id="@+id/geolocationValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/geolocationTitle"
@@ -45,6 +45,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/automaticGeolocationSetupButton"
+        android:onClick="clickSetGeolocationUsingMap"
         android:text="@string/mapAssistedGeolocationSetupButtonText" />
 
 </RelativeLayout>

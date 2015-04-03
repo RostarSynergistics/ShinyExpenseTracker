@@ -25,7 +25,9 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
@@ -36,10 +38,12 @@ import ca.ualberta.cs.shinyexpensetracker.R;
 
 public class GeolocationViewActivity extends Activity {
 
+	private LocationManager lm;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_geolocation_view);
+		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	}
 
 	@Override
@@ -62,12 +66,38 @@ public class GeolocationViewActivity extends Activity {
 	}
 	
 	public void clickSetGeolocationAutomatically(View v) {
-		Location location = new Location(LocationManager.GPS_PROVIDER);
-		double lattitude = location.getLatitude();
-		double longitude = location.getLongitude();
-		TextView geolocationValue = (TextView) findViewById(R.id.gelocationValue);
-		String geolocationValueText = String.valueOf(lattitude) + ", " + String.valueOf(longitude);
-		geolocationValue.setText(geolocationValueText);
-		geolocationValue.invalidate();
+		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, listener);
 	}
+	
+	public void clickSetGeolocationUsingMap(View v) {
+		lm.removeUpdates(listener);
+		// TODO: launch OpenStreetMapsActivity for result
+	}
+	/**
+	 * Location listener that fires every time a location update is requested.
+	 * Updates geolocation in the text view until the listener is unbound from
+	 * its location manager  
+	 */
+	private final LocationListener listener = new LocationListener() {
+		public void onLocationChanged (Location location) {
+			TextView geolocationValue = (TextView) findViewById(R.id.geolocationValue);
+			if (location != null) {
+				double lattitude = location.getLatitude();
+				double longitude = location.getLongitude();
+				String geolocationValueText = "Latitude: " + String.valueOf(lattitude) + "\n " 
+											+ "Longitude: " + String.valueOf(longitude);
+				geolocationValue.setText(geolocationValueText);
+				geolocationValue.invalidate();
+			} else {
+				geolocationValue.setText("Cannot get the location");
+			}
+		}
+		public void onProviderDisabled (String provider) {
+		}
+		public void onProviderEnabled (String provider) {
+		}
+		public void onStatusChanged (String provider, int status, Bundle extras) {
+		}
+	};
 }

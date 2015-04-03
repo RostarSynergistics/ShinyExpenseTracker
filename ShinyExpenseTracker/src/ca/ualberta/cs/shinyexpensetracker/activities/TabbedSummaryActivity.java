@@ -164,8 +164,6 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 		Intent intent = getIntent();
 		int claimIndex = intent.getIntExtra("claimIndex", -1);
 		
-		if (controller.getExpenseClaim(claimIndex).getStatus().equals(Status.SUBMITTED)) {
-		}
 		intent = new Intent(this, ExpenseClaimActivity.class);
 
 		intent.putExtra("claimIndex", claimIndex);

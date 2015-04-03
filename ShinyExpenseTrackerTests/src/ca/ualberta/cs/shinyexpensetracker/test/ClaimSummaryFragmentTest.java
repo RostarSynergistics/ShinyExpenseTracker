@@ -6,6 +6,7 @@ import java.util.Date;
 
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -146,7 +147,8 @@ public class ClaimSummaryFragmentTest extends
 				"Claim Status: " + status.getText(), statusText.getText().toString());
 		
 		TextView tagText = (TextView) frag.getView().findViewById(R.id.claimTagsTextView);
-		assertEquals("Claim tags not set correctly", "Tags: " + tag, tagText.getText().toString());
+		
+		assertEquals("Claim tags not set correctly", "Tags: " + tag + "  ", tagText.getText().toString());
 	}
 	
 	/**

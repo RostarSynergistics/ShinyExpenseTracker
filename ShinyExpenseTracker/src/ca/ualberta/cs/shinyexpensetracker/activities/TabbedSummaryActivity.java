@@ -135,6 +135,11 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 	 * @param menu
 	 */
 	public void addTagMenuItem(MenuItem menu) {
+		Intent intent = getIntent();
+		int claimIndex = intent.getIntExtra("claimIndex" , -1);
+		intent = new Intent(TabbedSummaryActivity.this, AddTagToClaimActivity.class);
+		intent.putExtra("claimIndex", claimIndex);
+		startActivity(intent);
 	}
 	
 	/** 

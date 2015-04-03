@@ -55,7 +55,8 @@ public class TagList extends Model<TagList> implements Iterable<Tag> {
 		
 		//Check for valid tag
 		if(checkValidTag(newTag)){
-			tags.set(position, newTag);
+			//tags.set(position, newTag);
+			tags.get(position).setValue(newTag.getValue());
 			notifyViews();
 			return true;
 		}else{
@@ -103,12 +104,27 @@ public class TagList extends Model<TagList> implements Iterable<Tag> {
 		
 	}
 	
-	public void removeTag(Tag t) {
-		tags.remove(t);
+	/**
+	 * Deletes a tag in the tag list 
+	 * @param tag the tag you wish to delete
+	 * @return boolean stating if change could be made
+	 */
+	public boolean deleteTag(Tag tag) {
+		boolean removed = tags.remove(tag);
+		notifyViews();
+		return removed;
 	}
-
+	
 	public void removeTag(String s) {
 		tags.remove(new Tag(s));
+	}
+	
+	/**
+	 * Remove a given tag from the tag list
+	 * @param tag
+	 */
+	public void removeTag(Tag tag) {
+		tags.remove(tag);
 	}
 	
 	public int size(){
@@ -136,10 +152,13 @@ public class TagList extends Model<TagList> implements Iterable<Tag> {
 		}
 		return sb.toString();
 	}
+	
+	
 
 	//Method required for iterable. Used to use TagList in a for each loop 
 	@Override
 	public Iterator<Tag> iterator() {
 		return tags.iterator();
 	}
+	
 }

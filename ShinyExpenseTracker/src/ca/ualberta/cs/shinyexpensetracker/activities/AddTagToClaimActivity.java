@@ -33,22 +33,21 @@ public class AddTagToClaimActivity extends Activity implements IView<TagList> {
 	private TagController tagController;
 	private ExpenseClaimController expenseClaimController;
 	private int claimIndex;
+	private static AlertDialog addTags;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_manage_tag);
 
+		//Setting up needed resources
 		manageTags = (ListView) findViewById(R.id.listViewManageTags);
 		tagController = Application.getTagController();
-
-		// Setting a listener for tag controller
-		//tagController.getTagList().addView(this);
-		
 		expenseClaimController = Application.getExpenseClaimController();
 		
 		//Getting the current claim 
-		claimIndex = getIntent().getIntExtra("claimIndex", -1);
-				
+		 claimIndex = getIntent().getIntExtra("claimIndex", -1);
+		//Intent error 
 		if (claimIndex == -1){
 			throw new RuntimeException("Error getting current claim index");
 		}
@@ -75,6 +74,7 @@ public class AddTagToClaimActivity extends Activity implements IView<TagList> {
 		tagListAdapter = new ArrayAdapter<Tag>(this, android.R.layout.simple_list_item_multiple_choice, displayedTagList.getTags());
 		manageTags.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		
+		//Setting default message for an empty list
 		TextView emptyText = (TextView)findViewById(R.id.TagListEmpty);
 		manageTags.setEmptyView(emptyText);
 		manageTags.setAdapter(tagListAdapter);
@@ -94,7 +94,12 @@ public class AddTagToClaimActivity extends Activity implements IView<TagList> {
 		}
 
 	}
-
+	
+	/**
+	 * Creates a dialog to confirm the adding of selected 
+	 * tags to the current claim 
+	 * @return true if added correctly 
+	 */
 	private boolean addTagsToClaimDialog() {
 		// Creating the dialog. Reusing the delete tag dialog
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -106,7 +111,7 @@ public class AddTagToClaimActivity extends Activity implements IView<TagList> {
 		TextView header = (TextView) dialogView.findViewById(R.id.TextViewDialogInputType);
 		header.setText("Add selected tags to claims");
 		
-		//Setting the postive button. On click calls addTagsToClaim
+		//Setting the positive button. On click calls addTagsToClaim
 		builder.setPositiveButton("Add tags", new android.content.DialogInterface.OnClickListener() {
 			
 			@Override
@@ -116,17 +121,20 @@ public class AddTagToClaimActivity extends Activity implements IView<TagList> {
 			}
 		});
 	
+		//Set the negative button to do nothing 
 		builder.setNegativeButton("Cancel" , new android.content.DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {}
 		});
 		
-		builder.create().show();
+		addTags = builder.create();
+		addTags.show();
 		
 		return true;
 	}
 
 	
+	//Adds the check marked tags to the current claim
 	private void addTagsToClaim(){
 		if (manageTags.getCheckedItemCount() == 0 ){
 			Toast.makeText(AddTagToClaimActivity.this, "Error no items selected", Toast.LENGTH_LONG).show();
@@ -136,8 +144,6 @@ public class AddTagToClaimActivity extends Activity implements IView<TagList> {
 		//Returns an boolean array mapped to true or false for each postion that is clicked or not 
 		SparseBooleanArray clicked = manageTags.getCheckedItemPositions();
 		
-	
-		
 		ExpenseClaim claim = expenseClaimController.getExpenseClaim(claimIndex);
 		
 		//Goes through the list and adds the tags that were checked
@@ -146,13 +152,14 @@ public class AddTagToClaimActivity extends Activity implements IView<TagList> {
 			if(clicked.get(i)){
 				Tag tag = (Tag) manageTags.getItemAtPosition(i);
 				claim.addTag(tag);
-
 			}
 		}
 		
 	}
 	
-
+	public static AlertDialog getDialog(){
+		return addTags;
+	}
 	@Override
 	public void update(TagList m) {
 		// TODO Auto-generated method stub

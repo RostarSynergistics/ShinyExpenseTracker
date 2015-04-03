@@ -256,7 +256,8 @@ public class ManageTagActivity extends Activity implements IView<TagList> {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						try {
-							if (!tagController.deleteTag(position)) {
+							Tag tag = (Tag) manageTags.getItemAtPosition(position);
+							if (!tagController.deleteTag(tag)) {
 								Toast.makeText(getApplicationContext(),
 										"Tag could not be deleted",
 										Toast.LENGTH_LONG).show();

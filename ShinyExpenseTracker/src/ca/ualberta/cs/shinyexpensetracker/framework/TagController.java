@@ -18,8 +18,10 @@
 
 package ca.ualberta.cs.shinyexpensetracker.framework;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import android.content.Context;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 import ca.ualberta.cs.shinyexpensetracker.persistence.FilePersistenceStrategy;
@@ -131,12 +133,14 @@ public class TagController {
 	
 
 	/**
-	 * Deletes a tag from the master tagList
+	 * Deletes a tag from the master tagList.
+	 * Also deletes the tag from any claim lists tag list
 	 * @param index
 	 * @return
 	 */
-	public boolean deleteTag(int index) throws IOException {
-		boolean result = list.deleteTag(index);
+	public boolean deleteTag(Tag tag) throws IOException {
+		boolean result = list.deleteTag(tag);
+		Application.getExpenseClaimController().removeTag(tag);
 		persister.saveTags(list);
 		return result;
 	}

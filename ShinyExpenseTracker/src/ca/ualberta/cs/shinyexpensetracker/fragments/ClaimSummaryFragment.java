@@ -57,8 +57,7 @@ public class ClaimSummaryFragment extends Fragment implements
 		View rootView = inflater.inflate(R.layout.tab_claim_summary, container,
 				false);
 		view = rootView;
-		TagController tagController = Application.getTagController();
-		tagController.getTagList().addView(this);
+
 		return rootView;
 	}
 

@@ -1,4 +1,7 @@
-package ca.ualberta.cs.shinyexpensetracker.models;
+package ca.ualberta.cs.shinyexpensetracker.decorators;
+
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
 /**
  * This class is the superclass for all expense claim list

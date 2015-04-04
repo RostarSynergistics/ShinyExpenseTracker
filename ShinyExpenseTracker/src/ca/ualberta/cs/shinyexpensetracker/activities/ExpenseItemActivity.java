@@ -140,7 +140,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		s = (Spinner) findViewById(R.id.expenseItemCurrencySpinner);
 		s.setSelection(currenciesMap.get(item.getCurrency().name()));
 
-		if (item.doesHavePhoto()) {
+		if (item.hasAnAttachedReceipt()) {
 			button.setImageBitmap(item.getReceiptPhoto());
 		}
 	}

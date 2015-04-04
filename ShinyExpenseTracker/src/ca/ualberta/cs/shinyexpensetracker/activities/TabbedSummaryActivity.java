@@ -142,6 +142,18 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 		startActivity(intent);
 	}
 	
+	/**
+	 * Called on MenuItem "Remove Tag" click
+	 * @param menu
+	 */
+	public void removeTagMenuItem(MenuItem menu) {
+		Intent intent = getIntent();
+		int claimIndex = intent.getIntExtra("claimIndex" , -1);
+		intent = new Intent(TabbedSummaryActivity.this, RemoveTagFromClaimActivity.class);
+		intent.putExtra("claimIndex", claimIndex);
+		startActivity(intent);
+	}
+	
 	/** 
 	 * Called on MenuItem "Add Destination" click
 	 * Takes user to add destination screen

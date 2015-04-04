@@ -14,7 +14,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
 
 public class LoginAsApproverOrClaimantActivity extends Activity {
 
-	User user = new User();
+	User user = Application.getUser();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public class LoginAsApproverOrClaimantActivity extends Activity {
 		
 	}
 
-	@Override
+	@Override	
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.sign_in_as_approver_or_claimant, menu);
@@ -45,28 +45,21 @@ public class LoginAsApproverOrClaimantActivity extends Activity {
 	}
 
 	/**
-	 * Saves the type of the user upon logging in to the system
+	 * Saves the type of the user to the User and the application upon logging in to the system
 	 * 
 	 * @param v
 	 */
 	/* source http://developer.android.com/guide/topics/ui/controls/radiobutton.html on April 1 2015 */
 	public void saveUserType(View v) {
-	
-		boolean checked = ((RadioButton) v).isChecked();
 		
-		switch (v.getId()) {
-		case (R.id.approverRadioButton):
-			if (checked) {
-				user.setUserType(Type.Approver);
-				Application.setUserType(Type.Approver);
-				break;
-			}
-		case (R.id.claimantRadioButton):
-			if (checked) {
-				user.setUserType(Type.Claimant);
-				Application.setUserType(Type.Claimant);
-				break;
-			}
+		boolean checked = ((RadioButton) findViewById(R.id.approverRadioButton)).isChecked();
+		
+		if (checked) {
+			user.setUserType(Type.Approver);
+			Application.setUserType(Type.Approver);
+		} else {
+			user.setUserType(Type.Claimant);
+			Application.setUserType(Type.Claimant);
 		}
 	}
 
@@ -77,8 +70,10 @@ public class LoginAsApproverOrClaimantActivity extends Activity {
 	 * @param v
 	 */
 	public void login(View v) {
-		saveUserType(v);
+
 		Intent intent;
+		
+		saveUserType(v);
 		
 		if (user.getUserType().equals(Type.Claimant)) {
 			intent = new Intent(LoginAsApproverOrClaimantActivity.this,

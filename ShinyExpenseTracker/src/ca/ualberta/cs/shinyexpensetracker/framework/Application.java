@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import android.content.Context;
 import ca.ualberta.cs.shinyexpensetracker.models.User;
+import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
 
 /**
  * Serves as a Service Locator (http://en.wikipedia.org/wiki/Service_locator_pattern).
@@ -14,7 +15,7 @@ public class Application extends android.app.Application {
 	private static Context context;
 	private static ExpenseClaimController expenseClaimController;
 	private static TagController tagController;
-	private static User.Type userType;
+	private static User user;
 	
 	@Override
 	public void onCreate() {
@@ -80,19 +81,34 @@ public class Application extends android.app.Application {
 		return tagController;
 	}
 	
+	public static void setUser(User u) {
+		user = u;
+	}
+	
+	public static User getUser() {
+		if (user == null) {
+			try {
+				setUser(new User(context));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return user;
+	}
+	
 	/**
 	 * Sets the application's state (claimant or approver) when the user logs in
 	 * @param state
 	 */
-	public static void setUserType(User.Type type) {
-		userType = type;
+	public static void setUserType(Type type) {
+		user.setUserType(type);
 	}
 	
 	/**
-	 * Gets the application's state (claimant or approver)
+	 * Gets the application's user type (claimant or approver)
 	 * @return
 	 */
-	public static User.Type getUserType() {
-		return userType;
+	public static Type getUserType() {
+		return user.getUserType();
 	}
 }

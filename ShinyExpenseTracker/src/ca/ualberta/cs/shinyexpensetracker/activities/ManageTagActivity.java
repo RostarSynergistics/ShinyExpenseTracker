@@ -11,10 +11,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,6 +40,7 @@ public class ManageTagActivity extends Activity implements IView<TagList> {
 	private ListView manageTags;
 	private ArrayAdapter<Tag> tagListAdapter;
 	private TagController tagController;
+	private Button done;
 	protected static AlertDialog alertDialogAddTag;
 	protected static AlertDialog alertDialogEditTag;
 	protected static AlertDialog alertDialogDeleteTag;
@@ -48,7 +51,8 @@ public class ManageTagActivity extends Activity implements IView<TagList> {
 		setContentView(R.layout.activity_manage_tag);
 		manageTags = (ListView) findViewById(R.id.listViewManageTags);
 		tagController = Application.getTagController();
-
+		done = (Button) findViewById(R.id.doneButtonManageTags);
+		
 		// Setting a listener for tag controller
 		tagController.getTagList().addView(this);
 	}
@@ -90,15 +94,21 @@ public class ManageTagActivity extends Activity implements IView<TagList> {
 			}
 
 		});
+		
+		done.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				addTagFromDialogue();
+			}
+		});
 
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.actionManageTagsAdd:
-			return addTagFromDialogue();
-
+		
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -256,7 +266,8 @@ public class ManageTagActivity extends Activity implements IView<TagList> {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						try {
-							if (!tagController.deleteTag(position)) {
+							Tag tag = (Tag) manageTags.getItemAtPosition(position);
+							if (!tagController.deleteTag(tag)) {
 								Toast.makeText(getApplicationContext(),
 										"Tag could not be deleted",
 										Toast.LENGTH_LONG).show();

@@ -3,23 +3,32 @@
     tools:context="ca.ualberta.cs.shinyexpensetracker.TabbedSummaryActivity" >
     
     <item android:id="@+id/addExpenseItem" 
-        android:title="@string/add_expense_item" 
-        android:onClick="addExpenseItemMenuItem">
+          android:title="@string/add_expense_item" 
+          android:onClick="addExpenseItemMenuItem">
     </item>
     
     <item android:id="@+id/addTag" 
-        android:title="@string/add_tag" 
-        android:onClick="addTagMenuItem">
+          android:title="@string/add_tag" 
+          android:onClick="addTagMenuItem">
+    </item>
+    
+    <item android:id="@+id/RemoveTag" 
+          android:title="@string/remove_tags" 
+          android:onClick="removeTagMenuItem">
     </item>
     
     <item android:id="@+id/addDestination" 
-        android:title="@string/add_destination" 
-        android:onClick="addDestinationMenuItem">
+          android:title="@string/add_destination" 
+          android:onClick="addDestinationMenuItem">
     </item>
     
-        <item android:id="@+id/editClaim" 
-        android:title="@string/edit_claim" 
-        android:onClick="editClaimMenuItem">
+    <item android:id="@+id/editClaim" 
+          android:title="@string/edit_claim" 
+          android:onClick="editClaimMenuItem">
     </item>
+    
+    <item android:id="@+id/submitClaim" 
+          android:title="@string/submit_claim" android:onClick="submitClaimMenuItem">
+     </item>
 
 </menu>

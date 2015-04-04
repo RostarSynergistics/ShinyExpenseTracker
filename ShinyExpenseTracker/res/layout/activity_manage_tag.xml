@@ -13,6 +13,23 @@
     <ListView
         android:id="@+id/listViewManageTags"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_weight="90" />
+     <TextView 
+        android:id="@+id/TagListEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/no_tags_to_add"
+        android:visibility="gone" 
+        />
+    <Button 
+        android:id = "@+id/doneButtonManageTags"
+        android:layout_width="match_parent"
+      	android:layout_height="wrap_content"
+      	android:layout_weight="5"
+    	android:text="@string/add_tags"
+        />
 
+  
 </LinearLayout>
+ 

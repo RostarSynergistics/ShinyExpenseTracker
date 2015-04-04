@@ -3,11 +3,10 @@ package ca.ualberta.cs.shinyexpensetracker.test.models;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import junit.framework.TestCase;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
-import junit.framework.TestCase;
 
 /**
  * Tests that verify that ExpenseItem.equals(...) works.

@@ -21,6 +21,7 @@ public class ManageTagActivityTests extends ActivityInstrumentationTestCase2<Man
 	Instrumentation instrumentation;
 	TagController tagController;
 	ListView manageTagsListView;
+	Button done;
 	
 	public ManageTagActivityTests() {
 		super(ManageTagActivity.class);
@@ -35,11 +36,13 @@ public class ManageTagActivityTests extends ActivityInstrumentationTestCase2<Man
 		activity = (ManageTagActivity)getActivity();
 		instrumentation = getInstrumentation();
 		manageTagsListView = (ListView) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.listViewManageTags);
+		done = (Button) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.doneButtonManageTags);
+		
 	}
 	
 	public void testAddDialogShows(){
 		//Press the add button in the menu bar. Should create a dialog 
-		instrumentation.invokeMenuActionSync(activity,ca.ualberta.cs.shinyexpensetracker.R.id.actionManageTagsAdd , 0);
+		clickAddTagsButton();
 		AlertDialog dialog = ManageTagActivity.getDialog();
 		assertTrue(dialog.isShowing());
 	}
@@ -79,7 +82,7 @@ public class ManageTagActivityTests extends ActivityInstrumentationTestCase2<Man
 		editTagThroughDialog(0, "EditedTag");
 		assertTrue("Number of tags did not stay the same" ,tagController.getTagCount() == 1);
 		
-		assertFalse("Tag is still the same",tagController.getTag(0).equals(tag));
+		assertFalse("Tag is still the same",tagController.getTag(0).equals(new Tag("TagToEdit")));
 		assertEquals("Tag does no have the correct value" ,tagController.getTag(0).getValue(),"EditedTag");
 		
 		editTagThroughDialog(0, "Edited Tag");
@@ -124,7 +127,7 @@ public class ManageTagActivityTests extends ActivityInstrumentationTestCase2<Man
 
 	//Adds a tag through the add menu button and dialog
 	private void addTagThroughDialog(String tagName) {
-		instrumentation.invokeMenuActionSync(activity,ca.ualberta.cs.shinyexpensetracker.R.id.actionManageTagsAdd , 0);
+		clickAddTagsButton();
 		AlertDialog dialog = ManageTagActivity.getDialog();
 		
 		EditText dialogEditText = (EditText) dialog.findViewById(R.id.EditTextDialogTag);
@@ -203,6 +206,17 @@ public class ManageTagActivityTests extends ActivityInstrumentationTestCase2<Man
 			}
 		});
 		instrumentation.waitForIdleSync();
+	}
+	
+	//Clicks the Addtags button
+	private void clickAddTagsButton(){
+		instrumentation.runOnMainSync(new Runnable() {
+			
+			@Override
+			public void run() {
+				done.performClick();
+			}
+		});
 	}
 }
 

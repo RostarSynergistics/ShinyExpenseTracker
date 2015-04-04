@@ -41,23 +41,23 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	private Date endDate;
 	private Status status;
 	private ArrayList<Destination> destinations = new ArrayList<Destination>();
-	private TagList tagList;
+	private TagList tagList = new TagList();
 	private ArrayList<ExpenseItem> expenses = new ArrayList<ExpenseItem>();
 
 	public ExpenseClaim(String name) {
-		this(name, new Date(), null, Status.IN_PROGRESS, null);
+		this(name, new Date(), null, Status.IN_PROGRESS, new TagList());
 	}
 
 	public ExpenseClaim(String name, Date startDate) {
-		this(name, startDate, null, Status.IN_PROGRESS, null);
+		this(name, startDate, null, Status.IN_PROGRESS, new TagList());
 	}
 
 	public ExpenseClaim(String name, Date startDate, Date endDate) {
-		this(name, startDate, endDate, Status.IN_PROGRESS, null);
+		this(name, startDate, endDate, Status.IN_PROGRESS, new TagList());
 	}
 
 	public ExpenseClaim(String name, Date startDate, Date endDate, Status status) {
-		this(name, startDate, endDate, status, null);
+		this(name, startDate, endDate, status, new TagList());
 	}
 
 	public ExpenseClaim(UUID id, String name, Date startDate, Date endDate, Status status) {
@@ -75,7 +75,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.status = status;
-		this.tagList = tagList;
+		this.tagList = tagList;		
 	}
 
 	public UUID getID() {
@@ -174,7 +174,10 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	public ExpenseItem getExpense(int index) {
 		return expenses.get(index);
 	}
-
+	
+	public ArrayList<ExpenseItem> getExpenses() {
+		return expenses;
+	}
 	/**
 	 * Comparison of two claims is the comparison of their start date.
 	 */
@@ -210,6 +213,24 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 
 	public ArrayList<Destination> getDestinations() {
 		return destinations;
+	}
+	
+	/**
+	 * Adds a tag to the claims tag list
+	 * @param tag to put in the 
+	 * @return boolean if the tag was added
+	 */
+	public boolean addTag(Tag tag){
+		return tagList.addTag(tag);
+	}
+	
+	/**
+	 * Removes a tag to the claims tag list
+	 * @param tag to be removed 
+	 * @return boolean if the tag was removed
+	 */
+	public boolean removedTag(Tag tag){
+		return tagList.removeTag(tag);
 	}
 
 	// Source:

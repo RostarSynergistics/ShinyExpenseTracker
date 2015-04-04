@@ -56,6 +56,7 @@ public class ClaimSummaryFragment extends Fragment implements
 		View rootView = inflater.inflate(R.layout.tab_claim_summary, container,
 				false);
 		view = rootView;
+
 		return rootView;
 	}
 

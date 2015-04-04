@@ -49,7 +49,7 @@ public class ClaimSummaryFragmentTest extends
 	String claimName = "test claim name";
 	Date startDate = new Date(1000);
 	Date endDate = new Date(2000);
-	ExpenseClaim.Status status = ExpenseClaim.Status.RETURNED;
+	ExpenseClaim.Status status = ExpenseClaim.Status.IN_PROGRESS;
 	
 	ExpenseClaimController controller;
 	
@@ -148,7 +148,8 @@ public class ClaimSummaryFragmentTest extends
 				"Claim Status: " + status.getText(), statusText.getText().toString());
 		
 		TextView tagText = (TextView) frag.getView().findViewById(R.id.claimTagsTextView);
-		assertEquals("Claim tags not set correctly", "Tags: " + tag, tagText.getText().toString());
+		
+		assertEquals("Claim tags not set correctly", "Tags: " + tag + "  ", tagText.getText().toString());
 	}
 	
 	/**
@@ -252,4 +253,5 @@ public class ClaimSummaryFragmentTest extends
 		assertEquals("expense was not added to expensesTotal list", "CHF 20", 
 				expenseTotals.getItemAtPosition(1).toString());
 	}
+	
 }

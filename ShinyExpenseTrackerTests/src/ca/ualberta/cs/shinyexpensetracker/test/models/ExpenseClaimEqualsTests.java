@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 
+import junit.framework.TestCase;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
-import junit.framework.TestCase;
 
 /**
  * Tests that verify that ExpenseClaim.equals(...) works.

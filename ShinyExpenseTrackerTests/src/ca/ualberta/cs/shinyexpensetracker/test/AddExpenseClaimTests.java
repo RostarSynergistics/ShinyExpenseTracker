@@ -11,13 +11,13 @@ import android.app.Instrumentation.ActivityMonitor;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
+import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
-import ca.ualberta.cs.shinyexpensetracker.R;
 
 /**
  * Tests various parts of the functionality of ExpenseClaimActivity that relates

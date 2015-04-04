@@ -2,9 +2,9 @@ package ca.ualberta.cs.shinyexpensetracker.test.models;
 
 import java.util.UUID;
 
+import junit.framework.TestCase;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
-import junit.framework.TestCase;
 
 public class ExpenseClaimListTests extends TestCase {
 

@@ -15,6 +15,7 @@ import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ReceiptViewActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.models.ConcreteExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
@@ -45,7 +46,7 @@ public class TestReceiptView extends ActivityInstrumentationTestCase2<ReceiptVie
 	protected void setUp() throws Exception {
 		/* Set a test item in a claim list and ask the activity to fetch it */
 		super.setUp();
-		ExpenseClaimList claimList = new ExpenseClaimList();
+		ExpenseClaimList claimList = new ConcreteExpenseClaimList();
 		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(claimList));
 		Application.setExpenseClaimController(controller);
 

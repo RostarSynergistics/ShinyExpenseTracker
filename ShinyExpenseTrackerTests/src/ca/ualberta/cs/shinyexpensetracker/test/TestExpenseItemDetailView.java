@@ -21,6 +21,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemDetailActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.models.ConcreteExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
@@ -53,7 +54,7 @@ public class TestExpenseItemDetailView extends
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		ExpenseClaimList claimList = new ExpenseClaimList();
+		ExpenseClaimList claimList = new ConcreteExpenseClaimList();
 		controller = new ExpenseClaimController(
 				new MockExpenseClaimListPersister(claimList));
 		Application.setExpenseClaimController(controller);

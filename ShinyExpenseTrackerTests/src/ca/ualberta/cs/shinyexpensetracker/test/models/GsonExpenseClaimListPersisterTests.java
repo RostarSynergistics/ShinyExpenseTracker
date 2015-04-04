@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import junit.framework.TestCase;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-import junit.framework.TestCase;
-import ca.ualberta.cs.shinyexpensetracker.models.AbstractExpenseClaimList;
+import ca.ualberta.cs.shinyexpensetracker.models.ConcreteExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
@@ -25,7 +25,7 @@ public class GsonExpenseClaimListPersisterTests extends TestCase {
 	 * ExpenseClaimList.
 	 */
 	public void testPersistenceOfExpenseClaims() {
-		ExpenseClaimList list = new ExpenseClaimList();
+		ExpenseClaimList list = new ConcreteExpenseClaimList();
 		ExpenseClaim claim = getTestClaim();
 		list.addClaim(claim);
 
@@ -34,7 +34,7 @@ public class GsonExpenseClaimListPersisterTests extends TestCase {
 
 		try {
 			persister.saveExpenseClaims(list);
-			AbstractExpenseClaimList newList = persister.loadExpenseClaims();
+			ExpenseClaimList newList = persister.loadExpenseClaims();
 			assertEquals(1, newList.getCount());
 			ExpenseClaim loadedClaim = newList.getClaim(0);
 			assertEquals(claim, loadedClaim);

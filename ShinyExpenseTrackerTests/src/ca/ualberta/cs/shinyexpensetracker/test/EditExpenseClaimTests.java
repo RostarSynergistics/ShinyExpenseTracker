@@ -14,6 +14,7 @@ import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.models.ConcreteExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
@@ -51,7 +52,7 @@ public class EditExpenseClaimTests extends ActivityInstrumentationTestCase2<Expe
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		list = new ExpenseClaimList();
+		list = new ConcreteExpenseClaimList();
 		claim = getStartingClaim();
 
 		list.addClaim(claim);

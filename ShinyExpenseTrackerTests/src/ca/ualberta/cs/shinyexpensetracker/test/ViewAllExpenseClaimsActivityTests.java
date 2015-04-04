@@ -40,6 +40,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.models.ConcreteExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
@@ -66,7 +67,7 @@ public class ViewAllExpenseClaimsActivityTests extends
 		super.setUp();
 		// Inject an empty list so that saving/loading doesn't interfere,
 		// just in case.
-		claimsList = new ExpenseClaimList();
+		claimsList = new ConcreteExpenseClaimList();
 		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(claimsList));
 		
 		Application.setExpenseClaimController(controller);

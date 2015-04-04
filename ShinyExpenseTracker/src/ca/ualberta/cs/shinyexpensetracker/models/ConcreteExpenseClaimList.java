@@ -41,16 +41,4 @@ public class ConcreteExpenseClaimList extends ExpenseClaimList {
 		int index = claims.indexOf(oldClaim);
 		claims.set(index, newClaim);
 	}
-
-	/**
-	 * sorts the claimList
-	 */
-	public void sort() {
-		Comparator<? super ExpenseClaim> reverse_compare = new Comparator<ExpenseClaim>() {
-			public int compare(ExpenseClaim lhs, ExpenseClaim rhs) {
-				return rhs.compareTo(lhs);
-			};
-		};
-		Collections.sort(claims, reverse_compare);
-	}
 }

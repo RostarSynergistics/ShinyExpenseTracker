@@ -214,6 +214,15 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 	public boolean addTag(Tag tag){
 		return tagList.addTag(tag);
 	}
+	
+	/**
+	 * Removes a tag to the claims tag list
+	 * @param tag to be removed 
+	 * @return boolean if the tag was removed
+	 */
+	public boolean removedTag(Tag tag){
+		return tagList.removeTag(tag);
+	}
 
 	// Source:
 	// https://commons.apache.org/proper/commons-lang/javadocs/api-3.3.2/org/apache/commons/lang3/builder/EqualsBuilder.html

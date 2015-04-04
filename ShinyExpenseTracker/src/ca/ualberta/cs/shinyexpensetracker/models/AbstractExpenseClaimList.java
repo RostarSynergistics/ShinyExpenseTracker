@@ -2,7 +2,7 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.ArrayList;
 
-public abstract class AbstractExpenseClaimList extends Model<ExpenseClaimList> {
+public abstract class AbstractExpenseClaimList extends Model<AbstractExpenseClaimList> {
 
 	protected ArrayList<ExpenseClaim> claims;
 

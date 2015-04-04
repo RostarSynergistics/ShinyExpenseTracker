@@ -44,9 +44,8 @@ import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.models.AbstractExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
-public class ExpenseClaimListActivity extends Activity implements IView<ExpenseClaimList> {
+public class ExpenseClaimListActivity extends Activity implements IView<AbstractExpenseClaimList> {
 	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
 

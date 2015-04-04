@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import android.content.Context;
+import ca.ualberta.cs.shinyexpensetracker.models.AbstractExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
@@ -102,7 +103,7 @@ public class ExpenseClaimController {
 	 * Returns the model
 	 * @return
 	 */
-	public ExpenseClaimList getExpenseClaimList() {
+	public AbstractExpenseClaimList getExpenseClaimList() {
 		return claimList;
 	}
 	

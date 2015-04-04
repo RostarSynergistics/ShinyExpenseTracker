@@ -54,7 +54,7 @@ public class ESClaimManager {
 	 * @throws IllegalStateException 
 	 */
 	
-	public void insertClaimList(ExpenseClaim claim) throws IllegalStateException, IOException{
+	public void insertClaim(ExpenseClaim claim) throws IllegalStateException, IOException{
 		HttpPost httpPost = new HttpPost(RESOURCE_URI+CLAIM_INDEX+claim.getID()+SEARCH_PRETTY);
 		StringEntity stringentity = null;
 		try {

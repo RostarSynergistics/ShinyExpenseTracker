@@ -1,9 +1,14 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import java.util.ArrayList;
+
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
@@ -16,6 +21,10 @@ import ca.ualberta.cs.shinyexpensetracker.adapters.SectionsPagerAdapter;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
 import ca.ualberta.cs.shinyexpensetracker.fragments.DestinationListFragment;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ExpenseItemListFragment;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 
 // Source: https://github.com/astuetz/PagerSlidingTabStrip
 // on March 11 2015
@@ -48,6 +57,12 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 	 */
 	ViewPager mViewPager;
 	Context context;
+	private AlertDialog.Builder adb;
+	public Dialog alertDialog;
+	ExpenseClaimController controller = Application.getExpenseClaimController();
+	Intent intent;
+	int claimIndex;
+	Menu m;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +74,8 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		context = getBaseContext();
+		
+		adb = new AlertDialog.Builder(this);
 		
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the activity.
@@ -89,12 +106,16 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 					.setText(mSectionsPagerAdapter.getPageTitle(i, context))
 					.setTabListener(this));
 		}
+		
+		intent = getIntent();
+		claimIndex = intent.getIntExtra("claimIndex", -1);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.tabbed_summary, menu);
+		m = menu;
 		return true;
 	}
 	
@@ -104,8 +125,6 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 	 * @param menu
 	 */
 	public void addExpenseItemMenuItem(MenuItem menu) {
-		Intent intent = getIntent();
-		int claimIndex = intent.getIntExtra("claimIndex", -1);
 		intent = new Intent(TabbedSummaryActivity.this, ExpenseItemActivity.class);
 		intent.putExtra("claimIndex", claimIndex);
 		startActivity(intent);
@@ -123,8 +142,21 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 		startActivity(intent);
 	}
 	
+	/**
+	 * Called on MenuItem "Remove Tag" click
+	 * @param menu
+	 */
+	public void removeTagMenuItem(MenuItem menu) {
+		Intent intent = getIntent();
+		int claimIndex = intent.getIntExtra("claimIndex" , -1);
+		intent = new Intent(TabbedSummaryActivity.this, RemoveTagFromClaimActivity.class);
+		intent.putExtra("claimIndex", claimIndex);
+		startActivity(intent);
+	}
+	
 	/** 
 	 * Called on MenuItem "Add Destination" click
+	 * Takes user to add destination screen
 	 * @param menu
 	 */
 	public void addDestinationMenuItem(MenuItem menu) {
@@ -137,14 +169,66 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 	
 	/**
 	 * Called on MenuItem "Edit Claim" click
+	 * Takes user to edit claim screen
 	 * @param menu
 	 */
 	public void editClaimMenuItem(MenuItem menu) {
 		Intent intent = getIntent();
 		int claimIndex = intent.getIntExtra("claimIndex", -1);
+		
 		intent = new Intent(this, ExpenseClaimActivity.class);
+
 		intent.putExtra("claimIndex", claimIndex);
 		startActivity(intent);
+	}
+	
+	/**
+	 * Called on MenuItem "Submit Claim" click
+	 * Changes status of claim to "Submitted" if claim is complete
+	 * Disables 'Submit Claim' menu item once claim is submitted
+	 * @param menu
+	 */
+	public void submitClaimMenuItem(MenuItem menu) {
+		
+		ExpenseClaimController ecc = Application.getExpenseClaimController();
+		
+		Intent intent = getIntent();
+		int claimIndex = intent.getIntExtra("claimIndex", -1);
+		ArrayList<ExpenseItem> expenses = ecc.getExpenseItems(ecc.getExpenseClaim(claimIndex));
+		boolean incomplete = false;
+		for (ExpenseItem expense : expenses) {
+			if (expense.getIsMarkedIncomplete()) {
+				adb.setMessage("Cannot submit an incomplete claim");
+				adb.setCancelable(true);
+
+				adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) { }
+				});
+				alertDialog = adb.create();
+				alertDialog.show();
+				incomplete = true;
+				break;
+			}
+		}
+		if (!incomplete) {
+			ecc.getExpenseClaim(claimIndex).setStatus(Status.SUBMITTED);
+			adb.setMessage("Claim Submitted for Approval");
+			adb.setCancelable(true);
+			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) { }
+			});
+			alertDialog = adb.create();
+			alertDialog.show();
+			
+			// set menu items to false, so claim cannot be edited or submitted again
+			m.getItem(0).setEnabled(false);
+			m.getItem(2).setEnabled(false);
+			m.getItem(3).setEnabled(false);
+			m.getItem(4).setEnabled(false);
+		}
 	}
 
 	@Override
@@ -205,6 +289,10 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 		SectionsPagerAdapter adapter = ((SectionsPagerAdapter) mViewPager.getAdapter());
 		Fragment fragment = adapter.getFragment(index);
 		return fragment;
+	}
+	
+	public Dialog getDialog() {
+		return alertDialog;
 	}
 	
 }

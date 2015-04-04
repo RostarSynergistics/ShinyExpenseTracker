@@ -165,7 +165,10 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 	public ExpenseItem getExpense(int index) {
 		return expenses.get(index);
 	}
-
+	
+	public ArrayList<ExpenseItem> getExpenses() {
+		return expenses;
+	}
 	/**
 	 * Comparison of two claims is the comparison of their start date.
 	 */
@@ -210,6 +213,15 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 	 */
 	public boolean addTag(Tag tag){
 		return tagList.addTag(tag);
+	}
+	
+	/**
+	 * Removes a tag to the claims tag list
+	 * @param tag to be removed 
+	 * @return boolean if the tag was removed
+	 */
+	public boolean removedTag(Tag tag){
+		return tagList.removeTag(tag);
 	}
 
 	// Source:

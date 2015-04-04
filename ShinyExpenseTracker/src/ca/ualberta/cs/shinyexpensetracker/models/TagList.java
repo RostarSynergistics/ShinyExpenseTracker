@@ -123,8 +123,8 @@ public class TagList extends Model<TagList> implements Iterable<Tag> {
 	 * Remove a given tag from the tag list
 	 * @param tag
 	 */
-	public void removeTag(Tag tag) {
-		tags.remove(tag);
+	public boolean removeTag(Tag tag) {
+		 return tags.remove(tag);
 	}
 	
 	public int size(){

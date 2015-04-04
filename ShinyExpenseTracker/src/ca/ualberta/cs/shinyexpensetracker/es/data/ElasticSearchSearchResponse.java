@@ -1,3 +1,6 @@
+// Code taken from: https://github.com/rayzhangcl/ESDemo/blob/master/ESDemo/src/ca/ualberta/cs/CMPUT301/chenlei/ElasticSearchSearchResponse.java
+// April 3rd, 2015
+
 package ca.ualberta.cs.shinyexpensetracker.es.data;
 
 import java.util.ArrayList;

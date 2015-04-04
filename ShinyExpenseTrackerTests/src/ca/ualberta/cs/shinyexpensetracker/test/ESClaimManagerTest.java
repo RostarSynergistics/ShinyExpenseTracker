@@ -28,6 +28,11 @@ public class ESClaimManagerTest extends TestCase {
 		controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
 	}
 	
+	/**
+	 * Tests whether or not ElasticSearch adds a selected claim
+	 * @throws IllegalStateException
+	 * @throws IOException
+	 */
 	public void testAddClaim() throws IllegalStateException, IOException {
 		ExpenseClaim claim = new ExpenseClaim("Rajan sucks", null, null, Status.IN_PROGRESS, null, "1a");
 		claim.addDestination(destination);
@@ -44,7 +49,11 @@ public class ESClaimManagerTest extends TestCase {
 		assertEquals("Expense claim items are not equal", manager.getClaim("1a").getExpense(0), 
 				item);
 	}
-	
+
+	/**
+	 * Test whether or not ElasticSearch deletes a selected claim
+	 * @throws IOException
+	 */
 	public void testDeleteClaim() throws IOException {
 		manager.deleteClaim("1a");
 		assertNull("Expense claim at index 1a is not null", manager.getClaim("1a"));

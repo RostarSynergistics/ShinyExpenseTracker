@@ -1,3 +1,6 @@
+// Code taken from: https://github.com/rayzhangcl/ESDemo/blob/master/ESDemo/src/ca/ualberta/cs/CMPUT301/chenlei/ESClient.java
+// April 3rd, 2015
+
 package ca.ualberta.cs.shinyexpensetracker.es;
 
 import java.io.BufferedReader;
@@ -81,6 +84,11 @@ public class ESClaimManager {
 		}
 	}
 	
+	/**
+	 * Consumes the Get operation of the service
+	 * @param claimID
+	 * @return
+	 */
 	public ExpenseClaim getClaim(String claimID){
 		ExpenseClaim claim = null;
 		try{
@@ -106,6 +114,13 @@ public class ESClaimManager {
 		return claim;
 	}
 	
+	/**
+	 * Search by keywords
+	 * @param str
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	
 	public void searchClaims(String str) throws ClientProtocolException, IOException {
 		HttpGet searchRequest = new HttpGet(RESOURCE_URI+SEARCH_PRETTY+java.net.URLEncoder.encode(str,"UTF-8"));
 		searchRequest.setHeader("Accept","application/json");
@@ -122,12 +137,17 @@ public class ESClaimManager {
 			ExpenseClaim claim = r.getSource();
 			System.err.println(claim);
 		}
-		//searchRequest.releaseConnection();
 	}
 	
+	/**
+	 * Advanced search (logical operators)
+	 * @param str
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
 	public void searchsearchClaims(String str) throws ClientProtocolException, IOException {
 		HttpPost searchRequest = new HttpPost(RESOURCE_URI+SEARCH_PRETTY);
-		String query = 	"{\"query\" : {\"query_string\" : {\"default_field\" : \"ingredients\",\"query\" : \"" + str + "\"}}}";
+		String query = 	"{\"query\" : {\"query_string\" : {\"default_field\" : \"claims\",\"query\" : \"" + str + "\"}}}";
 		StringEntity stringentity = new StringEntity(query);
 
 		searchRequest.setHeader("Accept","application/json");
@@ -146,9 +166,13 @@ public class ESClaimManager {
 			ExpenseClaim claim = r.getSource();
 			System.err.println(claim);
 		}
-		//searchRequest.releaseConnection();
 	}
 	
+	/**
+	 * Delete a claim specified by the claimID
+	 * @param claimID
+	 * @throws IOException
+	 */
 	public void deleteClaim(String claimID) throws IOException {
 		HttpDelete httpDelete = new HttpDelete(RESOURCE_URI+CLAIM_INDEX+claimID);
 		httpDelete.addHeader("Accept","application/json");
@@ -167,6 +191,12 @@ public class ESClaimManager {
 		}
 	}
 	
+	/**
+	 * Get the HTTP response and return json string
+	 * @param response
+	 * @return
+	 * @throws IOException
+	 */
 	String getEntityContent(HttpResponse response) throws IOException {
 		BufferedReader br = new BufferedReader(
 				new InputStreamReader((response.getEntity().getContent())));

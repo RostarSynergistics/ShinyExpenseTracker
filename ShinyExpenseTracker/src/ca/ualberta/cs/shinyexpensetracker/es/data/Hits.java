@@ -1,4 +1,5 @@
-// https://github.com/rayzhangcl/ESDemo/blob/master/ESDemo/src/ca/ualberta/cs/CMPUT301/chenlei/Hits.java
+// Code taken from: https://github.com/rayzhangcl/ESDemo/blob/master/ESDemo/src/ca/ualberta/cs/CMPUT301/chenlei/Hits.java
+// April 3rd, 2015
 
 package ca.ualberta.cs.shinyexpensetracker.es.data;
 

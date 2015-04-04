@@ -34,7 +34,7 @@ public class ExpenseClaimControllerTests extends TestCase {
 		ExpenseClaim claim = controller.addExpenseClaim(name, startDate, endDate);
 
 		assertEquals(claimList.getCount(), 1);
-		assertEquals(claim, claimList.getClaim(0));
+		assertEquals(claim, claimList.getClaimAtPosition(0));
 		assertEquals(name, claim.getName());
 		assertEquals(startDate, claim.getStartDate());
 		assertEquals(endDate, claim.getEndDate());

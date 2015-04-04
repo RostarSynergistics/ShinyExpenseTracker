@@ -13,74 +13,86 @@ import java.util.UUID;
  */
 public class ExpenseClaimList extends Model<ExpenseClaimList> {
 	private ArrayList<ExpenseClaim> claims;
-	
+
 	public ExpenseClaimList() {
 		claims = new ArrayList<ExpenseClaim>();
 	}
 
 	/**
 	 * Returns a claim from the claimList based on index passed in
+	 * 
 	 * @param index
 	 * @return
 	 */
-	public ExpenseClaim getClaim(int index) {
+	public ExpenseClaim getClaimAtPosition(int index) {
 		return claims.get(index);
 	}
-	
+
 	/**
 	 * Returns a claim from the list with the specified ID, if any.
 	 * 
-	 * @param id The ID of the desired claim.
+	 * @param id
+	 *            The ID of the desired claim.
 	 * @return The claim if it exists, or null otherwise.
 	 */
 	public ExpenseClaim getClaimByID(UUID id) {
 		ExpenseClaim foundClaim = null;
 
-		for(ExpenseClaim claim : claims) {
+		for (ExpenseClaim claim : claims) {
 			if (claim.getID().equals(id)) {
 				foundClaim = claim;
 			}
 		}
-		
+
 		return foundClaim;
 	}
-	
+
 	/**
 	 * Adds a claim to the claimList
+	 * 
 	 * @param claim
 	 */
 	public void addClaim(ExpenseClaim claim) {
 		claims.add(claim);
 		notifyViews();
 	}
-	
+
 	/**
-	 * deletes a claim from the claimList
-	 * @param claim
+	 * Deletes the claim with the specified ID.
+	 * 
+	 * @param id
+	 *            The ID of the claim to delete.
 	 */
-	public void removeClaim(ExpenseClaim claim) {
-		claims.remove(claim);
-		notifyViews();
+	public void deleteClaim(UUID id) {
+		ExpenseClaim claim = getClaimByID(id);
+
+		if (claim != null) {
+			claims.remove(claim);
+			notifyViews();
+		}
 	}
-	
+
 	/**
 	 * returns number of claims in claimList
+	 * 
 	 * @return
 	 */
-	public int size(){
+	public int size() {
 		return claims.size();
 	}
-	
+
 	/**
 	 * returns array list of claims
+	 * 
 	 * @return
 	 */
-	public ArrayList<ExpenseClaim> getClaims(){
+	public ArrayList<ExpenseClaim> getClaims() {
 		return claims;
 	}
-	
+
 	/**
 	 * returns number of claims in claimList
+	 * 
 	 * @return
 	 */
 	public int getCount() {
@@ -98,9 +110,10 @@ public class ExpenseClaimList extends Model<ExpenseClaimList> {
 		};
 		Collections.sort(claims, reverse_compare);
 	}
-	
+
 	/**
 	 * Replaces the old claim with the new claim.
+	 * 
 	 * @param oldClaim
 	 * @param newClaim
 	 */

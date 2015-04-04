@@ -45,9 +45,7 @@ import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
-public class ExpenseClaimListActivity 
-	extends Activity 
-	implements IView<ExpenseClaimList> {
+public class ExpenseClaimListActivity extends Activity implements IView<ExpenseClaimList> {
 	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
 
@@ -71,12 +69,10 @@ public class ExpenseClaimListActivity
 		claim_list.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
 				ExpenseClaim claim = controller.getExpenseClaimAtPosition(position);
-				Intent intent = new Intent(ExpenseClaimListActivity.this,
-						TabbedSummaryActivity.class);
+				Intent intent = new Intent(ExpenseClaimListActivity.this, TabbedSummaryActivity.class);
 				intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claim.getID());
 				startActivity(intent);
 
@@ -88,8 +84,7 @@ public class ExpenseClaimListActivity
 		claim_list.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view,
-					int position, long id) {
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
 				// Don't change this line. Change "askDeleteClaimAt" instead.
 				askDeleteClaimAt(position);
@@ -124,8 +119,7 @@ public class ExpenseClaimListActivity
 			// TODO #28
 			return true;
 		case R.id.action_manage_tags:
-			Intent manageTagsIntent = new Intent(ExpenseClaimListActivity.this,
-					ManageTagActivity.class);
+			Intent manageTagsIntent = new Intent(ExpenseClaimListActivity.this, ManageTagActivity.class);
 			startActivity(manageTagsIntent);
 			return true;
 		}
@@ -139,16 +133,18 @@ public class ExpenseClaimListActivity
 
 	/**
 	 * Deletes a claim from the claim list controller
+	 * 
 	 * @param claim
 	 * @throws IOException
 	 */
 	public void deleteClaim(ExpenseClaim claim) throws IOException {
-		controller.removeExpenseClaim(claim);
+		controller.deleteExpenseClaim(claim.getID());
 	}
-	
+
 	/**
-	 * This creates and shows an dialog used when a claim is longed clicked. 
-	 * This dialog is used for deleting a claim 
+	 * This creates and shows an dialog used when a claim is longed clicked.
+	 * This dialog is used for deleting a claim
+	 * 
 	 * @param position
 	 * @return The alertDialog for delete claim
 	 */
@@ -159,8 +155,7 @@ public class ExpenseClaimListActivity
 		// Get a final copy of the requested claim
 		final ExpenseClaim claimToDelete = controller.getExpenseClaimAtPosition(position);
 
-		AlertDialog dialog = new AlertDialog.Builder(this)
-				.setTitle("Delete Claim?")
+		AlertDialog dialog = new AlertDialog.Builder(this).setTitle("Delete Claim?")
 				.setMessage("Delete '" + claimToDelete.toString() + "'?\n(This cannot be undone)")
 				// If OK, delete the claim. (Positive action);
 				.setPositiveButton("OK", new OnClickListener() {

@@ -74,6 +74,7 @@ public class GeolocationViewTest extends
 		});
 		LocationManager lm = (LocationManager) instrumentation.getTargetContext().getSystemService(Context.LOCATION_SERVICE);
 		Location loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		assertNotNull("no last known location. send a location to avd from DDMS->Emulator Control", loc);
 		String geolocationValueText = "Latitude: " + String.valueOf(loc.getLatitude()) + "\n" 
 				+ "Longitude: " + String.valueOf(loc.getLongitude());
 		assertEquals("coordinates fetched do not match", geolocationTV.getText().toString(), geolocationValueText);

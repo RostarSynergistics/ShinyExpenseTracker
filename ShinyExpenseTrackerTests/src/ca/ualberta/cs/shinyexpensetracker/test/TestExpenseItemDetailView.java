@@ -105,7 +105,7 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 
 		// Check that the activity received valid intents
 		assertEquals(claim.getID(), (UUID) expenseActivity.getIntent().getSerializableExtra(IntentExtraIDs.CLAIM_ID));
-		assertEquals(0, expenseActivity.getIntent().getIntExtra(IntentExtraIDs.EXPENSE_INDEX, -1000));
+		assertEquals(0, expenseActivity.getIntent().getIntExtra(IntentExtraIDs.EXPENSE_ID, -1000));
 
 		// Close the activity
 		expenseActivity.finish();

@@ -38,7 +38,7 @@ public class ReceiptViewActivity extends Activity {
 			// if there is no index information sent, put the first item of
 			// first claim
 			UUID claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
-			int expenseItemId = intent.getIntExtra(IntentExtraIDs.EXPENSE_INDEX, 0);
+			int expenseItemId = intent.getIntExtra(IntentExtraIDs.EXPENSE_ID, 0);
 			ExpenseClaimController controller = Application.getExpenseClaimController();
 			ExpenseClaim claim = controller.getExpenseClaimByID(claimID);
 			ExpenseItem item = claim.getExpense(expenseItemId);

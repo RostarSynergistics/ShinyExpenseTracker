@@ -40,7 +40,7 @@ public class AddDestinationActivity extends Activity {
 	private UUID claimID;
 
 	private Destination destination;
-	private int destinationIndex;
+	private UUID destinationID;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,16 +52,16 @@ public class AddDestinationActivity extends Activity {
 		controller = Application.getExpenseClaimController();
 		claim = controller.getExpenseClaimByID(claimID);
 
-		destinationIndex = intent.getIntExtra(IntentExtraIDs.DESTINATION_INDEX, -1);
+		destinationID = (UUID) intent.getSerializableExtra(IntentExtraIDs.DESTINATION_ID);
 		// Is this a new destination?
-		if (destinationIndex == -1) {
+		if (destinationID == null) {
 			// Yes.
 			// Destination object will be created later.
 			destination = null;
 		} else {
 			// No.
 			// Set the destination object to the existing object
-			destination = claim.getDestination(destinationIndex);
+			destination = claim.getDestinationByID(destinationID);
 		}
 	}
 

@@ -75,7 +75,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.status = status;
-		this.tagList = tagList;		
+		this.tagList = tagList;
 	}
 
 	public UUID getID() {
@@ -127,8 +127,21 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		notifyViews();
 	}
 
-	public Destination getDestination(int index) {
-		return destinations.get(index);
+	public Destination getDestinationByID(UUID id) {
+		Destination foundDestination = null;
+
+		for (Destination destination : destinations) {
+			if (destination.getID().equals(id)) {
+				foundDestination = destination;
+				break;
+			}
+		}
+
+		return foundDestination;
+	}
+
+	public Destination getDestinationAtPosition(int position) {
+		return destinations.get(position);
 	}
 
 	public void addDestination(Destination destination) {
@@ -174,10 +187,11 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	public ExpenseItem getExpense(int index) {
 		return expenses.get(index);
 	}
-	
+
 	public ArrayList<ExpenseItem> getExpenses() {
 		return expenses;
 	}
+
 	/**
 	 * Comparison of two claims is the comparison of their start date.
 	 */
@@ -214,22 +228,26 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	public ArrayList<Destination> getDestinations() {
 		return destinations;
 	}
-	
+
 	/**
 	 * Adds a tag to the claims tag list
-	 * @param tag to put in the 
+	 * 
+	 * @param tag
+	 *            to put in the
 	 * @return boolean if the tag was added
 	 */
-	public boolean addTag(Tag tag){
+	public boolean addTag(Tag tag) {
 		return tagList.addTag(tag);
 	}
-	
+
 	/**
 	 * Removes a tag to the claims tag list
-	 * @param tag to be removed 
+	 * 
+	 * @param tag
+	 *            to be removed
 	 * @return boolean if the tag was removed
 	 */
-	public boolean removedTag(Tag tag){
+	public boolean removedTag(Tag tag) {
 		return tagList.removeTag(tag);
 	}
 

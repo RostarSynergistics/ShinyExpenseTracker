@@ -49,7 +49,7 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 
 		if (bundle != null) {
 			claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
-			expenseItemIndex = intent.getIntExtra(IntentExtraIDs.EXPENSE_INDEX, -1);
+			expenseItemIndex = intent.getIntExtra(IntentExtraIDs.EXPENSE_ID, -1);
 			ExpenseClaimController controller = Application.getExpenseClaimController();
 			ExpenseClaim claim = controller.getExpenseClaimByID(claimID);
 			// Fetch the relevant item

@@ -84,7 +84,7 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 
 		Intent intent = new Intent();
 		intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
-		intent.putExtra(IntentExtraIDs.EXPENSE_INDEX, 0);
+		intent.putExtra(IntentExtraIDs.EXPENSE_ID, 0);
 
 		setActivityIntent(intent);
 		activity = getActivity();

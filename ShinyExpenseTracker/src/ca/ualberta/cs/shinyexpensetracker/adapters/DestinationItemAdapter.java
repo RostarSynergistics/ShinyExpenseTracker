@@ -12,30 +12,27 @@ import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
 /**
- * Adapter for the list Views that display Destinations.
- * It fills the destination_list_item.xml layout file to display
- * Destination Items.
+ * Adapter for the list Views that display Destinations. It fills the
+ * destination_list_item.xml layout file to display Destination Items.
  * 
- * You can use this in place of an ArrayAdapter for Destinations.
- * This gives better flexibility for the adapter.
+ * You can use this in place of an ArrayAdapter for Destinations. This gives
+ * better flexibility for the adapter.
  * 
- * Example usage:
- * public class MyActivity extends Activity) {
- *  
- *  public setupListView() {
- *  	adapter = new Adapter( claimToWatch, this ) 
- * 		listview.setAdapter(adapter);
- *		...
- * }
- *
+ * Example usage: public class MyActivity extends Activity) {
+ * 
+ * public setupListView() { adapter = new Adapter( claimToWatch, this )
+ * listview.setAdapter(adapter); ... }
+ * 
  */
 public class DestinationItemAdapter extends BaseAdapter implements ListAdapter {
 	private ExpenseClaim claim;
 	private Context context;
 
 	/**
-	 * @param claim Claim to fetch expenses from
-	 * @param context activity context
+	 * @param claim
+	 *            Claim to fetch expenses from
+	 * @param context
+	 *            activity context
 	 */
 	public DestinationItemAdapter(ExpenseClaim claim, Context context) {
 		this.claim = claim;
@@ -49,7 +46,7 @@ public class DestinationItemAdapter extends BaseAdapter implements ListAdapter {
 
 	@Override
 	public Destination getItem(int position) {
-		return claim.getDestination(position);
+		return claim.getDestinationAtPosition(position);
 	}
 
 	@Override
@@ -68,13 +65,13 @@ public class DestinationItemAdapter extends BaseAdapter implements ListAdapter {
 			// Yes.
 			// Recycle the existing view
 		}
-		
+
 		// Fetch the text views that we're going to fill
 		TextView destinationName = (TextView) convertView.findViewById(R.id.destinationItemName);
-		
+
 		// Get the destination context for this view
 		Destination destination = getItem(position);
-		
+
 		// Fill in the values
 		destinationName.setText(destination.getName().toString());
 

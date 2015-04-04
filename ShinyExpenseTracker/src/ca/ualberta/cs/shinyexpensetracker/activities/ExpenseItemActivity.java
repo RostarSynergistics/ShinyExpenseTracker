@@ -91,7 +91,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 			// we have to receive a Claim ID so that we know to what claim to
 			// save an item
 			UUID claimID = (UUID) bundle.getSerializable(IntentExtraIDs.CLAIM_ID);
-			Integer expenseItemId = (Integer) bundle.get(IntentExtraIDs.EXPENSE_INDEX);
+			Integer expenseItemId = (Integer) bundle.get(IntentExtraIDs.EXPENSE_ID);
 			controller = Application.getExpenseClaimController();
 			claim = controller.getExpenseClaimByID(claimID);
 			// if we received an Item ID

@@ -15,7 +15,10 @@
         android:label="@string/app_name" >
         <uses-library android:name="android.test.runner" />
 
-      
+        <activity
+            android:name=".TabbedSummaryApproverActivity"
+            android:label="@string/title_activity_tabbed_summary_approver" >
+        </activity>
     </application>
 
 </manifest>

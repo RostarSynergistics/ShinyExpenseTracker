@@ -6,6 +6,7 @@ import java.util.Date;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
@@ -18,15 +19,15 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 public class TabbedSummaryActivityTest extends
-		ActivityInstrumentationTestCase2<TabbedSummaryActivity> {
+		ActivityInstrumentationTestCase2<TabbedSummaryClaimantActivity> {
 
-	public TabbedSummaryActivityTest(Class<TabbedSummaryActivity> activityClass) {
+	public TabbedSummaryActivityTest(Class<TabbedSummaryClaimantActivity> activityClass) {
 		super(activityClass);
 		// TODO Auto-generated constructor stub
 	}
 	
 	public TabbedSummaryActivityTest() {
-		super(TabbedSummaryActivity.class);
+		super(TabbedSummaryClaimantActivity.class);
 	}
 
 	static ClaimSummaryFragment frag;

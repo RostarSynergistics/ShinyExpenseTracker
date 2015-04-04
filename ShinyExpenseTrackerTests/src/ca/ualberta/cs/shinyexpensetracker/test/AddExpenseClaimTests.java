@@ -12,6 +12,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -97,7 +98,7 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 	}
 
 	public void testThatInputtingAnEndDateThatIsAfterTheStartDateIsValid() {
-		ActivityMonitor monitor = instrumentation.addMonitor(TabbedSummaryActivity.class.getName(), null, false);
+		ActivityMonitor monitor = instrumentation.addMonitor(TabbedSummaryClaimantActivity.class.getName(), null, false);
 
 		activity.runOnUiThread(new Runnable() {
 			@Override
@@ -118,7 +119,7 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 
 	@SuppressLint("SimpleDateFormat")
 	public void testThatTappingDoneWhileCreatingNewExpenseClaimCreatesANewExpenseClaim() throws ParseException {
-		ActivityMonitor monitor = instrumentation.addMonitor(TabbedSummaryActivity.class.getName(), null, false);
+		ActivityMonitor monitor = instrumentation.addMonitor(TabbedSummaryClaimantActivity.class.getName(), null, false);
 
 		final String claimName = "URoma";
 		activity.runOnUiThread(new Runnable() {

@@ -15,16 +15,6 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockTagListPersister;
-<<<<<<< Updated upstream
-import android.app.AlertDialog;
-import android.app.Instrumentation;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.test.ActivityInstrumentationTestCase2;
-import android.widget.Button;
-import android.widget.ListView;
-=======
->>>>>>> Stashed changes
 
 /**
  * Test adding a tag to a claim through the UI

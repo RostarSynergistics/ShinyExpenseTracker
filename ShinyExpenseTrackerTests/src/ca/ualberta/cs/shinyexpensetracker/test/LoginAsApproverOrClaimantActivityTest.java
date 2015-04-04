@@ -61,13 +61,9 @@ public class LoginAsApproverOrClaimantActivityTest extends
 		expenses.finish();
 
 		getInstrumentation().waitForIdleSync();
-<<<<<<< Updated upstream
 		
 		assertEquals("User State was not set to Approver", 'a' ,Application.getUserType());
-		
-=======
 
->>>>>>> Stashed changes
 	}
 
 	/**
@@ -107,13 +103,9 @@ public class LoginAsApproverOrClaimantActivityTest extends
 				Application.getUserType());
 
 		getInstrumentation().waitForIdleSync();
-<<<<<<< Updated upstream
 		
 		assertEquals("User State was not set to Claimant", 'c' ,Application.getUserType());
 		
-=======
-
->>>>>>> Stashed changes
 	}
 
 }

@@ -12,7 +12,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +38,7 @@ public class AddTagToClaimActivity extends Activity implements IView<TagList> {
 	private ExpenseClaimController expenseClaimController;
 	private int claimIndex;
 	private static AlertDialog addTags;
+	private Button done;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,13 +49,15 @@ public class AddTagToClaimActivity extends Activity implements IView<TagList> {
 		manageTags = (ListView) findViewById(R.id.listViewManageTags);
 		tagController = Application.getTagController();
 		expenseClaimController = Application.getExpenseClaimController();
-		
+		done = (Button) findViewById(R.id.doneButtonManageTags);
 		//Getting the current claim 
 		 claimIndex = getIntent().getIntExtra("claimIndex", -1);
 		//Intent error 
 		if (claimIndex == -1){
 			throw new RuntimeException("Error getting current claim index");
 		}
+		
+		
 	
 		
 	}
@@ -77,9 +82,20 @@ public class AddTagToClaimActivity extends Activity implements IView<TagList> {
 		manageTags.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		
 		//Setting default message for an empty list
+		
+		
 		TextView emptyText = (TextView)findViewById(R.id.TagListEmpty);
 		manageTags.setEmptyView(emptyText);
 		manageTags.setAdapter(tagListAdapter);
+		
+		done.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				addTagsToClaimDialog();
+			}
+		});
+
 		
 	}
 		
@@ -88,9 +104,6 @@ public class AddTagToClaimActivity extends Activity implements IView<TagList> {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.actionManageTagsAdd:
-			return addTagsToClaimDialog();
-
 		default:
 			return super.onOptionsItemSelected(item);
 		}

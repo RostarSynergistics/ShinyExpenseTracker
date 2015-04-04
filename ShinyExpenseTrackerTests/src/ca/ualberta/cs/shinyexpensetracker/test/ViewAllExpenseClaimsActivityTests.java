@@ -310,6 +310,10 @@ public class ViewAllExpenseClaimsActivityTests extends
 	 * See #91 for details.
 	 */
 	public void testCrashOnNewExpense() {
+		// this test is causing test runs to crash
+		// TODO: Fix it! (see GH#173)
+		fail();
+		
 		// Monitor for AddExpenseClaimActivity
 		ActivityMonitor claimMonitor = getInstrumentation().addMonitor(ExpenseClaimActivity.class.getName(), null, false);
 
@@ -342,6 +346,8 @@ public class ViewAllExpenseClaimsActivityTests extends
 				
 			}
 		});
+		
+		getInstrumentation().waitForIdleSync();
 		
 		// Monitor for TabbedSummaryActivity
 		ActivityMonitor summaryMonitor = getInstrumentation().addMonitor(TabbedSummaryActivity.class.getName(), null, false);
@@ -409,6 +415,8 @@ public class ViewAllExpenseClaimsActivityTests extends
 				}
 			}
 		});
+		
+		getInstrumentation().waitForIdleSync();
 		
 		// Close the activity safely outside of a thread
 		// Source: Email from Alex Wilson (March 15, 2015)

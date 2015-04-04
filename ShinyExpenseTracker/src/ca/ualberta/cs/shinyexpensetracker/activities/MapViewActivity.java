@@ -21,14 +21,26 @@ import ca.ualberta.cs.shinyexpensetracker.R;
 
 public class MapViewActivity extends Activity implements MapEventsReceiver {
 
-	static final int SET_GEOLOCATION = 1;
-	static final int DISPLAY_GEOLOCATIONS = 2;
+	static public final int SET_GEOLOCATION = 1;
+	static public final int DISPLAY_GEOLOCATIONS = 2;
 	
 	private double latitude;
 	private double longitude;
 	private int requestCode;
 	private MapView map;
 	private Marker lastMarker = null;
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public Marker getLastMarker() {
+		return lastMarker;
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

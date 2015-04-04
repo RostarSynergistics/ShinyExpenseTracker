@@ -24,17 +24,6 @@ public class ExpenseItemEqualsTests extends AndroidTestCase {
 	}
 
 	private ExpenseItem getStartingItem() {
-		int[] colors = new int[2500];
-
-		int j = 0;
-
-		for (int i = 0; i < 2500; i++) {
-			colors[i] = j;
-			j++;
-			if (j == 10)
-				j = 0;
-		}
-
 		return new ExpenseItem("test",
 				new Date(5000),
 				ExpenseItem.Category.ACCOMODATION,

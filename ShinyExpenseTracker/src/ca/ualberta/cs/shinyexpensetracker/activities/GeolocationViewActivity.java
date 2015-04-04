@@ -42,12 +42,22 @@ public class GeolocationViewActivity extends Activity {
 	private LocationManager lm;
 	private double latitude;
 	private double longitude;
-	static final int SET_GEOLOCATION = 1;
+	private double latitudeUpdating;
+	private double longitudeUpdating;
+	
+	TextView geolocationValue;
+	public static final int SET_GEOLOCATION = 1;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_geolocation_view);
+		geolocationValue = (TextView) findViewById(R.id.geolocationValue);
 		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		Location loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		if (loc != null) {
+			latitudeUpdating = loc.getLatitude();
+			longitudeUpdating = loc.getLongitude();
+		}
 		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, listener);
 	}
 
@@ -71,11 +81,10 @@ public class GeolocationViewActivity extends Activity {
 	}
 	
 	public void clickSetGeolocationAutomatically(View v) {
-		TextView geolocationValue = (TextView) findViewById(R.id.geolocationValue);
-		String geolocationValueText = "Latitude: " + String.valueOf(latitude) + "\n" 
-				+ "Longitude: " + String.valueOf(longitude);
-		geolocationValue.setText(geolocationValueText);
-		geolocationValue.invalidate();
+		
+		latitude = latitudeUpdating;
+		longitude = longitudeUpdating;
+		updateTextView();
 	}
 	
 	public void clickSetGeolocationUsingMap(View v) {
@@ -96,19 +105,26 @@ public class GeolocationViewActivity extends Activity {
 	 * to the parent activity
 	 */
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// Check result is ok
 		lm.removeUpdates(listener);
 		if (resultCode == RESULT_OK) {
 			latitude = data.getDoubleExtra("latitude", 39.03808);
 			longitude = data.getDoubleExtra("longitude", 125.7296);
-			returnCoordinatesToParentActivity();
+			updateTextView();
+			//returnCoordinatesToParentActivity();
 		}
 		else {
 			lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, listener);
 		}
 	}
 	
+	private void updateTextView() {
+		String geolocationValueText = "Latitude: " + String.valueOf(latitude) + "\n" 
+				+ "Longitude: " + String.valueOf(longitude);
+		geolocationValue.setText(geolocationValueText);
+		geolocationValue.invalidate();
+	}
 	
 	private void returnCoordinatesToParentActivity() {
 		Intent geolocationResultIntent = new Intent(GeolocationViewActivity.this, MapViewActivity.class);
@@ -131,8 +147,8 @@ public class GeolocationViewActivity extends Activity {
 		public void onLocationChanged (Location location) {
 			TextView geolocationValue = (TextView) findViewById(R.id.geolocationValue);
 			if (location != null) {
-				latitude = location.getLatitude();
-				longitude = location.getLongitude();
+				latitudeUpdating = location.getLatitude();
+				longitudeUpdating = location.getLongitude();
 				
 			} else {
 				geolocationValue.setText("Cannot get the location");

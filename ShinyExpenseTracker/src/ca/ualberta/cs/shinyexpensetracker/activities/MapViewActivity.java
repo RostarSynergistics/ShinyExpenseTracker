@@ -1,7 +1,5 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
-import java.io.IOException;
-
 import org.osmdroid.api.IMapController;
 import org.osmdroid.bonuspack.overlays.MapEventsOverlay;
 import org.osmdroid.bonuspack.overlays.MapEventsReceiver;
@@ -13,20 +11,17 @@ import org.osmdroid.views.MapView;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
 public class MapViewActivity extends Activity implements MapEventsReceiver {
 
 	static final int SET_GEOLOCATION = 1;
-	//static final int SET_HOME_GEOLOCATION = 1;
 	static final int DISPLAY_GEOLOCATIONS = 2;
 	
 	private double latitude;
@@ -57,13 +52,6 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 			IMapController mapController = map.getController();
 			mapController.setZoom(18);
 			mapController.setCenter(startPoint);
-			
-			/*Marker startMarker = new Marker(map);
-			startMarker.setPosition(startPoint);
-			startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-			lastMarker = startMarker;
-			map.getOverlays().add(startMarker);
-			map.invalidate();*/
 		}
 	}
 

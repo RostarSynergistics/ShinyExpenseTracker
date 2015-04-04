@@ -12,6 +12,11 @@
           android:onClick="addTagMenuItem">
     </item>
     
+    <item android:id="@+id/RemoveTag" 
+          android:title="@string/remove_tags" 
+          android:onClick="removeTagMenuItem">
+    </item>
+    
     <item android:id="@+id/addDestination" 
           android:title="@string/add_destination" 
           android:onClick="addDestinationMenuItem">

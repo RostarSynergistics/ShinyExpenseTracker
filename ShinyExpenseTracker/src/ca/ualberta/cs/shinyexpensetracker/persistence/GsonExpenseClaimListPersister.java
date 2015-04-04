@@ -2,6 +2,7 @@ package ca.ualberta.cs.shinyexpensetracker.persistence;
 
 import java.io.IOException;
 
+import ca.ualberta.cs.shinyexpensetracker.models.ConcreteExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
 import com.google.gson.Gson;
@@ -31,7 +32,7 @@ public class GsonExpenseClaimListPersister implements IExpenseClaimListPersister
 	public ExpenseClaimList loadExpenseClaims() throws IOException {
 		String travelClaimsListData = persistenceStrategy.load();
 		if (travelClaimsListData.equals("")) {
-			return new ExpenseClaimList();
+			return new ConcreteExpenseClaimList();
 		} else {
 			return gson.fromJson(travelClaimsListData, ExpenseClaimList.class);
 		}

@@ -42,10 +42,10 @@ import ca.ualberta.cs.shinyexpensetracker.adapters.ClaimListAdapter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.IView;
-import ca.ualberta.cs.shinyexpensetracker.models.AbstractExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
-public class ExpenseClaimListActivity extends Activity implements IView<AbstractExpenseClaimList> {
+public class ExpenseClaimListActivity extends Activity implements IView<ExpenseClaimList> {
 	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
 
@@ -129,7 +129,7 @@ public class ExpenseClaimListActivity extends Activity implements IView<Abstract
 	}
 
 	@Override
-	public void update(AbstractExpenseClaimList m) {
+	public void update(ExpenseClaimList m) {
 		adapter.notifyDataSetChanged();
 	}
 

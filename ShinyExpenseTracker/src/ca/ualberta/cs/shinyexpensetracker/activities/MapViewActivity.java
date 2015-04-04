@@ -1,3 +1,25 @@
+/**  This Activity lets Claimant set on a map by putting a marker.
+ * 	Geolocations can be chosen as a home geolocation for a user,
+ * 	while filling out information on a destination (mandatory),
+ * 	or while filling out information on an expense item (optional)
+ *  
+ *  Copyright (C) 2015  github.com/RostarSynergistics
+ *  
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *  
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *  
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Issues #157, #158
+ */
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
 import org.osmdroid.api.IMapController;
@@ -21,6 +43,9 @@ import ca.ualberta.cs.shinyexpensetracker.R;
 
 public class MapViewActivity extends Activity implements MapEventsReceiver {
 
+	// constants to compare which activity called this one
+	// the first means setting geolocation for Claimant, expense item or Destination
+	// second means displaying locations stored on the device
 	static public final int SET_GEOLOCATION = 1;
 	static public final int DISPLAY_GEOLOCATIONS = 2;
 	
@@ -43,6 +68,8 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		// Map initialization taken from the osmdroid bonus pack tutorials
+		// at https://code.google.com/p/osmbonuspack/wiki/Tutorial_0
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map_view);
 		
@@ -86,6 +113,10 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 		return super.onOptionsItemSelected(item);
 	}
 
+	/**
+	 * Handle long tap.
+	 * Launch prompt asking user if they want to save the chosen location to the device
+	 */
 	@Override
 	public boolean longPressHelper(GeoPoint p) {
 		if (requestCode == DISPLAY_GEOLOCATIONS || lastMarker == null) {
@@ -96,6 +127,10 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 		return true;
 	}
 
+	/**
+	 * Handle short tap.
+	 * Display a marker on the selected coordinates and generate a Toast telling the chosen location
+	 */
 	@Override
 	public boolean singleTapConfirmedHelper(GeoPoint p) {
 		if (requestCode == DISPLAY_GEOLOCATIONS) {
@@ -114,6 +149,9 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 		return true;
 	}
 	
+	/**
+	 * Prompt asking user if they want to save the chosen location to the device
+	 */
 	public AlertDialog askSaveLocation(final double latitude, final double longitude) {
 		// Alert Dialog (Mar 7, 2015):
 		// http://www.androidhive.info/2011/09/how-to-show-alert-dialog-in-android/

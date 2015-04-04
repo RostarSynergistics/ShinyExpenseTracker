@@ -62,7 +62,9 @@ public class GeolocationViewTest extends
 		setGeolocationUsingMap = (Button)geolocationViewActivity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.mapAssistedGeolocationSetupButton);
 	}
 
-	
+	/**
+	 * Test if the text view contains correct values after pressing Set Automatically Using GPS
+	 */
 	public void testGeolocationFetch() {
 		assertEquals("default text is not in textview", geolocationTV.getText().toString(), instrumentation.getTargetContext().getString(ca.ualberta.cs.shinyexpensetracker.R.string.geolocationValueDefault));
 		instrumentation.runOnMainSync(new Runnable() {
@@ -77,6 +79,9 @@ public class GeolocationViewTest extends
 		assertEquals("coordinates fetched do not match", geolocationTV.getText().toString(), geolocationValueText);
 	}
 	
+	/**
+	 * Test if the text view contains correct values after returning from MapViewActivity
+	 */
 	public void testInfoGotFromMap() {
 		String geolocationValueText = "Latitude: " + String.valueOf(128.0) + "\n" 
 				+ "Longitude: " + String.valueOf(64.0);
@@ -91,6 +96,9 @@ public class GeolocationViewTest extends
 		assertEquals("coordinates fetched do not match", geolocationTV.getText().toString(), geolocationValueText);
 	}
 	
+	/**
+	 * Test if MapViewActivity is launched after pressing Set Location Using Map
+	 */
 	public void testProperActivityLaunched() {
 		ActivityMonitor am = getInstrumentation().addMonitor(MapViewActivity.class.getName(), null, true);
 		instrumentation.runOnMainSync(new Runnable() {

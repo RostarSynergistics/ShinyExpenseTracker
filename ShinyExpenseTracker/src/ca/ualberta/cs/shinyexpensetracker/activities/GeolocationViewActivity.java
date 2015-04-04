@@ -58,6 +58,7 @@ public class GeolocationViewActivity extends Activity {
 			latitudeUpdating = loc.getLatitude();
 			longitudeUpdating = loc.getLongitude();
 		}
+		// set up 'listener' to fire at most once every second
 		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, listener);
 	}
 
@@ -80,6 +81,10 @@ public class GeolocationViewActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	/**
+	 * On click of Set Automatically Using GPS, get the constantly updating coordinate values
+	 * and save them to the "release version" values
+	 */
 	public void clickSetGeolocationAutomatically(View v) {
 		
 		latitude = latitudeUpdating;
@@ -87,6 +92,10 @@ public class GeolocationViewActivity extends Activity {
 		updateTextView();
 	}
 	
+	/**
+	 * On click of Set Geolocation Using Map, navigate to the MapViewActivity to let the user
+	 * choose geolocation on an interactive map
+	 */
 	public void clickSetGeolocationUsingMap(View v) {
 		Intent mapViewIntent = new Intent(GeolocationViewActivity.this, MapViewActivity.class);
 		mapViewIntent.putExtra("latitude", latitude);
@@ -95,6 +104,9 @@ public class GeolocationViewActivity extends Activity {
 		startActivityForResult(mapViewIntent, SET_GEOLOCATION);
 	}
 	
+	/**
+	 * On click of Save Geolocation, save current latitude and longitude and send them back to the parent activity
+	 */
 	public void clickSaveGeolocation(View v)
 	{
 		returnCoordinatesToParentActivity();
@@ -112,7 +124,6 @@ public class GeolocationViewActivity extends Activity {
 			latitude = data.getDoubleExtra("latitude", 39.03808);
 			longitude = data.getDoubleExtra("longitude", 125.7296);
 			updateTextView();
-			//returnCoordinatesToParentActivity();
 		}
 		else {
 			lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, listener);
@@ -126,6 +137,9 @@ public class GeolocationViewActivity extends Activity {
 		geolocationValue.invalidate();
 	}
 	
+	/**
+	 * Finish the activity and send saved coordinates to the parent activity
+	 */
 	private void returnCoordinatesToParentActivity() {
 		Intent geolocationResultIntent = new Intent(GeolocationViewActivity.this, MapViewActivity.class);
 		geolocationResultIntent.putExtra("latitude", latitude);
@@ -136,12 +150,15 @@ public class GeolocationViewActivity extends Activity {
 	
 	/**
 	 * Location listener that fires every time a location update is requested.
-	 * Updates geolocation in the text view until the listener is unbound from
-	 * its location manager  
+	 * Updates geolocation based on info from the GPS mdoule until 
+	 * the listener is unbound from its location manager.
+	 * The listener updates a different set of coordinate values because we don't want
+	 * to update the TextView every time that the location is changed and we do want to save
+	 * geolocation retrieved from the MapViewActivity  
 	 */
 	private final LocationListener listener = new LocationListener() {
 		/*
-		 * Adapted from joshua2ua's fork of MockLocationTester, file MockLocationTesterActivity.java
+		 * Adapted from joshua2ua's fork of MockLocationTester, file MockLocationTesterActivity.java on April 2, 2015
 		 * source at: https://github.com/joshua2ua/MockLocationTester/blob/master/src/ualberta/cmput301/mocklocationtester/MockLocationTesterActivity.java
 		 */
 		public void onLocationChanged (Location location) {

@@ -3,6 +3,7 @@ package ca.ualberta.cs.shinyexpensetracker.framework;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 import android.content.Context;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -67,8 +68,18 @@ public class ExpenseClaimController {
 	 * @param index
 	 * @return the claim at the given index
 	 */
-	public ExpenseClaim getExpenseClaim(int index) {
+	public ExpenseClaim getExpenseClaimAtPosition(int index) {
 		return claimList.getClaim(index);
+	}
+	
+	/**
+	 * Fetches a claim from the claim list model based on ID.
+	 * 
+	 * @param id The ID of the claim to find.
+	 * @return The claim if found, and null otherwise.
+	 */
+	public ExpenseClaim getExpenseClaimByID(UUID id) {
+		return claimList.getClaimByID(id);
 	}
 	
 	/**

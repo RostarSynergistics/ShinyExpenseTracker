@@ -143,7 +143,7 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 		Date startDateObject = sdf.parse(startDateField.getText().toString());
 		Date endDateObject = sdf.parse(endDateField.getText().toString());
 
-		ExpenseClaim claim = controller.getExpenseClaim(0);
+		ExpenseClaim claim = controller.getExpenseClaimAtPosition(0);
 
 		assertEquals("The two names do not equal each other", claimName, claim.getName());
 

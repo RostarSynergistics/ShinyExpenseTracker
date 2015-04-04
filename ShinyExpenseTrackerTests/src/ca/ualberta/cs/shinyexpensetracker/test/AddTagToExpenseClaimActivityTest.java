@@ -8,6 +8,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.ListView;
 import ca.ualberta.cs.shinyexpensetracker.activities.AddTagToClaimActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.TagController;
@@ -54,7 +55,7 @@ public class AddTagToExpenseClaimActivityTest extends ActivityInstrumentationTes
 
 		// Setting the intial intent input
 		Intent intent = new Intent();
-		intent.putExtra("claimIndex", 0);
+		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claim.getID());
 		setActivityIntent(intent);
 
 		// Getting the activity
@@ -81,21 +82,21 @@ public class AddTagToExpenseClaimActivityTest extends ActivityInstrumentationTes
 	 * Testing adding one tag at once
 	 */
 	public void testAddTagToClaim() {
-		assertEquals(expenseClaimController.getExpenseClaim(0).getTagList().size(), 0);
+		assertEquals(expenseClaimController.getExpenseClaimAtPosition(0).getTagList().size(), 0);
 		clickTagList(0);
 		addSelectedTagToClaim();
-		assertEquals(expenseClaimController.getExpenseClaim(0).getTagList().size(), 1);
+		assertEquals(expenseClaimController.getExpenseClaimAtPosition(0).getTagList().size(), 1);
 	}
 
 	/**
 	 * Testing adding multiple tags to a single claim at once
 	 */
 	public void testAddMultipleTagsToClaim() {
-		assertEquals(expenseClaimController.getExpenseClaim(0).getTagList().size(), 0);
+		assertEquals(expenseClaimController.getExpenseClaimAtPosition(0).getTagList().size(), 0);
 		clickTagList(0);
 		clickTagList(1);
 		addSelectedTagToClaim();
-		assertEquals(expenseClaimController.getExpenseClaim(0).getTagList().size(), 2);
+		assertEquals(expenseClaimController.getExpenseClaimAtPosition(0).getTagList().size(), 2);
 	}
 
 	// This method clicks on a tag in the list view to check or uncheck it

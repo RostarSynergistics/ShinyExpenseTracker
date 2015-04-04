@@ -19,6 +19,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -89,20 +90,24 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 	protected void setUp() throws Exception {
 		super.setUp();
 		instrumentation = getInstrumentation();
-		
+
 		ExpenseClaimList list = new ExpenseClaimList();
 
 		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(list));
 		Application.setExpenseClaimController(controller);
 
-		list.addClaim(new ExpenseClaim("Test Claim"));
+		final ExpenseClaim claim = new ExpenseClaim("Test Claim");
+		list.addClaim(claim);
 		Intent intent = new Intent();
-		intent.putExtra("claimIndex", 0);
+		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claim.getID());
 		setActivityIntent(intent);
 
 		activity = getActivity();
 
-		datePicker = new DatePickerDialog(instrumentation.getContext(), dateListener, TARGET_YEAR, TARGET_MONTH,
+		datePicker = new DatePickerDialog(instrumentation.getContext(),
+				dateListener,
+				TARGET_YEAR,
+				TARGET_MONTH,
 				TARGET_DAY);
 
 		nameInput = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemNameEditText));
@@ -146,8 +151,13 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 				BigDecimal amount = new BigDecimal(10.00);
 				Bitmap bitmap = null;
 
-				ExpenseItem expense = new ExpenseItem("name", date, Category.ACCOMODATION, amount, Currency.CAD,
-						"description", bitmap);
+				ExpenseItem expense = new ExpenseItem("name",
+						date,
+						Category.ACCOMODATION,
+						amount,
+						Currency.CAD,
+						"description",
+						bitmap);
 
 				assertEquals("name != name", "name", expense.getName());
 				assertNotSame("false positive, name", "Wrong Name", expense.getName());

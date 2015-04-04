@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -35,7 +36,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
  * -on-edittext-click-event
  */
 public class ExpenseClaimActivity extends Activity implements OnClickListener {
-	public static final String CLAIM_INDEX = "claimIndex";
+	public static final String CLAIM_ID = "claimID";
 
 	private ExpenseClaimController controller;
 
@@ -45,7 +46,7 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 	private AlertDialog.Builder adb;
 	public Dialog alertDialog;
 	private ExpenseClaim claim;
-	private int claimIndex;
+	private UUID claimID;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +63,10 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 		controller = Application.getExpenseClaimController();
 
 		Intent intent = getIntent();
-		claimIndex = intent.getIntExtra(CLAIM_INDEX, -1);
-		if (claimIndex != -1) {
-			claim = controller.getExpenseClaim(claimIndex);
+		claimID = (UUID) intent.getSerializableExtra(CLAIM_ID);
+		
+		if (claimID != null) {
+			claim = controller.getExpenseClaimByID(claimID);
 			displayExpenseClaim(claim);
 		}
 	}
@@ -205,7 +207,7 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 		}
 
 		try {
-			if (claimIndex == -1) {
+			if (claimID == null) {
 				claim = controller.addExpenseClaim(name, startDate, endDate);
 			} else {
 				claim.setName(name);
@@ -244,9 +246,9 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 	public void doneExpenseItem(View v) throws ParseException {
 		ExpenseClaim claim = saveExpenseClaim(v);
 		if (claim != null) {
-			if (claimIndex == -1) {
+			if (claimID == null) {
 				Intent intent = new Intent(this, TabbedSummaryActivity.class);
-				intent.putExtra(CLAIM_INDEX, controller.getIndexOf(claim));
+				intent.putExtra(CLAIM_ID, claim.getID());
 				finish();
 				startActivity(intent);
 			} else {

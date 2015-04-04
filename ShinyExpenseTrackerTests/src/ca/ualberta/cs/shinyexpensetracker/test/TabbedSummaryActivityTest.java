@@ -6,6 +6,7 @@ import java.util.Date;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
@@ -58,6 +59,7 @@ public class TabbedSummaryActivityTest extends ActivityInstrumentationTestCase2<
 		super.setUp();
 
 		claim = new ExpenseClaim(claimName, startDate, endDate);
+		claim.addExpense(expense);
 		ExpenseClaimList claimList = new ExpenseClaimList();
 		claimList.addClaim(claim);
 
@@ -69,12 +71,11 @@ public class TabbedSummaryActivityTest extends ActivityInstrumentationTestCase2<
 		// On March 14 2015
 		// set up a mock intent to allow for passing the claimIndex
 		Intent intent = new Intent();
-		intent.putExtra("claimIndex", 0);
+		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claim.getID());
 		setActivityIntent(intent);
 
 		// Add an expense claim to the expenseClaimController
 		claim.setStatus(status);
-		controller.addExpenseItem(expense, intent.getIntExtra("claimIndex", 0));
 
 		activity = getActivity();
 

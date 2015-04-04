@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
@@ -66,19 +67,18 @@ public class ClaimSummaryFragmentTest extends
 		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(list));
 		Application.setExpenseClaimController(controller);
 		
-		//Source: http://stackoverflow.com/questions/23728835/in-junit-test-activity-if-it-did-received-the-extra-from-intent
-		//On March 14 2015
-		//set up a mock intent to allow for passing the claimIndex
-		Intent intent = new Intent();
-		//intent.setClassName("ca.ualberta.cs.shinyexpensetracker.activities", 
-		//		"ca.ualberta.cs.shinyexpensetracker.activities.ClaimSummaryFragment");
-		intent.putExtra("claimIndex", 0);
-		setActivityIntent(intent);
 		
 		//Add an expense claim to the expenseClaimController
 		claim = new ExpenseClaim(claimName, startDate, endDate);
 		claim.setStatus(status);
 		list.addClaim(claim);
+
+		//Source: http://stackoverflow.com/questions/23728835/in-junit-test-activity-if-it-did-received-the-extra-from-intent
+		//On March 14 2015
+		//set up a mock intent to allow for passing the claimIndex
+		Intent intent = new Intent();
+		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claim.getID());
+		setActivityIntent(intent);
 		
 		activity = getActivity();
 		getInstrumentation().runOnMainSync(new Runnable() {

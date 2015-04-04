@@ -73,9 +73,11 @@ public class ExpenseClaimListActivity
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
+				
+				ExpenseClaim claim = controller.getExpenseClaimAtPosition(position);
 				Intent intent = new Intent(ExpenseClaimListActivity.this,
 						TabbedSummaryActivity.class);
-				intent.putExtra("claimIndex", position);
+				intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claim.getID());
 				startActivity(intent);
 
 			}
@@ -155,7 +157,7 @@ public class ExpenseClaimListActivity
 		// http://www.androidhive.info/2011/09/how-to-show-alert-dialog-in-android/
 		// http://stackoverflow.com/questions/15020878/i-want-to-show-ok-and-cancel-button-in-my-alert-dialog
 		// Get a final copy of the requested claim
-		final ExpenseClaim claimToDelete = controller.getExpenseClaim(position);
+		final ExpenseClaim claimToDelete = controller.getExpenseClaimAtPosition(position);
 
 		AlertDialog dialog = new AlertDialog.Builder(this)
 				.setTitle("Delete Claim?")

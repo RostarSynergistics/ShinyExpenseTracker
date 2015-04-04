@@ -40,7 +40,7 @@ public class ClaimListAdapter extends BaseAdapter {
 
 	@Override
 	public ExpenseClaim getItem(int position) {
-		return controller.getExpenseClaim(position);
+		return controller.getExpenseClaimAtPosition(position);
 	}
 
 	@Override

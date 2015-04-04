@@ -61,7 +61,7 @@ public class EditExpenseClaimTests extends ActivityInstrumentationTestCase2<Expe
 		Application.setExpenseClaimController(controller);
 
 		Intent i = new Intent();
-		i.putExtra(ExpenseClaimActivity.CLAIM_INDEX, 0);
+		i.putExtra(ExpenseClaimActivity.CLAIM_ID, claim.getID());
 		setActivityIntent(i);
 
 		instrumentation = getInstrumentation();
@@ -103,7 +103,7 @@ public class EditExpenseClaimTests extends ActivityInstrumentationTestCase2<Expe
 
 		instrumentation.waitForIdleSync();
 
-		ExpenseClaim updatedClaim = controller.getExpenseClaim(0);
+		ExpenseClaim updatedClaim = controller.getExpenseClaimAtPosition(0);
 
 		assertEquals(newName, updatedClaim.getName());
 		assertEquals(newStartDate, updatedClaim.getStartDate());

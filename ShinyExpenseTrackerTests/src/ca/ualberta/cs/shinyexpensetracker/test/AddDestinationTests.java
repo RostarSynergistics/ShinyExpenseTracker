@@ -57,7 +57,7 @@ public class AddDestinationTests extends
 		instrumentation = getInstrumentation();
 
 		Intent intent = new Intent();
-		intent.putExtra(ExpenseClaimActivity.CLAIM_INDEX, 0);
+		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claim.getID());
 		setActivityIntent(intent);
 
 		activity = getActivity();
@@ -81,7 +81,7 @@ public class AddDestinationTests extends
 
 		instrumentation.waitForIdleSync();
 
-		Destination dest = controller.getExpenseClaim(0).getDestination(0);
+		Destination dest = controller.getExpenseClaimAtPosition(0).getDestination(0);
 
 		assertEquals(name, dest.getName());
 		assertEquals(reason, dest.getReasonForTravel());

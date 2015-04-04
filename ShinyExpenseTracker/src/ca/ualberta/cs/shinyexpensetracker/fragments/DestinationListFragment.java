@@ -1,5 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.fragments;
 
+import java.util.UUID;
+
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
@@ -15,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.AddDestinationActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.adapters.DestinationItemAdapter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -34,7 +37,7 @@ public class DestinationListFragment extends Fragment implements IView<ExpenseCl
 	 */
 	private static final String ARG_SECTION_NUMBER = "section_number";
 	private ExpenseClaim claim;
-	private int claimIndex;
+	private UUID claimID;
 	private DestinationItemAdapter adapter;
 	private AlertDialog lastDialog;
 	
@@ -68,13 +71,13 @@ public class DestinationListFragment extends Fragment implements IView<ExpenseCl
 
 		// Get the claim index to display
 		Intent intent = getActivity().getIntent();
-		claimIndex = intent.getIntExtra("claimIndex", -1);
-		if (claimIndex == -1) {
-			throw new RuntimeException("Intent not passed: Got claim index of -1");
+		claimID = (UUID) intent.getSerializableExtra(ExpenseClaimActivity.CLAIM_ID);
+		if (claimID == null) {
+			throw new RuntimeException("Intent not passed: Got a null claim ID.");
 		}
 		
 		// Get the claim context
-		claim = controller.getExpenseClaim(claimIndex);
+		claim = controller.getExpenseClaimByID(claimID);
 
 		// Inform the model that we're listening for updates.
 		claim.addView(this);
@@ -159,7 +162,7 @@ public class DestinationListFragment extends Fragment implements IView<ExpenseCl
 		// Create an intent to edit an destination item
 		Intent intent = new Intent(getActivity(), AddDestinationActivity.class);
 		// --> Tell it that we're editing the index at this position
-		intent.putExtra("claimIndex", claimIndex);
+		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claimID);
 		intent.putExtra("destinationIndex", position);
 		
 		// Start the activity with our edit intent

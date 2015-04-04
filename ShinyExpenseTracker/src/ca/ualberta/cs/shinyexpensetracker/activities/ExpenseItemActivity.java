@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.UUID;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -54,9 +55,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
  *        editing of a referred Expense Item, if there is any
  */
 public class ExpenseItemActivity extends Activity implements OnClickListener {
-
 	public static final String EXPENSE_INDEX = "expenseIndex";
-	public static final String CLAIM_INDEX = "claimIndex";
 	// DatePickerDialog from:
 	// http://androidopentutorials.com/android-datepickerdialog-on-edittext-click-event/
 	// On March 2 2015
@@ -91,10 +90,10 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		if (bundle != null) {
 			// we have to receive a Claim ID so that we know to what claim to
 			// save an item
-			int claimId = (Integer) bundle.get(CLAIM_INDEX);
+			UUID claimID = (UUID) bundle.getSerializable(ExpenseClaimActivity.CLAIM_ID);
 			Integer expenseItemId = (Integer) bundle.get(EXPENSE_INDEX);
 			controller = Application.getExpenseClaimController();
-			claim = controller.getExpenseClaim(claimId);
+			claim = controller.getExpenseClaimByID(claimID);
 			// if we received an Item ID
 			// then we are editing an item
 			// fetch the item and preset all fields with its values

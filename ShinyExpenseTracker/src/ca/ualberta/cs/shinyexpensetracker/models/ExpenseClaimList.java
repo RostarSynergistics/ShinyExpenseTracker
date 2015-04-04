@@ -37,7 +37,7 @@ public class ExpenseClaimList extends Model<ExpenseClaimList> {
 		ExpenseClaim foundClaim = null;
 
 		for(ExpenseClaim claim : claims) {
-			if (claim.getID() == id) {
+			if (claim.getID().equals(id)) {
 				foundClaim = claim;
 			}
 		}

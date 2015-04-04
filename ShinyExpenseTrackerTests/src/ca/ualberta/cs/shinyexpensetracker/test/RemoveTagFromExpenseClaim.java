@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.ListView;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.RemoveTagFromClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -49,7 +50,7 @@ public class RemoveTagFromExpenseClaim extends ActivityInstrumentationTestCase2<
 
 		// Setting the initial intent input
 		Intent intent = new Intent();
-		intent.putExtra("claimIndex", 0);
+		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claim.getID());
 		setActivityIntent(intent);
 
 		// Getting the activity
@@ -75,21 +76,21 @@ public class RemoveTagFromExpenseClaim extends ActivityInstrumentationTestCase2<
 	 * Testing removing one tag at once
 	 */
 	public void testRemoveTagToClaim() {
-		assertEquals(expenseClaimController.getExpenseClaim(0).getTagList().size(), 2);
+		assertEquals(expenseClaimController.getExpenseClaimAtPosition(0).getTagList().size(), 2);
 		clickTagList(0);
 		removeSelectedTagToClaim();
-		assertEquals(expenseClaimController.getExpenseClaim(0).getTagList().size(), 1);
+		assertEquals(expenseClaimController.getExpenseClaimAtPosition(0).getTagList().size(), 1);
 	}
 
 	/**
 	 * Testing removing multiple tags to a single claim at once
 	 */
 	public void testRemoveMultipleTagsToClaim() {
-		assertEquals(expenseClaimController.getExpenseClaim(0).getTagList().size(), 2);
+		assertEquals(expenseClaimController.getExpenseClaimAtPosition(0).getTagList().size(), 2);
 		clickTagList(0);
 		clickTagList(1);
 		removeSelectedTagToClaim();
-		assertEquals(expenseClaimController.getExpenseClaim(0).getTagList().size(), 0);
+		assertEquals(expenseClaimController.getExpenseClaimAtPosition(0).getTagList().size(), 0);
 	}
 
 	// This method clicks on a tag in the list view to check or uncheck it

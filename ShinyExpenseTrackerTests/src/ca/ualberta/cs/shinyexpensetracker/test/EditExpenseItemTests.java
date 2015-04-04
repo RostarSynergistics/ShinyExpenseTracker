@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -82,7 +83,7 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 		claimList.addClaim(claim);
 
 		Intent intent = new Intent();
-		intent.putExtra(ExpenseItemActivity.CLAIM_INDEX, 0);
+		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claim.getID());
 		intent.putExtra(ExpenseItemActivity.EXPENSE_INDEX, 0);
 
 		setActivityIntent(intent);
@@ -133,7 +134,7 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 		
 		getInstrumentation().waitForIdleSync();
 
-		final ExpenseItem updatedItem = controller.getExpenseClaim(0).getExpense(0);
+		final ExpenseItem updatedItem = controller.getExpenseClaimAtPosition(0).getExpense(0);
 		assertEquals(newName, updatedItem.getName());
 		assertEquals(newDate, updatedItem.getDate());
 		assertEquals(newCategory, updatedItem.getCategory().toString());

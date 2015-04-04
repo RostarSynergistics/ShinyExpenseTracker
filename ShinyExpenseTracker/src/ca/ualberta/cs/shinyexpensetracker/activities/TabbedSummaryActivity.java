@@ -1,6 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -32,16 +33,15 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 //on March 12 2015
 /**
  * Deals with displaying the ClaimSummaryFragment, ExpenseItemListFragment, and
- * DestinationListFragment.  Allows user to either click on the action bar tabs
- * or swipe left and right to view the other tabs.  
+ * DestinationListFragment. Allows user to either click on the action bar tabs
+ * or swipe left and right to view the other tabs.
  * 
  * Called when user clicks on an Expense claim in the expenseClaimListActivity
  * 
  * Begins by loading the ClaimSummaryFragment.
- *
+ * 
  */
-public class TabbedSummaryActivity extends FragmentActivity implements
-		ActionBar.TabListener {
+public class TabbedSummaryActivity extends FragmentActivity implements ActionBar.TabListener {
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -61,7 +61,7 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 	public Dialog alertDialog;
 	ExpenseClaimController controller = Application.getExpenseClaimController();
 	Intent intent;
-	int claimIndex;
+	UUID claimID;
 	Menu m;
 
 	@Override
@@ -74,9 +74,9 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		context = getBaseContext();
-		
+
 		adb = new AlertDialog.Builder(this);
-		
+
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the activity.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
@@ -88,13 +88,12 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 		// When swiping between different sections, select the corresponding
 		// tab. We can also use ActionBar.Tab#select() to do this if we have
 		// a reference to the Tab.
-		mViewPager
-				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-					@Override
-					public void onPageSelected(int position) {
-						actionBar.setSelectedNavigationItem(position);
-					}
-				});
+		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+			@Override
+			public void onPageSelected(int position) {
+				actionBar.setSelectedNavigationItem(position);
+			}
+		});
 
 		// For each of the sections in the app, add a tab to the action bar.
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
@@ -102,13 +101,12 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 			// the adapter. Also specify this Activity object, which implements
 			// the TabListener interface, as the callback (listener) for when
 			// this tab is selected.
-			actionBar.addTab(actionBar.newTab()
-					.setText(mSectionsPagerAdapter.getPageTitle(i, context))
+			actionBar.addTab(actionBar.newTab().setText(mSectionsPagerAdapter.getPageTitle(i, context))
 					.setTabListener(this));
 		}
-		
+
 		intent = getIntent();
-		claimIndex = intent.getIntExtra("claimIndex", -1);
+		claimID = (UUID) intent.getSerializableExtra(ExpenseClaimActivity.CLAIM_ID);
 	}
 
 	@Override
@@ -118,83 +116,88 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 		m = menu;
 		return true;
 	}
-	
+
 	/**
-	 * Called on MenuItem "Add Expense Item" click
-	 * Goes to ExpenseItemActivity to allow user to add an expense item to their claim
+	 * Called on MenuItem "Add Expense Item" click Goes to ExpenseItemActivity
+	 * to allow user to add an expense item to their claim
+	 * 
 	 * @param menu
 	 */
 	public void addExpenseItemMenuItem(MenuItem menu) {
 		intent = new Intent(TabbedSummaryActivity.this, ExpenseItemActivity.class);
-		intent.putExtra("claimIndex", claimIndex);
+		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claimID);
 		startActivity(intent);
 	}
-	
+
 	/**
 	 * Called on MenuItem "Add Tag" click
+	 * 
 	 * @param menu
 	 */
 	public void addTagMenuItem(MenuItem menu) {
 		Intent intent = getIntent();
-		int claimIndex = intent.getIntExtra("claimIndex" , -1);
+		UUID claimID = (UUID) intent.getSerializableExtra(ExpenseClaimActivity.CLAIM_ID);
 		intent = new Intent(TabbedSummaryActivity.this, AddTagToClaimActivity.class);
-		intent.putExtra("claimIndex", claimIndex);
+		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claimID);
 		startActivity(intent);
 	}
-	
+
 	/**
 	 * Called on MenuItem "Remove Tag" click
+	 * 
 	 * @param menu
 	 */
 	public void removeTagMenuItem(MenuItem menu) {
 		Intent intent = getIntent();
-		int claimIndex = intent.getIntExtra("claimIndex" , -1);
+		UUID claimID = (UUID) intent.getSerializableExtra(ExpenseClaimActivity.CLAIM_ID);
 		intent = new Intent(TabbedSummaryActivity.this, RemoveTagFromClaimActivity.class);
-		intent.putExtra("claimIndex", claimIndex);
+		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claimID);
 		startActivity(intent);
 	}
-	
-	/** 
-	 * Called on MenuItem "Add Destination" click
-	 * Takes user to add destination screen
+
+	/**
+	 * Called on MenuItem "Add Destination" click Takes user to add destination
+	 * screen
+	 * 
 	 * @param menu
 	 */
 	public void addDestinationMenuItem(MenuItem menu) {
 		Intent intent = getIntent();
-		int claimIndex = intent.getIntExtra("claimIndex", -1);
+		UUID claimID = (UUID) intent.getSerializableExtra(ExpenseClaimActivity.CLAIM_ID);
 		intent = new Intent(TabbedSummaryActivity.this, AddDestinationActivity.class);
-		intent.putExtra("claimIndex", claimIndex);
+		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claimID);
 		startActivity(intent);
 	}
-	
+
 	/**
-	 * Called on MenuItem "Edit Claim" click
-	 * Takes user to edit claim screen
+	 * Called on MenuItem "Edit Claim" click Takes user to edit claim screen
+	 * 
 	 * @param menu
 	 */
 	public void editClaimMenuItem(MenuItem menu) {
 		Intent intent = getIntent();
-		int claimIndex = intent.getIntExtra("claimIndex", -1);
-		
+		UUID claimID = (UUID) intent.getSerializableExtra(ExpenseClaimActivity.CLAIM_ID);
+
 		intent = new Intent(this, ExpenseClaimActivity.class);
 
-		intent.putExtra("claimIndex", claimIndex);
+		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claimID);
 		startActivity(intent);
 	}
-	
+
 	/**
-	 * Called on MenuItem "Submit Claim" click
-	 * Changes status of claim to "Submitted" if claim is complete
-	 * Disables 'Submit Claim' menu item once claim is submitted
+	 * Called on MenuItem "Submit Claim" click Changes status of claim to
+	 * "Submitted" if claim is complete Disables 'Submit Claim' menu item once
+	 * claim is submitted
+	 * 
 	 * @param menu
 	 */
 	public void submitClaimMenuItem(MenuItem menu) {
-		
+
 		ExpenseClaimController ecc = Application.getExpenseClaimController();
-		
+
 		Intent intent = getIntent();
-		int claimIndex = intent.getIntExtra("claimIndex", -1);
-		ArrayList<ExpenseItem> expenses = ecc.getExpenseItems(ecc.getExpenseClaim(claimIndex));
+		UUID claimID = (UUID) intent.getSerializableExtra(ExpenseClaimActivity.CLAIM_ID);
+		ArrayList<ExpenseItem> expenses = ecc.getExpenseItems(ecc.getExpenseClaimByID(claimID));
 		boolean incomplete = false;
 		for (ExpenseItem expense : expenses) {
 			if (expense.getIsMarkedIncomplete()) {
@@ -203,7 +206,8 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 
 				adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 					@Override
-					public void onClick(DialogInterface dialog, int which) { }
+					public void onClick(DialogInterface dialog, int which) {
+					}
 				});
 				alertDialog = adb.create();
 				alertDialog.show();
@@ -212,18 +216,20 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 			}
 		}
 		if (!incomplete) {
-			ecc.getExpenseClaim(claimIndex).setStatus(Status.SUBMITTED);
+			ecc.getExpenseClaimByID(claimID).setStatus(Status.SUBMITTED);
 			adb.setMessage("Claim Submitted for Approval");
 			adb.setCancelable(true);
 			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-				
+
 				@Override
-				public void onClick(DialogInterface dialog, int which) { }
+				public void onClick(DialogInterface dialog, int which) {
+				}
 			});
 			alertDialog = adb.create();
 			alertDialog.show();
-			
-			// set menu items to false, so claim cannot be edited or submitted again
+
+			// set menu items to false, so claim cannot be edited or submitted
+			// again
 			m.getItem(0).setEnabled(false);
 			m.getItem(2).setEnabled(false);
 			m.getItem(3).setEnabled(false);
@@ -232,25 +238,23 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 	}
 
 	@Override
-	public void onTabSelected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
+	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 		// When the given tab is selected, switch to the corresponding page in
 		// the ViewPager.
 		mViewPager.setCurrentItem(tab.getPosition());
 	}
 
 	@Override
-	public void onTabUnselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
+	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 	}
 
 	@Override
-	public void onTabReselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
+	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 	}
-	
+
 	/**
-	 * Force selects the summary tab 
+	 * Force selects the summary tab
+	 * 
 	 * @return the corresponding fragment.
 	 */
 	public ClaimSummaryFragment selectClaimSummaryTab() {
@@ -260,7 +264,8 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 	}
 
 	/**
-	 * Force selects the expense list tab 
+	 * Force selects the expense list tab
+	 * 
 	 * @return the corresponding fragment.
 	 */
 	public ExpenseItemListFragment selectExpenseListTab() {
@@ -271,6 +276,7 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 
 	/**
 	 * Force selects the destination list tab
+	 * 
 	 * @return the corresponding fragment.
 	 */
 	public DestinationListFragment selectDestinationListTab() {
@@ -278,7 +284,7 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 		getActionBar().selectTab(getActionBar().getTabAt(2));
 		return (DestinationListFragment) getCurrentFragment();
 	}
-	
+
 	/**
 	 * @return The currently visible fragment.
 	 */
@@ -290,9 +296,9 @@ public class TabbedSummaryActivity extends FragmentActivity implements
 		Fragment fragment = adapter.getFragment(index);
 		return fragment;
 	}
-	
+
 	public Dialog getDialog() {
 		return alertDialog;
 	}
-	
+
 }

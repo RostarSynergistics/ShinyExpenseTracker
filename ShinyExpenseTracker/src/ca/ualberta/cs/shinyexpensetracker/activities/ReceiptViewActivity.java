@@ -1,5 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import java.util.UUID;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,10 +13,11 @@ import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+
 /**
- * View receipt of an Expense Item. Access through view expense item details by 
+ * View receipt of an Expense Item. Access through view expense item details by
  * clicking on the receipt thumbnail.
- * Receives an ClaimIndex and an expenseItemIndex from the intent.
+ * 
  * Covers Issue 30
  * 
  * @version 1.0
@@ -26,16 +29,17 @@ public class ReceiptViewActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_receipt_view);
-		
+
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
-		
+
 		if (bundle != null) {
-			// if there is no index information sent, put the first item of first claim
-			int claimId = intent.getIntExtra("itemIndex", 0);
+			// if there is no index information sent, put the first item of
+			// first claim
+			UUID claimID = (UUID) intent.getSerializableExtra(ExpenseClaimActivity.CLAIM_ID);
 			int expenseItemId = intent.getIntExtra("expenseIndex", 0);
 			ExpenseClaimController controller = Application.getExpenseClaimController();
-			ExpenseClaim claim = controller.getExpenseClaim(claimId);
+			ExpenseClaim claim = controller.getExpenseClaimByID(claimID);
 			ExpenseItem item = claim.getExpense(expenseItemId);
 			ImageView receiptView = (ImageView) findViewById(R.id.receiptImageView);
 			Bitmap receiptImage = item.getReceiptPhoto();

@@ -14,16 +14,15 @@
 
 package ca.ualberta.cs.shinyexpensetracker.models;
 
-import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import ca.ualberta.cs.shinyexpensetracker.utilities.Base64BitmapConverter;
+
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
 
 /**
  * Houses ExpenseItem Data. Extends Model
@@ -179,7 +178,7 @@ public class ExpenseItem extends Model<ExpenseItem> {
 			if (this.encodedReceiptPhoto == null) {
 				return null;
 			} else {
-				this.receiptPhotoBitmap = convertFromBase64(this.encodedReceiptPhoto);
+				this.receiptPhotoBitmap = Base64BitmapConverter.convertFromBase64(this.encodedReceiptPhoto);
 			}
 		}
 
@@ -192,40 +191,10 @@ public class ExpenseItem extends Model<ExpenseItem> {
 			this.encodedReceiptPhoto = null;
 		} else {
 			this.receiptPhotoBitmap = photo;
-			this.encodedReceiptPhoto = convertToBase64(photo);
+			this.encodedReceiptPhoto = Base64BitmapConverter.convertToBase64(photo);
 		}
 
 		notifyViews();
-	}
-
-	/**
-	 * Converts a Bitmap photo to its Base64 string representation.
-	 * 
-	 * Source: http://stackoverflow.com/a/9768973/14064 (2015-04-03)
-	 * 
-	 * @param photo
-	 *            The Bitmap to convert.
-	 * @return The photo's Base64 string representation.
-	 */
-	private String convertToBase64(Bitmap photo) {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		photo.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-		byte[] b = baos.toByteArray();
-		return Base64.encodeToString(b, Base64.DEFAULT);
-	}
-
-	/**
-	 * Converts a Base64 string representation of an image back to a BitMap.
-	 * 
-	 * Source: http://stackoverflow.com/a/9768973/14064 (2015-04-03)
-	 * 
-	 * @param encodedString
-	 *            The Base64 string representation of a Bitmap.
-	 * @return The Bitmap.
-	 */
-	private Bitmap convertFromBase64(String encodedString) {
-		byte[] decodedByte = Base64.decode(encodedString, 0);
-		return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
 	}
 
 	// XXX: #69 <- This should return the formatted JodaMoney string

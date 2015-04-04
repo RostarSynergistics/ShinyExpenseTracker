@@ -8,7 +8,6 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockTagListPersister;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Instrumentation;
 import android.content.DialogInterface;

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.ListView;
-import ca.ualberta.cs.shinyexpensetracker.activities.AddTagToClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.RemoveTagFromClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -24,7 +23,7 @@ public class RemoveTagFromExpenseClaim extends ActivityInstrumentationTestCase2<
 	private TagController tagController;
 	private ExpenseClaimController expenseClaimController;
 	private ListView manageTagsListView;
-	private Button doneButton;
+	private Button done;
 	
 	public RemoveTagFromExpenseClaim() {
 		super(RemoveTagFromClaimActivity.class);
@@ -42,6 +41,7 @@ public class RemoveTagFromExpenseClaim extends ActivityInstrumentationTestCase2<
 		//Filling the controller
 		ExpenseClaim claim = new ExpenseClaim("TEST");
 		claim.addTag(new Tag("TEST"));
+		claim.addTag(new Tag("TEST1"));
 		expenseClaimController.addExpenseClaim(claim);
 		
 		
@@ -54,7 +54,9 @@ public class RemoveTagFromExpenseClaim extends ActivityInstrumentationTestCase2<
 		activity = (RemoveTagFromClaimActivity)getActivity();
 		instrumentation = getInstrumentation();
 		manageTagsListView = (ListView) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.listViewManageTags);
-		doneButton = (Button)activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.doneButtonManageTags);
+		done = (Button)activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.doneButtonManageTags);
+	
+
 	}
 	
 	/**
@@ -62,16 +64,16 @@ public class RemoveTagFromExpenseClaim extends ActivityInstrumentationTestCase2<
 	 */
 	public void testAddDialogShows(){
 		//Press the add button in the menu bar. Should create a dialog 
-		doneButton.performClick();
-		AlertDialog dialog = AddTagToClaimActivity.getDialog();
+		clickRemoveTagsButton();
+		AlertDialog dialog = RemoveTagFromClaimActivity.getDialog();
 		assertTrue(dialog.isShowing());
 	}
 	
 	/**
 	 * Testing removing one tag at once 
 	 */
-	public void testAddTagToClaim(){
-		assertEquals(expenseClaimController.getExpenseClaim(0).getTagList().size(), 0);
+	public void testRemoveTagToClaim(){
+		assertEquals(expenseClaimController.getExpenseClaim(0).getTagList().size(), 2);
 		clickTagList(0);
 		removeSelectedTagToClaim();
 		assertEquals(expenseClaimController.getExpenseClaim(0).getTagList().size(), 1);
@@ -80,12 +82,12 @@ public class RemoveTagFromExpenseClaim extends ActivityInstrumentationTestCase2<
 	/**
 	 * Testing removing multiple tags to a single claim at once 
 	 */
-	public void testAddMultipleTagsToClaim(){
-		assertEquals(expenseClaimController.getExpenseClaim(0).getTagList().size(), 0);
+	public void testRemoveMultipleTagsToClaim(){
+		assertEquals(expenseClaimController.getExpenseClaim(0).getTagList().size(), 2);
 		clickTagList(0);
 		clickTagList(1);
 		removeSelectedTagToClaim();
-		assertEquals(expenseClaimController.getExpenseClaim(0).getTagList().size(), 2);
+		assertEquals(expenseClaimController.getExpenseClaim(0).getTagList().size(), 0);
 	}
 	
 	//This method clicks on a tag in the list view to check or uncheck it 
@@ -105,8 +107,8 @@ public class RemoveTagFromExpenseClaim extends ActivityInstrumentationTestCase2<
 	
 	//This simulates pressing the done button to remove all checked tags
 	private void removeSelectedTagToClaim(){
-		instrumentation.invokeMenuActionSync(activity,ca.ualberta.cs.shinyexpensetracker.R.id.actionManageTagsAdd , 0);
-		AlertDialog dialog = AddTagToClaimActivity.getDialog();
+		clickRemoveTagsButton();
+		AlertDialog dialog = RemoveTagFromClaimActivity.getDialog();
 		final Button dialogPostiveButton = (Button) dialog.getButton(DialogInterface.BUTTON_POSITIVE);
 		
 		instrumentation.runOnMainSync(new Runnable() {
@@ -118,6 +120,16 @@ public class RemoveTagFromExpenseClaim extends ActivityInstrumentationTestCase2<
 		});
 		
 		instrumentation.waitForIdleSync();
+	}
+	
+	//Clicks the Removetags button
+	private void clickRemoveTagsButton(){
+		instrumentation.runOnMainSync(new Runnable() {
+			@Override
+			public void run() {
+				done.performClick();
+			}
+		});
 	}
 
 }

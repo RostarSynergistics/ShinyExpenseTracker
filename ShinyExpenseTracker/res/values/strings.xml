@@ -86,5 +86,8 @@
     <string name="remove_receipt">Remove Receipt</string>
     <string name="title_activity_add_tag_to_claim">AddTagToClaimActivity</string>
     <string name="title_activity_remove_tag_from_claim">RemoveTagFromClaimActivity</string>
+    <string name="remove_tags">Remove Tags</string>
+    <string name="no_tags_to_add">No Tags to add</string>
+    <string name="add_tags">Add Tags</string>
 
 </resources>

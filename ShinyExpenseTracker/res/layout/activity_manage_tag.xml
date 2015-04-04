@@ -19,7 +19,7 @@
         android:id="@+id/TagListEmpty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="No Tags to add"
+        android:text="@string/no_tags_to_add"
         android:visibility="gone" 
         />
     <Button 
@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
       	android:layout_height="wrap_content"
       	android:layout_weight="5"
-    	android:text="Add Tags"
+    	android:text="@string/add_tags"
         />
 
   

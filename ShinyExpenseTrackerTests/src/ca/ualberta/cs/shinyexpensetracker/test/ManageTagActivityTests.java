@@ -13,7 +13,6 @@ import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ManageTagActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.TagController;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockTagListPersister;
 
@@ -39,7 +38,6 @@ public class ManageTagActivityTests extends ActivityInstrumentationTestCase2<Man
 		manageTagsListView = (ListView) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.listViewManageTags);
 		done = (Button) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.doneButtonManageTags);
 		
-		ExpenseClaim claim = new ExpenseClaim("TEST");
 	}
 	
 	public void testAddDialogShows(){

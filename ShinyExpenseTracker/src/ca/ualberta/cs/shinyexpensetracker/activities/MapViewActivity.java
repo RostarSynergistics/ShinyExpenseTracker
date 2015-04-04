@@ -40,6 +40,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 
 public class MapViewActivity extends Activity implements MapEventsReceiver {
 
@@ -48,18 +49,15 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 	// second means displaying locations stored on the device
 	static public final int SET_GEOLOCATION = 1;
 	static public final int DISPLAY_GEOLOCATIONS = 2;
+	private static final Coordinate NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES = new Coordinate(39.03808, 125.7296);
 	
-	private double latitude;
-	private double longitude;
+	private Coordinate coordinate = new Coordinate();
 	private int requestCode;
 	private MapView map;
 	private Marker lastMarker = null;
-	public double getLatitude() {
-		return latitude;
-	}
-
-	public double getLongitude() {
-		return longitude;
+	
+	public Coordinate getCoordinate() {
+		return coordinate;
 	}
 
 	public Marker getLastMarker() {
@@ -76,8 +74,10 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
 		if (bundle != null) {
-			latitude = intent.getDoubleExtra("latitude", 39.03808);
-			longitude = intent.getDoubleExtra("longitude", 125.7296);
+			double latitude = intent.getDoubleExtra("latitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
+			double longitude = intent.getDoubleExtra("longitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
+			coordinate.setLatitude(latitude);
+			coordinate.setLongitude(longitude);
 			requestCode = intent.getIntExtra("requestCode", 0);
 			map = (MapView) findViewById(R.id.map);
 			map.setTileSource(TileSourceFactory.MAPNIK);
@@ -87,7 +87,7 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 			MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(this, this);
 			map.getOverlays().add(0, mapEventsOverlay);
 			
-			GeoPoint startPoint = new GeoPoint(latitude, longitude);
+			GeoPoint startPoint = new GeoPoint(coordinate.getLatitude(), coordinate.getLongitude());
 			IMapController mapController = map.getController();
 			mapController.setZoom(18);
 			mapController.setCenter(startPoint);

@@ -57,7 +57,6 @@ public class GeolocationViewTest extends
 		
 		geolocationViewActivity = getActivity();
 		instrumentation = getInstrumentation();
-		geolocationTV = (TextView)geolocationViewActivity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.geolocationValue);
 		setGeolocationAutomatically = (Button)geolocationViewActivity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.automaticGeolocationSetupButton);
 		setGeolocationUsingMap = (Button)geolocationViewActivity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.mapAssistedGeolocationSetupButton);
 	}

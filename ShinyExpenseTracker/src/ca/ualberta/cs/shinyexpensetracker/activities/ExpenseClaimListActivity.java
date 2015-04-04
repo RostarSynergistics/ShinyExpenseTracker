@@ -43,6 +43,7 @@ import ca.ualberta.cs.shinyexpensetracker.adapters.ClaimListAdapter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.IView;
+import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
@@ -50,13 +51,13 @@ public class ExpenseClaimListActivity
 	extends Activity 
 	implements IView<ExpenseClaimList> {
 	private static final int SET_HOME_GEOLCATION = 1;
+	private static final Coordinate NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES = new Coordinate(39.03808, 125.7296);
 	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
 
 	// TODO: these have to be moved to another object,
 	// like Claimant or something, when that class is created
-	private double homeLocationLatitude;
-	private double homeLocationLongitude;
+	private Coordinate homeGeolocation = new Coordinate();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -152,14 +153,11 @@ public class ExpenseClaimListActivity
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// Check result is ok
 		if (resultCode == RESULT_OK) {
-			double latitude = data.getDoubleExtra("latitude", 39.03808);
-			double longitude = data.getDoubleExtra("longitude", 125.7296);
-			homeLocationLatitude = latitude;
-			homeLocationLongitude = longitude;
-			Toast.makeText(this, 
-					"Latitude: " + String.valueOf(latitude) + "\n\tLongitude: " + String.valueOf(longitude), 
-					Toast.LENGTH_SHORT).show();
-			 
+			double latitude = data.getDoubleExtra("latitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
+			double longitude = data.getDoubleExtra("longitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
+			homeGeolocation.setLatitude(latitude);
+			homeGeolocation.setLongitude(longitude);
+			Toast.makeText(this, homeGeolocation.toString(), Toast.LENGTH_LONG).show();
 		}
 	}
 	
@@ -228,12 +226,7 @@ public class ExpenseClaimListActivity
 		return dialog;
 	}
 
-	public double getHomeLocationLatitude() {
-		return homeLocationLatitude;
+	public Coordinate getHomeGeolocation() {
+		return homeGeolocation;
 	}
-
-	public double getHomeLocationLongitude() {
-		return homeLocationLongitude;
-	}
-	
 }

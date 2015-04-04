@@ -24,36 +24,28 @@
 
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.DialogInterface.OnClickListener;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 
 public class GeolocationViewActivity extends Activity {
 
 	private LocationManager lm;
-	private double latitude;
-	private double longitude;
-	private double latitudeUpdating;
-	private double longitudeUpdating;
+	private Coordinate coordinates = new Coordinate();
+	private Coordinate coordinatesUpdating = new Coordinate();
 	
-	TextView geolocationValue;
 	public static final int SET_GEOLOCATION = 1;
+	private static final Coordinate NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES = new Coordinate(39.03808, 125.7296);
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,8 +53,10 @@ public class GeolocationViewActivity extends Activity {
 		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		Location loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		if (loc != null) {
-			latitudeUpdating = loc.getLatitude();
-			longitudeUpdating = loc.getLongitude();
+			double latitudeUpdating = loc.getLatitude();
+			double longitudeUpdating = loc.getLongitude();
+			coordinatesUpdating.setLatitude(latitudeUpdating);
+			coordinatesUpdating.setLongitude(longitudeUpdating);
 		}
 		// set up 'listener' to fire at most once every second
 		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, listener);
@@ -93,9 +87,8 @@ public class GeolocationViewActivity extends Activity {
 	 */
 	public void clickSetGeolocationAutomatically(View v) {
 		
-		latitude = latitudeUpdating;
-		longitude = longitudeUpdating;
-		//updateTextView();
+		coordinates.setLatitude(coordinatesUpdating.getLatitude());
+		coordinates.setLongitude(coordinatesUpdating.getLongitude());
 		if (lm.getLastKnownLocation(LocationManager.GPS_PROVIDER) == null) {
 			Toast.makeText(this, "GPS positioning not enabled.\nEnable GPS positioning or enter the coordiantes manually using the map", Toast.LENGTH_LONG).show();
 		}
@@ -110,8 +103,8 @@ public class GeolocationViewActivity extends Activity {
 	 */
 	public void clickSetGeolocationUsingMap(View v) {
 		Intent mapViewIntent = new Intent(GeolocationViewActivity.this, MapViewActivity.class);
-		mapViewIntent.putExtra("latitude", latitudeUpdating);
-		mapViewIntent.putExtra("longitude", longitudeUpdating);
+		mapViewIntent.putExtra("latitude", coordinatesUpdating.getLatitude());
+		mapViewIntent.putExtra("longitude", coordinatesUpdating.getLongitude());
 		mapViewIntent.putExtra("requestCode", SET_GEOLOCATION);
 		startActivityForResult(mapViewIntent, SET_GEOLOCATION);
 	}
@@ -125,9 +118,10 @@ public class GeolocationViewActivity extends Activity {
 		// Check result is ok
 		lm.removeUpdates(listener);
 		if (resultCode == RESULT_OK) {
-			latitude = data.getDoubleExtra("latitude", 39.03808);
-			longitude = data.getDoubleExtra("longitude", 125.7296);
-			//updateTextView();
+			double latitude = data.getDoubleExtra("latitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
+			double longitude = data.getDoubleExtra("longitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
+			coordinates.setLatitude(latitude);
+			coordinates.setLongitude(longitude);
 			returnCoordinatesToParentActivity();
 		}
 		else {
@@ -140,8 +134,8 @@ public class GeolocationViewActivity extends Activity {
 	 */
 	private void returnCoordinatesToParentActivity() {
 		Intent geolocationResultIntent = new Intent(GeolocationViewActivity.this, ExpenseClaimListActivity.class);
-		geolocationResultIntent.putExtra("latitude", latitude);
-		geolocationResultIntent.putExtra("longitude", longitude);
+		geolocationResultIntent.putExtra("latitude", coordinates.getLatitude());
+		geolocationResultIntent.putExtra("longitude", coordinates.getLongitude());
 		setResult(ExpenseClaimListActivity.RESULT_OK, geolocationResultIntent);
 		finish();
 	}
@@ -161,9 +155,8 @@ public class GeolocationViewActivity extends Activity {
 		 */
 		public void onLocationChanged (Location location) {
 			if (location != null) {
-				latitudeUpdating = location.getLatitude();
-				longitudeUpdating = location.getLongitude();
-				
+				coordinatesUpdating.setLatitude(location.getLatitude());
+				coordinatesUpdating.setLongitude(location.getLongitude());
 			}
 		}
 		public void onProviderDisabled (String provider) {

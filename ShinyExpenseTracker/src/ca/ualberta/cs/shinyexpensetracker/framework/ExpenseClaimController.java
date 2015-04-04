@@ -97,9 +97,21 @@ public class ExpenseClaimController {
 		persister.saveExpenseClaims(claimList);
 	}
 
-	/**
-	 * Call when an existing ExpenseClaim has been updated.
-	 */
+	public void updateExpenseClaim(UUID id, String name, Date startDate, Date endDate) throws IOException {
+		// NYI
+		persister.saveExpenseClaims(claimList);
+	}
+
+	public void updateExpenseClaimStatus(UUID id, ExpenseClaim.Status status) throws IOException {
+		// NYI
+		persister.saveExpenseClaims(claimList);
+	}
+
+	public void addDestinationToClaim(UUID id, String name, String reasonForTravel) throws IOException {
+		// NYI
+		persister.saveExpenseClaims(claimList);
+	}
+
 	public void update() throws IOException {
 		persister.saveExpenseClaims(claimList);
 	}

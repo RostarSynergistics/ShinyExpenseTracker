@@ -18,6 +18,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.adapters.SectionsPagerAdapter;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
 import ca.ualberta.cs.shinyexpensetracker.fragments.DestinationListFragment;
@@ -106,7 +107,7 @@ public class TabbedSummaryActivity extends FragmentActivity implements ActionBar
 		}
 
 		intent = getIntent();
-		claimID = (UUID) intent.getSerializableExtra(ExpenseClaimActivity.CLAIM_ID);
+		claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
 	}
 
 	@Override
@@ -125,7 +126,7 @@ public class TabbedSummaryActivity extends FragmentActivity implements ActionBar
 	 */
 	public void addExpenseItemMenuItem(MenuItem menu) {
 		intent = new Intent(TabbedSummaryActivity.this, ExpenseItemActivity.class);
-		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claimID);
+		intent.putExtra(IntentExtraIDs.CLAIM_ID, claimID);
 		startActivity(intent);
 	}
 
@@ -136,9 +137,9 @@ public class TabbedSummaryActivity extends FragmentActivity implements ActionBar
 	 */
 	public void addTagMenuItem(MenuItem menu) {
 		Intent intent = getIntent();
-		UUID claimID = (UUID) intent.getSerializableExtra(ExpenseClaimActivity.CLAIM_ID);
+		UUID claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
 		intent = new Intent(TabbedSummaryActivity.this, AddTagToClaimActivity.class);
-		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claimID);
+		intent.putExtra(IntentExtraIDs.CLAIM_ID, claimID);
 		startActivity(intent);
 	}
 
@@ -149,9 +150,9 @@ public class TabbedSummaryActivity extends FragmentActivity implements ActionBar
 	 */
 	public void removeTagMenuItem(MenuItem menu) {
 		Intent intent = getIntent();
-		UUID claimID = (UUID) intent.getSerializableExtra(ExpenseClaimActivity.CLAIM_ID);
+		UUID claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
 		intent = new Intent(TabbedSummaryActivity.this, RemoveTagFromClaimActivity.class);
-		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claimID);
+		intent.putExtra(IntentExtraIDs.CLAIM_ID, claimID);
 		startActivity(intent);
 	}
 
@@ -163,9 +164,9 @@ public class TabbedSummaryActivity extends FragmentActivity implements ActionBar
 	 */
 	public void addDestinationMenuItem(MenuItem menu) {
 		Intent intent = getIntent();
-		UUID claimID = (UUID) intent.getSerializableExtra(ExpenseClaimActivity.CLAIM_ID);
+		UUID claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
 		intent = new Intent(TabbedSummaryActivity.this, AddDestinationActivity.class);
-		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claimID);
+		intent.putExtra(IntentExtraIDs.CLAIM_ID, claimID);
 		startActivity(intent);
 	}
 
@@ -176,11 +177,11 @@ public class TabbedSummaryActivity extends FragmentActivity implements ActionBar
 	 */
 	public void editClaimMenuItem(MenuItem menu) {
 		Intent intent = getIntent();
-		UUID claimID = (UUID) intent.getSerializableExtra(ExpenseClaimActivity.CLAIM_ID);
+		UUID claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
 
 		intent = new Intent(this, ExpenseClaimActivity.class);
 
-		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claimID);
+		intent.putExtra(IntentExtraIDs.CLAIM_ID, claimID);
 		startActivity(intent);
 	}
 
@@ -196,7 +197,7 @@ public class TabbedSummaryActivity extends FragmentActivity implements ActionBar
 		ExpenseClaimController ecc = Application.getExpenseClaimController();
 
 		Intent intent = getIntent();
-		UUID claimID = (UUID) intent.getSerializableExtra(ExpenseClaimActivity.CLAIM_ID);
+		UUID claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
 		ArrayList<ExpenseItem> expenses = ecc.getExpenseItems(ecc.getExpenseClaimByID(claimID));
 		boolean incomplete = false;
 		for (ExpenseItem expense : expenses) {

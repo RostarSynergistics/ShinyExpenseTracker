@@ -6,8 +6,8 @@ import java.util.Date;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -71,7 +71,7 @@ public class TabbedSummaryActivityTest extends ActivityInstrumentationTestCase2<
 		// On March 14 2015
 		// set up a mock intent to allow for passing the claimIndex
 		Intent intent = new Intent();
-		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claim.getID());
+		intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
 		setActivityIntent(intent);
 
 		// Add an expense claim to the expenseClaimController

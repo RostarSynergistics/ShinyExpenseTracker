@@ -23,6 +23,7 @@ import android.view.View.OnClickListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -36,8 +37,6 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
  * -on-edittext-click-event
  */
 public class ExpenseClaimActivity extends Activity implements OnClickListener {
-	public static final String CLAIM_ID = "claimID";
-
 	private ExpenseClaimController controller;
 
 	private EditText startDate, endDate;
@@ -63,7 +62,7 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 		controller = Application.getExpenseClaimController();
 
 		Intent intent = getIntent();
-		claimID = (UUID) intent.getSerializableExtra(CLAIM_ID);
+		claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
 		
 		if (claimID != null) {
 			claim = controller.getExpenseClaimByID(claimID);
@@ -248,7 +247,7 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 		if (claim != null) {
 			if (claimID == null) {
 				Intent intent = new Intent(this, TabbedSummaryActivity.class);
-				intent.putExtra(CLAIM_ID, claim.getID());
+				intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
 				finish();
 				startActivity(intent);
 			} else {

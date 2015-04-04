@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.IView;
@@ -47,8 +48,8 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 		Bundle bundle = intent.getExtras();
 
 		if (bundle != null) {
-			claimID = (UUID) intent.getSerializableExtra(ExpenseClaimActivity.CLAIM_ID);
-			expenseItemIndex = intent.getIntExtra("expenseIndex", -1);
+			claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
+			expenseItemIndex = intent.getIntExtra(IntentExtraIDs.EXPENSE_INDEX, -1);
 			ExpenseClaimController controller = Application.getExpenseClaimController();
 			ExpenseClaim claim = controller.getExpenseClaimByID(claimID);
 			// Fetch the relevant item
@@ -143,7 +144,7 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 		// Create an intent to edit an expense item
 		Intent intent = new Intent(this, ExpenseItemActivity.class);
 		// --> Tell it that we're editing the index at this position
-		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claimID);
+		intent.putExtra(IntentExtraIDs.CLAIM_ID, claimID);
 		intent.putExtra("expenseIndex", expenseItemIndex);
 
 		// Start the activity with our edit intent
@@ -170,7 +171,7 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 			return;
 		}
 		Intent intent = new Intent(ExpenseItemDetailActivity.this, ReceiptViewActivity.class);
-		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claimID);
+		intent.putExtra(IntentExtraIDs.CLAIM_ID, claimID);
 		intent.putExtra("expenseIndex", expenseItemIndex);
 		startActivity(intent);
 	}

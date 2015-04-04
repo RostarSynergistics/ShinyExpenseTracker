@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -61,7 +62,7 @@ public class EditExpenseClaimTests extends ActivityInstrumentationTestCase2<Expe
 		Application.setExpenseClaimController(controller);
 
 		Intent i = new Intent();
-		i.putExtra(ExpenseClaimActivity.CLAIM_ID, claim.getID());
+		i.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
 		setActivityIntent(i);
 
 		instrumentation = getInstrumentation();

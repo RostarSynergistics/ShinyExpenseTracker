@@ -14,8 +14,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.AddDestinationActivity;
-import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.fragments.DestinationListFragment;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -79,7 +79,7 @@ public class DestinationListFragmentTest extends
 		
 		// Request the claim we just added
 		Intent intent = new Intent();
-		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claim.getID());
+		intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
 		setActivityIntent(intent);
 		
 		// Now it's safe to get the activity

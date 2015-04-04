@@ -12,8 +12,8 @@ import android.graphics.drawable.Drawable;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.ImageView;
 import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ReceiptViewActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -69,7 +69,7 @@ public class TestReceiptView extends ActivityInstrumentationTestCase2<ReceiptVie
 		claimList.addClaim(claim);
 
 		Intent intent = new Intent();
-		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claim.getID());
+		intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
 		intent.putExtra("expenseIndex", 0);
 		setActivityIntent(intent);
 		activity = getActivity();

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.widget.ImageView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -36,8 +37,8 @@ public class ReceiptViewActivity extends Activity {
 		if (bundle != null) {
 			// if there is no index information sent, put the first item of
 			// first claim
-			UUID claimID = (UUID) intent.getSerializableExtra(ExpenseClaimActivity.CLAIM_ID);
-			int expenseItemId = intent.getIntExtra("expenseIndex", 0);
+			UUID claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
+			int expenseItemId = intent.getIntExtra(IntentExtraIDs.EXPENSE_INDEX, 0);
 			ExpenseClaimController controller = Application.getExpenseClaimController();
 			ExpenseClaim claim = controller.getExpenseClaimByID(claimID);
 			ExpenseItem item = claim.getExpense(expenseItemId);

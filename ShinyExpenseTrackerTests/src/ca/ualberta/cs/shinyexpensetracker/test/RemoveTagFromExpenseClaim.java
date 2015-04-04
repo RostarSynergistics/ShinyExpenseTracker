@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.ListView;
-import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.RemoveTagFromClaimActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.TagController;
@@ -50,7 +50,7 @@ public class RemoveTagFromExpenseClaim extends ActivityInstrumentationTestCase2<
 
 		// Setting the initial intent input
 		Intent intent = new Intent();
-		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claim.getID());
+		intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
 		setActivityIntent(intent);
 
 		// Getting the activity

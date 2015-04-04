@@ -6,7 +6,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
 import ca.ualberta.cs.shinyexpensetracker.activities.AddDestinationActivity;
-import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
@@ -57,7 +57,7 @@ public class AddDestinationTests extends
 		instrumentation = getInstrumentation();
 
 		Intent intent = new Intent();
-		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claim.getID());
+		intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
 		setActivityIntent(intent);
 
 		activity = getActivity();

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
@@ -28,8 +29,6 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
  * 
  */
 public class AddDestinationActivity extends Activity {
-	public static final String DESTINATION_INDEX = "destinationIndex";
-
 	private EditText destinationEditText;
 	private EditText reasonForTravelEditText;
 
@@ -49,11 +48,11 @@ public class AddDestinationActivity extends Activity {
 		setContentView(R.layout.activity_add_destination);
 
 		Intent intent = getIntent();
-		claimID = (UUID) intent.getSerializableExtra(ExpenseClaimActivity.CLAIM_ID);
+		claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
 		controller = Application.getExpenseClaimController();
 		claim = controller.getExpenseClaimByID(claimID);
 
-		destinationIndex = getIntent().getIntExtra(DESTINATION_INDEX, -1);
+		destinationIndex = intent.getIntExtra(IntentExtraIDs.DESTINATION_INDEX, -1);
 		// Is this a new destination?
 		if (destinationIndex == -1) {
 			// Yes.

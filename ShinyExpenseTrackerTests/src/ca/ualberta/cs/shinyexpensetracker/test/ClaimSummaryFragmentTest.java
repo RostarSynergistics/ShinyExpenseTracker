@@ -10,8 +10,8 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -77,7 +77,7 @@ public class ClaimSummaryFragmentTest extends
 		//On March 14 2015
 		//set up a mock intent to allow for passing the claimIndex
 		Intent intent = new Intent();
-		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claim.getID());
+		intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
 		setActivityIntent(intent);
 		
 		activity = getActivity();

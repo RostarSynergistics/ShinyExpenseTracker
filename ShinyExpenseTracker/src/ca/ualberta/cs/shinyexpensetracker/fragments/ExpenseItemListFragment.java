@@ -16,9 +16,9 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemDetailActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.adapters.ExpenseItemAdapter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -68,7 +68,7 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 
 		// Get the claim index to display
 		Intent intent = getActivity().getIntent();
-		claimID = (UUID) intent.getSerializableExtra(ExpenseClaimActivity.CLAIM_ID);
+		claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
 		if (claimID == null) {
 			throw new RuntimeException("Intent not passed: Got a null claim ID.");
 		}
@@ -159,7 +159,7 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 		// Create an intent to view an expense item
 		Intent intent = new Intent(getActivity(), ExpenseItemDetailActivity.class);
 		// --> Tell it that we're viewing the index at this position
-		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claimID);
+		intent.putExtra(IntentExtraIDs.CLAIM_ID, claimID);
 		intent.putExtra("expenseIndex", position);
 		
 		// Start the activity with our edit intent
@@ -174,7 +174,7 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 		// Create an intent to edit an expense item
 		Intent intent = new Intent(getActivity(), ExpenseItemActivity.class);
 		// --> Tell it that we're editing the index at this position
-		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claimID);
+		intent.putExtra(IntentExtraIDs.CLAIM_ID, claimID);
 		intent.putExtra("expenseIndex", position);
 		
 		// Start the activity with our edit intent
@@ -185,7 +185,7 @@ public class ExpenseItemListFragment extends Fragment implements IView<ExpenseCl
 		// Create an intent to edit an expense item
 		Intent intent = new Intent(getActivity(), ExpenseItemDetailActivity.class);
 		// --> Tell it that we're editing the index at this position
-		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claimID);
+		intent.putExtra(IntentExtraIDs.CLAIM_ID, claimID);
 		intent.putExtra("expenseIndex", position);
 		
 		// Start the activity with our edit intent

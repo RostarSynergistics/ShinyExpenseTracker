@@ -18,9 +18,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemDetailActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -79,7 +79,7 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 		claimList.addClaim(claim);
 
 		Intent intent = new Intent();
-		intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claim.getID());
+		intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
 		intent.putExtra("expenseIndex", 0);
 		setActivityIntent(intent);
 		activity = getActivity();
@@ -104,9 +104,8 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 		assertEquals("Did not open the expense activity", true, getInstrumentation().checkMonitorHit(expenseMonitor, 1));
 
 		// Check that the activity received valid intents
-		assertEquals(claim.getID(),
-				(UUID) expenseActivity.getIntent().getSerializableExtra(ExpenseClaimActivity.CLAIM_ID));
-		assertEquals(0, expenseActivity.getIntent().getIntExtra("expenseIndex", -1000));
+		assertEquals(claim.getID(), (UUID) expenseActivity.getIntent().getSerializableExtra(IntentExtraIDs.CLAIM_ID));
+		assertEquals(0, expenseActivity.getIntent().getIntExtra(IntentExtraIDs.EXPENSE_INDEX, -1000));
 
 		// Close the activity
 		expenseActivity.finish();

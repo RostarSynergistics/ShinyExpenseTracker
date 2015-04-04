@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.IView;
@@ -48,7 +49,7 @@ public class AddTagToClaimActivity extends Activity implements IView<TagList> {
 		expenseClaimController = Application.getExpenseClaimController();
 		done = (Button) findViewById(R.id.doneButtonManageTags);
 		// Getting the current claim
-		claimID = (UUID) getIntent().getSerializableExtra(ExpenseClaimActivity.CLAIM_ID);
+		claimID = (UUID) getIntent().getSerializableExtra(IntentExtraIDs.CLAIM_ID);
 		// Intent error
 		if (claimID == null) {
 			throw new RuntimeException("Error getting current claim ID.");

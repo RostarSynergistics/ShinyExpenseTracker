@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.adapters.ExpenseTotalsAdapter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -69,7 +69,7 @@ public class ClaimSummaryFragment extends Fragment implements
 
 		// get the ID of the Claim we are working with
 		Intent intent = getActivity().getIntent();
-		claimID = (UUID) intent.getSerializableExtra(ExpenseClaimActivity.CLAIM_ID);
+		claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
 		if (claimID == null) {
 			throw new RuntimeException("Intent not passed: Got a null claim ID.");
 		}

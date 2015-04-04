@@ -36,6 +36,7 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -55,7 +56,6 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
  *        editing of a referred Expense Item, if there is any
  */
 public class ExpenseItemActivity extends Activity implements OnClickListener {
-	public static final String EXPENSE_INDEX = "expenseIndex";
 	// DatePickerDialog from:
 	// http://androidopentutorials.com/android-datepickerdialog-on-edittext-click-event/
 	// On March 2 2015
@@ -90,8 +90,8 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		if (bundle != null) {
 			// we have to receive a Claim ID so that we know to what claim to
 			// save an item
-			UUID claimID = (UUID) bundle.getSerializable(ExpenseClaimActivity.CLAIM_ID);
-			Integer expenseItemId = (Integer) bundle.get(EXPENSE_INDEX);
+			UUID claimID = (UUID) bundle.getSerializable(IntentExtraIDs.CLAIM_ID);
+			Integer expenseItemId = (Integer) bundle.get(IntentExtraIDs.EXPENSE_INDEX);
 			controller = Application.getExpenseClaimController();
 			claim = controller.getExpenseClaimByID(claimID);
 			// if we received an Item ID

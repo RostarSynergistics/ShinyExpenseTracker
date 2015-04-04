@@ -38,6 +38,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.adapters.ClaimListAdapter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -73,7 +74,7 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 
 				ExpenseClaim claim = controller.getExpenseClaimAtPosition(position);
 				Intent intent = new Intent(ExpenseClaimListActivity.this, TabbedSummaryActivity.class);
-				intent.putExtra(ExpenseClaimActivity.CLAIM_ID, claim.getID());
+				intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
 				startActivity(intent);
 
 			}

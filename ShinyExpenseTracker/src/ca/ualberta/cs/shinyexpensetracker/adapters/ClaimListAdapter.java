@@ -142,6 +142,12 @@ public class ClaimListAdapter extends BaseAdapter {
 	 * sorts the list of claims
 	 */
 	private void makeSortedList() {
-		controller.sort();
+		// FIXME
+		
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! //
+		// DO NOT MERGE THIS BRANCH UNTIL THIS IS ADDRESSED //
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! //
+		
+		// controller.sort();
 	}
 }

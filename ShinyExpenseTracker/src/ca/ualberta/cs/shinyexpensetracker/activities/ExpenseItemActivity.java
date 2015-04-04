@@ -365,12 +365,13 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 			item.setDescription(description);
 			item.setReceiptPhoto(bm);
 			
-			controller.update();
 		} else {
 			// Add a new expense
 			ExpenseItem expense = new ExpenseItem(name, date, category, amount, currency, description, bm);
 			claim.addExpense(expense);
 		}
+		
+		controller.update();
 
 		return true;
 	}

@@ -1,11 +1,13 @@
 package ca.ualberta.cs.shinyexpensetracker.framework;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import android.content.Context;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.persistence.FilePersistenceStrategy;
 import ca.ualberta.cs.shinyexpensetracker.persistence.GsonExpenseClaimListPersister;
 import ca.ualberta.cs.shinyexpensetracker.persistence.IExpenseClaimListPersister;
@@ -120,5 +122,26 @@ public class ExpenseClaimController {
 	 */
 	public int getIndexOf(ExpenseClaim claim) {
 		return claimList.getClaims().indexOf(claim);
+	}
+	
+	/**
+	 * Returns and ArrayList of the expenseItems associated to a given claim
+	 * @param claim
+	 * @return
+	 */
+	public ArrayList<ExpenseItem> getExpenseItems(ExpenseClaim claim) {
+		return claim.getExpenses();
+	}
+	
+	/**
+	 * Removes the tag given to all claim's taglists.
+	 * Used when a tag is deleted from the tag controller
+	 * @param tagController
+	 */
+	public void removeTag(Tag tag){
+		
+		for(ExpenseClaim claim :claimList.getClaims()){
+			claim.getTagList().deleteTag(tag);
+		}
 	}
 }

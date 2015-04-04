@@ -1,6 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,7 +15,7 @@ import java.util.regex.Pattern;
  * Has tags: ArrayList<Tag>
  *
  */
-public class TagList extends Model<TagList> {
+public class TagList extends Model<TagList> implements Iterable<Tag> {
 	private ArrayList<Tag> tags = new ArrayList<Tag>();
 	
 	public TagList(){
@@ -54,7 +55,8 @@ public class TagList extends Model<TagList> {
 		
 		//Check for valid tag
 		if(checkValidTag(newTag)){
-			tags.set(position, newTag);
+			//tags.set(position, newTag);
+			tags.get(position).setValue(newTag.getValue());
 			notifyViews();
 			return true;
 		}else{
@@ -102,12 +104,27 @@ public class TagList extends Model<TagList> {
 		
 	}
 	
-	public void removeTag(Tag t) {
-		tags.remove(t);
+	/**
+	 * Deletes a tag in the tag list 
+	 * @param tag the tag you wish to delete
+	 * @return boolean stating if change could be made
+	 */
+	public boolean deleteTag(Tag tag) {
+		boolean removed = tags.remove(tag);
+		notifyViews();
+		return removed;
 	}
-
+	
 	public void removeTag(String s) {
 		tags.remove(new Tag(s));
+	}
+	
+	/**
+	 * Remove a given tag from the tag list
+	 * @param tag
+	 */
+	public boolean removeTag(Tag tag) {
+		 return tags.remove(tag);
 	}
 	
 	public int size(){
@@ -131,7 +148,17 @@ public class TagList extends Model<TagList> {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < tags.size(); i++) {
 			sb.append(tags.get(i));
+			sb.append("  ");
 		}
 		return sb.toString();
 	}
+	
+	
+
+	//Method required for iterable. Used to use TagList in a for each loop 
+	@Override
+	public Iterator<Tag> iterator() {
+		return tags.iterator();
+	}
+	
 }

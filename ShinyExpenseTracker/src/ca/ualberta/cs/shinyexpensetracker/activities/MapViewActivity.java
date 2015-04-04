@@ -118,13 +118,12 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 	 * Launch prompt asking user if they want to save the chosen location to the device
 	 */
 	@Override
-	public boolean longPressHelper(GeoPoint p) {
+	public void onBackPressed(){
 		if (requestCode == DISPLAY_GEOLOCATIONS || lastMarker == null) {
-			return false;
+			finish();// false;
 		}
 		GeoPoint position = lastMarker.getPosition();
 		askSaveLocation(position.getLatitude(), position.getLongitude());
-		return true;
 	}
 
 	/**
@@ -161,14 +160,14 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 				.setTitle("Location saving")
 				.setMessage("Save this location:\n\tLatitude: " + String.valueOf(latitude) + "\n\tLongitude: " + String.valueOf(longitude) + "?")
 				// If OK, return to parent activity. (Positive action);
-				.setPositiveButton("OK", new OnClickListener() {
+				.setPositiveButton("Save", new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						try {
 							Intent geolocationResultIntent = new Intent();
 							geolocationResultIntent.putExtra("latitude", latitude);
 							geolocationResultIntent.putExtra("longitude", longitude);
-							setResult(ExpenseClaimListActivity.RESULT_OK, geolocationResultIntent);
+							setResult(GeolocationViewActivity.RESULT_OK, geolocationResultIntent);
 						} catch (Exception e) {
 							throw new RuntimeException(e);
 						}
@@ -177,16 +176,34 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 					}
 				})
 				// If cancel, do nothing
-				.setNeutralButton("Cancel", new OnClickListener() {
+				.setNeutralButton("Back to Map", new OnClickListener() {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// Do nothing
 						dialog.dismiss();
 					}
+				})
+				.setNegativeButton("Don't Save", new OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						// Don't save and go back to parent activity
+						try {
+							setResult(ExpenseClaimListActivity.RESULT_CANCELED, new Intent());
+						} catch (Exception e) {
+							throw new RuntimeException(e);
+						}
+						dialog.dismiss();
+						finish();
+					}
 				}).create();
 
 		dialog.show();
 		return dialog;
+	}
+
+	@Override
+	public boolean longPressHelper(GeoPoint arg0) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

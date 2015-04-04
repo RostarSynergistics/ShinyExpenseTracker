@@ -37,6 +37,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.adapters.ClaimListAdapter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
@@ -155,6 +156,10 @@ public class ExpenseClaimListActivity
 			double longitude = data.getDoubleExtra("longitude", 125.7296);
 			homeLocationLatitude = latitude;
 			homeLocationLongitude = longitude;
+			Toast.makeText(this, 
+					"Latitude: " + String.valueOf(latitude) + "\n\tLongitude: " + String.valueOf(longitude), 
+					Toast.LENGTH_SHORT).show();
+			 
 		}
 	}
 	

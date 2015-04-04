@@ -8,26 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ca.ualberta.cs.shinyexpensetracker.activities.GeolocationViewActivity" >
 
-    <TextView
-        android:id="@+id/geolocationTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/geolocationTitle" />
-
-    <TextView
-        android:id="@+id/geolocationValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/geolocationTitle"
-        android:layout_below="@+id/geolocationTitle"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/geolocationValueDefault" />
-
     <Button
         android:id="@+id/automaticGeolocationSetupButton"
         android:layout_width="wrap_content"
@@ -47,14 +27,5 @@
         android:layout_below="@+id/automaticGeolocationSetupButton"
         android:onClick="clickSetGeolocationUsingMap"
         android:text="@string/mapAssistedGeolocationSetupButtonText" />
-
-    <Button
-        android:id="@+id/saveGeolocationButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="clickSaveGeolocation"
-        android:text="@string/saveGeolocationButtonText" />
 
 </RelativeLayout>

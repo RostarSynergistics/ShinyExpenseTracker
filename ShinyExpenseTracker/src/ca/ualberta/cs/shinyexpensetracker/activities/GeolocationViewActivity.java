@@ -24,17 +24,24 @@
 
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
 
 public class GeolocationViewActivity extends Activity {
@@ -51,7 +58,6 @@ public class GeolocationViewActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_geolocation_view);
-		geolocationValue = (TextView) findViewById(R.id.geolocationValue);
 		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		Location loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		if (loc != null) {
@@ -89,7 +95,13 @@ public class GeolocationViewActivity extends Activity {
 		
 		latitude = latitudeUpdating;
 		longitude = longitudeUpdating;
-		updateTextView();
+		//updateTextView();
+		if (lm.getLastKnownLocation(LocationManager.GPS_PROVIDER) == null) {
+			Toast.makeText(this, "GPS positioning not enabled.\nEnable GPS positioning or enter the coordiantes manually using the map", Toast.LENGTH_LONG).show();
+		}
+		else {
+			returnCoordinatesToParentActivity();
+		}
 	}
 	
 	/**
@@ -98,18 +110,10 @@ public class GeolocationViewActivity extends Activity {
 	 */
 	public void clickSetGeolocationUsingMap(View v) {
 		Intent mapViewIntent = new Intent(GeolocationViewActivity.this, MapViewActivity.class);
-		mapViewIntent.putExtra("latitude", latitude);
-		mapViewIntent.putExtra("longitude", longitude);
+		mapViewIntent.putExtra("latitude", latitudeUpdating);
+		mapViewIntent.putExtra("longitude", longitudeUpdating);
 		mapViewIntent.putExtra("requestCode", SET_GEOLOCATION);
 		startActivityForResult(mapViewIntent, SET_GEOLOCATION);
-	}
-	
-	/**
-	 * On click of Save Geolocation, save current latitude and longitude and send them back to the parent activity
-	 */
-	public void clickSaveGeolocation(View v)
-	{
-		returnCoordinatesToParentActivity();
 	}
 	
 	/**
@@ -123,25 +127,19 @@ public class GeolocationViewActivity extends Activity {
 		if (resultCode == RESULT_OK) {
 			latitude = data.getDoubleExtra("latitude", 39.03808);
 			longitude = data.getDoubleExtra("longitude", 125.7296);
-			updateTextView();
+			//updateTextView();
+			returnCoordinatesToParentActivity();
 		}
 		else {
 			lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, listener);
 		}
 	}
 	
-	private void updateTextView() {
-		String geolocationValueText = "Latitude: " + String.valueOf(latitude) + "\n" 
-				+ "Longitude: " + String.valueOf(longitude);
-		geolocationValue.setText(geolocationValueText);
-		geolocationValue.invalidate();
-	}
-	
 	/**
 	 * Finish the activity and send saved coordinates to the parent activity
 	 */
 	private void returnCoordinatesToParentActivity() {
-		Intent geolocationResultIntent = new Intent(GeolocationViewActivity.this, MapViewActivity.class);
+		Intent geolocationResultIntent = new Intent(GeolocationViewActivity.this, ExpenseClaimListActivity.class);
 		geolocationResultIntent.putExtra("latitude", latitude);
 		geolocationResultIntent.putExtra("longitude", longitude);
 		setResult(ExpenseClaimListActivity.RESULT_OK, geolocationResultIntent);
@@ -162,13 +160,10 @@ public class GeolocationViewActivity extends Activity {
 		 * source at: https://github.com/joshua2ua/MockLocationTester/blob/master/src/ualberta/cmput301/mocklocationtester/MockLocationTesterActivity.java
 		 */
 		public void onLocationChanged (Location location) {
-			TextView geolocationValue = (TextView) findViewById(R.id.geolocationValue);
 			if (location != null) {
 				latitudeUpdating = location.getLatitude();
 				longitudeUpdating = location.getLongitude();
 				
-			} else {
-				geolocationValue.setText("Cannot get the location");
 			}
 		}
 		public void onProviderDisabled (String provider) {

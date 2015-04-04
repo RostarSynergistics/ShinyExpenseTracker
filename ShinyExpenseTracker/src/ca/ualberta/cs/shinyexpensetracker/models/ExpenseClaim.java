@@ -2,6 +2,7 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -46,7 +47,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 	private ArrayList<Destination> destinations = new ArrayList<Destination>();
 	private TagList tagList = new TagList();
 	private ArrayList<ExpenseItem> expenses = new ArrayList<ExpenseItem>();
-	public String id;
+	public UUID uuid = UUID.randomUUID();
 
 	public ExpenseClaim(String name) {
 		this(name, new Date(), null, Status.IN_PROGRESS, new TagList());
@@ -64,24 +65,18 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 		this(name, startDate, endDate, status, new TagList());
 	}
 	
-	public ExpenseClaim(String name, Date startDate, Date endDate, Status status, TagList tagList, String id) {
+	public ExpenseClaim(String name, Date startDate, Date endDate, Status status, TagList tagList) {
 		super();
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.status = status;
 		this.tagList = tagList;
-		this.id = id;
+		uuid.randomUUID();
 	}
-
-	public ExpenseClaim(String name, Date startDate, Date endDate,
-			Status status, TagList tagList) {
-		//super();
-		this.name = name;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.status = status;
-		this.tagList = tagList;		
+	
+	public long getID() {
+		return uuid.getLeastSignificantBits();
 	}
 
 	public String getName() {
@@ -104,15 +99,6 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 
 	public Date getEndDate() {
 		return endDate;
-	}
-	
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-		notifyViews();
 	}
 
 	public void setEndDate(Date endDate) {

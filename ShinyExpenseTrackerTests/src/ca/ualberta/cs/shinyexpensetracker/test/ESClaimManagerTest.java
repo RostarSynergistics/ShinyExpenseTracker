@@ -5,10 +5,12 @@ import java.math.BigDecimal;
 
 import junit.framework.TestCase;
 import ca.ualberta.cs.shinyexpensetracker.es.ESClaimManager;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
@@ -24,7 +26,6 @@ public class ESClaimManagerTest extends TestCase {
 	Tag exTag = new Tag("Example");
 	ExpenseItem item = new ExpenseItem("Flight to YEG", null, Category.AIR_FARE, BigDecimal.valueOf(1000), Currency.CAD);
 	
-	
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -37,7 +38,7 @@ public class ESClaimManagerTest extends TestCase {
 	 */
 	public void testAddClaim() throws IllegalStateException, IOException {
 		tagList.addTag(exTag);
-		ExpenseClaim claim = new ExpenseClaim("BC trip", null, null, Status.IN_PROGRESS, tagList, "1a");
+		ExpenseClaim claim = new ExpenseClaim("BC trip", null, null, Status.IN_PROGRESS, tagList);
 		claim.addDestination(destination);
 		claim.addExpense(item);
 		manager.insertClaim(claim);

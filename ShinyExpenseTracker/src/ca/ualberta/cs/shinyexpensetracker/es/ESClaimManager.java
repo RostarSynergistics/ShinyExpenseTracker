@@ -45,6 +45,7 @@ public class ESClaimManager {
 	
 	private static final String RESOURCE_URI = "http://cmput301.softwareprocess.es:8080/cmput301w15t08/";
 	public static final String CLAIM_INDEX = "claim/";
+	public static final String CLAIM_LIST_INDEX = "claimlist/";
 	public static final String SEARCH_PRETTY = "?pretty=1&q=";
 
 	/**
@@ -53,8 +54,8 @@ public class ESClaimManager {
 	 * @throws IllegalStateException 
 	 */
 	
-	public void insertClaim(ExpenseClaim claim) throws IllegalStateException, IOException{
-		HttpPost httpPost = new HttpPost(RESOURCE_URI+CLAIM_INDEX+claim.getId()+SEARCH_PRETTY);
+	public void insertClaimList(ExpenseClaim claim) throws IllegalStateException, IOException{
+		HttpPost httpPost = new HttpPost(RESOURCE_URI+CLAIM_INDEX+claim.getID()+SEARCH_PRETTY);
 		StringEntity stringentity = null;
 		try {
 			stringentity = new StringEntity(gson.toJson(claim));

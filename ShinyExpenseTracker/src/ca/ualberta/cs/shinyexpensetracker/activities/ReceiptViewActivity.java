@@ -35,13 +35,11 @@ public class ReceiptViewActivity extends Activity {
 		Bundle bundle = intent.getExtras();
 
 		if (bundle != null) {
-			// if there is no index information sent, put the first item of
-			// first claim
 			UUID claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
-			int expenseItemId = intent.getIntExtra(IntentExtraIDs.EXPENSE_ID, 0);
+			UUID expenseItemID = (UUID) intent.getSerializableExtra(IntentExtraIDs.EXPENSE_ITEM_ID);
 			ExpenseClaimController controller = Application.getExpenseClaimController();
 			ExpenseClaim claim = controller.getExpenseClaimByID(claimID);
-			ExpenseItem item = claim.getExpense(expenseItemId);
+			ExpenseItem item = claim.getExpenseItemByID(expenseItemID);
 			ImageView receiptView = (ImageView) findViewById(R.id.receiptImageView);
 			Bitmap receiptImage = item.getReceiptPhoto();
 			receiptView.setImageBitmap(receiptImage);

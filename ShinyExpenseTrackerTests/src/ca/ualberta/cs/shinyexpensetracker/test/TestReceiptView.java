@@ -70,7 +70,7 @@ public class TestReceiptView extends ActivityInstrumentationTestCase2<ReceiptVie
 
 		Intent intent = new Intent();
 		intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
-		intent.putExtra("expenseIndex", 0);
+		intent.putExtra(IntentExtraIDs.EXPENSE_ITEM_ID, item.getID());
 		setActivityIntent(intent);
 		activity = getActivity();
 	}

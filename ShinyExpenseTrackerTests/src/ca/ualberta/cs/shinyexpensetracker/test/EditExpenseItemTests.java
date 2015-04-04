@@ -55,6 +55,8 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 
 	private ExpenseItem item;
 
+	private ExpenseClaim claim;
+
 	public EditExpenseItemTests(Class<ExpenseItemActivity> activityClass) {
 		super(activityClass);
 	}
@@ -71,20 +73,25 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 		controller = new ExpenseClaimController(persister);
 		Application.setExpenseClaimController(controller);
 
-		ExpenseClaim claim = new ExpenseClaim("test claim");
+		claim = new ExpenseClaim("test claim");
 		res = getInstrumentation().getTargetContext().getResources();
 		imageSmall = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
 		imageBig = BitmapFactory.decodeResource(res, R.drawable.keyhole_nebula_hubble_1999);
 
-		item = new ExpenseItem("test item", sdf.parse("2001-01-01"), Category.fromString("air fare"),
-				new BigDecimal("0.125"), Currency.CAD, "Test Item", imageBig);
+		item = new ExpenseItem("test item",
+				sdf.parse("2001-01-01"),
+				Category.fromString("air fare"),
+				new BigDecimal("0.125"),
+				Currency.CAD,
+				"Test Item",
+				imageBig);
 
 		claim.addExpense(item);
 		claimList.addClaim(claim);
 
 		Intent intent = new Intent();
 		intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
-		intent.putExtra(IntentExtraIDs.EXPENSE_ID, 0);
+		intent.putExtra(IntentExtraIDs.EXPENSE_ITEM_ID, item.getID());
 
 		setActivityIntent(intent);
 		activity = getActivity();
@@ -101,9 +108,11 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 	public void testThatFieldsWerePopulatedProperlyOnStart() throws ParseException {
 		assertEquals("name is not right", item.getName(), nameField.getText().toString());
 		assertEquals("date is not right", item.getDate(), getDate(dateField));
-		assertEquals("category is not right", item.getCategory().toString(), categorySpinner.getSelectedItem().toString());
+		assertEquals("category is not right", item.getCategory().toString(), categorySpinner.getSelectedItem()
+				.toString());
 		assertEquals("amount is not right", item.getAmountSpent().toString(), amountField.getText().toString());
-		assertEquals("currency is not right", item.getCurrency().toString(), currencySpinner.getSelectedItem().toString());
+		assertEquals("currency is not right", item.getCurrency().toString(), currencySpinner.getSelectedItem()
+				.toString());
 		assertEquals("description is not right", item.getDescription(), descriptionField.getText().toString());
 	}
 
@@ -115,9 +124,9 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 		final BigDecimal newAmount = new BigDecimal("5000");
 		final String newCurrency = (String) currencySpinner.getItemAtPosition(newSpinnerPosition);
 		final String newDescription = "FooBarBaz";
-		
+
 		final Date newDate = sdf.parse(newDateString);
-		
+
 		getInstrumentation().runOnMainSync(new Runnable() {
 			@Override
 			public void run() {
@@ -127,14 +136,14 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 				amountField.setText(newAmount.toString());
 				currencySpinner.setSelection(newSpinnerPosition);
 				descriptionField.setText(newDescription);
-				
+
 				doneButton.performClick();
 			}
 		});
-		
+
 		getInstrumentation().waitForIdleSync();
 
-		final ExpenseItem updatedItem = controller.getExpenseClaimAtPosition(0).getExpense(0);
+		final ExpenseItem updatedItem = controller.getExpenseClaimByID(claim.getID()).getExpenseItemByID(item.getID());
 		assertEquals(newName, updatedItem.getName());
 		assertEquals(newDate, updatedItem.getDate());
 		assertEquals(newCategory, updatedItem.getCategory().toString());

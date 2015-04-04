@@ -42,7 +42,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	private Status status;
 	private ArrayList<Destination> destinations = new ArrayList<Destination>();
 	private TagList tagList = new TagList();
-	private ArrayList<ExpenseItem> expenses = new ArrayList<ExpenseItem>();
+	private ArrayList<ExpenseItem> expenseItems = new ArrayList<ExpenseItem>();
 
 	public ExpenseClaim(String name) {
 		this(name, new Date(), null, Status.IN_PROGRESS, new TagList());
@@ -160,7 +160,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	}
 
 	public void addExpense(ExpenseItem expense) {
-		expenses.add(expense);
+		expenseItems.add(expense);
 		notifyViews();
 	}
 
@@ -168,28 +168,34 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		// TODO Issue #21.
 		// This function is partially complete, but does not
 		// delete from the local stores or ElasticSearch.
-		expenses.remove(index);
+		expenseItems.remove(index);
 		notifyViews();
 	}
 
 	public void removeExpense(ExpenseItem expense) {
-		expenses.remove(expenses.indexOf(expense));
+		expenseItems.remove(expenseItems.indexOf(expense));
 		notifyViews();
 	}
 
-	/**
-	 * Returns the expense for this claim at the given index
-	 * 
-	 * @param index
-	 *            of the expense item
-	 * @return the requested Expense item
-	 */
-	public ExpenseItem getExpense(int index) {
-		return expenses.get(index);
+	public ExpenseItem getExpenseItemByID(UUID id) {
+		ExpenseItem foundItem = null;
+
+		for (ExpenseItem item : expenseItems) {
+			if (item.getID().equals(id)) {
+				foundItem = item;
+				break;
+			}
+		}
+
+		return foundItem;
+	}
+
+	public ExpenseItem getExpenseItemAtPosition(int position) {
+		return expenseItems.get(position);
 	}
 
 	public ArrayList<ExpenseItem> getExpenses() {
-		return expenses;
+		return expenseItems;
 	}
 
 	/**
@@ -209,11 +215,11 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	 * @return
 	 */
 	public int getExpenseCount() {
-		return expenses.size();
+		return expenseItems.size();
 	}
 
 	public ArrayList<ExpenseItem> getExpenseItems() {
-		return expenses;
+		return expenseItems;
 	}
 
 	/**

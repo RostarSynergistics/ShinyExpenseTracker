@@ -91,14 +91,14 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 			// we have to receive a Claim ID so that we know to what claim to
 			// save an item
 			UUID claimID = (UUID) bundle.getSerializable(IntentExtraIDs.CLAIM_ID);
-			Integer expenseItemId = (Integer) bundle.get(IntentExtraIDs.EXPENSE_ID);
+			UUID expenseItemID = (UUID) bundle.getSerializable(IntentExtraIDs.EXPENSE_ITEM_ID);
 			controller = Application.getExpenseClaimController();
 			claim = controller.getExpenseClaimByID(claimID);
 			// if we received an Item ID
 			// then we are editing an item
 			// fetch the item and preset all fields with its values
-			if (expenseItemId != null) {
-				item = claim.getExpense(expenseItemId);
+			if (expenseItemID != null) {
+				item = claim.getExpenseItemByID(expenseItemID);
 				isEditing = true;
 				populateTextViews();
 			}
@@ -287,7 +287,8 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 			adb.setCancelable(true);
 			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which) {}
+				public void onClick(DialogInterface dialog, int which) {
+				}
 			});
 			alertDialog = adb.create();
 			alertDialog.show();
@@ -304,7 +305,8 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 			adb.setCancelable(true);
 			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which) {}
+				public void onClick(DialogInterface dialog, int which) {
+				}
 			});
 			alertDialog = adb.create();
 			alertDialog.show();
@@ -324,7 +326,8 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 			adb.setCancelable(true);
 			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which) {}
+				public void onClick(DialogInterface dialog, int which) {
+				}
 			});
 			alertDialog = adb.create();
 			alertDialog.show();
@@ -363,7 +366,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 			item.setCurrency(currency);
 			item.setDescription(description);
 			item.setReceiptPhoto(bm);
-			
+
 			controller.update();
 		} else {
 			// Add a new expense

@@ -18,22 +18,17 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 
 /**
- * Adapter for the list Views that display ExpenseItems.
- * It fills the expense_list_item.xml layout file to display
- * Expense Items.
+ * Adapter for the list Views that display ExpenseItems. It fills the
+ * expense_list_item.xml layout file to display Expense Items.
  * 
- * You can use this in place of an ArrayAdapter for ExpenseItems.
- * This gives better flexibility for the adapter.
+ * You can use this in place of an ArrayAdapter for ExpenseItems. This gives
+ * better flexibility for the adapter.
  * 
- * Example usage:
- * public class MyActivity extends Activity) {
- *  
- *  public setupListView() {
- *  	adapter = new Adapter( claimToWatch, this ) 
- * 		listview.setAdapter(adapter);
- *		...
- * }
- *
+ * Example usage: public class MyActivity extends Activity) {
+ * 
+ * public setupListView() { adapter = new Adapter( claimToWatch, this )
+ * listview.setAdapter(adapter); ... }
+ * 
  */
 // Note: This object watches claim.getExpenses()
 // If this changes, functionality here must be updated.
@@ -42,8 +37,10 @@ public class ExpenseItemAdapter extends BaseAdapter implements ListAdapter {
 	private Context context;
 
 	/**
-	 * @param claim Claim to fetch expenses from
-	 * @param context activity context
+	 * @param claim
+	 *            Claim to fetch expenses from
+	 * @param context
+	 *            activity context
 	 */
 	public ExpenseItemAdapter(ExpenseClaim claim, Context context) {
 		this.claim = claim;
@@ -57,14 +54,14 @@ public class ExpenseItemAdapter extends BaseAdapter implements ListAdapter {
 
 	@Override
 	public ExpenseItem getItem(int position) {
-		return claim.getExpense(position);
+		return claim.getExpenseItemAtPosition(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
 		return position;
 	}
-	
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// Are we recycling an existing view?
@@ -76,7 +73,7 @@ public class ExpenseItemAdapter extends BaseAdapter implements ListAdapter {
 			// Yes.
 			// Recycle the existing view
 		}
-		
+
 		// Fetch the text views that we're going to fill
 		TextView expenseItemName = (TextView) convertView.findViewById(R.id.expenseItemName);
 		TextView expenseItemValue = (TextView) convertView.findViewById(R.id.expenseItemValue);
@@ -85,10 +82,10 @@ public class ExpenseItemAdapter extends BaseAdapter implements ListAdapter {
 		TextView expenseItemDescTextView = (TextView) convertView.findViewById(R.id.expenseItemDescription);
 		ImageView expenseItemReceiptIndicator = (ImageView) convertView.findViewById(R.id.expenseItemReceiptIndicator);
 		CheckBox expenseItemFlagCheckBox = (CheckBox) convertView.findViewById(R.id.expenseItemCompletenessFlag);
-		
+
 		// Get the expense item context for this view
 		final ExpenseItem expense = getItem(position);
-		
+
 		// Handle the incompleteness flag here
 		expenseItemFlagCheckBox.setOnClickListener(new OnClickListener() {
 			@Override
@@ -97,23 +94,22 @@ public class ExpenseItemAdapter extends BaseAdapter implements ListAdapter {
 				expense.setIncompletenessMarker(ch.isChecked());
 			}
 		});
-		
+
 		expenseItemFlagCheckBox.setChecked(expense.getIsMarkedIncomplete());
-		
+
 		// Fill in the values
 		SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
-		
+
 		expenseItemName.setText(expense.getName().toString());
 		expenseItemValue.setText(expense.getValueString().toString());
 		expenseItemDate.setText(df.format(expense.getDate()));
 		expenseItemCategory.setText(expense.getCategory().toString());
 		expenseItemDescTextView.setText(expense.getDescription().toString());
-		
+
 		// Is expense marked incomplete?
 		if (expense.doesHavePhoto()) {
 			// Yes. Display indicator
-			expenseItemReceiptIndicator
-					.setImageResource(android.R.drawable.ic_menu_camera);
+			expenseItemReceiptIndicator.setImageResource(android.R.drawable.ic_menu_camera);
 		} else {
 			// No. Hide indicator
 			expenseItemReceiptIndicator.setImageBitmap(null);

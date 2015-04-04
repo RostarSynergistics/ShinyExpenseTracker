@@ -80,7 +80,7 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 
 		Intent intent = new Intent();
 		intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
-		intent.putExtra("expenseIndex", 0);
+		intent.putExtra(IntentExtraIDs.EXPENSE_ITEM_ID, item.getID());
 		setActivityIntent(intent);
 		activity = getActivity();
 	}
@@ -105,7 +105,8 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 
 		// Check that the activity received valid intents
 		assertEquals(claim.getID(), (UUID) expenseActivity.getIntent().getSerializableExtra(IntentExtraIDs.CLAIM_ID));
-		assertEquals(0, expenseActivity.getIntent().getIntExtra(IntentExtraIDs.EXPENSE_ID, -1000));
+		assertEquals(item.getID(),
+				(UUID) expenseActivity.getIntent().getSerializableExtra(IntentExtraIDs.EXPENSE_ITEM_ID));
 
 		// Close the activity
 		expenseActivity.finish();

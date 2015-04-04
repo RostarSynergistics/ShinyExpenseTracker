@@ -37,7 +37,7 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 
 	private ExpenseItem item;
 	private UUID claimID;
-	private int expenseItemIndex;
+	private UUID expenseItemID;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +49,11 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 
 		if (bundle != null) {
 			claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
-			expenseItemIndex = intent.getIntExtra(IntentExtraIDs.EXPENSE_ID, -1);
+			expenseItemID = (UUID) intent.getSerializableExtra(IntentExtraIDs.EXPENSE_ITEM_ID);
 			ExpenseClaimController controller = Application.getExpenseClaimController();
 			ExpenseClaim claim = controller.getExpenseClaimByID(claimID);
 			// Fetch the relevant item
-			item = claim.getExpense(expenseItemIndex);
+			item = claim.getExpenseItemByID(expenseItemID);
 
 			item.addView(this);
 		} else {
@@ -145,7 +145,7 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 		Intent intent = new Intent(this, ExpenseItemActivity.class);
 		// --> Tell it that we're editing the index at this position
 		intent.putExtra(IntentExtraIDs.CLAIM_ID, claimID);
-		intent.putExtra("expenseIndex", expenseItemIndex);
+		intent.putExtra(IntentExtraIDs.EXPENSE_ITEM_ID, expenseItemID);
 
 		// Start the activity with our edit intent
 		startActivity(intent);
@@ -172,7 +172,7 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 		}
 		Intent intent = new Intent(ExpenseItemDetailActivity.this, ReceiptViewActivity.class);
 		intent.putExtra(IntentExtraIDs.CLAIM_ID, claimID);
-		intent.putExtra("expenseIndex", expenseItemIndex);
+		intent.putExtra(IntentExtraIDs.EXPENSE_ITEM_ID, expenseItemID);
 		startActivity(intent);
 	}
 

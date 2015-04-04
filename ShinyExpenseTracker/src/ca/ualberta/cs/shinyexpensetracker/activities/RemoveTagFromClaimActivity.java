@@ -2,13 +2,6 @@ package ca.ualberta.cs.shinyexpensetracker.activities;
 
 import java.io.IOException;
 
-import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.framework.Application;
-import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
-import ca.ualberta.cs.shinyexpensetracker.framework.IView;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.Tag;
-import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -23,6 +16,13 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.framework.IView;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.Tag;
+import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 
 public class RemoveTagFromClaimActivity extends Activity implements IView<TagList> {
 

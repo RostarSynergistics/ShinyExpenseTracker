@@ -1,5 +1,12 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+import android.app.AlertDialog;
+import android.app.Instrumentation;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.test.ActivityInstrumentationTestCase2;
+import android.widget.Button;
+import android.widget.ListView;
 import ca.ualberta.cs.shinyexpensetracker.activities.AddTagToClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -8,13 +15,6 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockTagListPersister;
-import android.app.AlertDialog;
-import android.app.Instrumentation;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.test.ActivityInstrumentationTestCase2;
-import android.widget.Button;
-import android.widget.ListView;
 
 /**
  * Test adding a tag to a claim through the UI

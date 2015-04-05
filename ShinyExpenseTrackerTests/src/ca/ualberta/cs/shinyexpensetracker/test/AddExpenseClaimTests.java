@@ -17,6 +17,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 /**
@@ -44,6 +45,7 @@ public class AddExpenseClaimTests extends
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
+		Application.setUserType(Type.Claimant);
 
 		controller = new ExpenseClaimController(
 				new MockExpenseClaimListPersister());
@@ -109,7 +111,7 @@ public class AddExpenseClaimTests extends
 	public void testThatInputtingAnEndDateThatIsAfterTheStartDateIsValid() {
 
 		ActivityMonitor monitor = instrumentation.addMonitor(
-				TabbedSummaryActivity.class.getName(), null, false);
+				TabbedSummaryClaimantActivity.class.getName(), null, false);
 
 
 		activity.runOnUiThread(new Runnable() {
@@ -123,7 +125,7 @@ public class AddExpenseClaimTests extends
 		});
 
 		instrumentation.waitForIdleSync();
-		TabbedSummaryActivity nextActivity = (TabbedSummaryActivity) instrumentation
+		TabbedSummaryActivity nextActivity = (TabbedSummaryClaimantActivity) instrumentation
 				.waitForMonitor(monitor);
 		assertNotNull("Next activity not started", nextActivity);
 
@@ -134,7 +136,7 @@ public class AddExpenseClaimTests extends
 	public void testThatTappingDoneWhileCreatingNewExpenseClaimCreatesANewExpenseClaim()
 			throws ParseException {
 		ActivityMonitor monitor = instrumentation.addMonitor(
-				TabbedSummaryActivity.class.getName(), null, false);
+				TabbedSummaryClaimantActivity.class.getName(), null, false);
 
 		final String claimName = "URoma";
 		activity.runOnUiThread(new Runnable() {
@@ -152,7 +154,7 @@ public class AddExpenseClaimTests extends
 
 		instrumentation.waitForIdleSync();
 
-		TabbedSummaryActivity nextActivity = (TabbedSummaryActivity) instrumentation
+		TabbedSummaryActivity nextActivity = (TabbedSummaryClaimantActivity) instrumentation
 				.waitForMonitor(monitor);
 		assertNotNull("Next activity not started", nextActivity);
 

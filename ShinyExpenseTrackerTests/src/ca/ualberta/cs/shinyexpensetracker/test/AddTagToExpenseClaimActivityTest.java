@@ -134,6 +134,7 @@ public class AddTagToExpenseClaimActivityTest extends
 				done.performClick();
 			}
 		});
+		instrumentation.waitForIdleSync();
 	}
 	
 }

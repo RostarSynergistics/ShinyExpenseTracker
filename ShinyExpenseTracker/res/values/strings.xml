@@ -100,5 +100,6 @@
     <string name="add_comment">Add Comment</string>
     <string name="view_comments">View Comments</string>
     <string name="title_activity_view_comments">View Comments</string>
+    <string name="no_comments">No Comments</string>
 
 </resources>

@@ -9,8 +9,6 @@ import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.EditText;
 import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.activities.AddTagToClaimActivity;
-import ca.ualberta.cs.shinyexpensetracker.activities.RemoveTagFromClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryApproverActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ViewCommentsActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;

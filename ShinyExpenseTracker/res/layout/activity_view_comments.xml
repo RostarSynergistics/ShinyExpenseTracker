@@ -16,5 +16,14 @@
         android:layout_centerHorizontal="true" >
 
     </ListView>
+    
+    <!--source: http://developer.android.com/reference/android/app/ListActivity.html -->
+	<TextView android:id="@+id/noCommentsTextView"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_marginTop="10dp"
+	    android:layout_marginStart="20dp"
+	    android:visibility="invisible"
+	    android:text="@string/no_comments"/>
 
 </RelativeLayout>

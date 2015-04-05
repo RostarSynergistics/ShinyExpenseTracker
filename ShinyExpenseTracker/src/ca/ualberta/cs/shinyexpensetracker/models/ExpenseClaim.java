@@ -47,7 +47,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	private ArrayList<Destination> destinations = new ArrayList<Destination>();
 	private TagList tagList = new TagList();
 	private ArrayList<ExpenseItem> expenses = new ArrayList<ExpenseItem>();
-	private ArrayList<String> comments;
+	private ArrayList<String> comments = new ArrayList<String>();
 
 	public ExpenseClaim(String name) {
 		this(name, new Date(), null, Status.IN_PROGRESS, new TagList());
@@ -72,7 +72,6 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		this.endDate = endDate;
 		this.status = status;
 		this.tagList = tagList;
-		comments = new ArrayList<String>();
 	}
 
 
@@ -236,11 +235,6 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	}
 	
 	public void addComment(String comment) {
-		if (comments == null) {
-			comments = new ArrayList<String>();
-			Log.wtf("Comments", "comments is null");
-		}
-		
 		comments.add(comment);
 	}
 

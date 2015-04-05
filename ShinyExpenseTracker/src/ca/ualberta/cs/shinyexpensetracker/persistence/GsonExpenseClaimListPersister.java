@@ -2,8 +2,12 @@ package ca.ualberta.cs.shinyexpensetracker.persistence;
 
 import java.io.IOException;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import ca.ualberta.cs.shinyexpensetracker.es.ESClaimManager;
+import ca.ualberta.cs.shinyexpensetracker.es.data.ConnectivityChecker;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
 import com.google.gson.Gson;
@@ -43,7 +47,13 @@ public class GsonExpenseClaimListPersister implements IExpenseClaimListPersister
 	public void saveExpenseClaims(ExpenseClaimList list) throws IOException {
 		String travelClaimsString = gson.toJson(list);
 		persistenceStrategy.save(travelClaimsString);
-		new ElasticSearchSave().execute(list);
+		ConnectivityChecker checker = new ConnectivityChecker();
+		Context context = Application.getAppContext();
+		if(checker.isNetworkAvailable(context)){
+			Log.d("WWJD", "True");
+			new ElasticSearchSave().execute(list);
+		}
+		Log.d("WWJD", "False");
 		
 	}
 	

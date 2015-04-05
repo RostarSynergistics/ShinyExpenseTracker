@@ -64,9 +64,8 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	public ExpenseClaim(String name, Date startDate, Date endDate, Status status) {
 		this(name, startDate, endDate, status, new TagList());
 	}
-
-	public ExpenseClaim(String name, Date startDate, Date endDate,
-			Status status, TagList tagList) {
+	
+	public ExpenseClaim(String name, Date startDate, Date endDate, Status status, TagList tagList) {
 		super();
 		this.name = name;
 		this.startDate = startDate;
@@ -75,6 +74,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		this.tagList = tagList;
 		comments = new ArrayList<String>();
 	}
+
 
 	public String getName() {
 		return name;
@@ -265,9 +265,12 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 				.append(getStatus(), rhs.getStatus())
 				.append(getExpenseItems(), rhs.getExpenseItems())
 				.append(getDestinations(), rhs.getDestinations())
-				// .append(getTagList(), rhs.getTagList())
+				.append(getTagList(), rhs.getTagList())
 				.isEquals();
 	}
+	
+	
+	
 
 	// Source:
 	// https://commons.apache.org/proper/commons-lang/javadocs/api-3.3.2/org/apache/commons/lang3/builder/HashCodeBuilder.html

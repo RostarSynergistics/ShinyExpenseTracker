@@ -55,6 +55,8 @@ public class GsonExpenseClaimListPersister implements IExpenseClaimListPersister
 		}
 		Log.d("WWJD", "False");
 		
+		new ElasticSearchSave().execute(list);
+		
 	}
 	
 	private class ElasticSearchSave extends AsyncTask<ExpenseClaimList, Void, Boolean>{

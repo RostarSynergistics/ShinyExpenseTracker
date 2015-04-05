@@ -14,7 +14,6 @@ public class ConnectivityChecker {
 	 * @param context
 	 * @return boolean
 	 */
-	@SuppressWarnings("unused")
 	public boolean isNetworkAvailable(Context context) {
 	    ConnectivityManager connectivityManager 
 	    

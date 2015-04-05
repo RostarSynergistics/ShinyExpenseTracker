@@ -144,4 +144,13 @@ public class TabbedSummaryClaimantActivity extends TabbedSummaryActivity {
 		}
 	}
 	
+	/**
+	 * Takes the user to a view comments list view to see all of the comments a claim has
+	 */
+	public void viewCommentsMenuItem(MenuItem menu) {
+		intent = new Intent(TabbedSummaryClaimantActivity.this, ViewCommentsActivity.class);
+		intent.putExtra("claimIndex", claimIndex);
+		startActivity(intent);
+	}
+	
 }

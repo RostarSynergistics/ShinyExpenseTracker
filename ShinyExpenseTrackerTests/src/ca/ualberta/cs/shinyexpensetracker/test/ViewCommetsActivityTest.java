@@ -62,8 +62,6 @@ public class ViewCommetsActivityTest extends
 		
 		controller.addExpenseClaim(claim);
 		
-		
-		
 	}
 
 	/**
@@ -76,6 +74,9 @@ public class ViewCommetsActivityTest extends
 		ListView comments = (ListView) activity.findViewById(R.id.commentsListView);
 						
 		assertEquals("comments list view not set correctly", comment, comments.getItemAtPosition(0).toString());
+	
+		getInstrumentation().waitForIdleSync();
+		
 	}
 	
 	/** 
@@ -90,6 +91,8 @@ public class ViewCommetsActivityTest extends
 		
 		TextView noComments = (TextView) activity.findViewById(R.id.noCommentsTextView);
 		assertEquals("No Expenses not shown", "No Comments", noComments.getText().toString());
+		
+		getInstrumentation().waitForIdleSync();
 		
 	}
 }

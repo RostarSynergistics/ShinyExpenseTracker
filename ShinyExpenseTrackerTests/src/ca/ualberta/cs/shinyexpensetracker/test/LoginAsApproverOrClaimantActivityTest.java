@@ -62,7 +62,7 @@ public class LoginAsApproverOrClaimantActivityTest extends
 
 		getInstrumentation().waitForIdleSync();
 		
-		assertEquals("User State was not set to Approver", 'a' ,Application.getUserType());
+		assertEquals("User State was not set to Approver", Type.Approver ,Application.getUserType());
 
 	}
 
@@ -104,7 +104,7 @@ public class LoginAsApproverOrClaimantActivityTest extends
 
 		getInstrumentation().waitForIdleSync();
 		
-		assertEquals("User State was not set to Claimant", 'c' ,Application.getUserType());
+		assertEquals("User State was not set to Claimant", Type.Claimant ,Application.getUserType());
 		
 	}
 

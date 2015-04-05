@@ -2,6 +2,10 @@
  * 	Geolocations can be chosen as a home geolocation for a user,
  * 	while filling out information on a destination (mandatory),
  * 	or while filling out information on an expense item (optional)
+ * 
+ *  Additionally, this activity lets the user view 
+ *  all geolocations stored on the device, when called from the appropriate
+ *  menu option in ClaimListViewActivity 
  *  
  *  Copyright (C) 2015  github.com/RostarSynergistics
  *  
@@ -18,7 +22,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Issues #157, #158
+ * Issues #157, #158, #159
  */
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
@@ -56,6 +60,8 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 	// second means displaying locations stored on the device
 	static public final int SET_GEOLOCATION = 1;
 	static public final int DISPLAY_GEOLOCATIONS = 2;
+	
+	// default geolocation, if the Intent does not contain latitude and longitude
 	private static final Coordinate NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES = new Coordinate(39.03808, 125.7296);
 	
 	private Coordinate coordinate = new Coordinate();
@@ -75,8 +81,11 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// Map initialization taken from the osmdroid bonus pack tutorials
+		// Map initialization and event handling
+		// taken from the osmdroid bonus pack tutorials
 		// at https://code.google.com/p/osmbonuspack/wiki/Tutorial_0
+		// https://code.google.com/p/osmbonuspack/wiki/Tutorial_1
+		// and https://code.google.com/p/osmbonuspack/wiki/Tutorial_5
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map_view);
 		
@@ -103,13 +112,13 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 				mapController.setCenter(startPoint);
 			}
 			else if (requestCode == DISPLAY_GEOLOCATIONS) {
+				// display all geolocations stored on the device 
 				
-				
-				// get all claims
+				// first, get all claims
 				controller = Application.getExpenseClaimController();
 				ExpenseClaimList claimList = controller.getExpenseClaimList();
 				
-				// put home geolocation on map
+				// put home geolocation on map, if there is any
 				GeoPoint startPoint = null;
 				IMapController mapController = map.getController();
 				coordinate = user.getHomeGeolocation();
@@ -124,7 +133,8 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 				// no time to implement Iterable interface!
 				for (int i = 0; i < claimList.getCount(); i++) {
 					ExpenseClaim claim = claimList.getClaim(i);
-					// put destinations' geolocations on the map
+					// next, put destinations' geolocations on the map
+					// there has to be a geolocation for every destination
 					for (Destination dest: claim.getDestinations()) {
 						Coordinate loc = dest.getGeolocation();
 						GeoPoint destPoint = new GeoPoint(loc.getLatitude(), loc.getLongitude());
@@ -135,7 +145,8 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 						destMarker.setSnippet("Destination: " + dest.getName());
 						destMarker.setSubDescription("From claim: " + claim.getName());
 					}
-					//put expense items' geolocations on the map
+					// put expense items' geolocations on the map
+					// an expense item may or may not have a location associated with it
 					for (ExpenseItem item: claim.getExpenseItems()) {
 						Coordinate loc = item.getGeolocation();
 						if (loc != null) {
@@ -149,6 +160,8 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 						}
 					}
 				}
+				
+				// set more or less tolerable zoom factor
 				mapController.setZoom(3);
 				
 				if (startPoint != null) {
@@ -159,6 +172,11 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 					// otherwise, at default location
 					mapController.setCenter(new GeoPoint(0.0, 0.0));
 				}
+				// now, it doesn't really center at those locations.
+				// must be a bug in the library
+				
+				// everything is set up
+				// refresh the map
 				map.invalidate();
 			}
 		}
@@ -184,8 +202,13 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 	}
 
 	/**
-	 * Handle long tap.
-	 * Launch prompt asking user if they want to save the chosen location to the device
+	 * Handle back button press.
+	 * If setting a geolocation,
+	 * launch prompt asking user if they want 
+	 * to save the chosen location to the device
+	 * or come back to the map
+	 * 
+	 * Otherwise, exit the activity
 	 */
 	@Override
 	public void onBackPressed(){
@@ -226,6 +249,7 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 	
 	/**
 	 * Prompt asking user if they want to save the chosen location to the device
+	 * or come back to the map to set a new location
 	 */
 	public AlertDialog askSaveLocation(final double latitude, final double longitude) {
 		// Alert Dialog (Mar 7, 2015):

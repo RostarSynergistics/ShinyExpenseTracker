@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ca.ualberta.cs.shinyexpensetracker.TabbedSummaryActivity" >
+    <item 
+        android:id="@+id/approveClaim" 
+        android:onClick="approveClaimMenuItem" 
+        android:title="@string/approve_claim">
+    </item>
+    <item 
+        android:id="@+id/comment" 
+        android:onClick="commentMenuItem" 
+        android:title="@string/comment">
+    </item>
+    <item 
+        android:id="@+id/returnClaim" 
+        android:onClick="returnClaimMenuItem" 
+        android:title="@string/return_claim">
+    </item>
+
+</menu>

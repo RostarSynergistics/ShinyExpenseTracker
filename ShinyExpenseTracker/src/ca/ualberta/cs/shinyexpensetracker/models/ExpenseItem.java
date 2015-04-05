@@ -21,43 +21,32 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import android.graphics.Bitmap;
+import ca.ualberta.cs.shinyexpensetracker.utilities.Base64BitmapConverter;
 
 /**
- * Houses ExpenseItem Data.  Extends Model
+ * Houses ExpenseItem Data. Extends Model
  * 
- * Has name: String,
- * 	   date: Date,
- * 	   category: enum Category
- *     amountSpent: BigDecimal
- *     currency: enum Currency
- *     description: String
- *     recieptPhoto: Bitmap
+ * Has name: String, date: Date, category: enum Category amountSpent: BigDecimal
+ * currency: enum Currency description: String recieptPhoto: Bitmap
  * 
- *
+ * 
  */
-public class ExpenseItem extends Model <ExpenseItem> {
-	public enum Category { 
-		AIR_FARE("air fare"),
-		GROUND_TRANSPORT("ground transport"),
-		VEHICLE_RENTAL("vehicle rental"),
-		PRIVATE_AUTOMOBILE("private automobile"),
-		FUEL("fuel"),
-		PARKING("parking"),
-		REGISTRATION("registration"),
-		ACCOMODATION("accomodation"),
-		MEAL("meal"),
-		SUPPLIES("supplies");
+public class ExpenseItem extends Model<ExpenseItem> {
+	public enum Category {
+		AIR_FARE("air fare"), GROUND_TRANSPORT("ground transport"), VEHICLE_RENTAL("vehicle rental"), PRIVATE_AUTOMOBILE(
+				"private automobile"), FUEL("fuel"), PARKING("parking"), REGISTRATION("registration"), ACCOMODATION(
+				"accomodation"), MEAL("meal"), SUPPLIES("supplies");
 
 		private final String text;
-		
-		private Category(final String text){
+
+		private Category(final String text) {
 			this.text = text;
 		}
-		
-		public String toString(){
+
+		public String toString() {
 			return this.text;
 		}
-		
+
 		public static Category fromString(String text) {
 			if (text != null) {
 				for (Category c : Category.values()) {
@@ -69,10 +58,11 @@ public class ExpenseItem extends Model <ExpenseItem> {
 			return null;
 		}
 	}
-		
+
 	public enum Currency {
 		CAD, USD, GBP, EUR, CHF, JPY, CNY
 	}
+
 
 	public String name;
 	public Date date;
@@ -83,12 +73,18 @@ public class ExpenseItem extends Model <ExpenseItem> {
 	public Bitmap receiptPhoto;
 	public boolean incompletenessMarker;
 	private Coordinate geolocation;
-	
+	// encoded in Base64
+	private String encodedReceiptPhoto;
+	// temporarily saved to prevent redundant work, but can't be GSON'd
+	private transient Bitmap receiptPhotoBitmap;
+
+
 	public static final boolean COMPLETE = false;
 	public static final boolean INCOMPLETE = true;
-	
+
 	/**
 	 * Generalized constructor.
+	 * 
 	 * @param name
 	 * @param date
 	 * @param category
@@ -131,68 +127,86 @@ public class ExpenseItem extends Model <ExpenseItem> {
 		// Call to more specific constructor
 		this(name, date, category, amountSpent, currency, description, null, null, false);
 	}
-	
-	public ExpenseItem(String name, Date date, Category category,
-			BigDecimal amount, Currency currency) {
+
+	public ExpenseItem(String name, Date date, Category category, BigDecimal amount, Currency currency) {
 		// Call to more specific constructor
 		this(name, date, category, amount, currency, "", null, null, false);
 	}
 
-	public void setName(String name){
+	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public String getName(){
+
+	public String getName() {
 		return this.name;
 	}
 
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
-	public Date getDate(){
+
+	public Date getDate() {
 		return this.date;
 	}
-	
-	public void setDescription(String description){
+
+	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	public String getDescription(){
+
+	public String getDescription() {
 		return this.description;
 	}
-	
-	public void setCategory(Category category){
+
+	public void setCategory(Category category) {
 		this.category = category;
 	}
 
-	public Category getCategory(){
+	public Category getCategory() {
 		return this.category;
 	}
-	
-	public void setAmountSpent(BigDecimal amountSpent){
+
+	public void setAmountSpent(BigDecimal amountSpent) {
 		this.amountSpent = amountSpent;
 	}
-	
-	public BigDecimal getAmountSpent(){
+
+	public BigDecimal getAmountSpent() {
 		return this.amountSpent;
 	}
-	
-	public void setCurrency(Currency currency){
+
+	public void setCurrency(Currency currency) {
 		this.currency = currency;
 	}
-	
-	public Currency getCurrency(){
+
+	public Currency getCurrency() {
 		return this.currency;
 	}
-	
-	public void setReceiptPhoto(Bitmap photo) {
-		this.receiptPhoto = photo;
-		notifyViews();
+
+	public String getEncodedReceiptPhoto() {
+		return this.encodedReceiptPhoto;
 	}
-	
-	public Bitmap getReceiptPhoto(){
-		return this.receiptPhoto;
+
+	public Bitmap getReceiptPhoto() {
+		if (this.receiptPhotoBitmap == null) {
+			if (this.encodedReceiptPhoto == null) {
+				return null;
+			} else {
+				this.receiptPhotoBitmap = Base64BitmapConverter.convertFromBase64(this.encodedReceiptPhoto);
+			}
+		}
+
+		return this.receiptPhotoBitmap;
+	}
+
+	public void setReceiptPhoto(Bitmap photo) {
+		if (photo == null) {
+			this.receiptPhotoBitmap = null;
+			this.encodedReceiptPhoto = null;
+		} else {
+			this.receiptPhotoBitmap = photo;
+			this.encodedReceiptPhoto = Base64BitmapConverter.convertToBase64(photo);
+		}
+
+		notifyViews();
 	}
 
 	public Coordinate getGeolocation() {
@@ -205,19 +219,16 @@ public class ExpenseItem extends Model <ExpenseItem> {
 
 	// XXX: #69 <- This should return the formatted JodaMoney string
 	public String getValueString() {
-		return new StringBuilder()
-					.append(getAmountSpent())
-					.append(" ")
-					.append(getCurrency().toString())
-			.toString();
+		return new StringBuilder().append(getAmountSpent()).append(" ").append(getCurrency().toString()).toString();
 	}
 
 	/**
-	 * returns true is expenseItem has a receipt
-	 * @return
+	 * Returns true if the ExpenseItem has an attached receipt photo.
+	 * 
+	 * @return true if an attached receipt photo exists, false otherwise.
 	 */
-	public boolean doesHavePhoto() {
-		return this.receiptPhoto != null;
+	public boolean hasAnAttachedReceipt() {
+		return this.encodedReceiptPhoto != null;
 	}
 
 	@Override
@@ -270,25 +281,27 @@ public class ExpenseItem extends Model <ExpenseItem> {
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
-	
+
 	/**
-	 * Sets the incompleteness markers. You should use ExpenseItem.COMPLETE
-	 * or ExpenseItem.INCOMPLETE for clarity.
-	 * @param isIncomplete boolean value representing the completeness of
-	 * the claim. This is marked manually by the user through the UI.
+	 * Sets the incompleteness markers. You should use ExpenseItem.COMPLETE or
+	 * ExpenseItem.INCOMPLETE for clarity.
+	 * 
+	 * @param isIncomplete
+	 *            boolean value representing the completeness of the claim. This
+	 *            is marked manually by the user through the UI.
 	 */
 	public void setIncompletenessMarker(boolean isIncomplete) {
 		incompletenessMarker = isIncomplete;
 		notifyViews();
 	}
-	
+
 	/**
 	 * @return true if the expense is marked incomplete, false otherwise.
 	 */
 	public boolean getIsMarkedIncomplete() {
 		return incompletenessMarker;
 	}
-	
+
 	/**
 	 * Toggles the incompleteness marker
 	 */
@@ -299,5 +312,5 @@ public class ExpenseItem extends Model <ExpenseItem> {
 			setIncompletenessMarker(INCOMPLETE);
 		}
 	}
-	
+
 }

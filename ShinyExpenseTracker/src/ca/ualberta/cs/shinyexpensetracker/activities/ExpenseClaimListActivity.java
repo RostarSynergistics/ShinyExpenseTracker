@@ -37,6 +37,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.adapters.ClaimListAdapter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
@@ -45,6 +46,7 @@ import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
+import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
 
 public class ExpenseClaimListActivity 
 	extends Activity 
@@ -80,8 +82,14 @@ public class ExpenseClaimListActivity
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Intent intent = new Intent(ExpenseClaimListActivity.this,
-						TabbedSummaryActivity.class);
+				Intent intent;
+				if (Application.getUserType().equals(Type.Claimant)) {
+					intent = new Intent(ExpenseClaimListActivity.this,
+						TabbedSummaryClaimantActivity.class);
+				} else {
+					intent = new Intent(ExpenseClaimListActivity.this,
+						TabbedSummaryApproverActivity.class);
+				}
 				intent.putExtra("claimIndex", position);
 				startActivity(intent);
 
@@ -156,6 +164,8 @@ public class ExpenseClaimListActivity
 			double longitude = data.getDoubleExtra("longitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
 			homeGeolocation.setLatitude(latitude);
 			homeGeolocation.setLongitude(longitude);
+			TextView homeGeolocationValue = (TextView) findViewById(R.id.homeGeolocationValueTextView);
+			homeGeolocationValue.setText(homeGeolocation.toString());
 		}
 	}
 	

@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.AddDestinationActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.fragments.DestinationListFragment;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
@@ -29,7 +30,7 @@ import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersist
  * of destinations in the summary page.
  */
 public class DestinationListFragmentTest extends
-	ActivityInstrumentationTestCase2<TabbedSummaryActivity> {
+	ActivityInstrumentationTestCase2<TabbedSummaryClaimantActivity> {
 	
 	static DestinationListFragment frag;
 	TabbedSummaryActivity activity;
@@ -38,12 +39,12 @@ public class DestinationListFragmentTest extends
 	private ExpenseClaimController controller;
 	private Destination destination;
 
-	public DestinationListFragmentTest(Class<TabbedSummaryActivity> activityClass) {
+	public DestinationListFragmentTest(Class<TabbedSummaryClaimantActivity> activityClass) {
 		super(activityClass);
 	}
 	
 	public DestinationListFragmentTest() {
-		super(TabbedSummaryActivity.class);
+		super(TabbedSummaryClaimantActivity.class);
 	}
 	
 	/**

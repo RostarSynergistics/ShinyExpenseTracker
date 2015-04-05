@@ -39,6 +39,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.adapters.ClaimListAdapter;
+import ca.ualberta.cs.shinyexpensetracker.decorators.ExpenseClaimSortFilter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.IView;
@@ -64,6 +65,9 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 		// Set the list view to receive updates from the model
 		final ListView claim_list = (ListView) findViewById(R.id.expense_claim_list);
 		adapter = new ClaimListAdapter(this);
+		// Ensure the adapter is sorted.
+		adapter.applyFilter(new ExpenseClaimSortFilter());
+		
 		claim_list.setAdapter(adapter);
 
 		claim_list.setOnItemClickListener(new OnItemClickListener() {

@@ -48,6 +48,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
+import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 public class ViewAllExpenseClaimsActivityTests extends
@@ -314,9 +315,9 @@ public class ViewAllExpenseClaimsActivityTests extends
 	 * See #91 for details.
 	 */
 	public void testCrashOnNewExpense() {
-		// this test is causing test runs to crash
-		// TODO: Fix it! (see GH#173)
-		fail();
+		// TabbedSummary has split in 2. We need a way
+		// to specify which one we're looking for.
+		Application.setUserType(Type.Claimant);
 		
 		// Monitor for AddExpenseClaimActivity
 		ActivityMonitor claimMonitor = getInstrumentation().addMonitor(ExpenseClaimActivity.class.getName(), null, false);
@@ -329,7 +330,13 @@ public class ViewAllExpenseClaimsActivityTests extends
 		assertEquals(true, getInstrumentation().checkMonitorHit(claimMonitor, 1));
 		
 		getInstrumentation().waitForIdleSync();
-		
+
+		// Monitor for TabbedSummaryActivity (Claimant version)
+		// This should be before the action that opens the activity is induced.
+		ActivityMonitor summaryMonitor = getInstrumentation().addMonitor(TabbedSummaryClaimantActivity.class.getName(),
+				null,
+				false);
+
 		// Fill in the data
 		createClaim.runOnUiThread(new Runnable() {
 			
@@ -350,14 +357,11 @@ public class ViewAllExpenseClaimsActivityTests extends
 				
 			}
 		});
-		
+
 		getInstrumentation().waitForIdleSync();
-		
-		// Monitor for TabbedSummaryActivity
-		ActivityMonitor summaryMonitor = getInstrumentation().addMonitor(TabbedSummaryClaimantActivity.class.getName(), null, false);
-		
+
 		// Get the summary activity
-		TabbedSummaryActivity summaryActivity = (TabbedSummaryActivity) getInstrumentation().waitForMonitorWithTimeout(summaryMonitor, 1000);
+		TabbedSummaryActivity summaryActivity = (TabbedSummaryClaimantActivity) getInstrumentation().waitForMonitorWithTimeout(summaryMonitor, 1000);
 		assertEquals(true, getInstrumentation().checkMonitorHit(summaryMonitor, 1));
 		
 		// Close the summary
@@ -377,7 +381,7 @@ public class ViewAllExpenseClaimsActivityTests extends
 		});
 		
 		// Get the summary activity
-		summaryActivity = (TabbedSummaryActivity) getInstrumentation().waitForMonitorWithTimeout(summaryMonitor, 1000);
+		summaryActivity = (TabbedSummaryClaimantActivity) getInstrumentation().waitForMonitorWithTimeout(summaryMonitor, 1000);
 		assertEquals(true, getInstrumentation().checkMonitorHit(summaryMonitor, 1));
 		
 		// Monitor for ExpenseItemActivity

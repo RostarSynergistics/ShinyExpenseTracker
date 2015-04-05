@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import ca.ualberta.cs.shinyexpensetracker.decorators.ExpenseClaimFilter;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
 /**
  * This object does not apply any filters. This is useful
@@ -14,10 +13,6 @@ public class MockClaimFilterAll extends ExpenseClaimFilter {
 	private int lastIndex = 0;
 	private boolean returnedClaims = false;
 	private boolean gotCount = false;
-
-	public MockClaimFilterAll(ExpenseClaimList source) {
-		super(source);
-	}
 
 	public ExpenseClaim getClaim(int index) {
 		lastIndex = index;

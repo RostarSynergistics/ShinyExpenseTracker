@@ -116,13 +116,13 @@ public class ClaimListAdapterTest extends AndroidTestCase {
 	 * Checks that filtering can be done on the ExpenseClaimList
 	 */
 	public void testApplyFilter() {
-		adapter.applyFilter(MockClaimFilterNone.class);
+		adapter.applyFilter(new MockClaimFilterNone());
 		addClaim(new ExpenseClaim("Test Claim"));
 		
 		assertEquals("testClaim was filtered", 1, adapter.getCount());
 
-		adapter.applyFilter(MockClaimFilterAll.class);
-		adapter.applyFilter(MockClaimFilterNone.class);
+		adapter.applyFilter(new MockClaimFilterAll());
+		adapter.applyFilter(new MockClaimFilterNone());
 		
 		assertEquals("testClaim was not filtered", 0, adapter.getCount());
 		

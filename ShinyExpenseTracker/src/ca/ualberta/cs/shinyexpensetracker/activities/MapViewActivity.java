@@ -40,7 +40,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
+import ca.ualberta.cs.shinyexpensetracker.models.Destination;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+import ca.ualberta.cs.shinyexpensetracker.models.User;
 
 public class MapViewActivity extends Activity implements MapEventsReceiver {
 
@@ -55,6 +62,8 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 	private int requestCode;
 	private MapView map;
 	private Marker lastMarker = null;
+	private User user = Application.getUser();
+	private ExpenseClaimController controller;
 	
 	public Coordinate getCoordinate() {
 		return coordinate;
@@ -71,26 +80,78 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map_view);
 		
+		map = (MapView) findViewById(R.id.map);
+		map.setTileSource(TileSourceFactory.MAPNIK);
+		map.setBuiltInZoomControls(true);
+		map.setMultiTouchControls(true);
+		
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
 		if (bundle != null) {
-			double latitude = intent.getDoubleExtra("latitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
-			double longitude = intent.getDoubleExtra("longitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
-			coordinate.setLatitude(latitude);
-			coordinate.setLongitude(longitude);
 			requestCode = intent.getIntExtra("requestCode", 0);
-			map = (MapView) findViewById(R.id.map);
-			map.setTileSource(TileSourceFactory.MAPNIK);
-			map.setBuiltInZoomControls(true);
-			map.setMultiTouchControls(true);
+			if (requestCode == SET_GEOLOCATION) {
+				double latitude = intent.getDoubleExtra("latitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
+				double longitude = intent.getDoubleExtra("longitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
+				coordinate.setLatitude(latitude);
+				coordinate.setLongitude(longitude);
 
-			MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(this, this);
-			map.getOverlays().add(0, mapEventsOverlay);
-			
-			GeoPoint startPoint = new GeoPoint(coordinate.getLatitude(), coordinate.getLongitude());
-			IMapController mapController = map.getController();
-			mapController.setZoom(18);
-			mapController.setCenter(startPoint);
+				MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(this, this);
+				map.getOverlays().add(0, mapEventsOverlay);
+				
+				GeoPoint startPoint = new GeoPoint(coordinate.getLatitude(), coordinate.getLongitude());
+				IMapController mapController = map.getController();
+				mapController.setZoom(18);
+				mapController.setCenter(startPoint);
+			}
+			else if (requestCode == DISPLAY_GEOLOCATIONS) {
+				// get all claims
+				controller = Application.getExpenseClaimController();
+				ExpenseClaimList claimList = controller.getExpenseClaimList();
+				
+				// put home geolocation on map
+				GeoPoint startPoint = null;
+				IMapController mapController = map.getController();
+				coordinate = user.getHomeGeolocation();
+				if (coordinate != null) {
+					startPoint = new GeoPoint(coordinate.getLatitude(), coordinate.getLongitude());
+					Marker newMarker = new Marker(map);
+					newMarker.setPosition(startPoint);
+					newMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+				}
+				// no time to implement Iterable interface!
+				for (int i = 0; i < claimList.getCount(); i++) {
+					ExpenseClaim claim = claimList.getClaim(i);
+					// put destinations' geolocations on the map
+					for (Destination dest: claim.getDestinations()) {
+						Coordinate loc = dest.getGeolocation();
+						GeoPoint destPoint = new GeoPoint(loc.getLatitude(), loc.getLongitude());
+						Marker destMarker = new Marker(map);
+						destMarker.setPosition(destPoint);
+						destMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+					}
+					//put expense items' geolocations on the map
+					for (ExpenseItem item: claim.getExpenseItems()) {
+						Coordinate loc = item.getGeolocation();
+						if (loc != null) {
+							GeoPoint itemPoint = new GeoPoint(loc.getLatitude(), loc.getLongitude());
+							Marker itemMarker = new Marker(map);
+							itemMarker.setPosition(itemPoint);
+							itemMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+						}
+					}
+				}
+				
+				mapController.setZoom(7);
+				
+				if (startPoint != null) {
+					// center at home geolocation, if there is any
+					mapController.setCenter(startPoint);
+				}
+				else {
+					// otherwise, at default location
+					mapController.setCenter(new GeoPoint(0.0, 0.0));
+				}
+			}
 		}
 	}
 

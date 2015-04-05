@@ -53,6 +53,7 @@ public class ExpenseClaimListActivity
 	extends Activity 
 	implements IView<ExpenseClaimList> {
 	private static final int SET_GEOLOCATION = 1;
+	static public final int DISPLAY_GEOLOCATIONS = 2;
 	private static final Coordinate NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES = new Coordinate(39.03808, 125.7296);
 	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
@@ -153,6 +154,12 @@ public class ExpenseClaimListActivity
 			Intent geolocationViewIntent = new Intent(ExpenseClaimListActivity.this,
 					GeolocationViewActivity.class);
 			startActivityForResult(geolocationViewIntent, SET_GEOLOCATION);
+			return true;
+		case R.id.display_geolocations_on_map:
+			Intent geolocationMapViewIntent = new Intent(ExpenseClaimListActivity.this,
+					MapViewActivity.class);
+			geolocationMapViewIntent.putExtra("requestCode", DISPLAY_GEOLOCATIONS);
+			startActivityForResult(geolocationMapViewIntent, DISPLAY_GEOLOCATIONS);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

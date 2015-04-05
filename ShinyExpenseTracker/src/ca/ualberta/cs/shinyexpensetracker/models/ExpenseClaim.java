@@ -253,7 +253,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	 *            to be removed
 	 * @return boolean if the tag was removed
 	 */
-	public boolean removedTag(Tag tag) {
+	public boolean removeTag(Tag tag) {
 		return tagList.removeTag(tag);
 	}
 

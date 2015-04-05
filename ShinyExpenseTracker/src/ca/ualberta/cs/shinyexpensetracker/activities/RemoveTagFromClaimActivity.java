@@ -1,6 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import android.annotation.SuppressLint;
@@ -23,7 +24,6 @@ import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.IView;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 
@@ -143,19 +143,19 @@ public class RemoveTagFromClaimActivity extends Activity implements IView<TagLis
 		// that is clicked or not
 		SparseBooleanArray clicked = manageTags.getCheckedItemPositions();
 
-		ExpenseClaim claim = expenseClaimController.getExpenseClaimByID(claimID);
+		ArrayList<Tag> tagsToRemove = new ArrayList<Tag>();
 
 		// Goes through the list and removes the tags that were checked
 		for (int i = manageTags.getCount(); i >= 0; i--) {
 			// Checks the sparse boolean array for the tags clicked
 			if (clicked.get(i)) {
 				Tag tag = (Tag) manageTags.getItemAtPosition(i);
-				claim.removedTag(tag);
+				tagsToRemove.add(tag);
 			}
 		}
 
 		try {
-			expenseClaimController.update();
+			expenseClaimController.removeTagsFromClaim(claimID, tagsToRemove);
 		} catch (IOException e) {
 
 			e.printStackTrace();

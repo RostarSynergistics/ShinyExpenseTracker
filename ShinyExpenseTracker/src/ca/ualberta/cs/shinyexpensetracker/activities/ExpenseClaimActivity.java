@@ -63,7 +63,7 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 
 		Intent intent = getIntent();
 		claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
-		
+
 		if (claimID != null) {
 			claim = controller.getExpenseClaimByID(claimID);
 			displayExpenseClaim(claim);
@@ -154,7 +154,8 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 
 			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which) {}
+				public void onClick(DialogInterface dialog, int which) {
+				}
 			});
 			alertDialog = adb.create();
 			alertDialog.show();
@@ -169,7 +170,8 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 			adb.setCancelable(true);
 			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which) {}
+				public void onClick(DialogInterface dialog, int which) {
+				}
 			});
 			alertDialog = adb.create();
 			alertDialog.show();
@@ -184,7 +186,8 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 			adb.setCancelable(true);
 			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which) {}
+				public void onClick(DialogInterface dialog, int which) {
+				}
 			});
 			alertDialog = adb.create();
 			alertDialog.show();
@@ -198,7 +201,8 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 			adb.setMessage("Start Date cannot be set to after the End Date");
 			adb.setCancelable(true);
 			adb.setNeutralButton("Back", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {}
+				public void onClick(DialogInterface dialog, int which) {
+				}
 			});
 			alertDialog = adb.create();
 			alertDialog.show();
@@ -209,10 +213,7 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 			if (claimID == null) {
 				claim = controller.addExpenseClaim(name, startDate, endDate);
 			} else {
-				claim.setName(name);
-				claim.setStartDate(startDate);
-				claim.setEndDate(endDate);
-				controller.update();
+				claim = controller.updateExpenseClaim(claim.getID(), name, startDate, endDate);
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);

@@ -358,20 +358,10 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		}
 
 		if (isEditing) {
-			// Update the existing expense
-			item.setName(name);
-			item.setDate(date);
-			item.setCategory(category);
-			item.setAmountSpent(amount);
-			item.setCurrency(currency);
-			item.setDescription(description);
-			item.setReceiptPhoto(bm);
-
-			controller.update();
+			controller.updateExpenseItemOnClaim(claim.getID(), item.getID(), name, date, category, amount, currency,
+					description, bm);
 		} else {
-			// Add a new expense
-			ExpenseItem expense = new ExpenseItem(name, date, category, amount, currency, description, bm);
-			claim.addExpense(expense);
+			controller.addExpenseItemToClaim(claim.getID(), name, date, category, amount, currency, description, bm);
 		}
 
 		return true;

@@ -41,4 +41,24 @@ public class ExpenseClaimControllerTests extends TestCase {
 
 		assertTrue("Persister's .save() wasn't called.", persister.wasSaveCalled());
 	}
+
+	public void testThatUpdatingAnExistingExpenseClaimWorks() throws IOException {
+		ExpenseClaim oldClaim = new ExpenseClaim("FooBar", new Date(6000), new Date(7000));
+		claimList.addClaim(oldClaim);
+
+		final String name = "Baz";
+		final Date startDate = new Date(8000);
+		final Date endDate = new Date(9000);
+
+		ExpenseClaim claim = controller.updateExpenseClaim(oldClaim.getID(), name, startDate, endDate);
+
+		assertNotNull(claim);
+		assertEquals(claimList.getCount(), 1);
+		assertEquals(claim, claimList.getClaimAtPosition(0));
+		assertEquals(name, claim.getName());
+		assertEquals(startDate, claim.getStartDate());
+		assertEquals(endDate, claim.getEndDate());
+
+		assertTrue("Persister's .save() wasn't called.", persister.wasSaveCalled());
+	}
 }

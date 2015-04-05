@@ -1,14 +1,20 @@
 package ca.ualberta.cs.shinyexpensetracker.framework;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.persistence.FilePersistenceStrategy;
 import ca.ualberta.cs.shinyexpensetracker.persistence.GsonExpenseClaimListPersister;
@@ -97,23 +103,92 @@ public class ExpenseClaimController {
 		persister.saveExpenseClaims(claimList);
 	}
 
-	public void updateExpenseClaim(UUID id, String name, Date startDate, Date endDate) throws IOException {
-		// NYI
+	public ExpenseClaim updateExpenseClaim(UUID id, String name, Date startDate, Date endDate) throws IOException {
+		ExpenseClaim claim = claimList.getClaimByID(id);
+
+		claim.setName(name);
+		claim.setStartDate(startDate);
+		claim.setEndDate(endDate);
+
 		persister.saveExpenseClaims(claimList);
+		return claim;
 	}
 
-	public void updateExpenseClaimStatus(UUID id, ExpenseClaim.Status status) throws IOException {
-		// NYI
+	public ExpenseClaim updateExpenseClaimStatus(UUID id, ExpenseClaim.Status status) throws IOException {
+		ExpenseClaim claim = claimList.getClaimByID(id);
+		claim.setStatus(status);
 		persister.saveExpenseClaims(claimList);
+		return claim;
 	}
 
-	public void addDestinationToClaim(UUID id, String name, String reasonForTravel) throws IOException {
-		// NYI
+	public Destination addDestinationToClaim(UUID claimID, String name, String reasonForTravel) throws IOException {
+		ExpenseClaim claim = claimList.getClaimByID(claimID);
+		Destination destination = new Destination(name, reasonForTravel);
+		claim.addDestination(destination);
 		persister.saveExpenseClaims(claimList);
+		return destination;
 	}
 
-	public void update() throws IOException {
+	public Destination updateDestinationOnClaim(UUID claimID, UUID destinationID, String name, String reasonForTravel)
+			throws IOException {
+		ExpenseClaim claim = claimList.getClaimByID(claimID);
+		Destination destination = claim.getDestinationByID(destinationID);
+
+		destination.setName(name);
+		destination.setReasonForTravel(reasonForTravel);
+
 		persister.saveExpenseClaims(claimList);
+		return destination;
+	}
+
+	public ExpenseItem addExpenseItemToClaim(UUID claimID, String name, Date date, Category category, BigDecimal amountSpent, Currency currency, String description, Bitmap photo)
+			throws IOException {
+		ExpenseClaim claim = claimList.getClaimByID(claimID);
+		ExpenseItem item = new ExpenseItem(name, date, category, amountSpent, currency, description, photo);
+
+		claim.addExpense(item);
+
+		persister.saveExpenseClaims(claimList);
+		return item;
+	}
+
+	public ExpenseItem updateExpenseItemOnClaim(UUID claimID, UUID expenseItemID, String name, Date date, Category category, BigDecimal amountSpent, Currency currency, String description, Bitmap photo)
+			throws IOException {
+		ExpenseClaim claim = claimList.getClaimByID(claimID);
+		ExpenseItem item = claim.getExpenseItemByID(expenseItemID);
+
+		item.setName(name);
+		item.setDate(date);
+		item.setCategory(category);
+		item.setAmountSpent(amountSpent);
+		item.setCurrency(currency);
+		item.setDescription(description);
+		item.setReceiptPhoto(photo);
+
+		persister.saveExpenseClaims(claimList);
+		return item;
+	}
+
+	public ExpenseClaim addTagsToClaim(UUID claimID, List<Tag> tags) throws IOException {
+		ExpenseClaim claim = claimList.getClaimByID(claimID);
+
+		for (Tag tag : tags) {
+			claim.addTag(tag);
+		}
+
+		persister.saveExpenseClaims(claimList);
+		return claim;
+	}
+
+	public ExpenseClaim removeTagsFromClaim(UUID claimID, List<Tag> tags) throws IOException {
+		ExpenseClaim claim = claimList.getClaimByID(claimID);
+
+		for (Tag tag : tags) {
+			claim.removeTag(tag);
+		}
+
+		persister.saveExpenseClaims(claimList);
+		return claim;
 	}
 
 	/**
@@ -139,16 +214,6 @@ public class ExpenseClaimController {
 	 */
 	public ExpenseClaimList getExpenseClaimList() {
 		return claimList;
-	}
-
-	/**
-	 * Adds an expenseItem to the claims (gotten by index) expenseItemsList
-	 * 
-	 * @param expense
-	 * @param index
-	 */
-	public void addExpenseItem(ExpenseItem expense, int index) {
-		claimList.getClaimAtPosition(index).addExpense(expense);
 	}
 
 	/**

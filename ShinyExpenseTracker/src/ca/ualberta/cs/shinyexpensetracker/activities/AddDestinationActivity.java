@@ -115,15 +115,11 @@ public class AddDestinationActivity extends Activity {
 
 		if (destination == null) {
 			// If new, create a new one
-			destination = new Destination(dest, reason);
-			claim.addDestination(destination);
+			destination = controller.addDestinationToClaim(claimID, dest, reason);
 		} else {
 			// If old, update the data.
-			destination.setName(dest);
-			destination.setReasonForTravel(reason);
+			destination = controller.updateDestinationOnClaim(claimID, destinationID, dest, reason);
 		}
-
-		controller.update();
 
 		return true;
 	}

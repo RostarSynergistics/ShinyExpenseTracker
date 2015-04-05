@@ -1,8 +1,10 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.UUID;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -24,7 +26,6 @@ import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.framework.TagController;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 
@@ -108,6 +109,7 @@ public class AddTagToClaimActivity extends Activity implements IView<TagList> {
 	 * 
 	 * @return true if added correctly
 	 */
+	@SuppressLint("InflateParams")
 	private boolean addTagsToClaimDialog() {
 		// Creating the dialog. Reusing the delete tag dialog
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -154,19 +156,19 @@ public class AddTagToClaimActivity extends Activity implements IView<TagList> {
 		// that is clicked or not
 		SparseBooleanArray clicked = manageTags.getCheckedItemPositions();
 
-		ExpenseClaim claim = expenseClaimController.getExpenseClaimByID(claimID);
+		ArrayList<Tag> tagsToAdd = new ArrayList<Tag>();
 
 		// Goes through the list and adds the tags that were checked
 		for (int i = manageTags.getCount(); i >= 0; i--) {
 			// Checks the sparse boolean array for the tags clicked
 			if (clicked.get(i)) {
 				Tag tag = (Tag) manageTags.getItemAtPosition(i);
-				claim.addTag(tag);
+				tagsToAdd.add(tag);
 			}
 		}
 
 		try {
-			expenseClaimController.update();
+			expenseClaimController.addTagsToClaim(claimID, tagsToAdd);
 		} catch (IOException e) {
 
 			e.printStackTrace();

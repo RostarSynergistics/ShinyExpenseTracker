@@ -12,18 +12,6 @@ public interface ExpenseClaimListViewer {
 	abstract public ExpenseClaim getClaim(int index);
 
 	/**
-	 * Adds a claim to the claimList
-	 * @param claim
-	 */
-	abstract public void addClaim(ExpenseClaim claim);
-
-	/**
-	 * deletes a claim from the claimList
-	 * @param claim
-	 */
-	abstract public void removeClaim(ExpenseClaim claim);
-
-	/**
 	 * returns array list of claims
 	 * @return
 	 */
@@ -34,12 +22,5 @@ public interface ExpenseClaimListViewer {
 	 * @return
 	 */
 	abstract public int getCount();
-
-	/**
-	 * Replaces the old claim with the new claim.
-	 * @param oldClaim
-	 * @param newClaim
-	 */
-	abstract public void updateExpenseClaim(ExpenseClaim oldClaim, ExpenseClaim newClaim);
 
 }

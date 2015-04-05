@@ -19,6 +19,14 @@ public class ExpenseClaimList extends Model<ExpenseClaimList> implements Expense
 		return claims.get(index);
 	}
 	
+	public ArrayList<ExpenseClaim> getClaims() {
+		return claims;
+	}
+	
+	public int getCount() {
+		return this.claims.size();
+	}
+	
 	public void addClaim(ExpenseClaim claim) {
 		claims.add(claim);
 		notifyViews();
@@ -27,14 +35,6 @@ public class ExpenseClaimList extends Model<ExpenseClaimList> implements Expense
 	public void removeClaim(ExpenseClaim claim) {
 		claims.remove(claim);
 		notifyViews();
-	}
-	
-	public ArrayList<ExpenseClaim> getClaims() {
-		return claims;
-	}
-	
-	public int getCount() {
-		return this.claims.size();
 	}
 	
 	public void updateExpenseClaim(ExpenseClaim oldClaim, ExpenseClaim newClaim) {

@@ -11,19 +11,18 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
  * This decorator sorts the claim list that is being used.
  */
 public class ExpenseClaimSortFilter extends ExpenseClaimFilter {
-	// This treeset is updated when values are added or removed
-	// from the source object.
 	
 	private ArrayList<ExpenseClaim> cachedClaims;
 	
 	// Comparator for returning descending order
 	private static final Comparator<ExpenseClaim> DESC_ORDER =
-		new Comparator<ExpenseClaim>() {
-			public int compare(ExpenseClaim lhs, ExpenseClaim rhs) {
-				return rhs.compareTo(lhs);
+			new Comparator<ExpenseClaim>() {
+				public int compare(ExpenseClaim lhs, ExpenseClaim rhs) {
+					return rhs.compareTo(lhs);
+				};
 			};
-		};
-		
+	
+	
 	public ExpenseClaimSortFilter(ExpenseClaimList source) {
 		super(source);
 	}

@@ -13,9 +13,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.decorators.ExpenseClaimFilter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
-import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
 /** 
  * This class extends the BaseAdapter to display and sort
@@ -24,23 +25,25 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 public class ClaimListAdapter extends BaseAdapter {
 	private final SimpleDateFormat dateFormat;
 	private final Context context;
-	private ExpenseClaimController controller;
+	private ExpenseClaimList claims;
+	private ExpenseClaimList filteredClaims;
 	
 	public ClaimListAdapter(Context context) {
 		super();
 		this.dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
 		this.context = context;
-		this.controller = Application.getExpenseClaimController();
+		this.claims = Application.getExpenseClaimController().getExpenseClaimList();
+		this.filteredClaims = claims;
 	}
 
 	@Override
 	public int getCount() {
-		return controller.getCount();
+		return filteredClaims.getCount();
 	}
 
 	@Override
 	public ExpenseClaim getItem(int position) {
-		return controller.getExpenseClaim(position);
+		return filteredClaims.getClaim(position);
 	}
 
 	@Override
@@ -132,22 +135,32 @@ public class ClaimListAdapter extends BaseAdapter {
 		}
 	}
 	
-	@Override
-	public void notifyDataSetChanged() {
-		super.notifyDataSetChanged();
-		makeSortedList();
-	}
-
 	/**
-	 * sorts the list of claims
+	 * Filters the claim list adapter.  
+	 * 
+	 * The supplied filter must be a class of an ExpenseClaimFilter
+	 * object.
+	 * 
+	 * example:
+	 * 		adapter.applyFilter( ExpenseClaimSortFilter.class );
+	 * 
+	 * @param filter the ExpenseClaimFilter class to apply.
 	 */
-	private void makeSortedList() {
-		// FIXME
-		
-		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! //
-		// DO NOT MERGE THIS BRANCH UNTIL THIS IS ADDRESSED //
-		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! //
-		
-		// controller.sort();
+	public void applyFilter(Class<? extends ExpenseClaimFilter> filter) {
+		try {
+			filteredClaims = filter.getDeclaredConstructor(ExpenseClaimList.class).newInstance(filteredClaims);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		notifyDataSetChanged();
+	}
+	
+	/**
+	 * Clears any filters that were added by applyFilter
+	 */
+	public void clearFilters() {
+		filteredClaims = claims;
+		notifyDataSetChanged();
 	}
 }

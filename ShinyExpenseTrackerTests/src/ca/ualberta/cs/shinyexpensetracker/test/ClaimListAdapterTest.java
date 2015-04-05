@@ -8,6 +8,8 @@ import ca.ualberta.cs.shinyexpensetracker.adapters.ClaimListAdapter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockClaimFilterAll;
+import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockClaimFilterNone;
 
 /**
  * Test suite for the ClaimAdapter. This
@@ -111,73 +113,22 @@ public class ClaimListAdapterTest extends AndroidTestCase {
 	}
 	
 	/**
-	 * Checks that the claims are sorted.
-	 * XXX Should this be tested only in ViewAllExpenseClaims?
+	 * Checks that filtering can be done on the ExpenseClaimList
 	 */
-	public void testItemsSorted() {
-		ExpenseClaim[] testingClaims = {
-				new ExpenseClaim("Old Claim", new Date(1000)),
-				new ExpenseClaim("Mid Claim", new Date(2000)),
-				new ExpenseClaim("New Claim", new Date(3000)),
-		};
-		int numTests = 0;
-
-		// Check that our test case items compare correctly
-		// -- Equality Cases
-		assertEquals(0, testingClaims[0].compareTo(testingClaims[0]));
-		assertEquals(0, testingClaims[1].compareTo(testingClaims[1]));
-		assertEquals(0, testingClaims[2].compareTo(testingClaims[2]));
-		// -- Inequality Cases
-		assertEquals(-1, testingClaims[0].compareTo(testingClaims[1]));
-		assertEquals(-1, testingClaims[0].compareTo(testingClaims[2]));
-		assertEquals(-1, testingClaims[1].compareTo(testingClaims[2]));
-		// -- Greater-than tests are done in the loop.
-
-		// Iterate through all permutations
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				for (int k = 0; k < 3; k++) {
-					// Skip tests with equality--
-					// These depend on stability of sort 
-					if (i==j || j == k || i == k) {
-						continue;
-					}
-					
-					// Count tests actually executed
-					numTests++;
-					
-					// Build up our list
-					addClaim(testingClaims[i]);
-					addClaim(testingClaims[j]);
-					addClaim(testingClaims[k]);
-
-					// Sanity check: 3 items in the list
-					assertEquals(3, controller.getCount());
-					
-					// check index 0 is newer than index 1
-					assertEquals("Comparison failed. Wanted <" + adapter.getItem(0) + "> newer than <" + adapter.getItem(1) + ">;",
-							1, adapter.getItem(0).compareTo(adapter.getItem(1)));
-					
-					// Can skip 0 > 2 by transitivity.
-					// Leave it in as a sanity check.
-					assertEquals("Comparison failed. Wanted <" + adapter.getItem(0) + "> newer than <" + adapter.getItem(2) + ">;",
-							1, adapter.getItem(0).compareTo(adapter.getItem(2)));
-					
-					// check index 1 is newer than index 2
-					assertEquals("Comparison failed. Wanted <" + adapter.getItem(1) + "> newer than <" + adapter.getItem(2) + ">;",
-							1, adapter.getItem(1).compareTo(adapter.getItem(2)));
-
-					// Reset the test
-					// --> Can't replace the ClaimList because we'll lose
-					// 	   lose observers
-					removeClaim(testingClaims[i]);
-					removeClaim(testingClaims[j]);
-					removeClaim(testingClaims[k]);
-				}
-			}
-		}
+	public void testApplyFilter() {
+		adapter.applyFilter(MockClaimFilterNone.class);
+		addClaim(new ExpenseClaim("Test Claim"));
 		
-		// Sanity check: make sure we run all permutations
-		assertEquals(6, numTests);
+		assertEquals("testClaim was filtered", 1, adapter.getCount());
+
+		adapter.applyFilter(MockClaimFilterAll.class);
+		adapter.applyFilter(MockClaimFilterNone.class);
+		
+		assertEquals("testClaim was not filtered", 0, adapter.getCount());
+		
+		adapter.clearFilters();
+		
+		assertEquals("testClaim was filtered", 1, adapter.getCount());
+		
 	}
 }

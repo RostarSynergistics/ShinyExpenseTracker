@@ -3,6 +3,7 @@ package ca.ualberta.cs.shinyexpensetracker.decorators;
 import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimListViewer;
 
 /**
  * This class is the superclass for all expense claim list
@@ -12,7 +13,8 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
  * of claims. Subclasses have access to the source object which
  * they can use to get the data from the thing they're decorating.
  */
-public abstract class ExpenseClaimFilter extends ExpenseClaimList implements IView<ExpenseClaimList> {
+public abstract class ExpenseClaimFilter extends ExpenseClaimList
+		implements IView<ExpenseClaimList>, ExpenseClaimListViewer {
 	protected ExpenseClaimList source;
 	
 	public ExpenseClaimFilter(ExpenseClaimList source) {

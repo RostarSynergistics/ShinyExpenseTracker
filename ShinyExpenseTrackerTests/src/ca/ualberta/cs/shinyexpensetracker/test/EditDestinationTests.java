@@ -3,6 +3,7 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 import ca.ualberta.cs.shinyexpensetracker.activities.AddDestinationActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
@@ -11,6 +12,7 @@ import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
@@ -25,6 +27,7 @@ public class EditDestinationTests extends
 	Instrumentation instrumentation;
 	EditText nameField, reasonField;
 	Button doneButton;
+	TextView geolocationValue;
 
 	private ExpenseClaimController controller;
 	private MockExpenseClaimListPersister persister;
@@ -51,7 +54,7 @@ public class EditDestinationTests extends
 		ExpenseClaim claim = new ExpenseClaim("Example name");
 		claimList.addClaim(claim);
 		
-		destination = new Destination("Indianapolis", "Gen Con");
+		destination = new Destination("Indianapolis", "Gen Con", new Coordinate(39.791, -86.1480));
 		claim.addDestination(destination);
 
 		persister = new MockExpenseClaimListPersister(claimList);
@@ -70,11 +73,13 @@ public class EditDestinationTests extends
 		nameField = (EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.destinationEditText);
 		reasonField = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.reasonEditText));
 		doneButton = (Button) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.addDestinationDoneButton);
+		geolocationValue = (TextView) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.coordinatesValueTextView);
 	}
 	
 	public void testThatFieldsWerePopulatedProperlyOnStart() {
 		assertEquals(destination.getName(), nameField.getText().toString());
 		assertEquals(destination.getReasonForTravel(), reasonField.getText().toString());
+		assertEquals(destination.getGeolocation().toString(), geolocationValue.getText().toString());
 	}
 
 	public void testThatTappingDoneUpdatesTheExistingDestination() {

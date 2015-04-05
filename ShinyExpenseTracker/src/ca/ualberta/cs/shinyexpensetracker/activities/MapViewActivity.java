@@ -120,7 +120,7 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 	@Override
 	public void onBackPressed(){
 		if (requestCode == DISPLAY_GEOLOCATIONS || lastMarker == null) {
-			finish();// false;
+			finish();
 		}
 		GeoPoint position = lastMarker.getPosition();
 		askSaveLocation(position.getLatitude(), position.getLongitude());

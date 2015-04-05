@@ -24,12 +24,10 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 import android.app.Instrumentation;
 import android.app.Instrumentation.ActivityMonitor;
 import android.content.Context;
-import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
-import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.activities.GeolocationViewActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.MapViewActivity;
 
@@ -43,7 +41,6 @@ public class GeolocationViewTest extends
 
 	private GeolocationViewActivity geolocationViewActivity;
 	private Instrumentation instrumentation;
-	private TextView geolocationTV;
 	private Button setGeolocationAutomatically;
 	private Button setGeolocationUsingMap;
 	
@@ -65,35 +62,16 @@ public class GeolocationViewTest extends
 	 * Test if the text view contains correct values after pressing Set Automatically Using GPS
 	 */
 	public void testGeolocationFetch() {
-		assertEquals("default text is not in textview", geolocationTV.getText().toString(), instrumentation.getTargetContext().getString(ca.ualberta.cs.shinyexpensetracker.R.string.geolocationValueDefault));
+		LocationManager lm = (LocationManager) instrumentation.getTargetContext().getSystemService(Context.LOCATION_SERVICE);
+		Location loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		assertNotNull("there is no last known location", loc);
+		
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {
 				setGeolocationAutomatically.performClick();
 			}
 		});
-		LocationManager lm = (LocationManager) instrumentation.getTargetContext().getSystemService(Context.LOCATION_SERVICE);
-		Location loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		assertNotNull("no last known location. send a location to avd from DDMS->Emulator Control", loc);
-		String geolocationValueText = "Latitude: " + String.valueOf(loc.getLatitude()) + "\n" 
-				+ "Longitude: " + String.valueOf(loc.getLongitude());
-		assertEquals("coordinates fetched do not match", geolocationTV.getText().toString(), geolocationValueText);
-	}
-	
-	/**
-	 * Test if the text view contains correct values after returning from MapViewActivity
-	 */
-	public void testInfoGotFromMap() {
-		String geolocationValueText = "Latitude: " + String.valueOf(128.0) + "\n" 
-				+ "Longitude: " + String.valueOf(64.0);
-		final Intent geolocationResultIntent = new Intent();
-		geolocationResultIntent.putExtra("latitude", 128.0);
-		geolocationResultIntent.putExtra("longitude", 64.0);
-		instrumentation.runOnMainSync(new Runnable() {
-			public void run() {
-				geolocationViewActivity.onActivityResult(GeolocationViewActivity.SET_GEOLOCATION, GeolocationViewActivity.RESULT_OK, geolocationResultIntent);
-			}
-		});
-		assertEquals("coordinates fetched do not match", geolocationTV.getText().toString(), geolocationValueText);
+		assertTrue("did not finish activity", geolocationViewActivity.isFinishing());
 	}
 	
 	/**

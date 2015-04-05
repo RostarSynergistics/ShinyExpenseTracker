@@ -26,6 +26,7 @@ import org.osmdroid.util.GeoPoint;
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
+import android.view.KeyEvent;
 import ca.ualberta.cs.shinyexpensetracker.activities.MapViewActivity;
 
 public class MapViewTest extends ActivityInstrumentationTestCase2<MapViewActivity> {
@@ -46,23 +47,23 @@ public class MapViewTest extends ActivityInstrumentationTestCase2<MapViewActivit
 		instrumentation = getInstrumentation();
 		
 		Intent mapViewIntent = new Intent();
-		mapViewIntent.putExtra("latitude", 128.0);
-		mapViewIntent.putExtra("longitude", 64.0);
+		mapViewIntent.putExtra("latitude", 64.0);
+		mapViewIntent.putExtra("longitude", 128.0);
 		mapViewIntent.putExtra("requestCode", MapViewActivity.SET_GEOLOCATION);
 		setActivityIntent(mapViewIntent);
 		
 		mapViewActivity = getActivity();
 	}
 	
-	public void testSingleTapEventHandler  () {
-		final GeoPoint p = new GeoPoint(128.0, 64.0);
+	public void testSingleTapEventHandler() {
+		final GeoPoint p = new GeoPoint(64.0, 128.0);
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {
 				mapViewActivity.singleTapConfirmedHelper(p);
 			}
 		});
-		assertEquals("latitude wrong", mapViewActivity.getLatitude(), p.getLatitude());
-		assertEquals("latitude wrong", mapViewActivity.getLongitude(), p.getLongitude());
+		assertEquals("latitude wrong", mapViewActivity.getCoordinate().getLatitude(), p.getLatitude());
+		assertEquals("latitude wrong", mapViewActivity.getCoordinate().getLongitude(), p.getLongitude());
 		
 		Marker marker = mapViewActivity.getLastMarker();
 		GeoPoint markerP = marker.getPosition();
@@ -70,11 +71,11 @@ public class MapViewTest extends ActivityInstrumentationTestCase2<MapViewActivit
 		assertEquals("marker latitude wrong", markerP.getLongitude(), p.getLongitude());
 	}
 
-	public void testPopupShowingOnLongClick() {
-		final GeoPoint p = new GeoPoint(128.0, 64.0);
+	public void testPopupShowingOnBackPress() {
+		final GeoPoint p = new GeoPoint(64.0, 128.0);
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {
-				mapViewActivity.longPressHelper(p);
+				mapViewActivity.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 			}
 		});
 		assertTrue(mapViewActivity.askSaveLocation(p.getLatitude(), p.getLongitude()).isShowing());

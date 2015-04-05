@@ -10,8 +10,8 @@ public class Coordinate extends Model<Coordinate> {
 
 	public Coordinate(double latitude, double longitude) {
 		super();
-		this.latitude = latitude;
-		this.longitude = longitude;
+		this.setLatitude(latitude);
+		this.setLongitude(longitude);
 	}
 
 	public double getLatitude() {
@@ -19,6 +19,9 @@ public class Coordinate extends Model<Coordinate> {
 	}
 
 	public void setLatitude(double latitude) {
+		while (latitude < -90.0 || latitude > 90.0) {
+			latitude = latitude - latitude/Math.abs(latitude)*180.0;
+		}
 		this.latitude = latitude;
 	}
 
@@ -27,6 +30,9 @@ public class Coordinate extends Model<Coordinate> {
 	}
 
 	public void setLongitude(double longitude) {
+		while (longitude < -180.0 || longitude > 180.0) {
+			longitude = longitude - longitude/Math.abs(longitude)*360.0;
+		}
 		this.longitude = longitude;
 	}
 

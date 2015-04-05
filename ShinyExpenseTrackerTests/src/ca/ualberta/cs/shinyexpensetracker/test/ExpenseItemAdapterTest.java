@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.adapters.ExpenseItemAdapter;
+import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 
@@ -47,6 +48,7 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 				ExpenseItem.Currency.CAD,
 				"The fanciest pants",
 				null,
+				null,
 				false);
 
 		classyHotel = new ExpenseItem(
@@ -58,6 +60,7 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 				"FACT: Classy hotels only exist in europe",
 				// Empty bitmap
 				Bitmap.createBitmap(10, 10, Bitmap.Config.RGB_565),
+				new Coordinate(46.22, 6.15),
 				false);
 		
 		scrumptiousFood = new ExpenseItem(
@@ -67,6 +70,7 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 				new BigDecimal(894.50),
 				ExpenseItem.Currency.CAD,
 				"Who puts icecream on fish eggs?",
+				null,
 				null,
 				true);
 		

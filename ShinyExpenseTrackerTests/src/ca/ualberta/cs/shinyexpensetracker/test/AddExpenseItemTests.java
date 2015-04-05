@@ -22,6 +22,7 @@ import android.widget.Spinner;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
@@ -46,6 +47,7 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 	Spinner currencyInput, categoryInput;
 	ImageButton photoInput;
 	Button doneButton;
+	Coordinate c;
 
 	Drawable image = new Drawable() {
 		@Override
@@ -142,9 +144,9 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 				sdf.format(date);
 				BigDecimal amount = new BigDecimal(10.00);
 				Bitmap bitmap = null;
-
+				c = new Coordinate(1.0, -1.0);
 				ExpenseItem expense = new ExpenseItem("name", date, Category.ACCOMODATION, amount, Currency.CAD,
-						"description", bitmap);
+						"description", bitmap, c);
 
 				assertEquals("name != name", "name", expense.getName());
 				assertNotSame("false positive, name", "Wrong Name", expense.getName());
@@ -160,6 +162,7 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 				assertNotSame("false positibe description", "wrong description", expense.getDescription());
 				assertEquals("bitmap != bitmap", bitmap, expense.getReceiptPhoto());
 				assertNotSame("false posibive, photo", "not bitmap", expense.getReceiptPhoto());
+				assertEquals("geoloc != geoloc", c, expense.getGeolocation());
 			}
 		});
 	}

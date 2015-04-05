@@ -17,10 +17,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
@@ -49,6 +51,8 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 	private Spinner currencySpinner;
 	private EditText descriptionField;
 	private Button doneButton;
+	private TextView geoloc;
+	Coordinate c;
 
 	private MockExpenseClaimListPersister persister;
 
@@ -74,9 +78,9 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 		res = getInstrumentation().getTargetContext().getResources();
 		imageSmall = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
 		imageBig = BitmapFactory.decodeResource(res, R.drawable.keyhole_nebula_hubble_1999);
-
+		c = new Coordinate(1.0, -1.0);
 		item = new ExpenseItem("test item", sdf.parse("2001-01-01"), Category.fromString("air fare"),
-				new BigDecimal("0.125"), Currency.CAD, "Test Item", imageBig);
+				new BigDecimal("0.125"), Currency.CAD, "Test Item", imageBig, c);
 
 		claim.addExpense(item);
 		claimList.addClaim(claim);
@@ -95,6 +99,7 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 		currencySpinner = (Spinner) activity.findViewById(R.id.expenseItemCurrencySpinner);
 		descriptionField = (EditText) activity.findViewById(R.id.expenseItemDescriptionEditText);
 		doneButton = (Button) activity.findViewById(R.id.expenseItemDoneButton);
+		geoloc = (TextView) activity.findViewById(R.id.expenseItemCoordinatesValueTextView);
 	}
 
 	public void testThatFieldsWerePopulatedProperlyOnStart() throws ParseException {
@@ -104,6 +109,7 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 		assertEquals("amount is not right", item.getAmountSpent().toString(), amountField.getText().toString());
 		assertEquals("currency is not right", item.getCurrency().toString(), currencySpinner.getSelectedItem().toString());
 		assertEquals("description is not right", item.getDescription(), descriptionField.getText().toString());
+		assertEquals("wrong geolocation", item.getGeolocation().toString(), geoloc.getText().toString());
 	}
 
 	public void testThatTappingDoneWhileEditingAnExistingExpenseClaimUpdatesThatExpenseClaim() throws ParseException {

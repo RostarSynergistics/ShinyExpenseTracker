@@ -57,7 +57,7 @@ public class TestReceiptView extends ActivityInstrumentationTestCase2<ReceiptVie
 		imageSmall = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
 		item = new ExpenseItem("test item", newDate.getTime(),
 				Category.fromString("air fare"), new BigDecimal("0.125"),
-				Currency.CAD, "Test Item", imageSmall);
+				Currency.CAD, "Test Item", imageSmall, null);
 
 		claim.addExpense(item);
 		claimList.addClaim(claim);

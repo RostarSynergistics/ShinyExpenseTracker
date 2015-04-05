@@ -15,7 +15,7 @@ public class ConnectivityChecker {
 	 * @return boolean
 	 */
 	@SuppressWarnings("unused")
-	private boolean isNetworkAvailable(Context context) {
+	public boolean isNetworkAvailable(Context context) {
 	    ConnectivityManager connectivityManager 
 	          = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();

@@ -2,7 +2,6 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -47,8 +46,6 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 	private ArrayList<Destination> destinations = new ArrayList<Destination>();
 	private TagList tagList = new TagList();
 	private ArrayList<ExpenseItem> expenses = new ArrayList<ExpenseItem>();
-	public UUID uuid = UUID.randomUUID();
-
 	public ExpenseClaim(String name) {
 		this(name, new Date(), null, Status.IN_PROGRESS, new TagList());
 	}
@@ -72,12 +69,8 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 		this.endDate = endDate;
 		this.status = status;
 		this.tagList = tagList;
-		uuid.randomUUID();
 	}
-	
-	public long getID() {
-		return uuid.getLeastSignificantBits();
-	}
+
 
 	public String getName() {
 		return name;
@@ -229,7 +222,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 	public boolean removedTag(Tag tag){
 		return tagList.removeTag(tag);
 	}
-
+	
 	// Source:
 	// https://commons.apache.org/proper/commons-lang/javadocs/api-3.3.2/org/apache/commons/lang3/builder/EqualsBuilder.html
 	@Override
@@ -251,9 +244,12 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 				.append(getStatus(), rhs.getStatus())
 				.append(getExpenseItems(), rhs.getExpenseItems())
 				.append(getDestinations(), rhs.getDestinations())
-				// .append(getTagList(), rhs.getTagList())
+				.append(getTagList(), rhs.getTagList())
 				.isEquals();
 	}
+	
+	
+	
 
 	// Source:
 	// https://commons.apache.org/proper/commons-lang/javadocs/api-3.3.2/org/apache/commons/lang3/builder/HashCodeBuilder.html

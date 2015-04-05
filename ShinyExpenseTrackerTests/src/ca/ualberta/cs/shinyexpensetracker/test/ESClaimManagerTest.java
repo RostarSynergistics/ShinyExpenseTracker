@@ -2,6 +2,7 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Date;
 
 import junit.framework.TestCase;
 import ca.ualberta.cs.shinyexpensetracker.es.ESClaimManager;
@@ -22,41 +23,34 @@ public class ESClaimManagerTest extends TestCase {
 	TagList tagList = new TagList();
 	Tag exTag = new Tag("Example");
 	ExpenseItem item = new ExpenseItem("Flight to YEG", null, Category.AIR_FARE, BigDecimal.valueOf(1000), Currency.CAD);
+	ExpenseClaimList list;
+	ExpenseClaimList list2;
+	ExpenseClaim claim;
+	ExpenseClaim claim2;
 	
+	@SuppressWarnings("deprecation") // Because its easier 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-	}
-	
-	public void testAddClaim(){
+		
+		Date sdate = new Date(1990, 11, 11);
+		Date edate = new Date(1990, 11, 11);
+		
 		tagList.addTag(exTag);
-		ExpenseClaim claim = new ExpenseClaim("BC trip", null, null, Status.IN_PROGRESS, tagList);
+		claim = new ExpenseClaim("BC trip", sdate, edate, Status.IN_PROGRESS, tagList);
 		claim.addDestination(destination);
 		claim.addExpense(item);
-		ExpenseClaimList list = new ExpenseClaimList();
+		list = new ExpenseClaimList();
+		list2 = new ExpenseClaimList();
 		list.addClaim(claim);
-	
-		ExpenseClaim claim2 = new ExpenseClaim("AB Trip", null, null, Status.IN_PROGRESS, tagList);
+		claim2 = new ExpenseClaim("AB Trip", null, null, Status.IN_PROGRESS, tagList);
 		claim2.addDestination(destination);
 		claim2.addExpense(item);
 		list.addClaim(claim2);
 		
-		
-		try {
-			manager.insertClaimList(list);
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-
-	public void testGetClaim(){
-		ExpenseClaimList list = manager.getClaimList();
-		assertEquals(list.getClaim(0).getName(), "BC trip");
+		list2.addClaim(claim2);
+		list2.addClaim(claim);
+			
 	}
 	
 	/**
@@ -64,41 +58,27 @@ public class ESClaimManagerTest extends TestCase {
 	 * @throws IllegalStateException
 	 * @throws IOException
 	 */
-	/*
-	public void testAddClaim() throws IllegalStateException, IOException {
-		tagList.addTag(exTag);
-		ExpenseClaim claim = new ExpenseClaim("BC trip", null, null, Status.IN_PROGRESS, tagList);
-		claim.addDestination(destination);
-		claim.addExpense(item);
-		manager.insertClaim(claim);
+	public void testAddClaim() throws IllegalStateException, IOException{
 		
-		assertEquals("Expense claim names are not equal", manager.getClaim("1a").getName(), 
-				"BC trip");
+		//Posting to the server
+		manager.insertClaimList(list);
+	
+		//Getting the list from the server and seeing if it is the same
+		ExpenseClaimList gottenList = manager.getClaimList();
+		assertEquals(gottenList.getClaim(0), claim);
+		assertEquals(gottenList.getClaim(1), claim2);
 		
-		assertEquals("Expense claim destination names are not equal", manager.getClaim("1a").getDestination(0).getName(), 
-				"Vancouver");
+		//Testing adding a whole new list
+		manager.insertClaimList(list2);
+		gottenList = manager.getClaimList();
 		
-		assertEquals("Expense claim destination reasons for travel are not equal", manager.getClaim("1a").getDestination(0).getReasonForTravel(), 
-				"Vacation");
+		//Testing it is not equal to the old list 
+		assertFalse(gottenList.getClaim(0).equals(claim));
 		
-		assertEquals("Expense claim status is not IN PROGRESS", manager.getClaim("1a").getStatus(),
-				Status.IN_PROGRESS);
-		
-		assertEquals("Expense claim tag is not Example", manager.getClaim("1a").getTagList().getTagById(0),
-				exTag);
-		
-		assertEquals("Expense claim items are not equal", manager.getClaim("1a").getExpense(0), 
-				item);
+		assertEquals(gottenList.getClaim(0), claim2);
+		assertEquals(gottenList.getClaim(1), claim);
 	}
 
-	/**
-	 * Test whether or not ElasticSearch deletes a selected claim
-	 * @throws IOException
-	 
 	
-	public void testDeleteClaim() throws IOException {
-		manager.deleteClaim("1a");
-		assertNull("Expense claim at index 1a is not null", manager.getClaim("1a"));
-	}
-	*/
+	
 }

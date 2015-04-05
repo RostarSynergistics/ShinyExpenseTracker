@@ -119,6 +119,7 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 					newMarker.setPosition(startPoint);
 					newMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
 					map.getOverlays().add(newMarker);
+					newMarker.setSnippet("Home Geolocation");
 				}
 				// no time to implement Iterable interface!
 				for (int i = 0; i < claimList.getCount(); i++) {
@@ -131,6 +132,8 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 						destMarker.setPosition(destPoint);
 						destMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
 						map.getOverlays().add(destMarker);
+						destMarker.setSnippet("Destination: " + dest.getName());
+						destMarker.setSubDescription("From claim: " + claim.getName());
 					}
 					//put expense items' geolocations on the map
 					for (ExpenseItem item: claim.getExpenseItems()) {
@@ -141,6 +144,8 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 							itemMarker.setPosition(itemPoint);
 							itemMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
 							map.getOverlays().add(itemMarker);
+							itemMarker.setSnippet("Expense Item: " + item.getName());
+							itemMarker.setSubDescription("From claim: " + claim.getName());
 						}
 					}
 				}
@@ -184,11 +189,6 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 	 */
 	@Override
 	public void onBackPressed(){
-		//if (requestCode == DISPLAY_GEOLOCATIONS || lastMarker == null) {
-			//setResult(ExpenseClaimListActivity.RESULT_CANCELED, new Intent());
-			//finish();
-		//}
-		//Toast.makeText(this, Boolean.toString(requestCode == DISPLAY_GEOLOCATIONS || lastMarker == null), Toast.LENGTH_LONG).show();
 		if (requestCode != DISPLAY_GEOLOCATIONS && lastMarker != null) {	
 			GeoPoint position = lastMarker.getPosition();
 			askSaveLocation(position.getLatitude(), position.getLongitude());
@@ -209,6 +209,7 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 			return false;
 		}
 		if (lastMarker != null) {
+			lastMarker.closeInfoWindow();
 			map.getOverlays().remove(lastMarker);
 		}
 		Toast.makeText(this, "Latitude: "+p.getLatitude()+"\nLongitude: "+p.getLongitude(), Toast.LENGTH_SHORT).show();
@@ -216,6 +217,8 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 		newMarker.setPosition(p);
 		newMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
 		map.getOverlays().add(newMarker);
+		newMarker.setSnippet("Latitude: "+p.getLatitude());
+		newMarker.setSubDescription("Longitude: "+p.getLongitude());
 		lastMarker = newMarker;
 		map.invalidate();
 		return true;

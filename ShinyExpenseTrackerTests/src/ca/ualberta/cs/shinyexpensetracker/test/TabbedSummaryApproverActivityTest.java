@@ -3,14 +3,16 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import android.app.Instrumentation.ActivityMonitor;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.EditText;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.AddTagToClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.RemoveTagFromClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryApproverActivity;
-import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
+import ca.ualberta.cs.shinyexpensetracker.activities.ViewCommentsActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -192,4 +194,27 @@ public class TabbedSummaryApproverActivityTest extends
 		assertEquals("claim status was changed", Status.SUBMITTED, controller.getExpenseClaim(0).getStatus());
 		
 	}
+	
+	/**
+	 * Tests that the viewCommentsAcitity is started on 'View Comments' menu item click
+	 */
+	public void testViewCommentsMenuItem() {
+		
+		// Monitor for AddTagsActivity
+		ActivityMonitor viewCommentsActivityMonitor = getInstrumentation()
+				.addMonitor(ViewCommentsActivity.class.getName(), null, false);
+
+		//invoke 'View Comments' menu item click
+		getInstrumentation().invokeMenuActionSync(activity, R.id.viewComments, 0);
+		getInstrumentation().waitForIdleSync();
+		
+		// Get the view comments activity
+		final ViewCommentsActivity viewCommentsActivity = (ViewCommentsActivity) getInstrumentation()
+				.waitForMonitorWithTimeout(viewCommentsActivityMonitor, 1000);
+		
+		assertEquals(true, getInstrumentation().checkMonitorHit(viewCommentsActivityMonitor, 1));
+
+		viewCommentsActivity.finish();
+	}
+	
 }	

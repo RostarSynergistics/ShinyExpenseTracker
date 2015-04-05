@@ -98,5 +98,7 @@
     <string name="comment">Comment</string>
     <string name="return_claim">Return Claim</string>
     <string name="add_comment">Add Comment</string>
+    <string name="view_comments">View Comments</string>
+    <string name="title_activity_view_comments">View Comments</string>
 
 </resources>

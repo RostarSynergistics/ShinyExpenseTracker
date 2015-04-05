@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -142,6 +143,15 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 			// disable ability to approve claim 
 			m.getItem(0).setEnabled(false);
 		}
+	}
+	
+	/**
+	 * Takes the user to a view comments list view to see all of the comments a claim has
+	 */
+	public void viewCommentsMenuItem(MenuItem menu) {
+		intent = new Intent(TabbedSummaryApproverActivity.this, ViewCommentsActivity.class);
+		intent.putExtra("claimIndex", claimIndex);
+		startActivity(intent);
 	}
 	
 	/*

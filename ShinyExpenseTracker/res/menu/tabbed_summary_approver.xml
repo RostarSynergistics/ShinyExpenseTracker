@@ -16,5 +16,10 @@
         android:onClick="returnClaimMenuItem" 
         android:title="@string/return_claim">
     </item>
+    <item 
+        android:id="@+id/viewComments" 
+        android:onClick="viewCommentsMenuItem" 
+        android:title="@string/view_comments">
+    </item>
 
 </menu>

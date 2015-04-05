@@ -13,6 +13,7 @@ import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
@@ -31,7 +32,6 @@ public class TabbedSummaryApproverActivityTest extends
 		super(TabbedSummaryApproverActivity.class);
 	}
 
-	static ClaimSummaryFragment frag;
 	TabbedSummaryApproverActivity activity;
 
 	ExpenseClaim claim;
@@ -39,7 +39,7 @@ public class TabbedSummaryApproverActivityTest extends
 	String claimName = "test claim name";
 	Date startDate = new Date(1000);
 	Date endDate = new Date(2000);
-	ExpenseClaim.Status status = ExpenseClaim.Status.IN_PROGRESS;
+	ExpenseClaim.Status status = ExpenseClaim.Status.SUBMITTED;
 	BigDecimal amount = new BigDecimal(10);
 	final ExpenseItem expense = new ExpenseItem("expenseItemName", new Date(
 			1000), Category.ACCOMODATION, amount, Currency.CAD,
@@ -84,7 +84,7 @@ public class TabbedSummaryApproverActivityTest extends
 	 */
 	public void testCommentMenuItem() {
 		// Press the "Comment" menu item
-		getInstrumentation().invokeMenuActionSync(activity, R.id.comment, 0);
+		getInstrumentation().invokeMenuActionSync(activity, R.id.addComment, 0);
 
 		// Wait for the UI to finish doing its thing
 		getInstrumentation().waitForIdleSync();
@@ -106,7 +106,43 @@ public class TabbedSummaryApproverActivityTest extends
 		
 		assertEquals("comment not saved correctly to expense claim", "test comment", controller.getExpenseClaim(0).getComment(0));
 		
-		
 	}
-
+	
+	/**
+	 * Tests if claim is approved when a comment has already been added
+	 */
+	public void testApproveCommentedClaim() {
+		
+		String comment = "test comment";
+		//add a comment to the claim
+		controller.getExpenseClaim(0).addComment(comment);
+		
+		// invoke the approve claim menu item
+		getInstrumentation().invokeMenuActionSync(activity, R.id.approveClaim, 0);
+		
+		// Wait for the UI to finish doing its thing
+		getInstrumentation().waitForIdleSync();
+		
+		assertTrue("No dialog to tell user claim was approved appeared", activity.getApprovedDialog().isShowing());
+		
+		assertEquals("claim status was not changed to approved", Status.APPROVED, controller.getExpenseClaim(0).getStatus());
+	}
+	
+	/**
+	 * Test if claim is not approved when there is no comment on it
+	 * @throws InterruptedException 
+	 */
+	public void testApproveUncommentedClaim() {
+		// make sure the claim has no comments
+		controller.getExpenseClaim(0).setComments(null);
+		
+		// invoke the approve claim menu item
+		getInstrumentation().invokeMenuActionSync(activity, R.id.approveClaim, 0);
+		
+		getInstrumentation().waitForIdleSync();
+		
+		assertTrue("No dialog to tell user they need to add a comment appeared", activity.getCommentNeededDialog().isShowing());
+		
+		assertEquals("claim status was changed", Status.SUBMITTED, controller.getExpenseClaim(0).getStatus());
+	}
 }

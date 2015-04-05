@@ -7,9 +7,9 @@
         android:title="@string/approve_claim">
     </item>
     <item 
-        android:id="@+id/comment" 
+        android:id="@+id/addComment" 
         android:onClick="commentMenuItem" 
-        android:title="@string/comment">
+        android:title="@string/add_comment">
     </item>
     <item 
         android:id="@+id/returnClaim" 

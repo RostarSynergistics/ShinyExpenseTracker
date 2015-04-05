@@ -97,5 +97,6 @@
     <string name="approve_claim">Approve Claim</string>
     <string name="comment">Comment</string>
     <string name="return_claim">Return Claim</string>
+    <string name="add_comment">Add Comment</string>
 
 </resources>

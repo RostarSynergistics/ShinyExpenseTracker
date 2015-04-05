@@ -15,11 +15,15 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimListViewer;
  */
 public abstract class ExpenseClaimFilter extends ExpenseClaimList
 		implements IView<ExpenseClaimList>, ExpenseClaimListViewer {
-	protected ExpenseClaimList source;
+	protected ExpenseClaimList source = null;
 	
-	public ExpenseClaimFilter(ExpenseClaimList source) {
+	public final ExpenseClaimList decorate(ExpenseClaimList source) {
+		if (this.source != null) {
+			throw new RuntimeException("Cannot replace the decorator source");
+		}
 		this.source = source;
 		source.addView(this);
+		return this;
 	}
 
 	@Override

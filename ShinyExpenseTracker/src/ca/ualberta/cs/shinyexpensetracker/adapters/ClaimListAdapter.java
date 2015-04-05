@@ -146,13 +146,8 @@ public class ClaimListAdapter extends BaseAdapter {
 	 * 
 	 * @param filter the ExpenseClaimFilter class to apply.
 	 */
-	public void applyFilter(Class<? extends ExpenseClaimFilter> filter) {
-		try {
-			filteredClaims = filter.getDeclaredConstructor(ExpenseClaimList.class).newInstance(filteredClaims);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
+	public void applyFilter(ExpenseClaimFilter filter) {
+		filteredClaims = filter.decorate(filteredClaims);
 		notifyDataSetChanged();
 	}
 	

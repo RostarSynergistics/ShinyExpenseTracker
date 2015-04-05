@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
 /**
  * This decorator sorts the claim list that is being used.
@@ -21,11 +20,6 @@ public class ExpenseClaimSortFilter extends ExpenseClaimFilter {
 					return rhs.compareTo(lhs);
 				};
 			};
-	
-	
-	public ExpenseClaimSortFilter(ExpenseClaimList source) {
-		super(source);
-	}
 
 	@Override
 	public ExpenseClaim getClaim(int index) {

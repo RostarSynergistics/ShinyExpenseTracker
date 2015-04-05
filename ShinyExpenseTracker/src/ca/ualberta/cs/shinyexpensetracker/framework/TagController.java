@@ -17,11 +17,9 @@
 
 
 package ca.ualberta.cs.shinyexpensetracker.framework;
+
 import java.io.IOException;
-
-
 import android.content.Context;
-
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 import ca.ualberta.cs.shinyexpensetracker.persistence.FilePersistenceStrategy;

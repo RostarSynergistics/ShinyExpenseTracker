@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
@@ -30,17 +31,17 @@ import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersist
  * displays details about a given claim.
  */
 public class ClaimSummaryFragmentTest extends
-		ActivityInstrumentationTestCase2<TabbedSummaryActivity> {
+		ActivityInstrumentationTestCase2<TabbedSummaryClaimantActivity> {
 	
 	static ClaimSummaryFragment frag;
 	TabbedSummaryActivity activity;
 	
-	public ClaimSummaryFragmentTest(Class<TabbedSummaryActivity> activityClass) {
+	public ClaimSummaryFragmentTest(Class<TabbedSummaryClaimantActivity> activityClass) {
 		super(activityClass);
 	}
 	
 	public ClaimSummaryFragmentTest() {
-		super(TabbedSummaryActivity.class);
+		super(TabbedSummaryClaimantActivity.class);
 	}
 	
 	ExpenseClaim claim;
@@ -163,6 +164,7 @@ public class ClaimSummaryFragmentTest extends
 			}
 
 		});
+		getInstrumentation().waitForIdleSync();
 		TextView noExpenses = (TextView) frag.getView().findViewById(R.id.noExpensesTextView);
 		assertEquals("No Expenses not shown", "No Expenses", noExpenses.getText().toString());
 	}
@@ -178,6 +180,7 @@ public class ClaimSummaryFragmentTest extends
 				frag.setClaimInfo(frag.getView());
 			}
 		});
+		getInstrumentation().waitForIdleSync();
 		TextView tags = (TextView) frag.getView().findViewById(R.id.claimTagsTextView);
 		assertEquals("Tags showns", "Tags: ", tags.getText().toString());
 	}

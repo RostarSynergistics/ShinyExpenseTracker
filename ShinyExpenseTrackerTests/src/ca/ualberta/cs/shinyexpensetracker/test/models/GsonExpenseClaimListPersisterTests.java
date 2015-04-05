@@ -37,6 +37,7 @@ public class GsonExpenseClaimListPersisterTests extends TestCase {
 			assertEquals(1, newList.getCount());
 			ExpenseClaim loadedClaim = newList.getClaim(0);
 			assertEquals(claim, loadedClaim);
+			assertEquals(claim.getExpense(0), loadedClaim.getExpense(0));
 		} catch (IOException e) {
 			fail();
 		}

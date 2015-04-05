@@ -77,6 +77,12 @@ public class ExpenseClaimListActivity
 		final ListView claim_list = (ListView) findViewById(R.id.expense_claim_list);
 		adapter = new ClaimListAdapter(this);
 		claim_list.setAdapter(adapter);
+		
+		if (user.getHomeGeolocation() != null) {
+			TextView homeGeolocationValue = (TextView) findViewById(R.id.homeGeolocationValueTextView);
+			homeGeolocationValue.setText(user.getHomeGeolocation().toString());
+			homeGeolocation = user.getHomeGeolocation();
+		}
 
 		claim_list.setOnItemClickListener(new OnItemClickListener() {
 

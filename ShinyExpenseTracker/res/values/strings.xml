@@ -93,11 +93,19 @@
     <string name="title_activity_map_view">Map View</string>
     <string name="saveGeolocationButtonText">Save Geolocation</string>
     <string name="title_activity_add_tag_to_claim">AddTagToClaimActivity</string>
+    <string name="title_activity_sign_in_as_approver_or_claimant">SignInAsApproverOrClaimant</string>
+    <string name="claimant">Claimant</string>
+    <string name="approver">Approver</string>
+    <string name="login_as">Login as:</string>
+    <string name="continue_button">Continue</string>
     <string name="title_activity_remove_tag_from_claim">RemoveTagFromClaimActivity</string>
     <string name="remove_tags">Remove Tags</string>
     <string name="no_tags_to_add">No Tags to add</string>
     <string name="add_tags">Add Tags</string>
     <string name="homeGeolocationTitle">Home Geolocation</string>
     <string name="homeGeolocationDefaultValue">No Home Geolocation Selected</string>
+    <string name="approve_claim">Approve Claim</string>
+    <string name="comment">Comment</string>
+    <string name="return_claim">Return Claim</string>
 
 </resources>

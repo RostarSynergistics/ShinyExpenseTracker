@@ -27,11 +27,6 @@
         <activity
             android:name=".activities.ExpenseClaimListActivity"
             android:label="@string/title_activity_expense_claims_view" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.ManageTagActivity"
@@ -54,7 +49,11 @@
             android:label="@string/title_activity_add_destination" >
         </activity>
         <activity
-            android:name=".activities.TabbedSummaryActivity"
+            android:name=".activities.TabbedSummaryClaimantActivity"
+            android:label="@string/title_activity_tabbed_summary" >
+        </activity>
+        <activity
+            android:name=".activities.TabbedSummaryApproverActivity"
             android:label="@string/title_activity_tabbed_summary" >
         </activity>
         <activity
@@ -80,10 +79,18 @@
         <activity
             android:name=".activities.AddTagToClaimActivity"
             android:label="@string/title_activity_add_tag_to_claim" >
+		</activity>
+		<activity
+            android:name="ca.ualberta.cs.shinyexpensetracker.activities.LoginAsApproverOrClaimantActivity"
+            android:label="@string/title_activity_sign_in_as_approver_or_claimant" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity
-            android:name="ca.ualberta.cs.shinyexpensetracker.activities.RemoveTagFromClaimActivity"
+            android:name=".activities.RemoveTagFromClaimActivity"
             android:label="@string/title_activity_remove_tag_from_claim" >
         </activity>
     </application>

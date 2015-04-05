@@ -37,7 +37,6 @@ public class ManageTagActivityTests extends ActivityInstrumentationTestCase2<Man
 		instrumentation = getInstrumentation();
 		manageTagsListView = (ListView) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.listViewManageTags);
 		done = (Button) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.doneButtonManageTags);
-		
 	}
 	
 	public void testAddDialogShows(){

@@ -169,7 +169,7 @@ public class AddDestinationActivity extends Activity {
 		startActivityForResult(geolocationViewIntent, SET_GEOLOCATION);
 	}
 	
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// Check result is ok
 		if (resultCode == RESULT_OK) {
 			double latitude = data.getDoubleExtra("latitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());

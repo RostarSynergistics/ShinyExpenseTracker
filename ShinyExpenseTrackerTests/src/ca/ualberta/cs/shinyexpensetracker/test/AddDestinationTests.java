@@ -1,5 +1,6 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
@@ -73,6 +74,10 @@ public class AddDestinationTests extends
 		
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {
+				// onActivityResult is supposed to be a protected method
+				// but since no one knows how to test activity results yet, need to make it public
+				// just so that the test does not give an index out of bounds exception
+				activity.onActivityResult(1, Activity.RESULT_OK, new Intent());
 				nameInput.setText(name);
 				reasonInput.setText(reason);
 				doneButton.performClick();

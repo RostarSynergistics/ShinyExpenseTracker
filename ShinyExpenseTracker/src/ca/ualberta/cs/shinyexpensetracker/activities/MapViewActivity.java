@@ -88,15 +88,14 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
 		if (bundle != null) {
+			MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(this, this);
+			map.getOverlays().add(0, mapEventsOverlay);
 			requestCode = intent.getIntExtra("requestCode", 0);
 			if (requestCode == SET_GEOLOCATION) {
 				double latitude = intent.getDoubleExtra("latitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
 				double longitude = intent.getDoubleExtra("longitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
 				coordinate.setLatitude(latitude);
 				coordinate.setLongitude(longitude);
-
-				MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(this, this);
-				map.getOverlays().add(0, mapEventsOverlay);
 				
 				GeoPoint startPoint = new GeoPoint(coordinate.getLatitude(), coordinate.getLongitude());
 				IMapController mapController = map.getController();
@@ -104,6 +103,8 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 				mapController.setCenter(startPoint);
 			}
 			else if (requestCode == DISPLAY_GEOLOCATIONS) {
+				Toast.makeText(this, Integer.toString(requestCode), Toast.LENGTH_LONG).show();
+				
 				// get all claims
 				controller = Application.getExpenseClaimController();
 				ExpenseClaimList claimList = controller.getExpenseClaimList();
@@ -141,7 +142,7 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 					}
 				}
 				
-				mapController.setZoom(7);
+				mapController.setZoom(3);
 				
 				if (startPoint != null) {
 					// center at home geolocation, if there is any
@@ -180,11 +181,19 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 	 */
 	@Override
 	public void onBackPressed(){
-		if (requestCode == DISPLAY_GEOLOCATIONS || lastMarker == null) {
+		//if (requestCode == DISPLAY_GEOLOCATIONS || lastMarker == null) {
+			//setResult(ExpenseClaimListActivity.RESULT_CANCELED, new Intent());
+			//finish();
+		//}
+		//Toast.makeText(this, Boolean.toString(requestCode == DISPLAY_GEOLOCATIONS || lastMarker == null), Toast.LENGTH_LONG).show();
+		if (requestCode != DISPLAY_GEOLOCATIONS && lastMarker != null) {	
+			GeoPoint position = lastMarker.getPosition();
+			askSaveLocation(position.getLatitude(), position.getLongitude());
+		}
+		else {
+			setResult(ExpenseClaimListActivity.RESULT_CANCELED, new Intent());
 			finish();
 		}
-		GeoPoint position = lastMarker.getPosition();
-		askSaveLocation(position.getLatitude(), position.getLongitude());
 	}
 
 	/**

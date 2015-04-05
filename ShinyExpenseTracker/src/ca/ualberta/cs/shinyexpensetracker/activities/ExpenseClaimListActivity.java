@@ -159,7 +159,7 @@ public class ExpenseClaimListActivity
 			Intent geolocationMapViewIntent = new Intent(ExpenseClaimListActivity.this,
 					MapViewActivity.class);
 			geolocationMapViewIntent.putExtra("requestCode", DISPLAY_GEOLOCATIONS);
-			startActivityForResult(geolocationMapViewIntent, DISPLAY_GEOLOCATIONS);
+			startActivity(geolocationMapViewIntent);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -173,14 +173,16 @@ public class ExpenseClaimListActivity
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// Check result is ok
-		if (resultCode == RESULT_OK) {
-			double latitude = data.getDoubleExtra("latitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
-			double longitude = data.getDoubleExtra("longitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
-			homeGeolocation.setLatitude(latitude);
-			homeGeolocation.setLongitude(longitude);
-			TextView homeGeolocationValue = (TextView) findViewById(R.id.homeGeolocationValueTextView);
-			homeGeolocationValue.setText(homeGeolocation.toString());
-			user.setHomeGeolocation(homeGeolocation);
+		if (requestCode == SET_GEOLOCATION) {
+			if (resultCode == RESULT_OK) {
+				double latitude = data.getDoubleExtra("latitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
+				double longitude = data.getDoubleExtra("longitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
+				homeGeolocation.setLatitude(latitude);
+				homeGeolocation.setLongitude(longitude);
+				TextView homeGeolocationValue = (TextView) findViewById(R.id.homeGeolocationValueTextView);
+				homeGeolocationValue.setText(homeGeolocation.toString());
+				user.setHomeGeolocation(homeGeolocation);
+			}
 		}
 	}
 	

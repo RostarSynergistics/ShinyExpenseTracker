@@ -22,7 +22,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.util.Log;
 import ca.ualberta.cs.shinyexpensetracker.es.data.ElasticSearchResponse;
 import ca.ualberta.cs.shinyexpensetracker.es.data.ElasticSearchSearchResponse;
-import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
@@ -38,7 +37,6 @@ public class ESClaimManager {
 	private Gson gson = new Gson();
 	
 	private static final String RESOURCE_URI = "http://cmput301.softwareprocess.es:8080/cmput301w15t08/";
-	public static final String CLAIM_INDEX = "claim/";
 	public static final String CLAIM_LIST_INDEX = "claimlist/";
 	public static final String SEARCH_PRETTY = "?pretty=1&q=";
 	public static final String CLAIMLIST = "TotalList";
@@ -50,7 +48,7 @@ public class ESClaimManager {
 	
 	public void insertClaimList(ExpenseClaimList claimController) throws IllegalStateException, IOException{
 		//ExpenseClaim claim = claimController.getClaim(0);
-		HttpPost httpPost = new HttpPost(RESOURCE_URI+CLAIM_LIST_INDEX+ CLAIMLIST);
+		HttpPost httpPost = new HttpPost(RESOURCE_URI+CLAIM_LIST_INDEX+CLAIMLIST);
 		StringEntity stringentity = null;
 		
 		try {
@@ -90,7 +88,7 @@ public class ESClaimManager {
 	public ExpenseClaimList getClaimList(){
 		ExpenseClaimList claimList = null;
 		try{
-			HttpGet getRequest = new HttpGet(RESOURCE_URI+CLAIM_INDEX+CLAIMLIST);
+			HttpGet getRequest = new HttpGet(RESOURCE_URI+CLAIM_LIST_INDEX+CLAIMLIST);
 
 			getRequest.addHeader("Accept","application/json");
 
@@ -102,7 +100,7 @@ public class ESClaimManager {
 			String json = getEntityContent(response);
 			
 			Log.d("WWJD", json);
-			Type elasticSearchResponseType = new TypeToken<ElasticSearchResponse<ExpenseClaimList>>(){}.getType();
+			Type elasticSearchResponseType = new TypeToken<ElasticSearchResponse<ExpenseClaim>>(){}.getType();
 		
 			ElasticSearchResponse<ExpenseClaimList> esResponse = gson.fromJson(json, elasticSearchResponseType);
 			claimList = esResponse.getSource();
@@ -130,7 +128,7 @@ public class ESClaimManager {
 
 		String json = getEntityContent(response);
 
-		Type elasticSearchSearchResponseType = new TypeToken<ElasticSearchSearchResponse<ExpenseClaim>>(){}.getType();
+		Type elasticSearchSearchResponseType = new TypeToken<ElasticSearchSearchResponse<ExpenseClaimList>>(){}.getType();
 		ElasticSearchSearchResponse<ExpenseClaim> esResponse = gson.fromJson(json, elasticSearchSearchResponseType);
 		System.err.println(esResponse);
 		for (ElasticSearchResponse<ExpenseClaim> r : esResponse.getHits()) {
@@ -174,7 +172,7 @@ public class ESClaimManager {
 	 * @throws IOException
 	 */
 	public void deleteClaim(String claimID) throws IOException {
-		HttpDelete httpDelete = new HttpDelete(RESOURCE_URI+CLAIM_INDEX+claimID);
+		HttpDelete httpDelete = new HttpDelete(RESOURCE_URI+CLAIM_LIST_INDEX+claimID);
 		httpDelete.addHeader("Accept","application/json");
 
 		HttpResponse response = httpclient.execute(httpDelete);

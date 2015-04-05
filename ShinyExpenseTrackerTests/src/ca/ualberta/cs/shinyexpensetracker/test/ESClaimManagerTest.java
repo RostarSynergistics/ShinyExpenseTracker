@@ -5,8 +5,6 @@ import java.math.BigDecimal;
 
 import junit.framework.TestCase;
 import ca.ualberta.cs.shinyexpensetracker.es.ESClaimManager;
-import ca.ualberta.cs.shinyexpensetracker.framework.Application;
-import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
@@ -16,7 +14,6 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
-import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 public class ESClaimManagerTest extends TestCase {
 	
@@ -59,7 +56,7 @@ public class ESClaimManagerTest extends TestCase {
 
 	public void testGetClaim(){
 		ExpenseClaimList list = manager.getClaimList();
-		assertEquals(list,null);
+		assertEquals(list.getClaim(0).getName(), "BC trip");
 	}
 	
 	/**

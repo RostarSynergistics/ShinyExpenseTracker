@@ -21,6 +21,7 @@ public class User {
 	private int id;
 	private String name;
 	private Type type;
+	private Coordinate homeGeolocation;
 	
 	public User() {
 		
@@ -60,4 +61,13 @@ public class User {
 	public Type getUserType() {
 		return type;
 	}
+
+	public Coordinate getHomeGeolocation() {
+		return homeGeolocation;
+	}
+
+	public void setHomeGeolocation(Coordinate homeGeolocation) {
+		this.homeGeolocation = homeGeolocation;
+	}
+	
 }

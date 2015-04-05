@@ -101,7 +101,9 @@ public class ExpenseItemDetailActivity extends Activity implements
 		setTextViewValue(R.id.expenseItemCategoryValue, item.getCategory().toString());
 		setTextViewValue(R.id.expenseItemDescriptionValue, item.getDescription().toString());
 		setTextViewValue(R.id.expenseItemAmountValue, item.getValueString().toString());
-		
+		if (item.getGeolocation() != null) {
+			setTextViewValue(R.id.expenseItemGeolocationValue, item.getGeolocation().toString());
+		}
 		// Update the image button picture
 		ImageButton img = (ImageButton) findViewById(R.id.expenseItemDetailImageButton);
 		img.setImageBitmap(item.getReceiptPhoto());

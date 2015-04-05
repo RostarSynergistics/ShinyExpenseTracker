@@ -111,7 +111,7 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 		currencyInput = ((Spinner) activity
 				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemCurrencySpinner));
 		descriptionInput = ((EditText) activity
-				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expesenItemDescriptionEditText));
+				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemDescriptionEditText));
 		photoInput = ((ImageButton) activity
 				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemReceiptImageButton));
 		doneButton = ((Button) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.expenseItemDoneButton));

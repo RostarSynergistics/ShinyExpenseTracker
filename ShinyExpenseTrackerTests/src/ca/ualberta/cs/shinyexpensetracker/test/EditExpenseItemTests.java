@@ -93,7 +93,7 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 		categorySpinner = (Spinner) activity.findViewById(R.id.expenseItemCategorySpinner);
 		amountField = (EditText) activity.findViewById(R.id.expenseItemAmountEditText);
 		currencySpinner = (Spinner) activity.findViewById(R.id.expenseItemCurrencySpinner);
-		descriptionField = (EditText) activity.findViewById(R.id.expesenItemDescriptionEditText);
+		descriptionField = (EditText) activity.findViewById(R.id.expenseItemDescriptionEditText);
 		doneButton = (Button) activity.findViewById(R.id.expenseItemDoneButton);
 	}
 

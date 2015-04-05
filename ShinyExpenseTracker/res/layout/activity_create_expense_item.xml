@@ -98,21 +98,43 @@
 	    android:layout_toEndOf="@+id/expenseItemAmountEditText"
 	    android:entries="@array/expenseItemCurrencies" />
 
-    <TextView
-        android:id="@+id/expesneItemDescriptionTextView"
+	<TextView
+        android:id="@+id/expenseItemCoordinatesTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/expenseItemAmountTextView"
         android:layout_below="@+id/expenseItemAmountEditText"
+        android:text="@string/geolocationTitle"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/expenseItemCoordinatesValueTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/expenseItemCoordinatesTextView"
+        android:layout_below="@+id/expenseItemCoordinatesTextView"
+        android:layout_marginStart="18dp"
+        android:clickable="true"
+        android:onClick="onCoordinatesValueTextViewClick"
+        android:text="@string/geolocationValueDefault"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+	
+    <TextView
+        android:id="@+id/expenseItemDescriptionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/expenseItemCoordinatesValueTextView"
         android:layout_marginStart="5dp"
-        android:labelFor="@+id/expesenItemDescriptionEditText"
+        android:labelFor="@+id/expenseItemDescriptionEditText"
         android:text="Description:"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/expesenItemDescriptionEditText"
+        android:id="@+id/expenseItemDescriptionEditText"
         android:layout_width="320dp"
         android:layout_height="100dp"
-        android:layout_below="@+id/expesneItemDescriptionTextView"
+        android:layout_above="@+id/expenseItemDoneButton"
+        android:layout_below="@+id/expenseItemDescriptionTextView"
         android:layout_marginStart="5dp"
         android:ems="10"
         android:gravity="top"
@@ -122,7 +144,7 @@
         android:id="@+id/expenseItemReceiptImageButton"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_below="@+id/expesenItemDescriptionEditText"
+        android:layout_below="@+id/expenseItemDescriptionEditText"
         android:layout_marginStart="20dp"
         android:onClick="takePicture"
         android:src="@android:drawable/ic_menu_camera" />

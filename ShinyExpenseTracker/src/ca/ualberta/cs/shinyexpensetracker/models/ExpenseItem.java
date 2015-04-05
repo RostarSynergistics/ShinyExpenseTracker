@@ -82,6 +82,7 @@ public class ExpenseItem extends Model <ExpenseItem> {
 	public String description;
 	public Bitmap receiptPhoto;
 	public boolean incompletenessMarker;
+	private Coordinate geolocation;
 	
 	public static final boolean COMPLETE = false;
 	public static final boolean INCOMPLETE = true;
@@ -99,7 +100,7 @@ public class ExpenseItem extends Model <ExpenseItem> {
 	 */
 	public ExpenseItem (String name, Date date, Category category, 
 			BigDecimal amountSpent, Currency currency, String description,
-			Bitmap photo, boolean completenessFlag) {
+			Bitmap photo, Coordinate geolocation, boolean completenessFlag) {
 		this.name = name;
 		this.date = date;
 		this.category = category;
@@ -107,28 +108,34 @@ public class ExpenseItem extends Model <ExpenseItem> {
 		this.currency = currency;
 		this.description = description;
 		this.receiptPhoto = photo;
+		this.geolocation = geolocation;
 		this.incompletenessMarker = completenessFlag;
 	}
 	
 	
 	public ExpenseItem (String name, Date date, Category category, 
-			BigDecimal amountSpent, Currency currency, String description, Bitmap photo) {
+			BigDecimal amountSpent, Currency currency, String description, Bitmap photo, Coordinate geolocation) {
 		// Call to more specific constructor
 		this(name, date, category, amountSpent, currency, description,
-				photo, false);
+				photo, geolocation, false);
 	}
 
+	public ExpenseItem (String name, Date date, Category category, 
+			BigDecimal amountSpent, Currency currency, String description, Coordinate geolocation) {
+		// Call to more specific constructor
+		this(name, date, category, amountSpent, currency, description, null, geolocation, false);
+	}
 	
 	public ExpenseItem (String name, Date date, Category category, 
 			BigDecimal amountSpent, Currency currency, String description) {
 		// Call to more specific constructor
-		this(name, date, category, amountSpent, currency, description, null, false);
+		this(name, date, category, amountSpent, currency, description, null, null, false);
 	}
 	
 	public ExpenseItem(String name, Date date, Category category,
 			BigDecimal amount, Currency currency) {
 		// Call to more specific constructor
-		this(name, date, category, amount, currency, "", null, false);
+		this(name, date, category, amount, currency, "", null, null, false);
 	}
 
 	public void setName(String name){
@@ -188,6 +195,14 @@ public class ExpenseItem extends Model <ExpenseItem> {
 		return this.receiptPhoto;
 	}
 
+	public Coordinate getGeolocation() {
+		return geolocation;
+	}
+
+	public void setGeolocation(Coordinate geolocation) {
+		this.geolocation = geolocation;
+	}
+
 	// XXX: #69 <- This should return the formatted JodaMoney string
 	public String getValueString() {
 		return new StringBuilder()
@@ -224,6 +239,7 @@ public class ExpenseItem extends Model <ExpenseItem> {
 				.append(getAmountSpent(), rhs.getAmountSpent())
 				.append(getCurrency(), rhs.getCurrency())
 				.append(getDescription(), rhs.getDescription())
+				.append(getGeolocation(), rhs.getGeolocation())
 				.isEquals();
 		
 		// Calling .equals() on two Bitmaps doesn't do what we want

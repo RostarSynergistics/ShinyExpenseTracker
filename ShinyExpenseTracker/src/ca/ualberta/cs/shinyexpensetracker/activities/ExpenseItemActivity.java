@@ -33,10 +33,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
@@ -57,6 +59,8 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 
 	public static final String EXPENSE_INDEX = "expenseIndex";
 	public static final String CLAIM_INDEX = "claimIndex";
+	public static final int SET_GEOLOCATION = 1;
+	private static final Coordinate NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES = new Coordinate(39.03808, 125.7296);
 	// DatePickerDialog from:
 	// http://androidopentutorials.com/android-datepickerdialog-on-edittext-click-event/
 	// On March 2 2015
@@ -75,6 +79,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 	private HashMap<String, Integer> currenciesMap = new HashMap<String, Integer>();
 	private ExpenseClaimController controller;
 	private Drawable defaultDrawableOnImageButton;
+	private Coordinate expenseItemGeolocation = new Coordinate();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -133,8 +138,14 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 
 		setEditTextValue(R.id.expenseItemNameEditText, item.getName().toString());
 		setEditTextValue(R.id.expenseItemDateEditText, dateFormatter.format(item.getDate()));
-		setEditTextValue(R.id.expesenItemDescriptionEditText, item.getDescription().toString());
+		setEditTextValue(R.id.expenseItemDescriptionEditText, item.getDescription().toString());
 		setEditTextValue(R.id.expenseItemAmountEditText, item.getAmountSpent().toString());
+		if(item.getGeolocation() != null)
+		{
+			TextView coordValue = (TextView) findViewById(R.id.expenseItemCoordinatesValueTextView);
+			coordValue.setText(item.getGeolocation().toString());
+			expenseItemGeolocation = item.getGeolocation();
+		}
 		Spinner s = (Spinner) findViewById(R.id.expenseItemCategorySpinner);
 		s.setSelection(categoriesMap.get(item.getCategory().toString()));
 		s = (Spinner) findViewById(R.id.expenseItemCurrencySpinner);
@@ -278,7 +289,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		Spinner categorySpinner = (Spinner) findViewById(R.id.expenseItemCategorySpinner);
 		EditText amountText = (EditText) findViewById(R.id.expenseItemAmountEditText);
 		Spinner currencySpinner = (Spinner) findViewById(R.id.expenseItemCurrencySpinner);
-		EditText descriptionText = (EditText) findViewById(R.id.expesenItemDescriptionEditText);
+		EditText descriptionText = (EditText) findViewById(R.id.expenseItemDescriptionEditText);
 
 		// get the name of the expense item
 		String name = "";
@@ -364,11 +375,22 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 			item.setCurrency(currency);
 			item.setDescription(description);
 			item.setReceiptPhoto(bm);
-			
+			if (!expenseItemGeolocation.equals(new Coordinate())) {
+				item.setGeolocation(expenseItemGeolocation);
+			}
+			else {
+				item.setGeolocation(null);
+			}
 			controller.update();
 		} else {
 			// Add a new expense
-			ExpenseItem expense = new ExpenseItem(name, date, category, amount, currency, description, bm);
+			ExpenseItem expense;
+			if (!expenseItemGeolocation.equals(new Coordinate())) {
+				expense = new ExpenseItem(name, date, category, amount, currency, description, bm, expenseItemGeolocation);
+			}
+			else {
+				expense = new ExpenseItem(name, date, category, amount, currency, description, bm, null);
+			}
 			claim.addExpense(expense);
 		}
 
@@ -401,6 +423,12 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 	}
 
+	public void onCoordinatesValueTextViewClick(View v) {
+		Intent geolocationViewIntent = new Intent(ExpenseItemActivity.this,
+				GeolocationViewActivity.class);
+		startActivityForResult(geolocationViewIntent, SET_GEOLOCATION);
+	}
+	
 	/**
 	 * Runs on return from the camera app. Displays the image taken in the
 	 * expenseItemImageButton
@@ -417,6 +445,16 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 				Toast.makeText(this, "Result: Cancelled", Toast.LENGTH_SHORT).show();
 			} else {
 				Toast.makeText(this, "Result: ???", Toast.LENGTH_SHORT).show();
+			}
+		}
+		if (requestCode == SET_GEOLOCATION) {
+			if (resultCode == RESULT_OK) {
+				double latitude = data.getDoubleExtra("latitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
+				double longitude = data.getDoubleExtra("longitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
+				expenseItemGeolocation.setLatitude(latitude);
+				expenseItemGeolocation.setLongitude(longitude);
+				TextView coordValue = (TextView) findViewById(R.id.expenseItemCoordinatesValueTextView);
+				coordValue.setText(expenseItemGeolocation.toString());
 			}
 		}
 	}

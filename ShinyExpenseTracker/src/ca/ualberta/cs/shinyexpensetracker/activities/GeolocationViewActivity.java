@@ -136,7 +136,7 @@ public class GeolocationViewActivity extends Activity {
 		Intent geolocationResultIntent = new Intent(GeolocationViewActivity.this, ExpenseClaimListActivity.class);
 		geolocationResultIntent.putExtra("latitude", coordinates.getLatitude());
 		geolocationResultIntent.putExtra("longitude", coordinates.getLongitude());
-		setResult(ExpenseClaimListActivity.RESULT_OK, geolocationResultIntent);
+		setResult(RESULT_OK, geolocationResultIntent);
 		finish();
 	}
 	

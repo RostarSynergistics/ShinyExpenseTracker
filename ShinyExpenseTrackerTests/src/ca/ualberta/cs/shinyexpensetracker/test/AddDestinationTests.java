@@ -1,17 +1,17 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
-import ca.ualberta.cs.shinyexpensetracker.activities.AddDestinationActivity;
-import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
-import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
-import ca.ualberta.cs.shinyexpensetracker.models.Destination;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
+import ca.ualberta.cs.shinyexpensetracker.activities.AddDestinationActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.models.Destination;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 /**

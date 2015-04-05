@@ -375,6 +375,7 @@ public class ViewAllExpenseClaimsActivityTests extends
 				claimsList.performItemClick(claimsList.getChildAt(0), 0, 0);
 			}
 		});
+		getInstrumentation().waitForIdleSync();
 		
 		// Get the summary activity
 		summaryActivity = (TabbedSummaryActivity) getInstrumentation().waitForMonitorWithTimeout(summaryMonitor, 1000);

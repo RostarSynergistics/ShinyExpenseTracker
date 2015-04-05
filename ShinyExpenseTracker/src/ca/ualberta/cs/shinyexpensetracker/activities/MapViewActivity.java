@@ -118,6 +118,7 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 					Marker newMarker = new Marker(map);
 					newMarker.setPosition(startPoint);
 					newMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+					map.getOverlays().add(newMarker);
 				}
 				// no time to implement Iterable interface!
 				for (int i = 0; i < claimList.getCount(); i++) {

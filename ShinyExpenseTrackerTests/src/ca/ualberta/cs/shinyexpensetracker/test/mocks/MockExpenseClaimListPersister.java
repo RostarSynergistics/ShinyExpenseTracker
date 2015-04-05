@@ -2,7 +2,6 @@ package ca.ualberta.cs.shinyexpensetracker.test.mocks;
 
 import java.io.IOException;
 
-import ca.ualberta.cs.shinyexpensetracker.models.ConcreteExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.persistence.IExpenseClaimListPersister;
 
@@ -16,7 +15,7 @@ public class MockExpenseClaimListPersister implements IExpenseClaimListPersister
 	private Boolean loadWasCalled = false;
 	
 	public MockExpenseClaimListPersister() {
-		this(new ConcreteExpenseClaimList());
+		this(new ExpenseClaimList());
 	}
 	
 	public MockExpenseClaimListPersister(ExpenseClaimList list) {

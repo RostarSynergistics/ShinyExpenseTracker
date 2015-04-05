@@ -23,7 +23,6 @@ import java.io.IOException;
 
 import junit.framework.TestCase;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
-import ca.ualberta.cs.shinyexpensetracker.models.ConcreteExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
@@ -49,7 +48,7 @@ public class ExpenseClaimControllerTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		claimList = new ConcreteExpenseClaimList();
+		claimList = new ExpenseClaimList();
 		claimList.addClaim(new ExpenseClaim("Test"));
 		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(claimList));
 	}

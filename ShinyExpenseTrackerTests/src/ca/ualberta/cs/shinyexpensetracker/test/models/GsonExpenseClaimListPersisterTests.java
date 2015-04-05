@@ -7,7 +7,6 @@ import java.util.Date;
 import junit.framework.TestCase;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-import ca.ualberta.cs.shinyexpensetracker.models.ConcreteExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
@@ -25,7 +24,7 @@ public class GsonExpenseClaimListPersisterTests extends TestCase {
 	 * ExpenseClaimList.
 	 */
 	public void testPersistenceOfExpenseClaims() {
-		ExpenseClaimList list = new ConcreteExpenseClaimList();
+		ExpenseClaimList list = new ExpenseClaimList();
 		ExpenseClaim claim = getTestClaim();
 		list.addClaim(claim);
 

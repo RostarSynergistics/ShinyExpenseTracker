@@ -1,5 +1,6 @@
 package ca.ualberta.cs.shinyexpensetracker.decorators;
 
+import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
@@ -11,11 +12,12 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
  * of claims. Subclasses have access to the source object which
  * they can use to get the data from the thing they're decorating.
  */
-public abstract class ExpenseClaimFilter extends ExpenseClaimList {
+public abstract class ExpenseClaimFilter extends ExpenseClaimList implements IView<ExpenseClaimList> {
 	protected ExpenseClaimList source;
 	
 	public ExpenseClaimFilter(ExpenseClaimList source) {
 		this.source = source;
+		source.addView(this);
 	}
 
 	@Override
@@ -36,6 +38,11 @@ public abstract class ExpenseClaimFilter extends ExpenseClaimList {
 		onDatasetChanged();
 	}
 	
+	@Override
+	public void update(ExpenseClaimList m) {
+		onDatasetChanged();
+	}
+	
 	/**
 	 * Allows subclasses to be notified that the dataset has
 	 * been changed and that they need to be updated.
@@ -43,6 +50,5 @@ public abstract class ExpenseClaimFilter extends ExpenseClaimList {
 	 * It should be overridden if you need to know when the
 	 * source object has changed.
 	 */
-	protected void onDatasetChanged() {
-	}
+	protected void onDatasetChanged() {}
 }

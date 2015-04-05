@@ -2,49 +2,43 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.ArrayList;
 
-public abstract class ExpenseClaimList extends Model<ExpenseClaimList> {
+/**
+ * Represents the collection of ExpenseClaims that exist in the application.
+ * 
+ * As each part of the application should be working with the same list,
+ * ExpenseClaimList uses the Singleton pattern.
+ */
+public class ExpenseClaimList extends Model<ExpenseClaimList> implements ExpenseClaimListViewer {
 	protected ArrayList<ExpenseClaim> claims;
-
+	
 	public ExpenseClaimList() {
-		super();
+		claims = new ArrayList<ExpenseClaim>();
 	}
 
-	/**
-	 * Returns a claim from the claimList based on index passed in
-	 * @param index
-	 * @return
-	 */
-	abstract public ExpenseClaim getClaim(int index);
-
-	/**
-	 * Adds a claim to the claimList
-	 * @param claim
-	 */
-	abstract public void addClaim(ExpenseClaim claim);
-
-	/**
-	 * deletes a claim from the claimList
-	 * @param claim
-	 */
-	abstract public void removeClaim(ExpenseClaim claim);
-
-	/**
-	 * returns array list of claims
-	 * @return
-	 */
-	abstract public ArrayList<ExpenseClaim> getClaims();
-
-	/**
-	 * returns number of claims in claimList
-	 * @return
-	 */
-	abstract public int getCount();
-
-	/**
-	 * Replaces the old claim with the new claim.
-	 * @param oldClaim
-	 * @param newClaim
-	 */
-	abstract public void updateExpenseClaim(ExpenseClaim oldClaim, ExpenseClaim newClaim);
-
+	public ExpenseClaim getClaim(int index) {
+		return claims.get(index);
+	}
+	
+	public void addClaim(ExpenseClaim claim) {
+		claims.add(claim);
+		notifyViews();
+	}
+	
+	public void removeClaim(ExpenseClaim claim) {
+		claims.remove(claim);
+		notifyViews();
+	}
+	
+	public ArrayList<ExpenseClaim> getClaims() {
+		return claims;
+	}
+	
+	public int getCount() {
+		return this.claims.size();
+	}
+	
+	public void updateExpenseClaim(ExpenseClaim oldClaim, ExpenseClaim newClaim) {
+		int index = claims.indexOf(oldClaim);
+		claims.set(index, newClaim);
+	}
 }

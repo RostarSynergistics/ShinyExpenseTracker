@@ -9,7 +9,6 @@ import ca.ualberta.cs.shinyexpensetracker.activities.AddDestinationActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
-import ca.ualberta.cs.shinyexpensetracker.models.ConcreteExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
@@ -46,7 +45,7 @@ public class AddDestinationTests extends
 	protected void setUp() throws Exception {
 		super.setUp();
 		
-		ExpenseClaimList claimList = new ConcreteExpenseClaimList();
+		ExpenseClaimList claimList = new ExpenseClaimList();
 
 		ExpenseClaim claim = new ExpenseClaim("Example name");
 		claimList.addClaim(claim);

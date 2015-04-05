@@ -15,6 +15,7 @@ import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
@@ -37,6 +38,8 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
  */
 public class AddDestinationActivity extends Activity {
 	public static final String DESTINATION_INDEX = "destinationIndex";
+	public static final int SET_GEOLOCATION = 1;
+	private static final Coordinate NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES = new Coordinate(39.03808, 125.7296);
 
 	private EditText destinationEditText;
 	private EditText reasonForTravelEditText;
@@ -50,6 +53,8 @@ public class AddDestinationActivity extends Activity {
 	
 	private Destination destination;
 	private int destinationIndex;
+	
+	private Coordinate coord = new Coordinate();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,11 +85,15 @@ public class AddDestinationActivity extends Activity {
 		
 		if (destination != null) {
 			// If we loaded a destination, load the values
+			coord = destination.getGeolocation();
+			
 			TextView dest = (TextView) findViewById(R.id.destinationEditText);
 			TextView reason = (TextView) findViewById(R.id.reasonEditText);
+			TextView coordValue = (TextView) findViewById(R.id.coordinatesValueTextView);
 			
 			dest.setText(destination.getName());
 			reason.setText(destination.getReasonForTravel());
+			coordValue.setText(coord.toString());
 		}
 	}
 
@@ -121,18 +130,32 @@ public class AddDestinationActivity extends Activity {
 			dialog.show();
 			return false;
 		}
-
+		if (coord.equals(new Coordinate())) {
+			dialog = new AlertDialog.Builder(this)
+			.setMessage("Destination requires a location")
+			.setNeutralButton(android.R.string.ok,
+					new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog,
+						int which) {
+					dialog.dismiss();
+				}
+			}).create();
+			dialog.show();
+			return false;
+		}
 		String dest = destinationEditText.getText().toString();
 		String reason = reasonForTravelEditText.getText().toString();
 		
 		if (destination == null) {
 			// If new, create a new one
-			destination = new Destination(dest, reason);
+			destination = new Destination(dest, reason, coord);
 			claim.addDestination(destination);
 		} else {
 			// If old, update the data.
 			destination.setName(dest);
 			destination.setReasonForTravel(reason);
+			destination.setGeolocation(coord);
 		}
 		
 		controller.update();
@@ -140,6 +163,24 @@ public class AddDestinationActivity extends Activity {
 		return true;
 	}
 
+	public void onGeolocationValueTextViewClick(View v) {
+		Intent geolocationViewIntent = new Intent(AddDestinationActivity.this,
+				GeolocationViewActivity.class);
+		startActivityForResult(geolocationViewIntent, SET_GEOLOCATION);
+	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// Check result is ok
+		if (resultCode == RESULT_OK) {
+			double latitude = data.getDoubleExtra("latitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
+			double longitude = data.getDoubleExtra("longitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
+			coord.setLatitude(latitude);
+			coord.setLongitude(longitude);
+			TextView coordValue = (TextView) findViewById(R.id.coordinatesValueTextView);
+			coordValue.setText(coord.toString());
+		}
+	}
+	
 	/**
 	 * Called when the done button is pressed. Attempts to create the
 	 * destination. If it fails, stops and warns the user. Otherwise, the

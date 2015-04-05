@@ -12,10 +12,12 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 public class Destination extends Model<Destination> {
 	public String name;
 	public String reasonForTravel;
+	private Coordinate geolocation;
 	
-	public Destination(String name, String reasonForTravel) {
+	public Destination(String name, String reasonForTravel, Coordinate geolcoation) {
 		this.name = name;
 		this.reasonForTravel = reasonForTravel;
+		this.geolocation = geolcoation;
 	}
 	
 	public String getName() {
@@ -31,4 +33,13 @@ public class Destination extends Model<Destination> {
 	public void setReasonForTravel(String reasonForTravel) {
 		this.reasonForTravel = reasonForTravel;
 	}
+
+	public Coordinate getGeolocation() {
+		return geolocation;
+	}
+
+	public void setGeolocation(Coordinate geolocation) {
+		this.geolocation = geolocation;
+	}
+	
 }

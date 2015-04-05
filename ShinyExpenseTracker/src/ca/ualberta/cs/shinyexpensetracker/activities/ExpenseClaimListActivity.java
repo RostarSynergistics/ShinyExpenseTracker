@@ -49,7 +49,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 public class ExpenseClaimListActivity 
 	extends Activity 
 	implements IView<ExpenseClaimList> {
-	private static final int SET_HOME_GEOLCATION = 1;
+	private static final int SET_GEOLOCATION = 1;
 	private static final Coordinate NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES = new Coordinate(39.03808, 125.7296);
 	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
@@ -137,7 +137,7 @@ public class ExpenseClaimListActivity
 		case R.id.set_home_geolocation:
 			Intent geolocationViewIntent = new Intent(ExpenseClaimListActivity.this,
 					GeolocationViewActivity.class);
-			startActivityForResult(geolocationViewIntent, SET_HOME_GEOLCATION);
+			startActivityForResult(geolocationViewIntent, SET_GEOLOCATION);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

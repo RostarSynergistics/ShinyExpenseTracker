@@ -71,6 +71,7 @@ public class GeolocationViewTest extends
 				setGeolocationAutomatically.performClick();
 			}
 		});
+		instrumentation.waitForIdleSync();
 		assertTrue("did not finish activity", geolocationViewActivity.isFinishing());
 	}
 	
@@ -84,6 +85,7 @@ public class GeolocationViewTest extends
 				setGeolocationUsingMap.performClick();
 			}
 		});
+		instrumentation.waitForIdleSync();
 		assertEquals("MapViewActivity is not launched", am.getHits(), 1);
 	}
 }

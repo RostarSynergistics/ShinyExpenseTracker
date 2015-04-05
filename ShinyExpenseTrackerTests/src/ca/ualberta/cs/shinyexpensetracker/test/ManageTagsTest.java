@@ -43,10 +43,10 @@ public class ManageTagsTest extends ActivityInstrumentationTestCase2<ManageTagAc
 		assertEquals(tag, (Tag)manageTagsListView.getItemAtPosition(0));
 		assertTrue(tagController.getTagList().size() == 1);
 		assertTrue(manageTagsListView.getCount() == 1);	
+		
+		instrumentation.waitForIdleSync();
 	}
 	
-	
-
 	private Tag addTagToTagList(final Tag tag) {
 		instrumentation.runOnMainSync(new Runnable() {
 

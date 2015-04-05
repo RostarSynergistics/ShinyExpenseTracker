@@ -164,6 +164,7 @@ public class ClaimSummaryFragmentTest extends
 			}
 
 		});
+		getInstrumentation().waitForIdleSync();
 		TextView noExpenses = (TextView) frag.getView().findViewById(R.id.noExpensesTextView);
 		assertEquals("No Expenses not shown", "No Expenses", noExpenses.getText().toString());
 	}
@@ -179,6 +180,7 @@ public class ClaimSummaryFragmentTest extends
 				frag.setClaimInfo(frag.getView());
 			}
 		});
+		getInstrumentation().waitForIdleSync();
 		TextView tags = (TextView) frag.getView().findViewById(R.id.claimTagsTextView);
 		assertEquals("Tags showns", "Tags: ", tags.getText().toString());
 	}

@@ -107,7 +107,7 @@ public class ExpenseItemAdapter extends BaseAdapter implements ListAdapter {
 		expenseItemDescTextView.setText(expense.getDescription().toString());
 
 		// Is expense marked incomplete?
-		if (expense.doesHavePhoto()) {
+		if (expense.hasAnAttachedReceipt()) {
 			// Yes. Display indicator
 			expenseItemReceiptIndicator.setImageResource(android.R.drawable.ic_menu_camera);
 		} else {

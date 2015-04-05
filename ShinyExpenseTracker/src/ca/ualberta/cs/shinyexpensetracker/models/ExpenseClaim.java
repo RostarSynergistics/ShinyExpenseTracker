@@ -275,7 +275,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 				.append(getStartDate(), rhs.getStartDate()).append(getEndDate(), rhs.getEndDate())
 				.append(getStatus(), rhs.getStatus()).append(getExpenseItems(), rhs.getExpenseItems())
 				.append(getDestinations(), rhs.getDestinations())
-				// .append(getTagList(), rhs.getTagList())
+				.append(getTagList(), rhs.getTagList())
 				.isEquals();
 	}
 }

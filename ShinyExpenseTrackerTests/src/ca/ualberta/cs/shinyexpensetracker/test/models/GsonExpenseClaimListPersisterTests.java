@@ -28,8 +28,7 @@ public class GsonExpenseClaimListPersisterTests extends TestCase {
 		ExpenseClaim claim = getTestClaim();
 		list.addClaim(claim);
 
-		IExpenseClaimListPersister persister = new GsonExpenseClaimListPersister(
-				new MockPersistenceStrategy());
+		IExpenseClaimListPersister persister = new GsonExpenseClaimListPersister(new MockPersistenceStrategy());
 
 		try {
 			persister.saveExpenseClaims(list);
@@ -37,6 +36,7 @@ public class GsonExpenseClaimListPersisterTests extends TestCase {
 			assertEquals(1, newList.getCount());
 			ExpenseClaim loadedClaim = newList.getClaimAtPosition(0);
 			assertEquals(claim, loadedClaim);
+			assertEquals(claim.getExpenseItemAtPosition(0), loadedClaim.getExpenseItemAtPosition(0));
 		} catch (IOException e) {
 			fail();
 		}
@@ -46,14 +46,17 @@ public class GsonExpenseClaimListPersisterTests extends TestCase {
 		Date startDate = new Date(5000);
 		Date endDate = new Date(6000);
 
-		ExpenseClaim claim = new ExpenseClaim("test", startDate, endDate,
-				ExpenseClaim.Status.IN_PROGRESS);
-		
+		ExpenseClaim claim = new ExpenseClaim("test", startDate, endDate, ExpenseClaim.Status.IN_PROGRESS);
+
 		int[] colors = new int[] { 1, 2, 3, 4 };
-		claim.addExpense(new ExpenseItem("test", new Date(5000),
-				ExpenseItem.Category.ACCOMODATION, new BigDecimal("20.00"),
-				ExpenseItem.Currency.CAD, "Description", Bitmap.createBitmap(colors, 2, 2, Config.ALPHA_8)));
-		
+		claim.addExpense(new ExpenseItem("test",
+				new Date(5000),
+				ExpenseItem.Category.ACCOMODATION,
+				new BigDecimal("20.00"),
+				ExpenseItem.Currency.CAD,
+				"Description",
+				Bitmap.createBitmap(colors, 2, 2, Config.ALPHA_8)));
+
 		return claim;
 	}
 

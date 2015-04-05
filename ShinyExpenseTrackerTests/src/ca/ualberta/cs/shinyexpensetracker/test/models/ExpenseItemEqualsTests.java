@@ -3,16 +3,16 @@ package ca.ualberta.cs.shinyexpensetracker.test.models;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import junit.framework.TestCase;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
+import android.test.AndroidTestCase;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+import ca.ualberta.cs.shinyexpensetracker.test.R;
 
 /**
- * Tests that verify that ExpenseItem.equals(...) works.
- * ExpenseItems are equal if and only if all of its fields are equal
+ * Tests that verify that ExpenseItem.equals(...) works. ExpenseItems are equal
+ * if and only if all of its fields are equal
  */
-public class ExpenseItemEqualsTests extends TestCase {
+public class ExpenseItemEqualsTests extends AndroidTestCase {
 	ExpenseItem item1;
 	ExpenseItem item2;
 
@@ -24,11 +24,13 @@ public class ExpenseItemEqualsTests extends TestCase {
 	}
 	
 	private ExpenseItem getStartingItem() {
-		int[] colors = new int[] { 1, 2, 3, 4 };
-		
-		return new ExpenseItem("test", new Date(5000),
-				ExpenseItem.Category.ACCOMODATION, new BigDecimal("20.00"),
-				ExpenseItem.Currency.CAD, "Description", Bitmap.createBitmap(colors, 2, 2, Config.ALPHA_8));
+		return new ExpenseItem("test",
+				new Date(5000),
+				ExpenseItem.Category.ACCOMODATION,
+				new BigDecimal("20.00"),
+				ExpenseItem.Currency.CAD,
+				"Description",
+				BitmapFactory.decodeResource(getContext().getResources(), R.drawable.keyhole_nebula_hubble_1999));
 	}
 	
 	public void testThatTwoIdenticalItemsAreEqual() {
@@ -72,9 +74,7 @@ public class ExpenseItemEqualsTests extends TestCase {
 	}
 
 	public void testThatTwoItemsWithDifferentReceiptPhotosAreNotEqual() {
-		int[] colors = new int[] { 1 };
-		
-		item2.setReceiptPhoto(Bitmap.createBitmap(colors, 1, 1, Config.ALPHA_8));
+		item2.setReceiptPhoto(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.corgi_running));
 		
 		assertNotEqual();
 	}

@@ -22,6 +22,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import android.graphics.Bitmap;
+import ca.ualberta.cs.shinyexpensetracker.utilities.Base64BitmapConverter;
 
 /**
  * An ExpenseItem represents the details of an expense that's a part of an
@@ -66,8 +67,12 @@ public class ExpenseItem extends Model<ExpenseItem> {
 	private BigDecimal amountSpent;
 	private Currency currency;
 	private String description;
-	private Bitmap receiptPhoto;
 	private boolean incompletenessMarker;
+
+	// encoded in Base64
+	private String encodedReceiptPhoto;
+	// temporarily saved to prevent redundant work, but can't be GSON'd
+	private transient Bitmap receiptPhotoBitmap;
 
 	public static final boolean COMPLETE = false;
 	public static final boolean INCOMPLETE = true;
@@ -93,7 +98,7 @@ public class ExpenseItem extends Model<ExpenseItem> {
 		this.amountSpent = amountSpent;
 		this.currency = currency;
 		this.description = description;
-		this.receiptPhoto = photo;
+		this.setReceiptPhoto(photo);
 		this.incompletenessMarker = completenessFlag;
 	}
 
@@ -166,13 +171,32 @@ public class ExpenseItem extends Model<ExpenseItem> {
 		return this.currency;
 	}
 
-	public void setReceiptPhoto(Bitmap photo) {
-		this.receiptPhoto = photo;
-		notifyViews();
+	public String getEncodedReceiptPhoto() {
+		return this.encodedReceiptPhoto;
 	}
 
 	public Bitmap getReceiptPhoto() {
-		return this.receiptPhoto;
+		if (this.receiptPhotoBitmap == null) {
+			if (this.encodedReceiptPhoto == null) {
+				return null;
+			} else {
+				this.receiptPhotoBitmap = Base64BitmapConverter.convertFromBase64(this.encodedReceiptPhoto);
+			}
+		}
+
+		return this.receiptPhotoBitmap;
+	}
+
+	public void setReceiptPhoto(Bitmap photo) {
+		if (photo == null) {
+			this.receiptPhotoBitmap = null;
+			this.encodedReceiptPhoto = null;
+		} else {
+			this.receiptPhotoBitmap = photo;
+			this.encodedReceiptPhoto = Base64BitmapConverter.convertToBase64(photo);
+        }
+
+		notifyViews();
 	}
 
 	// XXX: #69 <- This should return the formatted JodaMoney string
@@ -181,12 +205,12 @@ public class ExpenseItem extends Model<ExpenseItem> {
 	}
 
 	/**
-	 * returns true is expenseItem has a receipt
+	 * Returns true if the ExpenseItem has an attached receipt photo.
 	 * 
-	 * @return
+	 * @return true if an attached receipt photo exists, false otherwise.
 	 */
-	public boolean doesHavePhoto() {
-		return this.receiptPhoto != null;
+	public boolean hasAnAttachedReceipt() {
+		return this.encodedReceiptPhoto != null;
 	}
 
 	@Override
@@ -201,31 +225,10 @@ public class ExpenseItem extends Model<ExpenseItem> {
 			return false;
 		}
 		ExpenseItem rhs = (ExpenseItem) obj;
-		Boolean equal = new EqualsBuilder().append(getName(), rhs.getName()).append(getDate(), rhs.getDate())
+		return new EqualsBuilder().append(getName(), rhs.getName()).append(getDate(), rhs.getDate())
 				.append(getCategory(), rhs.getCategory()).append(getAmountSpent(), rhs.getAmountSpent())
-				.append(getCurrency(), rhs.getCurrency()).append(getDescription(), rhs.getDescription()).isEquals();
-
-		// Calling .equals() on two Bitmaps doesn't do what we want
-		// So, need to used .sameAs() instead
-		return equal && hasSameReceiptPhoto(rhs);
-	}
-
-	/**
-	 * Returns true if this ExpenseItem and the other have the exact same
-	 * receipt photo.
-	 * 
-	 * @param rhs
-	 *            The other ExpenseItem.
-	 * @return True if the two have the exact same receipt photo.
-	 */
-	private boolean hasSameReceiptPhoto(ExpenseItem rhs) {
-		if (getReceiptPhoto() == null) {
-			return rhs.getReceiptPhoto() == null;
-		}
-		if (rhs.getReceiptPhoto() == null) {
-			return false;
-		}
-		return getReceiptPhoto().sameAs(rhs.getReceiptPhoto());
+				.append(getCurrency(), rhs.getCurrency()).append(getDescription(), rhs.getDescription())
+				.append(getEncodedReceiptPhoto(), rhs.getEncodedReceiptPhoto()).isEquals();
 	}
 
 	// Source:

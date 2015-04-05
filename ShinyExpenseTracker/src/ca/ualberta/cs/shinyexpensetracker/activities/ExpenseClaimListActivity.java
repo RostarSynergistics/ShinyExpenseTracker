@@ -46,6 +46,7 @@ import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
+import ca.ualberta.cs.shinyexpensetracker.models.User;
 import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
 
 public class ExpenseClaimListActivity 
@@ -55,7 +56,7 @@ public class ExpenseClaimListActivity
 	private static final Coordinate NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES = new Coordinate(39.03808, 125.7296);
 	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
-
+	private User user = Application.getUser();
 	// TODO: these have to be moved to another object,
 	// like Claimant or something, when that class is created
 	private Coordinate homeGeolocation = new Coordinate();
@@ -76,6 +77,12 @@ public class ExpenseClaimListActivity
 		final ListView claim_list = (ListView) findViewById(R.id.expense_claim_list);
 		adapter = new ClaimListAdapter(this);
 		claim_list.setAdapter(adapter);
+		
+		if (user.getHomeGeolocation() != null) {
+			TextView homeGeolocationValue = (TextView) findViewById(R.id.homeGeolocationValueTextView);
+			homeGeolocationValue.setText(user.getHomeGeolocation().toString());
+			homeGeolocation = user.getHomeGeolocation();
+		}
 
 		claim_list.setOnItemClickListener(new OnItemClickListener() {
 
@@ -166,6 +173,7 @@ public class ExpenseClaimListActivity
 			homeGeolocation.setLongitude(longitude);
 			TextView homeGeolocationValue = (TextView) findViewById(R.id.homeGeolocationValueTextView);
 			homeGeolocationValue.setText(homeGeolocation.toString());
+			user.setHomeGeolocation(homeGeolocation);
 		}
 	}
 	

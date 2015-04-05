@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.EditText;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.RemoveTagFromClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryApproverActivity;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
@@ -126,6 +127,9 @@ public class TabbedSummaryApproverActivityTest extends
 		assertTrue("No dialog to tell user claim was approved appeared", activity.getApprovedDialog().isShowing());
 		
 		assertEquals("claim status was not changed to approved", Status.APPROVED, controller.getExpenseClaim(0).getStatus());
+		
+		// make sure 'Return claim' menu item is disabled
+		assertFalse("'Return Claim' menu item still enabled", getInstrumentation().invokeMenuActionSync(activity, R.id.addDestination, 0));
 	}
 	
 	/**
@@ -141,8 +145,51 @@ public class TabbedSummaryApproverActivityTest extends
 		
 		getInstrumentation().waitForIdleSync();
 		
-		assertTrue("No dialog to tell user they need to add a comment appeared", activity.getCommentNeededDialog().isShowing());
+		assertTrue("No dialog to tell user they need to add a comment appeared", activity.getCommentApproveNeededDialog().isShowing());
 		
 		assertEquals("claim status was changed", Status.SUBMITTED, controller.getExpenseClaim(0).getStatus());
 	}
-}
+	
+	/**
+	 * Tests if a claim is returned when 'Return claim' menu item is clicked and the claim
+	 * has already been commented on
+	 */
+	public void testReturnCommentedClaim() {
+		//make sure the claim has a comment
+		String comment = "test comment";
+		controller.getExpenseClaim(0).addComment(comment);
+		
+		// invoke the return claim menu item
+		getInstrumentation().invokeMenuActionSync(activity, R.id.returnClaim, 0);
+		getInstrumentation().waitForIdleSync();
+		
+		//make sure the dialog was showing to tell the user the claim was returned
+		assertTrue("No dialog to tell the user the claim was returned", activity.getClaimReturnedDialog().isShowing());
+		
+		//make sure the claim status was changed to returned
+		assertEquals("claim status is not Returned", Status.RETURNED, controller.getExpenseClaim(0).getStatus());
+		
+		// make sure 'Approve claim' menu item is disabled
+		assertFalse("'Approve Claim' menu item still enabled", getInstrumentation().invokeMenuActionSync(activity, R.id.addDestination, 0));
+	}
+	
+	/**
+	 * Tests if a claim is unable to be returned on 'Return claim' menu item click
+	 *  if there is no comment on it
+	 */
+	public void testReturnUncommentedClaim() {
+		//make sure the claim doesn't have any comments
+		controller.getExpenseClaim(0).setComments(null);
+		
+		//invoke the return claim menu item
+		getInstrumentation().invokeMenuActionSync(activity, R.id.returnClaim, 0);
+		getInstrumentation().waitForIdleSync();
+		
+		//make sure the dialog that warns the user they need to comment on the claim before returning it is showing
+		assertTrue("No dialog to tell user they need to comment on claim first", activity.getCommentNeededReturnDialog().isShowing());
+		
+		//make sure the claim status didn't change
+		assertEquals("claim status was changed", Status.SUBMITTED, controller.getExpenseClaim(0).getStatus());
+		
+	}
+}	

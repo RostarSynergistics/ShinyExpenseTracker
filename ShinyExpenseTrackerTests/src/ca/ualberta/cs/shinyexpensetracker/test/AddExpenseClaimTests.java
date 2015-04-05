@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -107,8 +108,10 @@ public class AddExpenseClaimTests extends
 	}
 
 	public void testThatInputtingAnEndDateThatIsAfterTheStartDateIsValid() {
+
 		ActivityMonitor monitor = instrumentation.addMonitor(
 				TabbedSummaryActivity.class.getName(), null, false);
+
 
 		activity.runOnUiThread(new Runnable() {
 			@Override

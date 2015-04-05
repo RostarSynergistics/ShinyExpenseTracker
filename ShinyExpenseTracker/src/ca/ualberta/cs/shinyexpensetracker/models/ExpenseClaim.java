@@ -6,11 +6,12 @@ import java.util.Date;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import android.util.Log;
+
 /**
  * Class that represents an expense claim created by a user.
  */
-public class ExpenseClaim extends Model<ExpenseClaim> implements
-		Comparable<ExpenseClaim> {
+public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<ExpenseClaim> {
 	public enum Status {
 		IN_PROGRESS("In Progress"),
 		SUBMITTED("Submitted"),
@@ -46,6 +47,8 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 	private ArrayList<Destination> destinations = new ArrayList<Destination>();
 	private TagList tagList = new TagList();
 	private ArrayList<ExpenseItem> expenses = new ArrayList<ExpenseItem>();
+	private ArrayList<String> comments;
+
 	public ExpenseClaim(String name) {
 		this(name, new Date(), null, Status.IN_PROGRESS, new TagList());
 	}
@@ -69,6 +72,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 		this.endDate = endDate;
 		this.status = status;
 		this.tagList = tagList;
+		comments = new ArrayList<String>();
 	}
 
 
@@ -116,7 +120,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 		this.tagList = tagList;
 		notifyViews();
 	}
-
+	
 	public Destination getDestination(int index) {
 		return destinations.get(index);
 	}
@@ -223,6 +227,23 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 		return tagList.removeTag(tag);
 	}
 	
+	public void setComments(ArrayList<String> comments) {
+		this.comments = comments;
+	}
+	
+	public ArrayList<String> getComments() {
+		return comments;
+	}
+	
+	public void addComment(String comment) {
+		if (comments == null) {
+			comments = new ArrayList<String>();
+			Log.wtf("Comments", "comments is null");
+		}
+		
+		comments.add(comment);
+	}
+
 	// Source:
 	// https://commons.apache.org/proper/commons-lang/javadocs/api-3.3.2/org/apache/commons/lang3/builder/EqualsBuilder.html
 	@Override
@@ -264,5 +285,10 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 		.append(getDestinations())
 		//.append(getTagList())
 		.toHashCode();
+	}
+
+	public String getComment(int index) {
+		return comments.get(index);
+		
 	}
 }

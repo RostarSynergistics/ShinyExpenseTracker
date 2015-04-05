@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemDetailActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ExpenseItemListFragment;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
@@ -24,18 +25,18 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 public class ExpenseItemListFragmentTest extends
-	ActivityInstrumentationTestCase2<TabbedSummaryActivity> {
+	ActivityInstrumentationTestCase2<TabbedSummaryClaimantActivity> {
 	
 	static ExpenseItemListFragment frag;
 	TabbedSummaryActivity activity;
 	ExpenseClaim claim;
 
-	public ExpenseItemListFragmentTest(Class<TabbedSummaryActivity> activityClass) {
+	public ExpenseItemListFragmentTest(Class<TabbedSummaryClaimantActivity> activityClass) {
 		super(activityClass);
 	}
 	
 	public ExpenseItemListFragmentTest() {
-		super(TabbedSummaryActivity.class);
+		super(TabbedSummaryClaimantActivity.class);
 	}
 	
 	@Override

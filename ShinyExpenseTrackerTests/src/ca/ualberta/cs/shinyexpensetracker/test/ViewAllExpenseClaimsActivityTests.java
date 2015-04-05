@@ -37,6 +37,7 @@ import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimListActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -350,7 +351,7 @@ public class ViewAllExpenseClaimsActivityTests extends
 		getInstrumentation().waitForIdleSync();
 		
 		// Monitor for TabbedSummaryActivity
-		ActivityMonitor summaryMonitor = getInstrumentation().addMonitor(TabbedSummaryActivity.class.getName(), null, false);
+		ActivityMonitor summaryMonitor = getInstrumentation().addMonitor(TabbedSummaryClaimantActivity.class.getName(), null, false);
 		
 		// Get the summary activity
 		TabbedSummaryActivity summaryActivity = (TabbedSummaryActivity) getInstrumentation().waitForMonitorWithTimeout(summaryMonitor, 1000);
@@ -360,7 +361,7 @@ public class ViewAllExpenseClaimsActivityTests extends
 		summaryActivity.finish();
 
 		// Monitor for TabbedSummaryActivity again
-		summaryMonitor = getInstrumentation().addMonitor(TabbedSummaryActivity.class.getName(), null, false);
+		summaryMonitor = getInstrumentation().addMonitor(TabbedSummaryClaimantActivity.class.getName(), null, false);
 		
 		// Tap an item in the list view this time to display the summary
 		final ListView claimsList = (ListView) activity.findViewById(R.id.expense_claim_list);

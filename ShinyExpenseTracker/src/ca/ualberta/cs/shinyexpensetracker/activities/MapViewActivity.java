@@ -103,7 +103,7 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 				mapController.setCenter(startPoint);
 			}
 			else if (requestCode == DISPLAY_GEOLOCATIONS) {
-				Toast.makeText(this, Integer.toString(requestCode), Toast.LENGTH_LONG).show();
+				
 				
 				// get all claims
 				controller = Application.getExpenseClaimController();
@@ -129,6 +129,7 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 						Marker destMarker = new Marker(map);
 						destMarker.setPosition(destPoint);
 						destMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+						map.getOverlays().add(destMarker);
 					}
 					//put expense items' geolocations on the map
 					for (ExpenseItem item: claim.getExpenseItems()) {
@@ -138,10 +139,10 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 							Marker itemMarker = new Marker(map);
 							itemMarker.setPosition(itemPoint);
 							itemMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+							map.getOverlays().add(itemMarker);
 						}
 					}
 				}
-				
 				mapController.setZoom(3);
 				
 				if (startPoint != null) {
@@ -152,6 +153,7 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 					// otherwise, at default location
 					mapController.setCenter(new GeoPoint(0.0, 0.0));
 				}
+				map.invalidate();
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
@@ -8,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
 
 /**
@@ -40,6 +40,7 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 	 * Opens a dialog box for the approver to enter a comment about the claim 
 	 * @param menu
 	 */
+	@SuppressLint("InflateParams")
 	public void commentMenuItem(MenuItem menu) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		LayoutInflater layoutInflater = this.getLayoutInflater();
@@ -60,9 +61,7 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						String comment = commentTextBox.getText().toString();
-
-						
-						Toast.makeText(TabbedSummaryApproverActivity.this, comment, Toast.LENGTH_SHORT).show();
+						controller.getExpenseClaim(claimIndex).addComment(comment);
 					}
 				});
 
@@ -84,6 +83,10 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 	 */
 	public void returnClaimMenuItem(MenuItem menu) {
 		
+	}
+	
+	public AlertDialog getCommentDialog() {
+		return alertDialogAddComment;
 	}
 	
 }

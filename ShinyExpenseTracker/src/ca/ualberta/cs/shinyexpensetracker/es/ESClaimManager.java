@@ -8,9 +8,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -21,19 +18,16 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import android.content.Context;
-import android.content.Entity;
 import android.util.Log;
 import ca.ualberta.cs.shinyexpensetracker.es.data.ElasticSearchResponse;
 import ca.ualberta.cs.shinyexpensetracker.es.data.ElasticSearchSearchResponse;
-import ca.ualberta.cs.shinyexpensetracker.es.data.Hits;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class ESClaimManager {
 	
@@ -47,18 +41,20 @@ public class ESClaimManager {
 	public static final String CLAIM_INDEX = "claim/";
 	public static final String CLAIM_LIST_INDEX = "claimlist/";
 	public static final String SEARCH_PRETTY = "?pretty=1&q=";
-
+	public static final String CLAIMLIST = "TotalList";
 	/**
 	 * Consumes the POST/Insert operation of the service
 	 * @throws IOException 
 	 * @throws IllegalStateException 
 	 */
 	
-	public void insertClaim(ExpenseClaim claim) throws IllegalStateException, IOException{
-		HttpPost httpPost = new HttpPost(RESOURCE_URI+CLAIM_INDEX+claim.getID()+SEARCH_PRETTY);
+	public void insertClaimList(ExpenseClaimList claimController) throws IllegalStateException, IOException{
+		//ExpenseClaim claim = claimController.getClaim(0);
+		HttpPost httpPost = new HttpPost(RESOURCE_URI+CLAIM_LIST_INDEX+ CLAIMLIST);
 		StringEntity stringentity = null;
+		
 		try {
-			stringentity = new StringEntity(gson.toJson(claim));
+			stringentity = new StringEntity(gson.toJson(claimController));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -90,10 +86,11 @@ public class ESClaimManager {
 	 * @param claimID
 	 * @return
 	 */
-	public ExpenseClaim getClaim(String claimID){
-		ExpenseClaim claim = null;
+	
+	public ExpenseClaimList getClaimList(){
+		ExpenseClaimList claimList = null;
 		try{
-			HttpGet getRequest = new HttpGet(RESOURCE_URI+CLAIM_INDEX+claimID);
+			HttpGet getRequest = new HttpGet(RESOURCE_URI+CLAIM_INDEX+CLAIMLIST);
 
 			getRequest.addHeader("Accept","application/json");
 
@@ -103,16 +100,18 @@ public class ESClaimManager {
 			System.out.println(status);
 
 			String json = getEntityContent(response);
-
-			Type elasticSearchResponseType = new TypeToken<ElasticSearchResponse<ExpenseClaim>>(){}.getType();
-			ElasticSearchResponse<ExpenseClaim> esResponse = gson.fromJson(json, elasticSearchResponseType);
-			claim = esResponse.getSource();
+			
+			Log.d("WWJD", json);
+			Type elasticSearchResponseType = new TypeToken<ElasticSearchResponse<ExpenseClaimList>>(){}.getType();
+		
+			ElasticSearchResponse<ExpenseClaimList> esResponse = gson.fromJson(json, elasticSearchResponseType);
+			claimList = esResponse.getSource();
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return claim;
+		return claimList;
 	}
 	
 	/**

@@ -28,7 +28,9 @@ import java.text.ParseException;
 import java.util.Date;
 
 import android.app.Activity;
+import android.app.Instrumentation;
 import android.app.Instrumentation.ActivityMonitor;
+import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,6 +39,7 @@ import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimListActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.GeolocationViewActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
@@ -435,6 +438,18 @@ public class ViewAllExpenseClaimsActivityTests extends
 		// Wait for the application to become idle
 		getInstrumentation().waitForIdleSync();
 
+	}
+	
+	public void testSetHomeGeolocation() {
+		Intent generatedIntent = new Intent();
+		generatedIntent.putExtra("latitude", 64.0);
+		generatedIntent.putExtra("longitude", 128.0);
+		Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, generatedIntent);
 		
+		ActivityMonitor am = getInstrumentation().addMonitor(GeolocationViewActivity.class.getName(), null, true);
+		getInstrumentation().invokeMenuActionSync(activity, R.id.set_home_geolocation, 0);
+		assertEquals("launched wrong activity", am.getHits(), 1);
+		
+		assertEquals("wrong result received", result.getResultData(), generatedIntent);
 	}
 }

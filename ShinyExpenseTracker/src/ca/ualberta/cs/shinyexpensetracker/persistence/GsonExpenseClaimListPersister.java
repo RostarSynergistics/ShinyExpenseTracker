@@ -2,8 +2,6 @@ package ca.ualberta.cs.shinyexpensetracker.persistence;
 
 import java.io.IOException;
 
-import ca.ualberta.cs.shinyexpensetracker.es.ESClaimManager;
-import ca.ualberta.cs.shinyexpensetracker.es.data.ConnectivityChecker;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
 import com.google.gson.Gson;

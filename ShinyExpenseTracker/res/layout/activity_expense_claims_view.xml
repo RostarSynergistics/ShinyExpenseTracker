@@ -12,8 +12,29 @@
         android:id="@+id/expense_claim_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/homeGeolocationTitleTextView"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" >
     </ListView>
+
+    <TextView
+        android:id="@+id/homeGeolocationTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="52dp"
+        android:text="@string/homeGeolocationTitle"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/homeGeolocationValueTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/homeGeolocationTitleTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
+        android:text="@string/homeGeolocationDefaultValue"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

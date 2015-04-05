@@ -37,21 +37,30 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.adapters.ClaimListAdapter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.IView;
+import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
+import ca.ualberta.cs.shinyexpensetracker.models.User;
 import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
 
 public class ExpenseClaimListActivity 
 	extends Activity 
 	implements IView<ExpenseClaimList> {
+	private static final int SET_HOME_GEOLCATION = 1;
+	private static final Coordinate NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES = new Coordinate(39.03808, 125.7296);
 	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
-
+	private User user = Application.getUser();
+	// TODO: these have to be moved to another object,
+	// like Claimant or something, when that class is created
+	private Coordinate homeGeolocation = new Coordinate();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -68,6 +77,12 @@ public class ExpenseClaimListActivity
 		final ListView claim_list = (ListView) findViewById(R.id.expense_claim_list);
 		adapter = new ClaimListAdapter(this);
 		claim_list.setAdapter(adapter);
+		
+		if (user.getHomeGeolocation() != null) {
+			TextView homeGeolocationValue = (TextView) findViewById(R.id.homeGeolocationValueTextView);
+			homeGeolocationValue.setText(user.getHomeGeolocation().toString());
+			homeGeolocation = user.getHomeGeolocation();
+		}
 
 		claim_list.setOnItemClickListener(new OnItemClickListener() {
 
@@ -101,6 +116,7 @@ public class ExpenseClaimListActivity
 				return true;
 			}
 		});
+
 	};
 
 	@Override
@@ -133,10 +149,34 @@ public class ExpenseClaimListActivity
 					ManageTagActivity.class);
 			startActivity(manageTagsIntent);
 			return true;
+		case R.id.set_home_geolocation:
+			Intent geolocationViewIntent = new Intent(ExpenseClaimListActivity.this,
+					GeolocationViewActivity.class);
+			startActivityForResult(geolocationViewIntent, SET_HOME_GEOLCATION);
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
+	/*
+	 * Get result back from setting geolocation
+	 * Put it in a Toast until there is a Claimant class
+	 * where the values can actually be stored
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// Check result is ok
+		if (resultCode == RESULT_OK) {
+			double latitude = data.getDoubleExtra("latitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
+			double longitude = data.getDoubleExtra("longitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
+			homeGeolocation.setLatitude(latitude);
+			homeGeolocation.setLongitude(longitude);
+			TextView homeGeolocationValue = (TextView) findViewById(R.id.homeGeolocationValueTextView);
+			homeGeolocationValue.setText(homeGeolocation.toString());
+			user.setHomeGeolocation(homeGeolocation);
+		}
+	}
+	
 	@Override
 	public void update(ExpenseClaimList m) {
 		adapter.notifyDataSetChanged();
@@ -202,4 +242,7 @@ public class ExpenseClaimListActivity
 		return dialog;
 	}
 
+	public Coordinate getHomeGeolocation() {
+		return homeGeolocation;
+	}
 }

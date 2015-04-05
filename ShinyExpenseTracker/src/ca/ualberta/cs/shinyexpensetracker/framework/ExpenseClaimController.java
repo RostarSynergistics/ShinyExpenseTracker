@@ -57,9 +57,15 @@ public class ExpenseClaimController {
 	}
 
 	/**
-	 * Adds a claim to the ClaimList model
+	 * Creates a new expense claim.
 	 * 
-	 * @param claim
+	 * @param name
+	 *            The new claim's name.
+	 * @param startDate
+	 *            Its start date.
+	 * @param endDate
+	 *            Its end date.
+	 * @return The new claim.
 	 * @throws IOException
 	 */
 	public ExpenseClaim addExpenseClaim(String name, Date startDate, Date endDate) throws IOException {
@@ -71,17 +77,18 @@ public class ExpenseClaimController {
 	}
 
 	/**
-	 * Fetches a claim from the claim list model.
+	 * Fetches a claim from the model at the specified index.
 	 * 
 	 * @param index
-	 * @return the claim at the given index
+	 *            The index.
+	 * @return The claim at the given index.
 	 */
 	public ExpenseClaim getExpenseClaimAtPosition(int index) {
 		return claimList.getClaimAtPosition(index);
 	}
 
 	/**
-	 * Fetches a claim from the claim list model based on ID.
+	 * Fetches a claim from the model based on ID.
 	 * 
 	 * @param id
 	 *            The ID of the claim to find.
@@ -103,6 +110,20 @@ public class ExpenseClaimController {
 		persister.saveExpenseClaims(claimList);
 	}
 
+	/**
+	 * Updates the expense claim with the specified ID.
+	 * 
+	 * @param id
+	 *            The claim's ID.
+	 * @param name
+	 *            The new name.
+	 * @param startDate
+	 *            The new start date.
+	 * @param endDate
+	 *            The new end date.
+	 * @return The updated expense claim.
+	 * @throws IOException
+	 */
 	public ExpenseClaim updateExpenseClaim(UUID id, String name, Date startDate, Date endDate) throws IOException {
 		ExpenseClaim claim = claimList.getClaimByID(id);
 
@@ -114,6 +135,15 @@ public class ExpenseClaimController {
 		return claim;
 	}
 
+	/**
+	 * Updates the expense claim's status with the specified ID.
+	 * 
+	 * @param id
+	 * @param status
+	 *            The new status.
+	 * @return The updated expense claim.
+	 * @throws IOException
+	 */
 	public ExpenseClaim updateExpenseClaimStatus(UUID id, ExpenseClaim.Status status) throws IOException {
 		ExpenseClaim claim = claimList.getClaimByID(id);
 		claim.setStatus(status);
@@ -121,6 +151,18 @@ public class ExpenseClaimController {
 		return claim;
 	}
 
+	/**
+	 * Adds a new Destination to the claim with the specified ID.
+	 * 
+	 * @param claimID
+	 *            The claim's ID.
+	 * @param name
+	 *            The destination's name.
+	 * @param reasonForTravel
+	 *            The destination's reason for travel.
+	 * @return The new Destination.
+	 * @throws IOException
+	 */
 	public Destination addDestinationToClaim(UUID claimID, String name, String reasonForTravel) throws IOException {
 		ExpenseClaim claim = claimList.getClaimByID(claimID);
 		Destination destination = new Destination(name, reasonForTravel);
@@ -129,6 +171,20 @@ public class ExpenseClaimController {
 		return destination;
 	}
 
+	/**
+	 * Updates a destination that's attached to a claim.
+	 * 
+	 * @param claimID
+	 *            The claim's ID.
+	 * @param destinationID
+	 *            The destination's ID.
+	 * @param name
+	 *            The new name.
+	 * @param reasonForTravel
+	 *            the new reason for travel.
+	 * @return The updated Destination.
+	 * @throws IOException
+	 */
 	public Destination updateDestinationOnClaim(UUID claimID, UUID destinationID, String name, String reasonForTravel)
 			throws IOException {
 		ExpenseClaim claim = claimList.getClaimByID(claimID);
@@ -141,6 +197,28 @@ public class ExpenseClaimController {
 		return destination;
 	}
 
+	/**
+	 * Adds a new ExpenseItem to the claim with the specified ID.
+	 * 
+	 * @param claimID
+	 *            The claim's ID.
+	 * @param name
+	 *            The item's name.
+	 * @param date
+	 *            The item's date.
+	 * @param category
+	 *            The item's category.
+	 * @param amountSpent
+	 *            The item's amount spent.
+	 * @param currency
+	 *            The item's currency type.
+	 * @param description
+	 *            The item's description.
+	 * @param photo
+	 *            The item's receipt photo.
+	 * @return The new ExpenseItem.
+	 * @throws IOException
+	 */
 	public ExpenseItem addExpenseItemToClaim(UUID claimID, String name, Date date, Category category, BigDecimal amountSpent, Currency currency, String description, Bitmap photo)
 			throws IOException {
 		ExpenseClaim claim = claimList.getClaimByID(claimID);
@@ -152,6 +230,30 @@ public class ExpenseClaimController {
 		return item;
 	}
 
+	/**
+	 * Updates an ExpenseItem attached to the claim with the specified ID.
+	 * 
+	 * @param claimID
+	 *            The claim's ID.
+	 * @param expenseItemID
+	 *            The expense item's ID.
+	 * @param name
+	 *            The new name.
+	 * @param date
+	 *            The new date.
+	 * @param category
+	 *            The new category.
+	 * @param amountSpent
+	 *            The new amount spent.
+	 * @param currency
+	 *            The new currency type.
+	 * @param description
+	 *            The new description.
+	 * @param photo
+	 *            The new receipt photo.
+	 * @return The updated ExpenseItem.
+	 * @throws IOException
+	 */
 	public ExpenseItem updateExpenseItemOnClaim(UUID claimID, UUID expenseItemID, String name, Date date, Category category, BigDecimal amountSpent, Currency currency, String description, Bitmap photo)
 			throws IOException {
 		ExpenseClaim claim = claimList.getClaimByID(claimID);
@@ -169,6 +271,16 @@ public class ExpenseClaimController {
 		return item;
 	}
 
+	/**
+	 * Adds one or more tags to the claim specified by the ID.
+	 * 
+	 * @param claimID
+	 *            The claim's ID.
+	 * @param tags
+	 *            The list of tags to add.
+	 * @return The updated ExpenseClaim.
+	 * @throws IOException
+	 */
 	public ExpenseClaim addTagsToClaim(UUID claimID, List<Tag> tags) throws IOException {
 		ExpenseClaim claim = claimList.getClaimByID(claimID);
 
@@ -180,6 +292,16 @@ public class ExpenseClaimController {
 		return claim;
 	}
 
+	/**
+	 * Removes one or more tags from the claim specified by the ID.
+	 * 
+	 * @param claimID
+	 *            The claim's ID.
+	 * @param tags
+	 *            The list of tags to remove.
+	 * @return The updated ExpenseClaim.
+	 * @throws IOException
+	 */
 	public ExpenseClaim removeTagsFromClaim(UUID claimID, List<Tag> tags) throws IOException {
 		ExpenseClaim claim = claimList.getClaimByID(claimID);
 

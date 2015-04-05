@@ -6,8 +6,11 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-sdk
         android:minSdkVersion="17"
@@ -66,6 +69,14 @@
             android:label="@string/title_activity_receipt_view" >
         </activity>
         <activity
+            android:name=".activities.GeolocationViewActivity"
+            android:label="@string/title_activity_geolocation_view" >
+        </activity>
+        <activity
+            android:name="ca.ualberta.cs.shinyexpensetracker.activities.MapViewActivity"
+            android:label="@string/title_activity_map_view" >
+        </activity>
+        <activity
             android:name=".activities.AddTagToClaimActivity"
             android:label="@string/title_activity_add_tag_to_claim" >
 		</activity>
@@ -77,6 +88,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.RemoveTagFromClaimActivity"
             android:label="@string/title_activity_remove_tag_from_claim" >

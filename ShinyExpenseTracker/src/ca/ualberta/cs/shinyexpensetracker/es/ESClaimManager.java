@@ -18,6 +18,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.util.Log;
 import ca.ualberta.cs.shinyexpensetracker.es.data.ElasticSearchResponse;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
@@ -61,8 +62,10 @@ public class ESClaimManager {
 			response = httpclient.execute(httpPost);
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
+			Log.wtf("Fail","Fail");
 		} catch (IOException e) {
 			e.printStackTrace();
+			Log.wtf("Fail", "Fail");
 		}
 
 		String status = response.getStatusLine().toString();

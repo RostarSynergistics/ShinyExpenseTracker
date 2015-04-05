@@ -23,14 +23,15 @@ import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersist
  * Tests various parts of the functionality of ExpenseClaimActivity that relates
  * to creating new ExpenseClaims.
  **/
-public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<ExpenseClaimActivity> {
-	ExpenseClaimController	controller;
-	Instrumentation			instrumentation;
-	ExpenseClaimActivity	activity;
+public class AddExpenseClaimTests extends
+		ActivityInstrumentationTestCase2<ExpenseClaimActivity> {
+	ExpenseClaimController controller;
+	Instrumentation instrumentation;
+	ExpenseClaimActivity activity;
 
-	DatePickerDialog		fromDatePickerDialog, toDatePickerDialog;
-	EditText				startDateField, endDateField, nameField;
-	Button					doneButton;
+	DatePickerDialog fromDatePickerDialog, toDatePickerDialog;
+	EditText startDateField, endDateField, nameField;
+	Button doneButton;
 
 	public AddExpenseClaimTests(Class<ExpenseClaimActivity> activityClass) {
 		super(activityClass);
@@ -44,16 +45,20 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
+		controller = new ExpenseClaimController(
+				new MockExpenseClaimListPersister());
 		Application.setExpenseClaimController(controller);
 
 		instrumentation = getInstrumentation();
 		activity = getActivity();
 
-		nameField = (EditText) activity.findViewById(R.id.editTextExpenseClaimName);
-		startDateField = (EditText) activity.findViewById(R.id.editTextStartDate);
+		nameField = (EditText) activity
+				.findViewById(R.id.editTextExpenseClaimName);
+		startDateField = (EditText) activity
+				.findViewById(R.id.editTextStartDate);
 		endDateField = (EditText) activity.findViewById(R.id.editTextEndDate);
-		doneButton = (Button) activity.findViewById(R.id.addExpenseClaimDoneButton);
+		doneButton = (Button) activity
+				.findViewById(R.id.addExpenseClaimDoneButton);
 	}
 
 	public void testThatTappingOnStartDateOpensDateDialog() {
@@ -97,11 +102,13 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 
 		instrumentation.waitForIdleSync();
 
-		assertTrue("Date Range error AlertDialog is not showing", activity.getAlertDialog().isShowing());
+		assertTrue("Date Range error AlertDialog is not showing", activity
+				.getAlertDialog().isShowing());
 	}
 
 	public void testThatInputtingAnEndDateThatIsAfterTheStartDateIsValid() {
-		ActivityMonitor monitor = instrumentation.addMonitor(TabbedSummaryActivity.class.getName(), null, false);
+		ActivityMonitor monitor = instrumentation.addMonitor(
+				TabbedSummaryActivity.class.getName(), null, false);
 
 		activity.runOnUiThread(new Runnable() {
 			@Override
@@ -114,15 +121,18 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 		});
 
 		instrumentation.waitForIdleSync();
-		TabbedSummaryActivity nextActivity = (TabbedSummaryActivity) instrumentation.waitForMonitor(monitor);
+		TabbedSummaryActivity nextActivity = (TabbedSummaryActivity) instrumentation
+				.waitForMonitor(monitor);
 		assertNotNull("Next activity not started", nextActivity);
 
 		nextActivity.finish();
 	}
 
 	@SuppressLint("SimpleDateFormat")
-	public void testThatTappingDoneWhileCreatingNewExpenseClaimCreatesANewExpenseClaim() throws ParseException {
-		ActivityMonitor monitor = instrumentation.addMonitor(TabbedSummaryActivity.class.getName(), null, false);
+	public void testThatTappingDoneWhileCreatingNewExpenseClaimCreatesANewExpenseClaim()
+			throws ParseException {
+		ActivityMonitor monitor = instrumentation.addMonitor(
+				TabbedSummaryActivity.class.getName(), null, false);
 
 		final String claimName = "URoma";
 		activity.runOnUiThread(new Runnable() {
@@ -140,7 +150,8 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 
 		instrumentation.waitForIdleSync();
 
-		TabbedSummaryActivity nextActivity = (TabbedSummaryActivity) instrumentation.waitForMonitor(monitor);
+		TabbedSummaryActivity nextActivity = (TabbedSummaryActivity) instrumentation
+				.waitForMonitor(monitor);
 		assertNotNull("Next activity not started", nextActivity);
 
 		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
@@ -149,11 +160,14 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 
 		ExpenseClaim claim = controller.getExpenseClaim(0);
 
-		assertEquals("The two names do not equal each other", claimName, claim.getName());
+		assertEquals("The two names do not equal each other", claimName,
+				claim.getName());
 
-		assertEquals("The two startDates do not equal each other", startDateObject, claim.getStartDate());
+		assertEquals("The two startDates do not equal each other",
+				startDateObject, claim.getStartDate());
 
-		assertEquals("The two endDates do not equal each other", endDateObject, claim.getEndDate());
+		assertEquals("The two endDates do not equal each other", endDateObject,
+				claim.getEndDate());
 
 		nextActivity.finish();
 	}

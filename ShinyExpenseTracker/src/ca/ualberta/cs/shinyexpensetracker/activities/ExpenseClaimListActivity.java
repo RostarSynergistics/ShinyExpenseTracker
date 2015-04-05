@@ -37,6 +37,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.adapters.ClaimListAdapter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
@@ -156,6 +157,8 @@ public class ExpenseClaimListActivity
 			double longitude = data.getDoubleExtra("longitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
 			homeGeolocation.setLatitude(latitude);
 			homeGeolocation.setLongitude(longitude);
+			TextView homeGeolocationValue = (TextView) findViewById(R.id.homeGeolocationValueTextView);
+			homeGeolocationValue.setText(homeGeolocation.toString());
 		}
 	}
 	

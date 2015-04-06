@@ -38,6 +38,7 @@ public class ManageTagActivityTests extends ActivityInstrumentationTestCase2<Man
 		manageTagsListView = (ListView) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.listViewManageTags);
 		done = (Button) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.doneButtonManageTags);
 		
+		instrumentation.waitForIdleSync();
 	}
 	
 	public void testAddDialogShows(){
@@ -46,8 +47,6 @@ public class ManageTagActivityTests extends ActivityInstrumentationTestCase2<Man
 		AlertDialog dialog = ManageTagActivity.getDialog();
 		assertTrue(dialog.isShowing());
 	}
-
-	
 
 	public void testAddingToDialog(){
 		Tag tag = new Tag("TEST");
@@ -126,19 +125,18 @@ public class ManageTagActivityTests extends ActivityInstrumentationTestCase2<Man
 	}
 
 	//Adds a tag through the add menu button and dialog
-	private void addTagThroughDialog(String tagName) {
+	private void addTagThroughDialog(final String tagName) {
 		clickAddTagsButton();
 		AlertDialog dialog = ManageTagActivity.getDialog();
 		
-		EditText dialogEditText = (EditText) dialog.findViewById(R.id.EditTextDialogTag);
+		final EditText dialogEditText = (EditText) dialog.findViewById(R.id.EditTextDialogTag);
 		final Button dialogPostiveButton = (Button) dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-		
-		dialogEditText.setText(tagName);
 		
 		instrumentation.runOnMainSync(new Runnable() {
 			
 			@Override
 			public void run() {
+				dialogEditText.setText(tagName);
 				dialogPostiveButton.performClick();
 			}
 		});
@@ -217,6 +215,7 @@ public class ManageTagActivityTests extends ActivityInstrumentationTestCase2<Man
 				done.performClick();
 			}
 		});
+		instrumentation.waitForIdleSync();
 	}
 }
 

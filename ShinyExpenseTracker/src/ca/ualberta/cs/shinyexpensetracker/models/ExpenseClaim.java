@@ -6,11 +6,12 @@ import java.util.Date;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import android.util.Log;
+
 /**
  * Class that represents an expense claim created by a user.
  */
-public class ExpenseClaim extends Model<ExpenseClaim> implements
-		Comparable<ExpenseClaim> {
+public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<ExpenseClaim> {
 	public enum Status {
 		IN_PROGRESS("In Progress"),
 		SUBMITTED("Submitted"),
@@ -46,6 +47,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 	private ArrayList<Destination> destinations = new ArrayList<Destination>();
 	private TagList tagList = new TagList();
 	private ArrayList<ExpenseItem> expenses = new ArrayList<ExpenseItem>();
+	private ArrayList<String> comments = new ArrayList<String>();
 
 	public ExpenseClaim(String name) {
 		this(name, new Date(), null, Status.IN_PROGRESS, new TagList());
@@ -62,16 +64,16 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 	public ExpenseClaim(String name, Date startDate, Date endDate, Status status) {
 		this(name, startDate, endDate, status, new TagList());
 	}
-
-	public ExpenseClaim(String name, Date startDate, Date endDate,
-			Status status, TagList tagList) {
+	
+	public ExpenseClaim(String name, Date startDate, Date endDate, Status status, TagList tagList) {
 		super();
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.status = status;
-		this.tagList = tagList;		
+		this.tagList = tagList;
 	}
+
 
 	public String getName() {
 		return name;
@@ -117,7 +119,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 		this.tagList = tagList;
 		notifyViews();
 	}
-
+	
 	public Destination getDestination(int index) {
 		return destinations.get(index);
 	}
@@ -223,6 +225,18 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 	public boolean removedTag(Tag tag){
 		return tagList.removeTag(tag);
 	}
+	
+	public void setComments(ArrayList<String> comments) {
+		this.comments = comments;
+	}
+	
+	public ArrayList<String> getComments() {
+		return comments;
+	}
+	
+	public void addComment(String comment) {
+		comments.add(comment);
+	}
 
 	// Source:
 	// https://commons.apache.org/proper/commons-lang/javadocs/api-3.3.2/org/apache/commons/lang3/builder/EqualsBuilder.html
@@ -245,9 +259,12 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 				.append(getStatus(), rhs.getStatus())
 				.append(getExpenseItems(), rhs.getExpenseItems())
 				.append(getDestinations(), rhs.getDestinations())
-				// .append(getTagList(), rhs.getTagList())
+				.append(getTagList(), rhs.getTagList())
 				.isEquals();
 	}
+	
+	
+	
 
 	// Source:
 	// https://commons.apache.org/proper/commons-lang/javadocs/api-3.3.2/org/apache/commons/lang3/builder/HashCodeBuilder.html
@@ -262,5 +279,10 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements
 		.append(getDestinations())
 		//.append(getTagList())
 		.toHashCode();
+	}
+
+	public String getComment(int index) {
+		return comments.get(index);
+		
 	}
 }

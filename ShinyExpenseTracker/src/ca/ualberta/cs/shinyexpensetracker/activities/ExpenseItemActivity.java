@@ -168,7 +168,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		s = (Spinner) findViewById(R.id.expenseItemCurrencySpinner);
 		s.setSelection(currenciesMap.get(item.getCurrency().name()));
 
-		if (item.doesHavePhoto()) {
+		if (item.hasAnAttachedReceipt()) {
 			button.setImageBitmap(item.getReceiptPhoto());
 		}
 	}
@@ -316,7 +316,8 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 			adb.setCancelable(true);
 			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which) {}
+				public void onClick(DialogInterface dialog, int which) {
+				}
 			});
 			alertDialog = adb.create();
 			alertDialog.show();
@@ -333,7 +334,8 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 			adb.setCancelable(true);
 			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which) {}
+				public void onClick(DialogInterface dialog, int which) {
+				}
 			});
 			alertDialog = adb.create();
 			alertDialog.show();
@@ -353,7 +355,8 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 			adb.setCancelable(true);
 			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which) {}
+				public void onClick(DialogInterface dialog, int which) {
+				}
 			});
 			alertDialog = adb.create();
 			alertDialog.show();
@@ -392,13 +395,14 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 			item.setCurrency(currency);
 			item.setDescription(description);
 			item.setReceiptPhoto(bm);
-			
 		} else {
 			// Add a new expense
 			ExpenseItem expense = new ExpenseItem(name, date, category, amount, currency, description, bm);
 			claim.addExpense(expense);
 		}
 		
+		controller.update();
+
 		controller.update();
 
 		return true;

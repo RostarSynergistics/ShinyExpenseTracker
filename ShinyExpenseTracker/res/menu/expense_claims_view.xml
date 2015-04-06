@@ -8,19 +8,14 @@
         android:showAsAction="never"
         android:title="@string/action_new_claim"/>
     <item
-        android:id="@+id/action_sort"
-        android:orderInCategory="200"
-        android:showAsAction="never"
-        android:title="@string/action_sort"/>
-    <item
-        android:id="@+id/action_filter"
-        android:orderInCategory="300"
-        android:showAsAction="never"
-        android:title="@string/action_filter"/>
-    <item
         android:id="@+id/action_manage_tags"
         android:orderInCategory="400"
         android:showAsAction="never"
         android:title="@string/action_manage_tags"/>
+    <item 
+        android:id="@+id/set_home_geolocation" 
+        android:orderInCategory="500" 
+        android:showAsAction="never" 
+        android:title="@string/set_home_geolocation"/>
 
 </menu>

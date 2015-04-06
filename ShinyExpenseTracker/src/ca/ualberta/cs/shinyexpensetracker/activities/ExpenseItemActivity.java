@@ -43,6 +43,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
+import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
 
 /**
  * Covers Issues 5, 15, and 29
@@ -59,7 +60,6 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 
 	public static final String EXPENSE_INDEX = "expenseIndex";
 	public static final String CLAIM_INDEX = "claimIndex";
-	public static final int SET_GEOLOCATION = 1;
 
 	// DatePickerDialog from:
 	// http://androidopentutorials.com/android-datepickerdialog-on-edittext-click-event/
@@ -79,7 +79,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 	private HashMap<String, Integer> currenciesMap = new HashMap<String, Integer>();
 	private ExpenseClaimController controller;
 	private Drawable defaultDrawableOnImageButton;
-	private Coordinate expenseItemGeolocation = new Coordinate();
+	private Coordinate expenseItemGeolocation = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -378,7 +378,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 			item.setCurrency(currency);
 			item.setDescription(description);
 			item.setReceiptPhoto(bm);
-			if (!expenseItemGeolocation.equals(new Coordinate())) {
+			if (expenseItemGeolocation != null) {
 				item.setGeolocation(expenseItemGeolocation);
 			}
 			else {
@@ -388,7 +388,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		} else {
 			// Add a new expense
 			ExpenseItem expense;
-			if (!expenseItemGeolocation.equals(new Coordinate())) {
+			if (expenseItemGeolocation != null) {
 				expense = new ExpenseItem(name, date, category, amount, currency, description, bm, expenseItemGeolocation);
 			}
 			else {
@@ -431,7 +431,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 	public void onCoordinatesValueTextViewClick(View v) {
 		Intent geolocationViewIntent = new Intent(ExpenseItemActivity.this,
 				GeolocationViewActivity.class);
-		startActivityForResult(geolocationViewIntent, SET_GEOLOCATION);
+		startActivityForResult(geolocationViewIntent, GeolocationRequestCode.SET_GEOLOCATION);
 	}
 	
 	/**
@@ -452,12 +452,11 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 				Toast.makeText(this, "Result: ???", Toast.LENGTH_SHORT).show();
 			}
 		}
-		if (requestCode == SET_GEOLOCATION) {
+		if (requestCode == GeolocationRequestCode.SET_GEOLOCATION) {
 			if (resultCode == RESULT_OK) {
-				double latitude = data.getDoubleExtra("latitude", Coordinate.NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
-				double longitude = data.getDoubleExtra("longitude", Coordinate.NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
-				expenseItemGeolocation.setLatitude(latitude);
-				expenseItemGeolocation.setLongitude(longitude);
+				double latitude = data.getDoubleExtra("latitude", Coordinate.DEFAULT_COORDINATE.getLatitude());
+				double longitude = data.getDoubleExtra("longitude", Coordinate.DEFAULT_COORDINATE.getLongitude());
+				expenseItemGeolocation = new Coordinate(latitude, longitude);
 				TextView coordValue = (TextView) findViewById(R.id.expenseItemCoordinatesValueTextView);
 				coordValue.setText(expenseItemGeolocation.toString() + "\n(tap here to change)");
 			}

@@ -73,8 +73,8 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
 		if (bundle != null) {
-			double latitude = intent.getDoubleExtra("latitude", Coordinate.NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
-			double longitude = intent.getDoubleExtra("longitude", Coordinate.NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
+			double latitude = intent.getDoubleExtra("latitude", Coordinate.DEFAULT_COORDINATE.getLatitude());
+			double longitude = intent.getDoubleExtra("longitude", Coordinate.DEFAULT_COORDINATE.getLongitude());
 			coordinate.setLatitude(latitude);
 			coordinate.setLongitude(longitude);
 			requestCode = intent.getIntExtra("requestCode", 0);

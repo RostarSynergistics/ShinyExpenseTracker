@@ -1,5 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.models;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 /**
  * 
  * Destination object extends Model.  
@@ -10,8 +12,8 @@ package ca.ualberta.cs.shinyexpensetracker.models;
  *
  */
 public class Destination extends Model<Destination> {
-	public String name;
-	public String reasonForTravel;
+	private String name;
+	private String reasonForTravel;
 	private Coordinate geolocation;
 	
 	public Destination(String name, String reasonForTravel, Coordinate geolcoation) {
@@ -59,23 +61,13 @@ public class Destination extends Model<Destination> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Destination other = (Destination) obj;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (reasonForTravel == null) {
-			if (other.reasonForTravel != null)
-				return false;
-		} else if (!reasonForTravel.equals(other.reasonForTravel))
-			return false;
-		if (geolocation == null) {
-			if (other.getGeolocation() != null)
-				return false;
-		} else if (!geolocation.equals(other.getGeolocation()))
-				return false;
 		
-		return true;
+		Destination other = (Destination) obj;
+		
+		return new EqualsBuilder()
+		.append(getName(), other.getName())
+		.append(getReasonForTravel(), other.getReasonForTravel())
+		.append(getGeolocation(), other.getGeolocation())
+		.isEquals();
 	}
 }

@@ -117,8 +117,8 @@ public class GeolocationViewActivity extends Activity {
 		// Check result is ok
 		lm.removeUpdates(listener);
 		if (resultCode == RESULT_OK) {
-			double latitude = data.getDoubleExtra("latitude", Coordinate.NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
-			double longitude = data.getDoubleExtra("longitude", Coordinate.NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
+			double latitude = data.getDoubleExtra("latitude", Coordinate.DEFAULT_COORDINATE.getLatitude());
+			double longitude = data.getDoubleExtra("longitude", Coordinate.DEFAULT_COORDINATE.getLongitude());
 			coordinates.setLatitude(latitude);
 			coordinates.setLongitude(longitude);
 			returnCoordinatesToParentActivity();

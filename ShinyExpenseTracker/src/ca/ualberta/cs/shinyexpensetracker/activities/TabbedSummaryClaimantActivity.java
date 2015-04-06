@@ -1,5 +1,6 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import android.content.DialogInterface;
@@ -141,6 +142,11 @@ public class TabbedSummaryClaimantActivity extends TabbedSummaryActivity {
 			m.getItem(3).setEnabled(false);
 			m.getItem(4).setEnabled(false);
 			m.getItem(5).setEnabled(false);
+		}
+		try {
+			controller.update();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	

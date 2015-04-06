@@ -12,9 +12,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.decorators.ExpenseClaimFilter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
-import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
 /**
  * This class extends the BaseAdapter to display and sort the claims with their
@@ -23,23 +24,26 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 public class ClaimListAdapter extends BaseAdapter {
 	private final SimpleDateFormat dateFormat;
 	private final Context context;
-	private ExpenseClaimController controller;
 
+	private ExpenseClaimList claims;
+	private ExpenseClaimList filteredClaims;
+	
 	public ClaimListAdapter(Context context) {
 		super();
 		this.dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
 		this.context = context;
-		this.controller = Application.getExpenseClaimController();
+		this.claims = Application.getExpenseClaimController().getExpenseClaimList();
+		this.filteredClaims = claims;
 	}
 
 	@Override
 	public int getCount() {
-		return controller.getCount();
+		return filteredClaims.getCount();
 	}
 
 	@Override
 	public ExpenseClaim getItem(int position) {
-		return controller.getExpenseClaimAtPosition(position);
+		return filteredClaims.getClaimAtPosition(position);
 	}
 
 	@Override
@@ -125,17 +129,28 @@ public class ClaimListAdapter extends BaseAdapter {
 			this.destination = destination;
 		}
 	}
-
-	@Override
-	public void notifyDataSetChanged() {
-		super.notifyDataSetChanged();
-		makeSortedList();
-	}
-
+	
 	/**
-	 * sorts the list of claims
+	 * Filters the claim list adapter.  
+	 * 
+	 * The supplied filter must be a class of an ExpenseClaimFilter
+	 * object.
+	 * 
+	 * example:
+	 * 		adapter.applyFilter( ExpenseClaimSortFilter.class );
+	 * 
+	 * @param filter the ExpenseClaimFilter class to apply.
 	 */
-	private void makeSortedList() {
-		controller.sort();
+	public void applyFilter(ExpenseClaimFilter filter) {
+		filteredClaims = filter.decorate(filteredClaims);
+		notifyDataSetChanged();
+	}
+	
+	/**
+	 * Clears any filters that were added by applyFilter
+	 */
+	public void clearFilters() {
+		filteredClaims = claims;
+		notifyDataSetChanged();
 	}
 }

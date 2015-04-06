@@ -28,7 +28,9 @@ import java.text.ParseException;
 import java.util.Date;
 
 import android.app.Activity;
+import android.app.Instrumentation;
 import android.app.Instrumentation.ActivityMonitor;
+import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,6 +39,8 @@ import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimListActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.GeolocationViewActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -44,6 +48,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
+import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTestCase2<ExpenseClaimListActivity> {
@@ -316,9 +321,9 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	 * Test for crash on new expense claim. See #91 for details.
 	 */
 	public void testCrashOnNewExpense() {
-		// this test is causing test runs to crash
-		// TODO: Fix it! (see GH#173)
-		fail();
+		// TabbedSummary has split in 2. We need a way
+		// to specify which one we're looking for.
+		Application.setUserType(Type.Claimant);
 		
 		// Monitor for AddExpenseClaimActivity
 		ActivityMonitor claimMonitor = getInstrumentation().addMonitor(ExpenseClaimActivity.class.getName(),
@@ -334,6 +339,12 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 		assertEquals(true, getInstrumentation().checkMonitorHit(claimMonitor, 1));
 
 		getInstrumentation().waitForIdleSync();
+
+		// Monitor for TabbedSummaryActivity (Claimant version)
+		// This should be before the action that opens the activity is induced.
+		ActivityMonitor summaryMonitor = getInstrumentation().addMonitor(TabbedSummaryClaimantActivity.class.getName(),
+				null,
+				false);
 
 		// Fill in the data
 		createClaim.runOnUiThread(new Runnable() {
@@ -357,26 +368,16 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 		});
 
 		getInstrumentation().waitForIdleSync();
-		
-		// Monitor for TabbedSummaryActivity
-		ActivityMonitor summaryMonitor = getInstrumentation().addMonitor(TabbedSummaryActivity.class.getName(),
-				null,
-				false);
-
 		// Get the summary activity
-		TabbedSummaryActivity summaryActivity = (TabbedSummaryActivity) getInstrumentation()
-				.waitForMonitorWithTimeout(summaryMonitor, 1000);
-
-		assertNotNull(summaryActivity);
-
+		TabbedSummaryActivity summaryActivity = (TabbedSummaryClaimantActivity) getInstrumentation().waitForMonitorWithTimeout(summaryMonitor, 1000);
 		assertEquals(true, getInstrumentation().checkMonitorHit(summaryMonitor, 1));
 
 		// Close the summary
 		summaryActivity.finish();
 
 		// Monitor for TabbedSummaryActivity again
-		summaryMonitor = getInstrumentation().addMonitor(TabbedSummaryActivity.class.getName(), null, false);
-
+		summaryMonitor = getInstrumentation().addMonitor(TabbedSummaryClaimantActivity.class.getName(), null, false);
+		
 		// Tap an item in the list view this time to display the summary
 		final ListView claimsList = (ListView) activity.findViewById(R.id.expense_claim_list);
 		activity.runOnUiThread(new Runnable() {
@@ -386,9 +387,10 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 				claimsList.performItemClick(claimsList.getChildAt(0), 0, 0);
 			}
 		});
-
+		getInstrumentation().waitForIdleSync();
+		
 		// Get the summary activity
-		summaryActivity = (TabbedSummaryActivity) getInstrumentation().waitForMonitorWithTimeout(summaryMonitor, 1000);
+		summaryActivity = (TabbedSummaryClaimantActivity) getInstrumentation().waitForMonitorWithTimeout(summaryMonitor, 1000);
 		assertEquals(true, getInstrumentation().checkMonitorHit(summaryMonitor, 1));
 
 		// Monitor for ExpenseItemActivity
@@ -452,5 +454,18 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 		// Wait for the application to become idle
 		getInstrumentation().waitForIdleSync();
 
+	}
+	
+	public void testSetHomeGeolocation() {
+		Intent generatedIntent = new Intent();
+		generatedIntent.putExtra("latitude", 64.0);
+		generatedIntent.putExtra("longitude", 128.0);
+		Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, generatedIntent);
+		
+		ActivityMonitor am = getInstrumentation().addMonitor(GeolocationViewActivity.class.getName(), null, true);
+		getInstrumentation().invokeMenuActionSync(activity, R.id.set_home_geolocation, 0);
+		assertEquals("launched wrong activity", am.getHits(), 1);
+		
+		assertEquals("wrong result received", result.getResultData(), generatedIntent);
 	}
 }

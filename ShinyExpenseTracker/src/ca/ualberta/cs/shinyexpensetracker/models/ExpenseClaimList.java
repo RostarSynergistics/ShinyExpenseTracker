@@ -11,9 +11,9 @@ import java.util.UUID;
  * As each part of the application should be working with the same list,
  * ExpenseClaimList uses the Singleton pattern.
  */
-public class ExpenseClaimList extends Model<ExpenseClaimList> {
-	private ArrayList<ExpenseClaim> claims;
-
+public class ExpenseClaimList extends Model<ExpenseClaimList> implements ExpenseClaimListViewer {
+	protected ArrayList<ExpenseClaim> claims;
+	
 	public ExpenseClaimList() {
 		claims = new ArrayList<ExpenseClaim>();
 	}
@@ -110,16 +110,5 @@ public class ExpenseClaimList extends Model<ExpenseClaimList> {
 			};
 		};
 		Collections.sort(claims, reverse_compare);
-	}
-
-	/**
-	 * Replaces the old claim with the new claim.
-	 * 
-	 * @param oldClaim
-	 * @param newClaim
-	 */
-	public void updateExpenseClaim(ExpenseClaim oldClaim, ExpenseClaim newClaim) {
-		int index = claims.indexOf(oldClaim);
-		claims.set(index, newClaim);
 	}
 }

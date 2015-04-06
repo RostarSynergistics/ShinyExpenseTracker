@@ -16,6 +16,7 @@ import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemDetailActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ExpenseItemListFragment;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
@@ -25,18 +26,17 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
-public class ExpenseItemListFragmentTest extends ActivityInstrumentationTestCase2<TabbedSummaryActivity> {
-
+public class ExpenseItemListFragmentTest extends ActivityInstrumentationTestCase2<TabbedSummaryClaimantActivity> {
 	static ExpenseItemListFragment frag;
 	TabbedSummaryActivity activity;
 	ExpenseClaim claim;
 
-	public ExpenseItemListFragmentTest(Class<TabbedSummaryActivity> activityClass) {
+	public ExpenseItemListFragmentTest(Class<TabbedSummaryClaimantActivity> activityClass) {
 		super(activityClass);
 	}
 
 	public ExpenseItemListFragmentTest() {
-		super(TabbedSummaryActivity.class);
+		super(TabbedSummaryClaimantActivity.class);
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class ExpenseItemListFragmentTest extends ActivityInstrumentationTestCase
 
 		claim = new ExpenseClaim("My Cool Expense Claim", new Date(123456), new Date(234567));
 		// Add an expense that we can look at
-		claim.addExpense(new ExpenseItem("Really expensive thing",
+		claim.addExpenseItem(new ExpenseItem("Really expensive thing",
 				new Date(159371),
 				ExpenseItem.Category.SUPPLIES,
 				new BigDecimal(33000),
@@ -177,6 +177,7 @@ public class ExpenseItemListFragmentTest extends ActivityInstrumentationTestCase
 					frag.deleteExpenseAt(0);
 				}
 			});
+			getInstrumentation().waitForIdleSync();
 		}
 
 		// Check that the controller removed an item (UI -> Model)
@@ -200,7 +201,7 @@ public class ExpenseItemListFragmentTest extends ActivityInstrumentationTestCase
 		getInstrumentation().runOnMainSync(new Runnable() {
 			@Override
 			public void run() {
-				claim.addExpense(new ExpenseItem("TDD things",
+				claim.addExpenseItem(new ExpenseItem("TDD things",
 						new Date(123123),
 						ExpenseItem.Category.ACCOMODATION,
 						new BigDecimal(1000000),

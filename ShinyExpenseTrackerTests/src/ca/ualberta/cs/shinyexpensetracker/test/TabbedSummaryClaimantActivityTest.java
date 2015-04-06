@@ -3,10 +3,14 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import android.app.Instrumentation.ActivityMonitor;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.AddTagToClaimActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.RemoveTagFromClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
@@ -19,15 +23,15 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
-public class TabbedSummaryActivityTest extends ActivityInstrumentationTestCase2<TabbedSummaryActivity> {
+public class TabbedSummaryClaimantActivityTest extends ActivityInstrumentationTestCase2<TabbedSummaryClaimantActivity> {
 
-	public TabbedSummaryActivityTest(Class<TabbedSummaryActivity> activityClass) {
+	public TabbedSummaryClaimantActivityTest(Class<TabbedSummaryClaimantActivity> activityClass) {
 		super(activityClass);
 		// TODO Auto-generated constructor stub
 	}
 
-	public TabbedSummaryActivityTest() {
-		super(TabbedSummaryActivity.class);
+	public TabbedSummaryClaimantActivityTest() {
+		super(TabbedSummaryClaimantActivity.class);
 	}
 
 	static ClaimSummaryFragment frag;
@@ -58,13 +62,15 @@ public class TabbedSummaryActivityTest extends ActivityInstrumentationTestCase2<
 	public void setUp() throws Exception {
 		super.setUp();
 
-		claim = new ExpenseClaim(claimName, startDate, endDate);
-		claim.addExpense(expense);
-		ExpenseClaimList claimList = new ExpenseClaimList();
-		claimList.addClaim(claim);
-
-		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(claimList));
+		ExpenseClaimList list = new ExpenseClaimList();
+		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(list));
 		Application.setExpenseClaimController(controller);
+
+		// Add an expense claim to the expenseClaimController
+		claim = new ExpenseClaim(claimName, startDate, endDate);
+		claim.setStatus(status);
+		claim.addExpenseItem(expense);
+		list.addClaim(claim);
 
 		// Source:
 		// http://stackoverflow.com/questions/23728835/in-junit-test-activity-if-it-did-received-the-extra-from-intent
@@ -73,9 +79,6 @@ public class TabbedSummaryActivityTest extends ActivityInstrumentationTestCase2<
 		Intent intent = new Intent();
 		intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
 		setActivityIntent(intent);
-
-		// Add an expense claim to the expenseClaimController
-		claim.setStatus(status);
 
 		activity = getActivity();
 
@@ -110,6 +113,14 @@ public class TabbedSummaryActivityTest extends ActivityInstrumentationTestCase2<
 
 		expense.setIncompletenessMarker(ExpenseItem.COMPLETE);
 
+		// Monitor for AddTagsActivity
+		ActivityMonitor addTagsActivityMonitor = getInstrumentation().addMonitor(AddTagToClaimActivity.class.getName(),
+				null,
+				false);
+		// Monitor for RemoveTagActivity
+		ActivityMonitor removeTagsActivityMonitor = getInstrumentation()
+				.addMonitor(RemoveTagFromClaimActivity.class.getName(), null, false);
+
 		// Press the "Submit claim" button
 		getInstrumentation().invokeMenuActionSync(activity, R.id.submitClaim, 0);
 
@@ -130,6 +141,22 @@ public class TabbedSummaryActivityTest extends ActivityInstrumentationTestCase2<
 
 		// make sure you can still add a tag to the claim
 		assertTrue("'Add Tag' menu item disabled", getInstrumentation().invokeMenuActionSync(activity, R.id.addTag, 0));
+
+		// Get the view expense claims activity
+		final AddTagToClaimActivity addTagsActivity = (AddTagToClaimActivity) getInstrumentation()
+				.waitForMonitorWithTimeout(addTagsActivityMonitor, 1000);
+		assertEquals(true, getInstrumentation().checkMonitorHit(addTagsActivityMonitor, 1));
+
+		addTagsActivity.finish();
+
+		assertTrue("'Remove Tag' menu item disabled",
+				getInstrumentation().invokeMenuActionSync(activity, R.id.RemoveTag, 0));
+
+		final RemoveTagFromClaimActivity removeTagsActivity = (RemoveTagFromClaimActivity) getInstrumentation()
+				.waitForMonitorWithTimeout(removeTagsActivityMonitor, 1000);
+		assertEquals(true, getInstrumentation().checkMonitorHit(addTagsActivityMonitor, 1));
+
+		removeTagsActivity.finish();
 	}
 
 }

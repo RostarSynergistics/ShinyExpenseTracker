@@ -73,23 +73,23 @@ public class ExpenseClaimEqualsTests extends TestCase {
 	}
 
 	public void testThatTwoClaimsWithIdenticalNonEmptyExpenseItemsListsAreEqual() {
-		claim1.addExpense(getTestExpenseItem());
-		claim2.addExpense(getTestExpenseItem());
+		claim1.addExpenseItem(getTestExpenseItem());
+		claim2.addExpenseItem(getTestExpenseItem());
 
 		assertEquals();
 	}
 
 	public void testThatOneClaimWithOneWithAnEmptyExpenseItemsListAndTheOtherNotEmptyAreNotEqual() {
-		claim2.addExpense(getTestExpenseItem());
+		claim2.addExpenseItem(getTestExpenseItem());
 
 		assertNotEqual();
 	}
 
 	public void testThatTwoClaimsWithNonIdenticalNonEmptyExpenseItemsListsAreNotEqual() {
-		claim1.addExpense(getTestExpenseItem());
+		claim1.addExpenseItem(getTestExpenseItem());
 		ExpenseItem item = getTestExpenseItem();
 		item.setName("foobarbaz");
-		claim2.addExpense(item);
+		claim2.addExpenseItem(item);
 		
 		assertNotEqual();
 	}

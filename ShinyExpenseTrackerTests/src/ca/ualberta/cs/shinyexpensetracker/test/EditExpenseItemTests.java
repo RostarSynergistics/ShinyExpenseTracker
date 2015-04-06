@@ -86,7 +86,7 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 				"Test Item",
 				imageBig);
 
-		claim.addExpense(item);
+		claim.addExpenseItem(item);
 		claimList.addClaim(claim);
 
 		Intent intent = new Intent();

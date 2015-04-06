@@ -224,7 +224,7 @@ public class ExpenseClaimController {
 		ExpenseClaim claim = claimList.getClaimByID(claimID);
 		ExpenseItem item = new ExpenseItem(name, date, category, amountSpent, currency, description, photo);
 
-		claim.addExpense(item);
+		claim.addExpenseItem(item);
 
 		persister.saveExpenseClaims(claimList);
 		return item;
@@ -318,15 +318,6 @@ public class ExpenseClaimController {
 	 */
 	public int getCount() {
 		return claimList.getCount();
-	}
-
-	/**
-	 * Sort the data on the model. Warning: This changes the indexes in the
-	 * model.
-	 */
-	// XXX: May need to be changed. See #64 for details.
-	public void sort() {
-		claimList.sort();
 	}
 
 	/**

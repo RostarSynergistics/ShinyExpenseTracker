@@ -40,13 +40,13 @@ public class ESClaimManagerTest extends TestCase {
 		tagList.addTag(exTag);
 		claim = new ExpenseClaim("BC trip", sdate, edate, Status.IN_PROGRESS, tagList);
 		claim.addDestination(destination);
-		claim.addExpense(item);
+		claim.addExpenseItem(item);
 		list = new ExpenseClaimList();
 		list2 = new ExpenseClaimList();
 		list.addClaim(claim);
 		claim2 = new ExpenseClaim("AB Trip", null, null, Status.IN_PROGRESS, tagList);
 		claim2.addDestination(destination);
-		claim2.addExpense(item);
+		claim2.addExpenseItem(item);
 		list.addClaim(claim2);
 
 		list2.addClaim(claim2);

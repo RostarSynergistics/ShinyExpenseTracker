@@ -134,6 +134,7 @@ public class RemoveTagFromExpenseClaim extends ActivityInstrumentationTestCase2<
 				done.performClick();
 			}
 		});
+		instrumentation.waitForIdleSync();
 	}
 
 }

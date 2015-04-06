@@ -235,6 +235,7 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 				doneButton.performClick();
 			}
 		});
+		instrumentation.waitForIdleSync();
 
 		assertNotNull("no name dialog", activity.alertDialog);
 		assertTrue("Name dialog is not showing", activity.alertDialog.isShowing());
@@ -251,6 +252,7 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 				doneButton.performClick();
 			}
 		});
+		instrumentation.waitForIdleSync();
 
 		assertNotNull("no date dialog", activity.alertDialog);
 		assertTrue("Date dialog is not showing", activity.alertDialog.isShowing());
@@ -267,6 +269,7 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 				doneButton.performClick();
 			}
 		});
+		instrumentation.waitForIdleSync();
 
 		assertNotNull("no amount spent dialog", activity.alertDialog);
 		assertTrue("Dialog amount spent is not showing", activity.alertDialog.isShowing());

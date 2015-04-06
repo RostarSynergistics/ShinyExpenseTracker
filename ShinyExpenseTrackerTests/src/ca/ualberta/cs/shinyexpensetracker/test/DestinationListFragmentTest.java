@@ -15,6 +15,7 @@ import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.AddDestinationActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.fragments.DestinationListFragment;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
@@ -28,8 +29,7 @@ import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersist
  * Test for the DestinationListFragment. This fragment is responsible for
  * displaying a list of destinations in the summary page.
  */
-public class DestinationListFragmentTest extends ActivityInstrumentationTestCase2<TabbedSummaryActivity> {
-
+public class DestinationListFragmentTest extends ActivityInstrumentationTestCase2<TabbedSummaryClaimantActivity> {
 	static DestinationListFragment frag;
 	TabbedSummaryActivity activity;
 	ExpenseClaim claim;
@@ -37,12 +37,12 @@ public class DestinationListFragmentTest extends ActivityInstrumentationTestCase
 	private ExpenseClaimController controller;
 	private Destination destination;
 
-	public DestinationListFragmentTest(Class<TabbedSummaryActivity> activityClass) {
+	public DestinationListFragmentTest(Class<TabbedSummaryClaimantActivity> activityClass) {
 		super(activityClass);
 	}
 
 	public DestinationListFragmentTest() {
-		super(TabbedSummaryActivity.class);
+		super(TabbedSummaryClaimantActivity.class);
 	}
 
 	/**
@@ -182,6 +182,7 @@ public class DestinationListFragmentTest extends ActivityInstrumentationTestCase
 					frag.deleteDestinationAt(0);
 				}
 			});
+			getInstrumentation().waitForIdleSync();
 		}
 
 		// Check that the controller removed an item (UI -> Model)

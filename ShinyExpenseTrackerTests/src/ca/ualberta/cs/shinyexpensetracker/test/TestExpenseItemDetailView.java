@@ -75,7 +75,7 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 				imageSmall,
 				true);
 
-		claim.addExpense(item);
+		claim.addExpenseItem(item);
 		claimList.addClaim(claim);
 
 		Intent intent = new Intent();

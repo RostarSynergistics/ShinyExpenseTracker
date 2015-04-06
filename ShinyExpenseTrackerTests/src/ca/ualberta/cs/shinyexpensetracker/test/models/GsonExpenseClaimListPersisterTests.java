@@ -49,7 +49,7 @@ public class GsonExpenseClaimListPersisterTests extends TestCase {
 		ExpenseClaim claim = new ExpenseClaim("test", startDate, endDate, ExpenseClaim.Status.IN_PROGRESS);
 
 		int[] colors = new int[] { 1, 2, 3, 4 };
-		claim.addExpense(new ExpenseItem("test",
+		claim.addExpenseItem(new ExpenseItem("test",
 				new Date(5000),
 				ExpenseItem.Category.ACCOMODATION,
 				new BigDecimal("20.00"),

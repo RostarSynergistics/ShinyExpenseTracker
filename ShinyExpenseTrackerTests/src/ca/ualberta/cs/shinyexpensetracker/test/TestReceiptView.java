@@ -65,7 +65,7 @@ public class TestReceiptView extends ActivityInstrumentationTestCase2<ReceiptVie
 				"Test Item",
 				imageSmall);
 
-		claim.addExpense(item);
+		claim.addExpenseItem(item);
 		claimList.addClaim(claim);
 
 		Intent intent = new Intent();

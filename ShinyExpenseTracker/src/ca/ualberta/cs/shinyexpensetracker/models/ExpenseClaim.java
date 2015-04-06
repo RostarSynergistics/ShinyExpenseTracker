@@ -43,6 +43,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	private ArrayList<Destination> destinations = new ArrayList<Destination>();
 	private TagList tagList = new TagList();
 	private ArrayList<ExpenseItem> expenseItems = new ArrayList<ExpenseItem>();
+	private ArrayList<String> comments = new ArrayList<String>();
 
 	public ExpenseClaim(String name) {
 		this(name, new Date(), null, Status.IN_PROGRESS, new TagList());
@@ -159,7 +160,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		notifyViews();
 	}
 
-	public void addExpense(ExpenseItem expense) {
+	public void addExpenseItem(ExpenseItem expense) {
 		expenseItems.add(expense);
 		notifyViews();
 	}
@@ -257,6 +258,18 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		return tagList.removeTag(tag);
 	}
 
+	public void setComments(ArrayList<String> comments) {
+		this.comments = comments;
+	}
+
+	public ArrayList<String> getComments() {
+		return comments;
+	}
+
+	public void addComment(String comment) {
+		comments.add(comment);
+	}
+
 	// Source:
 	// https://commons.apache.org/proper/commons-lang/javadocs/api-3.3.2/org/apache/commons/lang3/builder/EqualsBuilder.html
 	@Override
@@ -274,8 +287,11 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		return new EqualsBuilder().append(getID(), rhs.getID()).append(getName(), rhs.getName())
 				.append(getStartDate(), rhs.getStartDate()).append(getEndDate(), rhs.getEndDate())
 				.append(getStatus(), rhs.getStatus()).append(getExpenseItems(), rhs.getExpenseItems())
-				.append(getDestinations(), rhs.getDestinations())
-				.append(getTagList(), rhs.getTagList())
-				.isEquals();
+				.append(getDestinations(), rhs.getDestinations()).append(getTagList(), rhs.getTagList()).isEquals();
+	}
+
+	public String getComment(int index) {
+		return comments.get(index);
+
 	}
 }

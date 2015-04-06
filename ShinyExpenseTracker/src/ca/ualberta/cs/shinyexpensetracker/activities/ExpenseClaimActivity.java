@@ -247,7 +247,7 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 		ExpenseClaim claim = saveExpenseClaim(v);
 		if (claim != null) {
 			if (claimID == null) {
-				Intent intent = new Intent(this, TabbedSummaryActivity.class);
+				Intent intent = new Intent(this, TabbedSummaryClaimantActivity.class);
 				intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
 				finish();
 				startActivity(intent);

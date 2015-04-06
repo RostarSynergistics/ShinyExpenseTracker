@@ -301,7 +301,7 @@ public class ExpenseItem extends Model<ExpenseItem> {
 	/**
 	 * @return true if the expense is marked incomplete, false otherwise.
 	 */
-	public boolean getIsMarkedIncomplete() {
+	public boolean isMarkedIncomplete() {
 		return incompletenessMarker;
 	}
 
@@ -309,7 +309,7 @@ public class ExpenseItem extends Model<ExpenseItem> {
 	 * Toggles the incompleteness marker
 	 */
 	public void toggleIncompletenessMarker() {
-		if (getIsMarkedIncomplete()) {
+		if (isMarkedIncomplete()) {
 			setIncompletenessMarker(COMPLETE);
 		} else {
 			setIncompletenessMarker(INCOMPLETE);

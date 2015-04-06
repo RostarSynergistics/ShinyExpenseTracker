@@ -69,7 +69,7 @@ public class ExpenseClaimEqualsTests extends TestCase {
 		assertNotEqual();
 	}
 
-	public void testThatTwoClaimsWithDifferentStatusesAreNotEqual() {
+	public void testThatTwoClaimsWithDifferentStatusesAreNotEqual() throws ValidationException {
 		claim2.setStatus(ExpenseClaim.Status.SUBMITTED);
 
 		assertNotEqual();

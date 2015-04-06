@@ -71,6 +71,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 
 		validateName(name);
 		validateDates(startDate, endDate);
+		validateStatus(status);
 
 		this.id = id;
 		this.name = name;
@@ -107,7 +108,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	public void setUserId(UUID id) {
 		this.userId = id;
 	}
-	
+
 	public UUID getUserId() {
 		return userId;
 	}
@@ -143,9 +144,36 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		return status;
 	}
 
-	public void setStatus(Status status) {
+	public void setStatus(Status status) throws ValidationException {
+		validateStatus(status);
 		this.status = status;
 		notifyViews();
+	}
+
+	private void validateStatus(Status newStatus) throws ValidationException {
+		if (newStatus == Status.SUBMITTED && hasIncompleteExpenseItems()) {
+			throw new ValidationException("Cannot submit an incomplete claim.");
+		}
+
+		if (newStatus == Status.APPROVED || newStatus == Status.RETURNED) {
+			if (getComments().size() == 0) {
+				String verb = newStatus == Status.APPROVED ? "approve" : "return";
+				throw new ValidationException("You must comment on a claim before you " + verb + "it.");
+			}
+		}
+	}
+
+	public boolean hasIncompleteExpenseItems() {
+		boolean value = false;
+
+		for (ExpenseItem item : expenseItems) {
+			if (item.isMarkedIncomplete()) {
+				value = true;
+				break;
+			}
+		}
+
+		return value;
 	}
 
 	public TagList getTagList() {

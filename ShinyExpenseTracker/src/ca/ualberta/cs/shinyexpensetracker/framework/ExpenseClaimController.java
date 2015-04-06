@@ -148,8 +148,10 @@ public class ExpenseClaimController {
 	 *            The new status.
 	 * @return The updated expense claim.
 	 * @throws IOException
+	 * @throws ValidationException
 	 */
-	public ExpenseClaim updateExpenseClaimStatus(UUID id, ExpenseClaim.Status status) throws IOException {
+	public ExpenseClaim updateExpenseClaimStatus(UUID id, ExpenseClaim.Status status) throws IOException,
+			ValidationException {
 		ExpenseClaim claim = claimList.getClaimByID(id);
 		claim.setStatus(status);
 		persister.saveExpenseClaims(claimList);

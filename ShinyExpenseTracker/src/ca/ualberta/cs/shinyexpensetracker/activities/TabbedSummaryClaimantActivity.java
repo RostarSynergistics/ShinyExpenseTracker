@@ -1,7 +1,6 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.UUID;
 
 import android.content.DialogInterface;
@@ -10,9 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 
 // Source: https://github.com/astuetz/PagerSlidingTabStrip
 // on March 11 2015
@@ -35,21 +33,21 @@ public class TabbedSummaryClaimantActivity extends TabbedSummaryActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.tabbed_summary_claimant, menu);
 		m = menu;
-		
+
 		if (controller.getExpenseClaimByID(claimID).getStatus().equals(Status.APPROVED)) {
 			menu.getItem(0).setEnabled(false);
 			menu.getItem(3).setEnabled(false);
 			menu.getItem(4).setEnabled(false);
 			menu.getItem(5).setEnabled(false);
 		}
-		
+
 		if (controller.getExpenseClaimByID(claimID).getStatus().equals(Status.SUBMITTED)) {
 			menu.getItem(0).setEnabled(false);
 			menu.getItem(3).setEnabled(false);
 			menu.getItem(4).setEnabled(false);
 			menu.getItem(5).setEnabled(false);
 		}
-		
+
 		return true;
 	}
 
@@ -125,51 +123,31 @@ public class TabbedSummaryClaimantActivity extends TabbedSummaryActivity {
 	 * 
 	 * @param menu
 	 * @throws IOException
+	 * @throws ValidationException
 	 */
-	public void submitClaimMenuItem(MenuItem menu) throws IOException {
+	public void submitClaimMenuItem(MenuItem menu) throws IOException, ValidationException {
 		Intent intent = getIntent();
 		UUID claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
-		final ExpenseClaim claim = controller.getExpenseClaimByID(claimID);
 
-		ArrayList<ExpenseItem> expenseItems = claim.getExpenseItems();
-		boolean incomplete = false;
-		for (ExpenseItem expense : expenseItems) {
-			if (expense.getIsMarkedIncomplete()) {
-				adb.setMessage("Cannot submit an incomplete claim");
-				adb.setCancelable(true);
+		controller.updateExpenseClaimStatus(claimID, Status.SUBMITTED);
 
-				adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-					}
-				});
-				alertDialog = adb.create();
-				alertDialog.show();
-				incomplete = true;
-				break;
+		adb.setMessage("Claim Submitted for Approval");
+		adb.setCancelable(true);
+		adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
 			}
-		}
-		if (!incomplete) {
-			controller.updateExpenseClaimStatus(claimID, Status.SUBMITTED);
+		});
+		alertDialog = adb.create();
+		alertDialog.show();
 
-			adb.setMessage("Claim Submitted for Approval");
-			adb.setCancelable(true);
-			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-				}
-			});
-			alertDialog = adb.create();
-			alertDialog.show();
-
-			// set menu items to false, so claim cannot be edited or submitted
-			// again
-			m.getItem(0).setEnabled(false);
-			m.getItem(3).setEnabled(false);
-			m.getItem(4).setEnabled(false);
-			m.getItem(5).setEnabled(false);
-		}
+		// set menu items to false, so claim cannot be edited or submitted
+		// again
+		m.getItem(0).setEnabled(false);
+		m.getItem(3).setEnabled(false);
+		m.getItem(4).setEnabled(false);
+		m.getItem(5).setEnabled(false);
 	}
 
 	/**

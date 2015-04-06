@@ -233,8 +233,8 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 		final CheckBox incompletenessFlag = (CheckBox) activity.findViewById(R.id.expenseItemCompletenessFlag);
 
 		// False positive check : Marked Incomplete = True
-		assertTrue(item.getIsMarkedIncomplete());
-		assertEquals(item.getIsMarkedIncomplete(), incompletenessFlag.isChecked());
+		assertTrue(item.isMarkedIncomplete());
+		assertEquals(item.isMarkedIncomplete(), incompletenessFlag.isChecked());
 
 		// Toggle the value
 		activity.runOnUiThread(new Runnable() {
@@ -246,7 +246,7 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 		getInstrumentation().waitForIdleSync();
 
 		// Check if value changed : MarkedIncomplete = False
-		assertFalse(item.getIsMarkedIncomplete());
-		assertEquals(item.getIsMarkedIncomplete(), incompletenessFlag.isChecked());
+		assertFalse(item.isMarkedIncomplete());
+		assertEquals(item.isMarkedIncomplete(), incompletenessFlag.isChecked());
 	}
 }

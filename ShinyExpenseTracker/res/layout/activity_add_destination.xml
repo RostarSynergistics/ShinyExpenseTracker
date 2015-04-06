@@ -28,16 +28,6 @@
         android:text="@string/destination_name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
-        android:id="@+id/reasonTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/destinationEditText"
-        android:layout_below="@+id/destinationEditText"
-        android:layout_marginTop="17dp"
-        android:text="@string/reason_For_Travel"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
     <Button
         android:id="@+id/addDestinationDoneButton"
         android:layout_width="wrap_content"
@@ -47,6 +37,38 @@
         android:onClick="doneCreateDestination"
         android:text="@string/destination_Done_Button" />
 
+    <TextView
+        android:id="@+id/coordinatesTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/destinationEditText"
+        android:layout_below="@+id/destinationEditText"
+        android:layout_marginTop="18dp"
+        android:text="@string/geolocationTitle"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/coordinatesValueTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/coordinatesTextView"
+        android:layout_below="@+id/coordinatesTextView"
+        android:layout_marginStart="18dp"
+        android:clickable="true"
+        android:onClick="onGeolocationValueTextViewClick"
+        android:text="@string/geolocationValueDefault"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/reasonTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/destinationEditText"
+        android:layout_below="@+id/coordinatesValueTextView"
+        android:layout_marginTop="18dp"
+        android:text="@string/reason_For_Travel"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
     <EditText
         android:id="@+id/reasonEditText"
         android:layout_width="wrap_content"
@@ -55,12 +77,9 @@
         android:layout_alignEnd="@+id/destinationEditText"
         android:layout_alignStart="@+id/reasonTextView"
         android:layout_below="@+id/reasonTextView"
-        android:layout_marginTop="17dp"
         android:ems="10"
         android:gravity="top"
         android:hint="@string/tap_to_enter"
-        android:inputType="textMultiLine" >
+        android:inputType="textMultiLine" />
 
-        <requestFocus />
-    </EditText>
 </RelativeLayout>

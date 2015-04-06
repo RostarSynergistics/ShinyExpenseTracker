@@ -62,6 +62,7 @@ public class ExpenseItem extends Model<ExpenseItem> {
 	}
 
 	private UUID id;
+
 	private String name;
 	private Date date;
 	private Category category;
@@ -69,7 +70,7 @@ public class ExpenseItem extends Model<ExpenseItem> {
 	private Currency currency;
 	private String description;
 	private boolean incompletenessMarker;
-
+	private Coordinate itemGeolocation;
 	// encoded in Base64
 	private String encodedReceiptPhoto;
 	// temporarily saved to prevent redundant work, but can't be GSON'd
@@ -91,13 +92,15 @@ public class ExpenseItem extends Model<ExpenseItem> {
 	 * @param completenessFlag
 	 * @throws ValidationException
 	 */
+
 	public ExpenseItem(String name, Date date, Category category, BigDecimal amountSpent, Currency currency,
-			String description, Bitmap photo, boolean completenessFlag) throws ValidationException {
+			String description, Bitmap photo, Coordinate geolocation, boolean completenessFlag)
+			throws ValidationException {
 		validateName(name);
 		validateDate(date);
 		validateAmountSpent(amountSpent);
-
 		this.id = UUID.randomUUID();
+
 		this.name = name;
 		this.date = date;
 		this.category = category;
@@ -105,6 +108,7 @@ public class ExpenseItem extends Model<ExpenseItem> {
 		this.currency = currency;
 		this.description = description;
 		this.setReceiptPhoto(photo);
+		this.itemGeolocation = geolocation;
 		this.incompletenessMarker = completenessFlag;
 	}
 
@@ -127,21 +131,27 @@ public class ExpenseItem extends Model<ExpenseItem> {
 	}
 
 	public ExpenseItem(String name, Date date, Category category, BigDecimal amountSpent, Currency currency,
-			String description, Bitmap photo) throws ValidationException {
+			String description, Bitmap photo, Coordinate geolocation) throws ValidationException {
 		// Call to more specific constructor
-		this(name, date, category, amountSpent, currency, description, photo, false);
+		this(name, date, category, amountSpent, currency, description, photo, geolocation, false);
+	}
+
+	public ExpenseItem(String name, Date date, Category category, BigDecimal amountSpent, Currency currency,
+			String description, Coordinate geolocation) throws ValidationException {
+		// Call to more specific constructor
+		this(name, date, category, amountSpent, currency, description, null, geolocation, false);
 	}
 
 	public ExpenseItem(String name, Date date, Category category, BigDecimal amountSpent, Currency currency,
 			String description) throws ValidationException {
 		// Call to more specific constructor
-		this(name, date, category, amountSpent, currency, description, null, false);
+		this(name, date, category, amountSpent, currency, description, null, null, false);
 	}
 
 	public ExpenseItem(String name, Date date, Category category, BigDecimal amount, Currency currency)
 			throws ValidationException {
 		// Call to more specific constructor
-		this(name, date, category, amount, currency, "", null, false);
+		this(name, date, category, amount, currency, "", null, null, false);
 	}
 
 	public UUID getID() {
@@ -227,6 +237,14 @@ public class ExpenseItem extends Model<ExpenseItem> {
 		notifyViews();
 	}
 
+	public Coordinate getGeolocation() {
+		return itemGeolocation;
+	}
+
+	public void setGeolocation(Coordinate geolocation) {
+		this.itemGeolocation = geolocation;
+	}
+
 	// XXX: #69 <- This should return the formatted JodaMoney string
 	public String getValueString() {
 		return new StringBuilder().append(getAmountSpent()).append(" ").append(getCurrency().toString()).toString();
@@ -256,7 +274,8 @@ public class ExpenseItem extends Model<ExpenseItem> {
 		return new EqualsBuilder().append(getName(), rhs.getName()).append(getDate(), rhs.getDate())
 				.append(getCategory(), rhs.getCategory()).append(getAmountSpent(), rhs.getAmountSpent())
 				.append(getCurrency(), rhs.getCurrency()).append(getDescription(), rhs.getDescription())
-				.append(getEncodedReceiptPhoto(), rhs.getEncodedReceiptPhoto()).isEquals();
+				.append(getEncodedReceiptPhoto(), rhs.getEncodedReceiptPhoto())
+				.append(getGeolocation(), rhs.getGeolocation()).isEquals();
 	}
 
 	// Source:

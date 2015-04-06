@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.activities.AddDestinationActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
@@ -26,6 +28,7 @@ public class EditDestinationTests extends ActivityInstrumentationTestCase2<AddDe
 	Instrumentation instrumentation;
 	EditText nameField, reasonField;
 	Button doneButton;
+	TextView geolocationValue;
 
 	private ExpenseClaimController controller;
 	private MockExpenseClaimListPersister persister;
@@ -52,8 +55,9 @@ public class EditDestinationTests extends ActivityInstrumentationTestCase2<AddDe
 
 		claim = new ExpenseClaim("Example name", new Date(1000), new Date(2000));
 		claimList.addClaim(claim);
+		
+		destination = new Destination("Indianapolis", "Gen Con", new Coordinate(39.791, -86.1480));
 
-		destination = new Destination("Indianapolis", "Gen Con");
 		claim.addDestination(destination);
 
 		persister = new MockExpenseClaimListPersister(claimList);
@@ -72,11 +76,13 @@ public class EditDestinationTests extends ActivityInstrumentationTestCase2<AddDe
 		nameField = (EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.destinationEditText);
 		reasonField = ((EditText) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.reasonEditText));
 		doneButton = (Button) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.addDestinationDoneButton);
+		geolocationValue = (TextView) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.coordinatesValueTextView);
 	}
 
 	public void testThatFieldsWerePopulatedProperlyOnStart() {
 		assertEquals(destination.getName(), nameField.getText().toString());
 		assertEquals(destination.getReasonForTravel(), reasonField.getText().toString());
+		assertEquals(destination.getGeolocation().toString(), geolocationValue.getText().toString());
 	}
 
 	public void testThatTappingDoneUpdatesTheExistingDestination() {

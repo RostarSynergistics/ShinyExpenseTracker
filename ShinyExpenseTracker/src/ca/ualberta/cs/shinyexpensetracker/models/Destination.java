@@ -2,6 +2,8 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.UUID;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 
 /**
@@ -9,16 +11,19 @@ import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
  * 
  */
 public class Destination extends Model<Destination> {
+
 	private UUID id;
 	private String name;
 	private String reasonForTravel;
+	private Coordinate geolocation;
 
-	public Destination(String name, String reasonForTravel) throws ValidationException {
+	public Destination(String name, String reasonForTravel, Coordinate geolocation) throws ValidationException {
 		validateName(name);
 
 		this.id = UUID.randomUUID();
 		this.name = name;
 		this.reasonForTravel = reasonForTravel;
+		this.geolocation = geolocation;
 	}
 
 	private void validateName(String name) throws ValidationException {
@@ -48,6 +53,14 @@ public class Destination extends Model<Destination> {
 		this.reasonForTravel = reasonForTravel;
 	}
 
+	public Coordinate getGeolocation() {
+		return geolocation;
+	}
+
+	public void setGeolocation(Coordinate geolocation) {
+		this.geolocation = geolocation;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -65,18 +78,11 @@ public class Destination extends Model<Destination> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Destination other = (Destination) obj;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (reasonForTravel == null) {
-			if (other.reasonForTravel != null)
-				return false;
-		} else if (!reasonForTravel.equals(other.reasonForTravel))
-			return false;
-		return true;
-	}
 
+		Destination other = (Destination) obj;
+
+		return new EqualsBuilder().append(getName(), other.getName())
+				.append(getReasonForTravel(), other.getReasonForTravel())
+				.append(getGeolocation(), other.getGeolocation()).isEquals();
+	}
 }

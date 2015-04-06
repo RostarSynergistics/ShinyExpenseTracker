@@ -24,6 +24,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemDetailActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
@@ -50,6 +51,7 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 	ExpenseClaimController controller;
 	ExpenseItem item;
 	Bitmap imageSmall;
+	Coordinate c;
 	Resources res;
 	private ExpenseClaim claim;
 
@@ -67,6 +69,8 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 		res = getInstrumentation().getTargetContext().getResources();
 		imageSmall = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
 
+		c = new Coordinate(1.0, -1.0);
+
 		item = new ExpenseItem("test item",
 				newDate.getTime(),
 				Category.fromString("air fare"),
@@ -74,6 +78,7 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 				Currency.CAD,
 				"Test Item",
 				imageSmall,
+				c,
 				true);
 
 		claim.addExpenseItem(item);
@@ -139,6 +144,11 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 		assertEquals("description is not right", description.getText().toString(), "Test Item");
 	}
 
+	public void testGeolocationValue() {
+		TextView geoloc = (TextView) activity.findViewById(R.id.expenseItemGeolocationValue);
+		assertEquals("geolcoation is not right", geoloc.getText().toString(), c.toString());
+	}
+	
 	/**
 	 * Checks if the indicator of a photo is present and behaves correctly. The
 	 * indicator in this view is the existence of an attached photo.

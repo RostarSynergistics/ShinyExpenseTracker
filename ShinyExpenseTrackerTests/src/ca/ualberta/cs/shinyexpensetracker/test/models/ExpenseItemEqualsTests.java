@@ -6,6 +6,7 @@ import java.util.Date;
 import android.graphics.BitmapFactory;
 import android.test.AndroidTestCase;
 import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
+import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.test.R;
 
@@ -31,7 +32,9 @@ public class ExpenseItemEqualsTests extends AndroidTestCase {
 				new BigDecimal("20.00"),
 				ExpenseItem.Currency.CAD,
 				"Description",
-				BitmapFactory.decodeResource(getContext().getResources(), R.drawable.keyhole_nebula_hubble_1999));
+				BitmapFactory.decodeResource(getContext().getResources(), R.drawable.keyhole_nebula_hubble_1999),
+				new Coordinate(1.0, -1.0));
+
 	}
 
 	public void testThatTwoIdenticalItemsAreEqual() {

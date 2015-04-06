@@ -64,14 +64,14 @@ public class ExpenseItem extends Model<ExpenseItem> {
 	}
 
 
-	public String name;
-	public Date date;
-	public Category category;
-	public BigDecimal amountSpent;
-	public Currency currency;
-	public String description;
-	public Bitmap receiptPhoto;
-	public boolean incompletenessMarker;
+	private String name;
+	private Date date;
+	private Category category;
+	private BigDecimal amountSpent;
+	private Currency currency;
+	private String description;
+	private Bitmap receiptPhoto;
+	private boolean incompletenessMarker;
 	private Coordinate geolocation;
 	// encoded in Base64
 	private String encodedReceiptPhoto;

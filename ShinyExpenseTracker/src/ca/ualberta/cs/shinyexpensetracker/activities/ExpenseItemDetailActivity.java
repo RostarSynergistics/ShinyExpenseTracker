@@ -189,13 +189,14 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 	 * @param v
 	 */
 	public void onClickRemoveReceipt(View v) {
-		ImageView iv = (ImageView) findViewById(R.id.expenseItemDetailImageButton);
-		iv.setImageDrawable(null);
 		try {
 			controller.removePhoto(claimID, expenseItemID);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		ImageView iv = (ImageView) findViewById(R.id.expenseItemDetailImageButton);
+		iv.setImageDrawable(null);
+
 		
 	}
 

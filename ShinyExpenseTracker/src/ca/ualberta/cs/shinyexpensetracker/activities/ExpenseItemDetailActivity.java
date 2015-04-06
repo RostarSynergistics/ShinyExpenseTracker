@@ -160,7 +160,7 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 
 	/**
 	 * Allows the user to click on the thumbnail of the recipt. Will pass on the
-	 * claimIndex and expenseItemIndex to the ReceiptViewActivity
+	 * claim ID and expenseItemIndex to the ReceiptViewActivity
 	 * 
 	 * @param v
 	 */

@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ViewCommentsActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -41,10 +42,6 @@ public class ViewCommetsActivityTest extends ActivityInstrumentationTestCase2<Vi
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		intent = new Intent();
-		intent.putExtra("claimIndex", 0);
-		setActivityIntent(intent);
-
 		// Add an expense claim to the expenseClaimController
 		claim = new ExpenseClaim(claimName, startDate, endDate);
 		claim.setStatus(status);
@@ -52,6 +49,10 @@ public class ViewCommetsActivityTest extends ActivityInstrumentationTestCase2<Vi
 
 		claimList = new ExpenseClaimList();
 		claimList.addClaim(claim);
+
+		intent = new Intent();
+		intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
+		setActivityIntent(intent);
 
 		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(claimList));
 		Application.setExpenseClaimController(controller);

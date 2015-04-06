@@ -5,7 +5,6 @@ import java.io.IOException;
 import android.content.Context;
 import ca.ualberta.cs.shinyexpensetracker.models.User;
 import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
-import ca.ualberta.cs.shinyexpensetracker.persistence.IUserPersister;
 
 /**
  * Serves as a Service Locator (http://en.wikipedia.org/wiki/Service_locator_pattern).

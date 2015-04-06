@@ -6,5 +6,4 @@ public class GeolocationRequestCode {
 	public static final int DISPLAY_GEOLOCATIONS = 2;
 	
 	private GeolocationRequestCode(){}
-	
 }

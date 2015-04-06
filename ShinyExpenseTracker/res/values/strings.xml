@@ -87,7 +87,7 @@
     <string name="set_home_geolocation">Set Home Geolocation</string>
     <string name="title_activity_geolocation_view">Geolocation View</string>
     <string name="geolocationTitle">Selected Coordinates</string>
-    <string name="geolocationValueDefault">None Selected</string>
+    <string name="geolocationValueDefault">None Selected (tap here to select)</string>
     <string name="automaticGeolocationSetupButtonText">Set Automatically Using GPS</string>
     <string name="mapAssistedGeolocationSetupButtonText">Set Location Using Map</string>
     <string name="title_activity_map_view">Map View</string>

@@ -9,11 +9,9 @@ import java.util.Locale;
 import java.util.UUID;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
@@ -24,6 +22,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.ValidationErrorAlertDialog;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -42,7 +41,6 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 	private EditText startDate, endDate;
 	private DatePickerDialog fromDatePickerDialog, toDatePickerDialog;
 	private SimpleDateFormat dateFormatter;
-	private AlertDialog.Builder adb;
 	public Dialog alertDialog;
 	private ExpenseClaim claim;
 	private UUID claimID;
@@ -53,7 +51,6 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_add_expense_claim);
 
 		dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.CANADA);
-		adb = new AlertDialog.Builder(this);
 
 		findViewsById();
 
@@ -149,16 +146,7 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 
 		String name = "";
 		if (nameText.getText().length() == 0) {
-			adb.setMessage("Expense Claim requires a name");
-			adb.setCancelable(true);
-
-			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-				}
-			});
-			alertDialog = adb.create();
-			alertDialog.show();
+			new ValidationErrorAlertDialog(this, "Expense Claim requires a name.").show();
 			return null;
 		} else {
 			name = nameText.getText().toString();
@@ -166,15 +154,7 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 
 		Date startDate = new Date();
 		if (startDateText.getText().length() == 0) {
-			adb.setMessage("Expense Claim requires a start date");
-			adb.setCancelable(true);
-			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-				}
-			});
-			alertDialog = adb.create();
-			alertDialog.show();
+			new ValidationErrorAlertDialog(this, "Expense Claim requires a start date.").show();
 			return null;
 		} else {
 			startDate = dateFormatter.parse(startDateText.getText().toString());
@@ -182,30 +162,15 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 
 		Date endDate = new Date();
 		if (endDateText.getText().length() == 0) {
-			adb.setMessage("Expense Claim requires an end date");
-			adb.setCancelable(true);
-			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-				}
-			});
-			alertDialog = adb.create();
-			alertDialog.show();
+			new ValidationErrorAlertDialog(this, "Expense Claim requires a end date.").show();
 			return null;
 		} else {
 			endDate = dateFormatter.parse(endDateText.getText().toString());
 		}
 
 		if (startDate.after(endDate)) {
-			adb.setMessage("Invalid range of dates");
-			adb.setMessage("Start Date cannot be set to after the End Date");
-			adb.setCancelable(true);
-			adb.setNeutralButton("Back", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-				}
-			});
-			alertDialog = adb.create();
-			alertDialog.show();
+			new ValidationErrorAlertDialog(this, "Invalid range of dates.",
+					"Start Date cannot be set to after the End Date.").show();
 			return null;
 		}
 

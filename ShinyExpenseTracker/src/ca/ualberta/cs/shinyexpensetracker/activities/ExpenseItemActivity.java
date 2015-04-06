@@ -100,7 +100,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 			if (expenseItemID != null) {
 				item = claim.getExpenseItemByID(expenseItemID);
 				isEditing = true;
-				populateTextViews();
+				populateViews();
 			}
 		}
 		adb = new AlertDialog.Builder(this);
@@ -108,6 +108,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		findViewsById();
 
 		setDateTimeField();
+
 	}
 
 	@Override
@@ -124,10 +125,37 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		return true;
 	}
 
+	/*
+	 * Fixes null pointer on return from camera
+	 * http://stackoverflow.com/questions/8248327/my-android-camera-uri-is-returning-a-null-value-but-the-samsung-fix-is-in-place
+	 * March 26, 2015
+	 */
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+	    super.onSaveInstanceState(outState);
+	    if (imageFileUri != null) {
+	        outState.putString("cameraImageUri", imageFileUri.toString());
+	    }
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+	    super.onRestoreInstanceState(savedInstanceState);
+	    if (savedInstanceState.containsKey("cameraImageUri")) {
+	        imageFileUri = Uri.parse(savedInstanceState.getString("cameraImageUri"));
+	        // Just in case the parsing doesn't work
+	        if (imageFileUri != null) {
+	        	// Create a new drawable instance from the Uri instead of 
+	        	// using the existing fs bitmap object
+				button.setImageDrawable(Drawable.createFromPath(imageFileUri.getPath()));
+	        }
+	    }
+	}
+
 	/**
 	 * Pre-set fields with a loaded ExpenseItem info
 	 */
-	private void populateTextViews() {
+	private void populateViews() {
 		populateHashMaps();
 
 		setEditTextValue(R.id.expenseItemNameEditText, item.getName().toString());
@@ -363,6 +391,8 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		} else {
 			controller.addExpenseItemToClaim(claim.getID(), name, date, category, amount, currency, description, bm);
 		}
+		
+		controller.update();
 
 		return true;
 	}
@@ -402,8 +432,6 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 			if (resultCode == RESULT_OK) {
 				Toast.makeText(this, "Result: OK!", Toast.LENGTH_SHORT).show();
-				assert imageFileUri != null;
-				assert button != null;
 				button.setImageDrawable(Drawable.createFromPath(imageFileUri.getPath()));
 			} else if (resultCode == RESULT_CANCELED) {
 				Toast.makeText(this, "Result: Cancelled", Toast.LENGTH_SHORT).show();

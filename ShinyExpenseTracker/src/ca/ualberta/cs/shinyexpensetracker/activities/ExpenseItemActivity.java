@@ -127,29 +127,30 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 
 	/*
 	 * Fixes null pointer on return from camera
-	 * http://stackoverflow.com/questions/8248327/my-android-camera-uri-is-returning-a-null-value-but-the-samsung-fix-is-in-place
-	 * March 26, 2015
+	 * http://stackoverflow.com/questions
+	 * /8248327/my-android-camera-uri-is-returning
+	 * -a-null-value-but-the-samsung-fix-is-in-place March 26, 2015
 	 */
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-	    super.onSaveInstanceState(outState);
-	    if (imageFileUri != null) {
-	        outState.putString("cameraImageUri", imageFileUri.toString());
-	    }
+		super.onSaveInstanceState(outState);
+		if (imageFileUri != null) {
+			outState.putString("cameraImageUri", imageFileUri.toString());
+		}
 	}
 
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-	    super.onRestoreInstanceState(savedInstanceState);
-	    if (savedInstanceState.containsKey("cameraImageUri")) {
-	        imageFileUri = Uri.parse(savedInstanceState.getString("cameraImageUri"));
-	        // Just in case the parsing doesn't work
-	        if (imageFileUri != null) {
-	        	// Create a new drawable instance from the Uri instead of 
-	        	// using the existing fs bitmap object
+		super.onRestoreInstanceState(savedInstanceState);
+		if (savedInstanceState.containsKey("cameraImageUri")) {
+			imageFileUri = Uri.parse(savedInstanceState.getString("cameraImageUri"));
+			// Just in case the parsing doesn't work
+			if (imageFileUri != null) {
+				// Create a new drawable instance from the Uri instead of
+				// using the existing fs bitmap object
 				button.setImageDrawable(Drawable.createFromPath(imageFileUri.getPath()));
-	        }
-	    }
+			}
+		}
 	}
 
 	/**
@@ -391,8 +392,6 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		} else {
 			controller.addExpenseItemToClaim(claim.getID(), name, date, category, amount, currency, description, bm);
 		}
-		
-		controller.update();
 
 		return true;
 	}

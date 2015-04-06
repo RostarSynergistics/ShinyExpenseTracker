@@ -2,6 +2,8 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.UUID;
 
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
+
 /**
  * A Destination represents a destination of travel on an expense claim.
  * 
@@ -11,10 +13,18 @@ public class Destination extends Model<Destination> {
 	private String name;
 	private String reasonForTravel;
 
-	public Destination(String name, String reasonForTravel) {
+	public Destination(String name, String reasonForTravel) throws ValidationException {
+		validateName(name);
+
 		this.id = UUID.randomUUID();
 		this.name = name;
 		this.reasonForTravel = reasonForTravel;
+	}
+
+	private void validateName(String name) throws ValidationException {
+		if (name == null || name.length() == 0) {
+			throw new ValidationException("Destination requires a name.");
+		}
 	}
 
 	public UUID getID() {
@@ -25,7 +35,8 @@ public class Destination extends Model<Destination> {
 		return this.name;
 	}
 
-	public void setName(String name) {
+	public void setName(String name) throws ValidationException {
+		validateName(name);
 		this.name = name;
 	}
 
@@ -67,6 +78,5 @@ public class Destination extends Model<Destination> {
 			return false;
 		return true;
 	}
-	
-	
+
 }

@@ -162,8 +162,10 @@ public class ExpenseClaimController {
 	 *            The destination's reason for travel.
 	 * @return The new Destination.
 	 * @throws IOException
+	 * @throws ValidationException
 	 */
-	public Destination addDestinationToClaim(UUID claimID, String name, String reasonForTravel) throws IOException {
+	public Destination addDestinationToClaim(UUID claimID, String name, String reasonForTravel) throws IOException,
+			ValidationException {
 		ExpenseClaim claim = claimList.getClaimByID(claimID);
 		Destination destination = new Destination(name, reasonForTravel);
 		claim.addDestination(destination);
@@ -184,9 +186,10 @@ public class ExpenseClaimController {
 	 *            the new reason for travel.
 	 * @return The updated Destination.
 	 * @throws IOException
+	 * @throws ValidationException
 	 */
 	public Destination updateDestinationOnClaim(UUID claimID, UUID destinationID, String name, String reasonForTravel)
-			throws IOException {
+			throws IOException, ValidationException {
 		ExpenseClaim claim = claimList.getClaimByID(claimID);
 		Destination destination = claim.getDestinationByID(destinationID);
 

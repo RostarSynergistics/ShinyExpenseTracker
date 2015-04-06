@@ -16,6 +16,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.ValidationErrorAlertDialog;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
@@ -96,20 +97,20 @@ public class AddDestinationActivity extends Activity {
 		destinationEditText = (EditText) findViewById(R.id.destinationEditText);
 		reasonForTravelEditText = (EditText) findViewById(R.id.reasonEditText);
 
-		if (destinationEditText.getText().length() == 0) {
-			new ValidationErrorAlertDialog(this, "Destination requires a name.").show();
-			return false;
-		}
-
 		String dest = destinationEditText.getText().toString();
 		String reason = reasonForTravelEditText.getText().toString();
 
-		if (destination == null) {
-			// If new, create a new one
-			destination = controller.addDestinationToClaim(claimID, dest, reason);
-		} else {
-			// If old, update the data.
-			destination = controller.updateDestinationOnClaim(claimID, destinationID, dest, reason);
+		try {
+			if (destination == null) {
+				// If new, create a new one
+				destination = controller.addDestinationToClaim(claimID, dest, reason);
+			} else {
+				// If old, update the data.
+				destination = controller.updateDestinationOnClaim(claimID, destinationID, dest, reason);
+			}
+		} catch (ValidationException e) {
+			new ValidationErrorAlertDialog(this, e).show();
+			return false;
 		}
 
 		return true;

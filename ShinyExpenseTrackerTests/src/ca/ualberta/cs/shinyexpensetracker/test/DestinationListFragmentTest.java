@@ -20,6 +20,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.fragments.DestinationListFragment;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
@@ -206,8 +207,12 @@ public class DestinationListFragmentTest extends ActivityInstrumentationTestCase
 		getInstrumentation().runOnMainSync(new Runnable() {
 			@Override
 			public void run() {
-				claim.addDestination(new Destination("Copy-Paste world", "Laziness"));
-				;
+				try {
+					claim.addDestination(new Destination("Copy-Paste world", "Laziness"));
+				} catch (ValidationException e) {
+					e.printStackTrace();
+					fail();
+				}
 			}
 		});
 		getInstrumentation().waitForIdleSync();

@@ -4,9 +4,14 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 
 public class ValidationErrorAlertDialog {
 	private Dialog dialog;
+
+	public ValidationErrorAlertDialog(Context context, ValidationException validationException) {
+		this(context, validationException.getMessage());
+	}
 
 	public ValidationErrorAlertDialog(Context context, String... messages) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);

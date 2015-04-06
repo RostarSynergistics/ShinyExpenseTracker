@@ -19,7 +19,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 public class ESClaimManagerTest extends TestCase {
 
 	ESClaimManager manager = new ESClaimManager();
-	Destination destination = new Destination("Vancouver", "Vacation");
+	Destination destination;
 	TagList tagList = new TagList();
 	Tag exTag = new Tag("Example");
 	ExpenseItem item = new ExpenseItem("Flight to YEG", null, Category.AIR_FARE, BigDecimal.valueOf(1000), Currency.CAD);
@@ -33,6 +33,8 @@ public class ESClaimManagerTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
+
+		destination = new Destination("Vancouver", "Vacation");
 
 		Date sdate = new Date(1990, 11, 11);
 		Date edate = new Date(1990, 11, 11);

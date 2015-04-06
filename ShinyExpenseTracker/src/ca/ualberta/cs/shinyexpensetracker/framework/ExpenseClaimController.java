@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
@@ -163,9 +164,9 @@ public class ExpenseClaimController {
 	 * @return The new Destination.
 	 * @throws IOException
 	 */
-	public Destination addDestinationToClaim(UUID claimID, String name, String reasonForTravel) throws IOException {
+	public Destination addDestinationToClaim(UUID claimID, String name, String reasonForTravel, Coordinate geolocation) throws IOException {
 		ExpenseClaim claim = claimList.getClaimByID(claimID);
-		Destination destination = new Destination(name, reasonForTravel);
+		Destination destination = new Destination(name, reasonForTravel, geolocation);
 		claim.addDestination(destination);
 		persister.saveExpenseClaims(claimList);
 		return destination;
@@ -185,14 +186,15 @@ public class ExpenseClaimController {
 	 * @return The updated Destination.
 	 * @throws IOException
 	 */
-	public Destination updateDestinationOnClaim(UUID claimID, UUID destinationID, String name, String reasonForTravel)
+	public Destination updateDestinationOnClaim(UUID claimID, UUID destinationID, String name, String reasonForTravel, Coordinate geolocation)
 			throws IOException {
 		ExpenseClaim claim = claimList.getClaimByID(claimID);
 		Destination destination = claim.getDestinationByID(destinationID);
 
 		destination.setName(name);
 		destination.setReasonForTravel(reasonForTravel);
-
+		destination.setGeolocation(geolocation);
+		
 		persister.saveExpenseClaims(claimList);
 		return destination;
 	}
@@ -219,10 +221,10 @@ public class ExpenseClaimController {
 	 * @return The new ExpenseItem.
 	 * @throws IOException
 	 */
-	public ExpenseItem addExpenseItemToClaim(UUID claimID, String name, Date date, Category category, BigDecimal amountSpent, Currency currency, String description, Bitmap photo)
+	public ExpenseItem addExpenseItemToClaim(UUID claimID, String name, Date date, Category category, BigDecimal amountSpent, Currency currency, String description, Bitmap photo, Coordinate geolocation)
 			throws IOException {
 		ExpenseClaim claim = claimList.getClaimByID(claimID);
-		ExpenseItem item = new ExpenseItem(name, date, category, amountSpent, currency, description, photo);
+		ExpenseItem item = new ExpenseItem(name, date, category, amountSpent, currency, description, photo, geolocation);
 
 		claim.addExpenseItem(item);
 
@@ -254,7 +256,7 @@ public class ExpenseClaimController {
 	 * @return The updated ExpenseItem.
 	 * @throws IOException
 	 */
-	public ExpenseItem updateExpenseItemOnClaim(UUID claimID, UUID expenseItemID, String name, Date date, Category category, BigDecimal amountSpent, Currency currency, String description, Bitmap photo)
+	public ExpenseItem updateExpenseItemOnClaim(UUID claimID, UUID expenseItemID, String name, Date date, Category category, BigDecimal amountSpent, Currency currency, String description, Bitmap photo, Coordinate geolocation)
 			throws IOException {
 		ExpenseClaim claim = claimList.getClaimByID(claimID);
 		ExpenseItem item = claim.getExpenseItemByID(expenseItemID);
@@ -266,6 +268,7 @@ public class ExpenseClaimController {
 		item.setCurrency(currency);
 		item.setDescription(description);
 		item.setReceiptPhoto(photo);
+		item.setGeolocation(geolocation);
 
 		persister.saveExpenseClaims(claimList);
 		return item;

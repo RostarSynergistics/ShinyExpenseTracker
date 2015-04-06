@@ -6,6 +6,7 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 import ca.ualberta.cs.shinyexpensetracker.es.ESClaimManager;
+import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
@@ -19,7 +20,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 public class ESClaimManagerTest extends TestCase {
 
 	ESClaimManager manager = new ESClaimManager();
-	Destination destination = new Destination("Vancouver", "Vacation");
+	Destination destination = new Destination("Vancouver", "Vacation", new Coordinate(49.28, -123.12));
 	TagList tagList = new TagList();
 	Tag exTag = new Tag("Example");
 	ExpenseItem item = new ExpenseItem("Flight to YEG", null, Category.AIR_FARE, BigDecimal.valueOf(1000), Currency.CAD);

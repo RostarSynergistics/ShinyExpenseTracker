@@ -87,7 +87,7 @@
     <string name="set_home_geolocation">Set Home Geolocation</string>
     <string name="title_activity_geolocation_view">Geolocation View</string>
     <string name="geolocationTitle">Selected Coordinates</string>
-    <string name="geolocationValueDefault">None Selected</string>
+    <string name="geolocationValueDefault">None Selected (tap here to select)</string>
     <string name="automaticGeolocationSetupButtonText">Set Automatically Using GPS</string>
     <string name="mapAssistedGeolocationSetupButtonText">Set Location Using Map</string>
     <string name="title_activity_map_view">Map View</string>
@@ -102,6 +102,7 @@
     <string name="remove_tags">Remove Tags</string>
     <string name="no_tags_to_add">No Tags to add</string>
     <string name="add_tags">Add Tags</string>
+    <string name="expenseItemDetailGeolocationTitle">Geolocation</string>
     <string name="homeGeolocationTitle">Home Geolocation</string>
     <string name="homeGeolocationDefaultValue">No Home Geolocation Selected</string>
     <string name="approve_claim">Approve Claim</string>

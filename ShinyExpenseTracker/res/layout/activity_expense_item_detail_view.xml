@@ -135,8 +135,29 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
             </TableRow>
+            <TableRow
+                android:id="@+id/tableRow5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp" >
+
+                <TextView
+                    android:id="@+id/expenseItemGeolocationTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="8dp"
+                    android:paddingStart="8dp"
+                    android:text="@string/expenseItemDetailGeolocationTitle" />
+
+                <TextView
+                    android:id="@+id/expenseItemGeolocationValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+            </TableRow>
         </TableLayout>
 
+        
         <ImageButton
             android:id="@+id/expenseItemDetailImageButton"
             android:layout_width="wrap_content"

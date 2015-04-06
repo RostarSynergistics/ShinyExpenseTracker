@@ -39,7 +39,7 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 	private ExpenseClaimController controller;
 
 	private EditText startDate, endDate;
-	private DatePickerDialog fromDatePickerDialog, toDatePickerDialog;
+	private DatePickerDialog startDatePickerDialog, endDatePickerDialog;
 	private SimpleDateFormat dateFormatter;
 	public ValidationErrorAlertDialog alertDialog;
 	private ExpenseClaim claim;
@@ -96,7 +96,7 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 
 		Calendar newCalendar = Calendar.getInstance();
 
-		fromDatePickerDialog = new DatePickerDialog(this, new OnDateSetListener() {
+		startDatePickerDialog = new DatePickerDialog(this, new OnDateSetListener() {
 
 			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 				Calendar newDate = Calendar.getInstance();
@@ -105,7 +105,7 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 			}
 		}, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
-		toDatePickerDialog = new DatePickerDialog(this, new OnDateSetListener() {
+		endDatePickerDialog = new DatePickerDialog(this, new OnDateSetListener() {
 
 			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 				Calendar newDate = Calendar.getInstance();
@@ -124,9 +124,9 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View view) {
 		if (view == startDate) {
-			fromDatePickerDialog.show();
+			startDatePickerDialog.show();
 		} else if (view == endDate) {
-			toDatePickerDialog.show();
+			endDatePickerDialog.show();
 		}
 	}
 
@@ -214,5 +214,13 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 	 */
 	public ValidationErrorAlertDialog getAlertDialog() {
 		return alertDialog;
+	}
+
+	public DatePickerDialog getStartDatePickerDialog() {
+		return startDatePickerDialog;
+	}
+
+	public DatePickerDialog getEndDatePickerDialog() {
+		return endDatePickerDialog;
 	}
 }

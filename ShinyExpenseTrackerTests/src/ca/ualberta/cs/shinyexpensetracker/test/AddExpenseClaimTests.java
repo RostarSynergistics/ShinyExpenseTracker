@@ -60,8 +60,6 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 	}
 
 	public void testThatTappingOnStartDateOpensDateDialog() {
-		assertNull(activity.getAlertDialog());
-
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {
 				startDateField.performClick();
@@ -70,12 +68,11 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 
 		instrumentation.waitForIdleSync();
 
-		assertNotNull(activity.getAlertDialog());
+		assertNotNull(activity.getStartDatePickerDialog());
+		assertTrue(activity.getStartDatePickerDialog().isShowing());
 	}
 
 	public void testThatTappingOnEndDateOpensDateDialog() {
-		assertNull(activity.getAlertDialog());
-
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {
 				endDateField.performClick();
@@ -84,7 +81,8 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 
 		instrumentation.waitForIdleSync();
 
-		assertNotNull(activity.getAlertDialog());
+		assertNotNull(activity.getEndDatePickerDialog());
+		assertTrue(activity.getEndDatePickerDialog().isShowing());
 	}
 
 	public void testThatInputtingAnEndDateThatIsBeforeTheStartDateShowsAnAlert() {
@@ -106,7 +104,9 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 	public void testThatInputtingAnEndDateThatIsAfterTheStartDateIsValid() {
 
 		ActivityMonitor monitor = instrumentation
-				.addMonitor(TabbedSummaryClaimantActivity.class.getName(), null, false);
+													.addMonitor(TabbedSummaryClaimantActivity.class.getName(),
+															null,
+															false);
 
 		activity.runOnUiThread(new Runnable() {
 			@Override
@@ -128,7 +128,9 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 	@SuppressLint("SimpleDateFormat")
 	public void testThatTappingDoneWhileCreatingNewExpenseClaimCreatesANewExpenseClaim() throws ParseException {
 		ActivityMonitor monitor = instrumentation
-				.addMonitor(TabbedSummaryClaimantActivity.class.getName(), null, false);
+													.addMonitor(TabbedSummaryClaimantActivity.class.getName(),
+															null,
+															false);
 
 		final String claimName = "URoma";
 		activity.runOnUiThread(new Runnable() {
@@ -150,8 +152,10 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 		assertNotNull("Next activity not started", nextActivity);
 
 		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
-		Date startDateObject = sdf.parse(startDateField.getText().toString());
-		Date endDateObject = sdf.parse(endDateField.getText().toString());
+		Date startDateObject = sdf.parse(startDateField.getText()
+														.toString());
+		Date endDateObject = sdf.parse(endDateField.getText()
+													.toString());
 
 		ExpenseClaim claim = controller.getExpenseClaimAtPosition(0);
 

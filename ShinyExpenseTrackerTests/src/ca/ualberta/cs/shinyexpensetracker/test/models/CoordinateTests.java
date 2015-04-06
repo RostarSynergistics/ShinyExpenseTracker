@@ -1,7 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.test.models;
 
-import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import junit.framework.TestCase;
+import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 
 public class CoordinateTests extends TestCase {
 

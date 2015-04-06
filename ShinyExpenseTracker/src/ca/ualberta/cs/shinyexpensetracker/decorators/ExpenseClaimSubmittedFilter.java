@@ -1,7 +1,6 @@
 package ca.ualberta.cs.shinyexpensetracker.decorators;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;

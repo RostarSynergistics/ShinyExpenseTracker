@@ -22,6 +22,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import android.graphics.Bitmap;
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.utilities.Base64BitmapConverter;
 
 /**
@@ -88,9 +89,14 @@ public class ExpenseItem extends Model<ExpenseItem> {
 	 * @param description
 	 * @param photo
 	 * @param completenessFlag
+	 * @throws ValidationException
 	 */
 	public ExpenseItem(String name, Date date, Category category, BigDecimal amountSpent, Currency currency,
-			String description, Bitmap photo, boolean completenessFlag) {
+			String description, Bitmap photo, boolean completenessFlag) throws ValidationException {
+		validateName(name);
+		validateDate(date);
+		validateAmountSpent(amountSpent);
+
 		this.id = UUID.randomUUID();
 		this.name = name;
 		this.date = date;
@@ -102,19 +108,38 @@ public class ExpenseItem extends Model<ExpenseItem> {
 		this.incompletenessMarker = completenessFlag;
 	}
 
+	private void validateAmountSpent(BigDecimal newAmountSpent) throws ValidationException {
+		if (newAmountSpent == null) {
+			throw new ValidationException("Expense Item requires an amount spent.");
+		}
+	}
+
+	private void validateDate(Date newDate) throws ValidationException {
+		if (newDate == null) {
+			throw new ValidationException("Expense Item requires a date.");
+		}
+	}
+
+	private void validateName(String newName) throws ValidationException {
+		if (newName == null || newName.length() == 0) {
+			throw new ValidationException("Expense Item requires a name.");
+		}
+	}
+
 	public ExpenseItem(String name, Date date, Category category, BigDecimal amountSpent, Currency currency,
-			String description, Bitmap photo) {
+			String description, Bitmap photo) throws ValidationException {
 		// Call to more specific constructor
 		this(name, date, category, amountSpent, currency, description, photo, false);
 	}
 
 	public ExpenseItem(String name, Date date, Category category, BigDecimal amountSpent, Currency currency,
-			String description) {
+			String description) throws ValidationException {
 		// Call to more specific constructor
 		this(name, date, category, amountSpent, currency, description, null, false);
 	}
 
-	public ExpenseItem(String name, Date date, Category category, BigDecimal amount, Currency currency) {
+	public ExpenseItem(String name, Date date, Category category, BigDecimal amount, Currency currency)
+			throws ValidationException {
 		// Call to more specific constructor
 		this(name, date, category, amount, currency, "", null, false);
 	}
@@ -123,7 +148,8 @@ public class ExpenseItem extends Model<ExpenseItem> {
 		return this.id;
 	}
 
-	public void setName(String name) {
+	public void setName(String name) throws ValidationException {
+		validateName(name);
 		this.name = name;
 	}
 
@@ -131,7 +157,8 @@ public class ExpenseItem extends Model<ExpenseItem> {
 		return this.name;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(Date date) throws ValidationException {
+		validateDate(date);
 		this.date = date;
 	}
 
@@ -155,7 +182,8 @@ public class ExpenseItem extends Model<ExpenseItem> {
 		return this.category;
 	}
 
-	public void setAmountSpent(BigDecimal amountSpent) {
+	public void setAmountSpent(BigDecimal amountSpent) throws ValidationException {
+		validateAmountSpent(amountSpent);
 		this.amountSpent = amountSpent;
 	}
 
@@ -194,7 +222,7 @@ public class ExpenseItem extends Model<ExpenseItem> {
 		} else {
 			this.receiptPhotoBitmap = photo;
 			this.encodedReceiptPhoto = Base64BitmapConverter.convertToBase64(photo);
-        }
+		}
 
 		notifyViews();
 	}

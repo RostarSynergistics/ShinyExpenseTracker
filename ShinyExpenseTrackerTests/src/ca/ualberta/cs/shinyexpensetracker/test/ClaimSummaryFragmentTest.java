@@ -101,7 +101,7 @@ public class ClaimSummaryFragmentTest extends ActivityInstrumentationTestCase2<T
 	 * 
 	 * @throws IOException
 	 */
-	public void testSetClaimInfo() throws IOException {
+	public void testSetClaimInfo() throws Exception {
 		final TagList tagList = new TagList();
 		Tag tag = new Tag("testTag");
 		tagList.addTag(tag);
@@ -196,7 +196,7 @@ public class ClaimSummaryFragmentTest extends ActivityInstrumentationTestCase2<T
 	 * 
 	 * @throws IOException
 	 */
-	public void testExpenseTotals() throws IOException {
+	public void testExpenseTotals() throws Exception {
 		Date startDate = new Date(1000);
 
 		BigDecimal amount = new BigDecimal(10);

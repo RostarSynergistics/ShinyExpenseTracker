@@ -44,12 +44,7 @@ public class TabbedSummaryClaimantActivityTest extends ActivityInstrumentationTe
 	Date endDate = new Date(2000);
 	ExpenseClaim.Status status = ExpenseClaim.Status.IN_PROGRESS;
 	BigDecimal amount = new BigDecimal(10);
-	final ExpenseItem expense = new ExpenseItem("expenseItemName",
-			new Date(1000),
-			Category.ACCOMODATION,
-			amount,
-			Currency.CAD,
-			"expenseItemDescription");
+	ExpenseItem expense;
 
 	ExpenseClaimController controller;
 
@@ -61,6 +56,13 @@ public class TabbedSummaryClaimantActivityTest extends ActivityInstrumentationTe
 	 */
 	public void setUp() throws Exception {
 		super.setUp();
+
+		expense = new ExpenseItem("expenseItemName",
+				new Date(1000),
+				Category.ACCOMODATION,
+				amount,
+				Currency.CAD,
+				"expenseItemDescription");
 
 		ExpenseClaimList list = new ExpenseClaimList();
 		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(list));

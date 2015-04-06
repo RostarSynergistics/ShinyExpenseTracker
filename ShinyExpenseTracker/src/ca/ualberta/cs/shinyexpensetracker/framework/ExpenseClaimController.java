@@ -225,9 +225,10 @@ public class ExpenseClaimController {
 	 *            The item's receipt photo.
 	 * @return The new ExpenseItem.
 	 * @throws IOException
+	 * @throws ValidationException
 	 */
 	public ExpenseItem addExpenseItemToClaim(UUID claimID, String name, Date date, Category category, BigDecimal amountSpent, Currency currency, String description, Bitmap photo)
-			throws IOException {
+			throws IOException, ValidationException {
 		ExpenseClaim claim = claimList.getClaimByID(claimID);
 		ExpenseItem item = new ExpenseItem(name, date, category, amountSpent, currency, description, photo);
 
@@ -260,9 +261,10 @@ public class ExpenseClaimController {
 	 *            The new receipt photo.
 	 * @return The updated ExpenseItem.
 	 * @throws IOException
+	 * @throws ValidationException
 	 */
 	public ExpenseItem updateExpenseItemOnClaim(UUID claimID, UUID expenseItemID, String name, Date date, Category category, BigDecimal amountSpent, Currency currency, String description, Bitmap photo)
-			throws IOException {
+			throws IOException, ValidationException {
 		ExpenseClaim claim = claimList.getClaimByID(claimID);
 		ExpenseItem item = claim.getExpenseItemByID(expenseItemID);
 

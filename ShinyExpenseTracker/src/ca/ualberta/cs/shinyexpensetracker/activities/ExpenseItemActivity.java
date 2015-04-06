@@ -36,6 +36,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.ValidationErrorAlertDialog;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
@@ -258,23 +259,11 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		Spinner currencySpinner = (Spinner) findViewById(R.id.expenseItemCurrencySpinner);
 		EditText descriptionText = (EditText) findViewById(R.id.expesenItemDescriptionEditText);
 
-		// get the name of the expense item
-		String name = "";
-		if (nameText.getText().length() == 0) {
-			// display dialog if no name entered
-			new ValidationErrorAlertDialog(this, "Expense Item requires a name").show();
-			return false;
-		} else {
-			name = nameText.getText().toString();
-		}
+		String name = nameText.getText().toString();
 
 		// get the date of the expense item
-		Date date = new Date();
-		if (dateText.getText().length() == 0) {
-			// display dialog if no date entered
-			new ValidationErrorAlertDialog(this, "Expense Item requires a date.").show();
-			return false;
-		} else {
+		Date date = null;
+		if (dateText.getText().length() != 0) {
 			date = dateFormatter.parse(dateText.getText().toString());
 		}
 
@@ -283,11 +272,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 
 		// get the amount Spent from the editText, checking if not entered
 		BigDecimal amount = new BigDecimal("0.00");
-		if (amountText.getText().length() == 0) {
-			// display error dialog if no amount spent has been entered
-			new ValidationErrorAlertDialog(this, "Expense Item requires an amount spent.").show();
-			return false;
-		} else {
+		if (amountText.getText().length() != 0) {
 			amount = new BigDecimal(amountText.getText().toString());
 		}
 
@@ -312,11 +297,17 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 			bm = DrawableBitmapConverter.convertToBitmap(dr, dr.getMinimumWidth(), dr.getMinimumHeight());
 		}
 
-		if (isEditing) {
-			controller.updateExpenseItemOnClaim(claim.getID(), item.getID(), name, date, category, amount, currency,
-					description, bm);
-		} else {
-			controller.addExpenseItemToClaim(claim.getID(), name, date, category, amount, currency, description, bm);
+		try {
+			if (isEditing) {
+				controller.updateExpenseItemOnClaim(claim.getID(), item.getID(), name, date, category, amount,
+						currency, description, bm);
+			} else {
+				controller
+						.addExpenseItemToClaim(claim.getID(), name, date, category, amount, currency, description, bm);
+			}
+		} catch (ValidationException e) {
+			alertDialog = new ValidationErrorAlertDialog(this, e);
+			alertDialog.show();
 		}
 
 		return true;

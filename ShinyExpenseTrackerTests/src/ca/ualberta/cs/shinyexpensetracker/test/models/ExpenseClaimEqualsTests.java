@@ -24,7 +24,7 @@ public class ExpenseClaimEqualsTests extends TestCase {
 		return new ExpenseClaim(id, "test", startDate, endDate, ExpenseClaim.Status.IN_PROGRESS);
 	}
 
-	private ExpenseItem getTestExpenseItem() {
+	private ExpenseItem getTestExpenseItem() throws ValidationException {
 		return new ExpenseItem("test",
 				new Date(500),
 				ExpenseItem.Category.ACCOMODATION,
@@ -75,20 +75,21 @@ public class ExpenseClaimEqualsTests extends TestCase {
 		assertNotEqual();
 	}
 
-	public void testThatTwoClaimsWithIdenticalNonEmptyExpenseItemsListsAreEqual() {
+	public void testThatTwoClaimsWithIdenticalNonEmptyExpenseItemsListsAreEqual() throws ValidationException {
 		claim1.addExpenseItem(getTestExpenseItem());
 		claim2.addExpenseItem(getTestExpenseItem());
 
 		assertEquals();
 	}
 
-	public void testThatOneClaimWithOneWithAnEmptyExpenseItemsListAndTheOtherNotEmptyAreNotEqual() {
+	public void testThatOneClaimWithOneWithAnEmptyExpenseItemsListAndTheOtherNotEmptyAreNotEqual()
+			throws ValidationException {
 		claim2.addExpenseItem(getTestExpenseItem());
 
 		assertNotEqual();
 	}
 
-	public void testThatTwoClaimsWithNonIdenticalNonEmptyExpenseItemsListsAreNotEqual() {
+	public void testThatTwoClaimsWithNonIdenticalNonEmptyExpenseItemsListsAreNotEqual() throws ValidationException {
 		claim1.addExpenseItem(getTestExpenseItem());
 		ExpenseItem item = getTestExpenseItem();
 		item.setName("foobarbaz");

@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.UUID;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -35,6 +36,7 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -54,9 +56,6 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
  *        editing of a referred Expense Item, if there is any
  */
 public class ExpenseItemActivity extends Activity implements OnClickListener {
-
-	public static final String EXPENSE_INDEX = "expenseIndex";
-	public static final String CLAIM_INDEX = "claimIndex";
 	// DatePickerDialog from:
 	// http://androidopentutorials.com/android-datepickerdialog-on-edittext-click-event/
 	// On March 2 2015
@@ -91,15 +90,15 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		if (bundle != null) {
 			// we have to receive a Claim ID so that we know to what claim to
 			// save an item
-			int claimId = (Integer) bundle.get(CLAIM_INDEX);
-			Integer expenseItemId = (Integer) bundle.get(EXPENSE_INDEX);
+			UUID claimID = (UUID) bundle.getSerializable(IntentExtraIDs.CLAIM_ID);
+			UUID expenseItemID = (UUID) bundle.getSerializable(IntentExtraIDs.EXPENSE_ITEM_ID);
 			controller = Application.getExpenseClaimController();
-			claim = controller.getExpenseClaim(claimId);
+			claim = controller.getExpenseClaimByID(claimID);
 			// if we received an Item ID
 			// then we are editing an item
 			// fetch the item and preset all fields with its values
-			if (expenseItemId != null) {
-				item = claim.getExpense(expenseItemId);
+			if (expenseItemID != null) {
+				item = claim.getExpenseItemByID(expenseItemID);
 				isEditing = true;
 				populateViews();
 			}
@@ -387,22 +386,12 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		}
 
 		if (isEditing) {
-			// Update the existing expense
-			item.setName(name);
-			item.setDate(date);
-			item.setCategory(category);
-			item.setAmountSpent(amount);
-			item.setCurrency(currency);
-			item.setDescription(description);
-			item.setReceiptPhoto(bm);
+			controller.updateExpenseItemOnClaim(claim.getID(), item.getID(), name, date, category, amount, currency,
+					description, bm);
 		} else {
-			// Add a new expense
-			ExpenseItem expense = new ExpenseItem(name, date, category, amount, currency, description, bm);
-			claim.addExpense(expense);
+			controller.addExpenseItemToClaim(claim.getID(), name, date, category, amount, currency, description, bm);
 		}
 		
-		controller.update();
-
 		controller.update();
 
 		return true;

@@ -119,11 +119,11 @@ extends Activity</pre>
 <div class="block">Used for adding and editing destinations. For editing the destination, you
  must pass an intent with the extra "destinationIndex" indicating the index of
  the destination to update. For both adding and editing, you must pass an
- intent with the extra "claimIndex" indicating the index (relative to the
+ intent with the extra ExpenseClaimActivity.CLAIM_ID indicating the index (relative to the
  controller) of the claim to update.
  
  Example Usage: Intent intent = new Intent(CurrentActivity.this,
- AddDesintationActivity.class); intent.putExtra("claimIndex", 3);
+ AddDesintationActivity.class); intent.putExtra(ExpenseClaimActivity.CLAIM_ID, 3);
  intent.putExtra("destinationIndex", 2); // Editing a destination
  startActivity(intent);
  

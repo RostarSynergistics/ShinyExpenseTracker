@@ -40,8 +40,8 @@ import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimListActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.GeolocationViewActivity;
-import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -51,18 +51,17 @@ import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
-public class ViewAllExpenseClaimsActivityTests extends
-		ActivityInstrumentationTestCase2<ExpenseClaimListActivity> {
-	
+public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTestCase2<ExpenseClaimListActivity> {
+
 	ExpenseClaimListActivity activity;
 	ExpenseClaimList claimsList;
 	ExpenseClaimController controller;
 
 	// Flag for thread crashes
 	static boolean failed;
-	
+
 	ListView claimListView;
-	
+
 	public ViewAllExpenseClaimsActivityTests() {
 		super(ExpenseClaimListActivity.class);
 	}
@@ -73,15 +72,16 @@ public class ViewAllExpenseClaimsActivityTests extends
 		// just in case.
 		claimsList = new ExpenseClaimList();
 		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(claimsList));
-		
+
 		Application.setExpenseClaimController(controller);
-		
+
 		activity = getActivity();
 		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
 	}
-	
+
 	/**
 	 * Add a claim to the claimsList safely
+	 * 
 	 * @param claim
 	 * @return
 	 */
@@ -96,9 +96,10 @@ public class ViewAllExpenseClaimsActivityTests extends
 		getInstrumentation().waitForIdleSync();
 		return claim;
 	}
-	
+
 	/**
 	 * Delete a claim from the claimsList safely
+	 * 
 	 * @param claim
 	 */
 	private void deleteClaim(final ExpenseClaim claim) {
@@ -106,7 +107,7 @@ public class ViewAllExpenseClaimsActivityTests extends
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				claimsList.removeClaim(claim);
+				claimsList.deleteClaim(claim.getID());
 			}
 		});
 		getInstrumentation().waitForIdleSync();
@@ -115,16 +116,15 @@ public class ViewAllExpenseClaimsActivityTests extends
 	private ExpenseClaim getClaim(int i) {
 		return (ExpenseClaim) claimListView.getItemAtPosition(i);
 	}
-	
+
 	/**
 	 * Tests if the longPressDialog displays correctly.
 	 * 
-	 * ListViews don't seem to expose a performItemLongClick
-	 * function. I can't test UI functionality without this, so
-	 * we'll assume that long click works and calls an
-	 * "askDeleteItemAtPosition" function correctly. That way,
-	 * the unit test only need to test if this function does
-	 * its job, rather than checking the API functionality itself.
+	 * ListViews don't seem to expose a performItemLongClick function. I can't
+	 * test UI functionality without this, so we'll assume that long click works
+	 * and calls an "askDeleteItemAtPosition" function correctly. That way, the
+	 * unit test only need to test if this function does its job, rather than
+	 * checking the API functionality itself.
 	 * 
 	 * --This test may be removed in future iterations.
 	 */
@@ -142,38 +142,36 @@ public class ViewAllExpenseClaimsActivityTests extends
 		// don't seem to expose performItemLongClick.
 		assertTrue(activity.askDeleteClaimAt(0).isShowing());
 	}
-	
+
 	/**
 	 * Adds a claim and ensures that it is visible in the listview.
 	 */
 	public void testAddedClaimIsVisible() {
 		ExpenseClaim claim = addClaim(new ExpenseClaim("Test Claim"));
 		ExpenseClaim visibleClaim;
-		
+
 		// Get the last position in the list
 		// TODO Get last position. See issue #64.
 		int lastPosition = claimListView.getCount() - 1;
 		assertFalse("Claim List is empty", claimListView.getCount() == 0);
 		assertFalse("Claim List has too many objects", claimListView.getCount() > 1);
-		
+
 		// Get the expense claim object
 		visibleClaim = getClaim(lastPosition);
 		assertNotNull("No object found in the list", visibleClaim);
-		
+
 		// Ensure that the claim that was added to the list
 		// is also the claim in the listview.
 		assertTrue("Claim not visible", visibleClaim.equals(claim));
 	}
-	
-	/* All of the testClaimsSorted check roughly the same thing,
-	 * going through all 6 permutations of {new, mid, old}.
+
+	/*
+	 * All of the testClaimsSorted check roughly the same thing, going through
+	 * all 6 permutations of {new, mid, old}.
 	 */
 	public void testClaimsSorted() throws Exception {
-		ExpenseClaim[] testingClaims = {
-				new ExpenseClaim("Old Claim", new Date(1000)),
-				new ExpenseClaim("Mid Claim", new Date(2000)),
-				new ExpenseClaim("New Claim", new Date(3000)),
-		};
+		ExpenseClaim[] testingClaims = { new ExpenseClaim("Old Claim", new Date(1000)),
+				new ExpenseClaim("Mid Claim", new Date(2000)), new ExpenseClaim("New Claim", new Date(3000)), };
 		int numTests = 0;
 
 		// Check that our test case items compare correctly
@@ -192,14 +190,14 @@ public class ViewAllExpenseClaimsActivityTests extends
 			for (int j = 0; j < 3; j++) {
 				for (int k = 0; k < 3; k++) {
 					// Skip tests with equality--
-					// These depend on stability of sort 
-					if (i==j || j == k || i == k) {
+					// These depend on stability of sort
+					if (i == j || j == k || i == k) {
 						continue;
 					}
-					
+
 					// Count tests actually executed
 					numTests++;
-					
+
 					// Build up our list
 					addClaim(testingClaims[i]);
 					addClaim(testingClaims[j]);
@@ -207,78 +205,86 @@ public class ViewAllExpenseClaimsActivityTests extends
 
 					// Sanity check: 3 items in the list
 					assertEquals(3, controller.getCount());
-					
+
 					// check index 0 is newer than index 1
 					assertEquals("Comparison failed. Wanted <" + getClaim(0) + "> newer than <" + getClaim(1) + ">;",
-							1, getClaim(0).compareTo(getClaim(1)));
-					
+							1,
+							getClaim(0).compareTo(getClaim(1)));
+
 					// Can skip 0 > 2 by transitivity.
 					// Leave it in as a sanity check.
 					assertEquals("Comparison failed. Wanted <" + getClaim(0) + "> newer than <" + getClaim(2) + ">;",
-							1, getClaim(0).compareTo(getClaim(2)));
-					
+							1,
+							getClaim(0).compareTo(getClaim(2)));
+
 					// check index 1 is newer than index 2
 					assertEquals("Comparison failed. Wanted <" + getClaim(1) + "> newer than <" + getClaim(2) + ">;",
-							1, getClaim(1).compareTo(getClaim(2)));
+							1,
+							getClaim(1).compareTo(getClaim(2)));
 
 					// Reset the test
 					// --> Can't replace the ClaimList because we'll lose
-					// 	   lose observers
+					// lose observers
 					deleteClaim(testingClaims[i]);
 					deleteClaim(testingClaims[j]);
 					deleteClaim(testingClaims[k]);
 				}
 			}
 		}
-		
+
 		// Sanity check: make sure we run all permutations
 		assertEquals(6, numTests);
 	}
-	
+
 	/*
-	 * Inserts some data with same dates. They can be in
-	 * either order in the test, but things that are not
-	 * equal must be on the outside. Testing for outside
-	 * values is done in testClaimsSorted
+	 * Inserts some data with same dates. They can be in either order in the
+	 * test, but things that are not equal must be on the outside. Testing for
+	 * outside values is done in testClaimsSorted
 	 */
 	public void testEqualSorted() {
 		ExpenseClaim claim1 = addClaim(new ExpenseClaim("Mid Claim 1", new Date(2000)));
 		addClaim(new ExpenseClaim("Old Claim", new Date(1000)));
 		addClaim(new ExpenseClaim("New Claim", new Date(3000)));
 		ExpenseClaim claim2 = addClaim(new ExpenseClaim("Mid Claim 2", new Date(2000)));
-		
+
 		// index 0 newer than index 1
 		assertEquals(1, getClaim(0).compareTo(getClaim(1)));
 		// index 1 same as index 2
 		assertEquals(0, getClaim(1).compareTo(getClaim(2)));
 		// index 2 newer than index 3
 		assertEquals(1, getClaim(2).compareTo(getClaim(3)));
-		
+
 		// Make sure middle two indexes are truly different objects
 		assertNotSame(claim1, claim2);
-		
+
 	}
-	
+
 	/**
-	 * Deletes a claim and ensure it isn't visible in the listview.
-	 * Does not test dialogs.
+	 * Deletes a claim and ensure it isn't visible in the listview. Does not
+	 * test dialogs.
 	 */
 	public void testDeleteVisibleClaim() {
 		// Build 2 claims with dates so that claim 1 < claim 2.
 		TagList tags1 = new TagList();
 		tags1.addTag(new Tag("Test 1"));
-		ExpenseClaim claim1 = addClaim(
-				new ExpenseClaim("Delete Claim 1", new Date(), null, ExpenseClaim.Status.IN_PROGRESS, tags1));
+		ExpenseClaim claim1 = addClaim(new ExpenseClaim("Delete Claim 1",
+				new Date(),
+				null,
+				ExpenseClaim.Status.IN_PROGRESS,
+				tags1));
 		TagList tags2 = new TagList();
 		tags2.addTag(new Tag("Test 2"));
-		ExpenseClaim claim2 = addClaim(
-				new ExpenseClaim("Delete Claim 2", new Date(), null, ExpenseClaim.Status.IN_PROGRESS, tags2));
+		ExpenseClaim claim2 = addClaim(new ExpenseClaim("Delete Claim 2",
+				new Date(),
+				null,
+				ExpenseClaim.Status.IN_PROGRESS,
+				tags2));
 		ExpenseClaim visibleClaim;
-		
+
 		// Check that an item is actually deleted
 		deleteClaim(claim2);
 		assertEquals("Item wasn't deleted", 1, claimListView.getCount());
-		
+
 		// Check that the right item was deleted.
 		visibleClaim = getClaim(0);
 		assertEquals("Remaining claim isn't claim 1", claim1, visibleClaim);
@@ -289,46 +295,49 @@ public class ViewAllExpenseClaimsActivityTests extends
 	}
 
 	/**
-	 * Checks if pressing the NewClaim button opens the
-	 * appropriate activity and adds a new claim i
+	 * Checks if pressing the NewClaim button opens the appropriate activity and
+	 * adds a new claim i
 	 */
-	
+
 	public void testMenuClickNewActivity() {
-		
-		// Check to see if AddExpenseActivity is visible once the MenuItem is clicked.
+
+		// Check to see if AddExpenseActivity is visible once the MenuItem is
+		// clicked.
 		// Code taken from: stackoverflow.com/questions/3084891/how-to-test-menu
-				
+
 		ActivityMonitor am = getInstrumentation().addMonitor(ExpenseClaimActivity.class.getName(), null, false);
 		getInstrumentation().invokeMenuActionSync(activity, R.id.action_new_claim, 0);
-		
+
 		Activity a = getInstrumentation().waitForMonitorWithTimeout(am, 1000);
 		assertEquals(true, getInstrumentation().checkMonitorHit(am, 1));
 		a.finish();
-		
+
 		// Wait for the application to become idle
 		getInstrumentation().waitForIdleSync();
 
 	}
-	
+
 	/**
-	 * Test for crash on new expense claim.
-	 * See #91 for details.
+	 * Test for crash on new expense claim. See #91 for details.
 	 */
 	public void testCrashOnNewExpense() {
 		// TabbedSummary has split in 2. We need a way
 		// to specify which one we're looking for.
 		Application.setUserType(Type.Claimant);
-		
+
 		// Monitor for AddExpenseClaimActivity
-		ActivityMonitor claimMonitor = getInstrumentation().addMonitor(ExpenseClaimActivity.class.getName(), null, false);
+		ActivityMonitor claimMonitor = getInstrumentation().addMonitor(ExpenseClaimActivity.class.getName(),
+				null,
+				false);
 
 		// Press the "New Claim" button
 		getInstrumentation().invokeMenuActionSync(activity, R.id.action_new_claim, 0);
 
 		// Get the create claim activity
-		final ExpenseClaimActivity createClaim = (ExpenseClaimActivity) getInstrumentation().waitForMonitorWithTimeout(claimMonitor, 1000);
+		final ExpenseClaimActivity createClaim = (ExpenseClaimActivity) getInstrumentation()
+				.waitForMonitorWithTimeout(claimMonitor, 1000);
 		assertEquals(true, getInstrumentation().checkMonitorHit(claimMonitor, 1));
-		
+
 		getInstrumentation().waitForIdleSync();
 
 		// Monitor for TabbedSummaryActivity (Claimant version)
@@ -339,62 +348,66 @@ public class ViewAllExpenseClaimsActivityTests extends
 
 		// Fill in the data
 		createClaim.runOnUiThread(new Runnable() {
-			
+
 			@Override
 			public void run() {
-		    	EditText name = ((EditText) createClaim.findViewById(R.id.editTextExpenseClaimName));
-		    	EditText startDate = ((EditText) createClaim.findViewById(R.id.editTextStartDate));
-		    	EditText endDate = ((EditText) createClaim.findViewById(R.id.editTextEndDate));
-		    	Button doneButton = (Button) createClaim.findViewById(R.id.addExpenseClaimDoneButton);
-		    	
-		    	// Set values
-		    	name.setText("Test Claim");
-		    	startDate.setText("03-05-2015");
-		    	endDate.setText("04-05-2015");
-		    	
-		    	// Close the activity
-		    	doneButton.performClick();
-				
+				EditText name = ((EditText) createClaim.findViewById(R.id.editTextExpenseClaimName));
+				EditText startDate = ((EditText) createClaim.findViewById(R.id.editTextStartDate));
+				EditText endDate = ((EditText) createClaim.findViewById(R.id.editTextEndDate));
+				Button doneButton = (Button) createClaim.findViewById(R.id.addExpenseClaimDoneButton);
+
+				// Set values
+				name.setText("Test Claim");
+				startDate.setText("03-05-2015");
+				endDate.setText("04-05-2015");
+
+				// Close the activity
+				doneButton.performClick();
+
 			}
 		});
 
 		getInstrumentation().waitForIdleSync();
-
 		// Get the summary activity
-		TabbedSummaryActivity summaryActivity = (TabbedSummaryClaimantActivity) getInstrumentation().waitForMonitorWithTimeout(summaryMonitor, 1000);
+		TabbedSummaryActivity summaryActivity = (TabbedSummaryClaimantActivity) getInstrumentation()
+				.waitForMonitorWithTimeout(summaryMonitor, 1000);
 		assertEquals(true, getInstrumentation().checkMonitorHit(summaryMonitor, 1));
-		
+
 		// Close the summary
 		summaryActivity.finish();
 
 		// Monitor for TabbedSummaryActivity again
 		summaryMonitor = getInstrumentation().addMonitor(TabbedSummaryClaimantActivity.class.getName(), null, false);
-		
+
 		// Tap an item in the list view this time to display the summary
 		final ListView claimsList = (ListView) activity.findViewById(R.id.expense_claim_list);
 		activity.runOnUiThread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				claimsList.performItemClick(claimsList.getChildAt(0), 0, 0);
 			}
 		});
 		getInstrumentation().waitForIdleSync();
-		
+
 		// Get the summary activity
-		summaryActivity = (TabbedSummaryClaimantActivity) getInstrumentation().waitForMonitorWithTimeout(summaryMonitor, 1000);
+		summaryActivity = (TabbedSummaryClaimantActivity) getInstrumentation()
+				.waitForMonitorWithTimeout(summaryMonitor, 1000);
 		assertEquals(true, getInstrumentation().checkMonitorHit(summaryMonitor, 1));
-		
+
 		// Monitor for ExpenseItemActivity
-		ActivityMonitor expenseMonitor = getInstrumentation().addMonitor(ExpenseItemActivity.class.getName(), null, false);
-		
+		ActivityMonitor expenseMonitor = getInstrumentation().addMonitor(ExpenseItemActivity.class.getName(),
+				null,
+				false);
+
 		// Press the "Add Expense" button
 		getInstrumentation().invokeMenuActionSync(summaryActivity, R.id.addExpenseItem, 0);
-		
+
 		// Get the expense item activity
-		final ExpenseItemActivity createExpense = (ExpenseItemActivity) getInstrumentation().waitForMonitorWithTimeout(expenseMonitor, 1000);
+		final ExpenseItemActivity createExpense = (ExpenseItemActivity) getInstrumentation()
+				.waitForMonitorWithTimeout(expenseMonitor, 1000);
 		assertEquals(true, getInstrumentation().checkMonitorHit(expenseMonitor, 1));
-		
+
 		// Try to close the createExpense activity
 		failed = false;
 		createExpense.runOnUiThread(new Runnable() {
@@ -403,12 +416,12 @@ public class ViewAllExpenseClaimsActivityTests extends
 				EditText name = (EditText) createExpense.findViewById(R.id.expenseItemNameEditText);
 				EditText date = (EditText) createExpense.findViewById(R.id.expenseItemDateEditText);
 				EditText amount = (EditText) createExpense.findViewById(R.id.expenseItemAmountEditText);
-				
+
 				// Set values
 				name.setText("Test Expense");
 				date.setText("03-05-2015");
 				amount.setText("100");
-				
+
 				// Create the expense item
 				try {
 					assertTrue(createExpense.createExpenseItem());
@@ -424,9 +437,9 @@ public class ViewAllExpenseClaimsActivityTests extends
 				}
 			}
 		});
-		
+
 		getInstrumentation().waitForIdleSync();
-		
+
 		// Close the activity safely outside of a thread
 		// Source: Email from Alex Wilson (March 15, 2015)
 		try {
@@ -436,25 +449,25 @@ public class ViewAllExpenseClaimsActivityTests extends
 		}
 		// Clean up
 		summaryActivity.finish();
-		
+
 		// Check if there were problems
-		assertFalse("Bug #91 reproduced", failed); 
-		
+		assertFalse("Bug #91 reproduced", failed);
+
 		// Wait for the application to become idle
 		getInstrumentation().waitForIdleSync();
 
 	}
-	
+
 	public void testSetHomeGeolocation() {
 		Intent generatedIntent = new Intent();
 		generatedIntent.putExtra("latitude", 64.0);
 		generatedIntent.putExtra("longitude", 128.0);
 		Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, generatedIntent);
-		
+
 		ActivityMonitor am = getInstrumentation().addMonitor(GeolocationViewActivity.class.getName(), null, true);
 		getInstrumentation().invokeMenuActionSync(activity, R.id.set_home_geolocation, 0);
 		assertEquals("launched wrong activity", am.getHits(), 1);
-		
+
 		assertEquals("wrong result received", result.getResultData(), generatedIntent);
 	}
 }

@@ -39,6 +39,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.adapters.ClaimListAdapter;
 import ca.ualberta.cs.shinyexpensetracker.decorators.ExpenseClaimSortFilter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
@@ -50,9 +51,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.User;
 import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
 
-public class ExpenseClaimListActivity 
-	extends Activity implements IView<ExpenseClaimList> {
-	
+public class ExpenseClaimListActivity extends Activity implements IView<ExpenseClaimList> {
 	private static final int SET_HOME_GEOLCATION = 1;
 	private static final Coordinate NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES = new Coordinate(39.03808, 125.7296);
 
@@ -90,11 +89,11 @@ public class ExpenseClaimListActivity
 		}
 
 		claim_list.setOnItemClickListener(new OnItemClickListener() {
-
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				ExpenseClaim claim = controller.getExpenseClaimAtPosition(position);
 				Intent intent;
+
 				if (Application.getUserType().equals(Type.Claimant)) {
 					intent = new Intent(ExpenseClaimListActivity.this,
 						TabbedSummaryClaimantActivity.class);
@@ -102,19 +101,17 @@ public class ExpenseClaimListActivity
 					intent = new Intent(ExpenseClaimListActivity.this,
 						TabbedSummaryApproverActivity.class);
 				}
-				intent.putExtra("claimIndex", position);
+
+				intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
 				startActivity(intent);
-
 			}
-
 		});
 
 		// -- Long Press of ListView Item
 		claim_list.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view,
-					int position, long id) {
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
 				// Don't change this line. Change "askDeleteClaimAt" instead.
 				askDeleteClaimAt(position);
@@ -145,8 +142,7 @@ public class ExpenseClaimListActivity
 
 			return true;
 		case R.id.action_manage_tags:
-			Intent manageTagsIntent = new Intent(ExpenseClaimListActivity.this,
-					ManageTagActivity.class);
+			Intent manageTagsIntent = new Intent(ExpenseClaimListActivity.this, ManageTagActivity.class);
 			startActivity(manageTagsIntent);
 			return true;
 		case R.id.set_home_geolocation:
@@ -183,26 +179,19 @@ public class ExpenseClaimListActivity
 	}
 
 	/**
-	 * Adds a claim to the claim list controller
-	 * @param claim
-	 * @throws IOException
-	 */
-	public void addClaim(ExpenseClaim claim) throws IOException {
-		controller.addExpenseClaim(claim);
-	}
-
-	/**
 	 * Deletes a claim from the claim list controller
+	 * 
 	 * @param claim
 	 * @throws IOException
 	 */
 	public void deleteClaim(ExpenseClaim claim) throws IOException {
-		controller.removeExpenseClaim(claim);
+		controller.deleteExpenseClaim(claim.getID());
 	}
-	
+
 	/**
-	 * This creates and shows an dialog used when a claim is longed clicked. 
-	 * This dialog is used for deleting a claim 
+	 * This creates and shows an dialog used when a claim is longed clicked.
+	 * This dialog is used for deleting a claim
+	 * 
 	 * @param position
 	 * @return The alertDialog for delete claim
 	 */
@@ -211,10 +200,9 @@ public class ExpenseClaimListActivity
 		// http://www.androidhive.info/2011/09/how-to-show-alert-dialog-in-android/
 		// http://stackoverflow.com/questions/15020878/i-want-to-show-ok-and-cancel-button-in-my-alert-dialog
 		// Get a final copy of the requested claim
-		final ExpenseClaim claimToDelete = controller.getExpenseClaim(position);
+		final ExpenseClaim claimToDelete = controller.getExpenseClaimAtPosition(position);
 
-		AlertDialog dialog = new AlertDialog.Builder(this)
-				.setTitle("Delete Claim?")
+		AlertDialog dialog = new AlertDialog.Builder(this).setTitle("Delete Claim?")
 				.setMessage("Delete '" + claimToDelete.toString() + "'?\n(This cannot be undone)")
 				// If OK, delete the claim. (Positive action);
 				.setPositiveButton("OK", new OnClickListener() {

@@ -5,26 +5,26 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
 /**
  * This decorator sorts the claim list that is being used.
  */
 public class ExpenseClaimSortFilter extends ExpenseClaimFilter {
-	
+
 	private ArrayList<ExpenseClaim> cachedClaims;
-	
+
 	// Comparator for returning descending order
-	private static final Comparator<ExpenseClaim> DESC_ORDER =
-			new Comparator<ExpenseClaim>() {
-				public int compare(ExpenseClaim lhs, ExpenseClaim rhs) {
-					return rhs.compareTo(lhs);
-				};
-			};
+	private static final Comparator<ExpenseClaim> DESC_ORDER = new Comparator<ExpenseClaim>() {
+		public int compare(ExpenseClaim lhs, ExpenseClaim rhs) {
+			return rhs.compareTo(lhs);
+		};
+	};
 
 	@Override
-	public ExpenseClaim getClaim(int index) {
+	public ExpenseClaim getClaimAtPosition(int position) {
 		// Use an array list to get an index
-		return getClaims().get(index);
+		return getClaims().get(position);
 	}
 
 	@Override
@@ -42,10 +42,16 @@ public class ExpenseClaimSortFilter extends ExpenseClaimFilter {
 	public int getCount() {
 		return getClaims().size();
 	}
-	
+
 	@Override
 	protected void onDatasetChanged() {
 		super.onDatasetChanged();
 		cachedClaims = null;
+	}
+
+	@Override
+	public void update(ExpenseClaimList m) {
+		// TODO Auto-generated method stub
+
 	}
 }

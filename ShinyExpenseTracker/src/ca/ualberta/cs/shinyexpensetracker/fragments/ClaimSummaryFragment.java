@@ -1,6 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.fragments;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.adapters.ExpenseTotalsAdapter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -30,7 +32,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 public class ClaimSummaryFragment extends Fragment implements
 		IView<ExpenseClaim> {
 	private ExpenseClaim claim;
-	private int claimIndex;
+	private UUID claimID;
 
 	private ExpenseClaimController controller;
 
@@ -67,14 +69,13 @@ public class ClaimSummaryFragment extends Fragment implements
 
 		// get the ID of the Claim we are working with
 		Intent intent = getActivity().getIntent();
-		claimIndex = intent.getIntExtra("claimIndex", -1);
-		if (claimIndex == -1) {
-			throw new RuntimeException(
-					"Intent not passed: Got claim index of -1");
+		claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
+		if (claimID == null) {
+			throw new RuntimeException("Intent not passed: Got a null claim ID.");
 		}
 
 		// Get the claim itself
-		claim = controller.getExpenseClaim(claimIndex);
+		claim = controller.getExpenseClaimByID(claimID);
 
 		// Inform the model that we're listening for updates.
 		claim.addView(this);
@@ -97,7 +98,7 @@ public class ClaimSummaryFragment extends Fragment implements
 	 */
 	public void setClaimInfo(View view) {
 		// make sure that it is a valid claim
-		claim = controller.getExpenseClaim(claimIndex);
+		claim = controller.getExpenseClaimByID(claimID);
 
 		TextView claimName = (TextView) view
 				.findViewById(R.id.claimNameTextView);

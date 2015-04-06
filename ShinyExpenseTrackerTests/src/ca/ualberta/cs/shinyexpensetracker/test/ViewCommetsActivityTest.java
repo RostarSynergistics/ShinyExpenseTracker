@@ -15,8 +15,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
-public class ViewCommetsActivityTest extends
-		ActivityInstrumentationTestCase2<ViewCommentsActivity> {
+public class ViewCommetsActivityTest extends ActivityInstrumentationTestCase2<ViewCommentsActivity> {
 
 	ViewCommentsActivity activity;
 	ExpenseClaimController controller;
@@ -24,75 +23,70 @@ public class ViewCommetsActivityTest extends
 	ExpenseClaimList claimList;
 	ListView commentsListView;
 	Intent intent;
-	
+
 	String claimName = "test claim name";
 	Date startDate = new Date(1000);
 	Date endDate = new Date(2000);
 	ExpenseClaim.Status status = ExpenseClaim.Status.SUBMITTED;
 	String comment = "test comment";
-	
+
 	public ViewCommetsActivityTest() {
 		super(ViewCommentsActivity.class);
 	}
-	
+
 	public ViewCommetsActivityTest(Class<ViewCommentsActivity> activityClass) {
 		super(activityClass);
 	}
-	
-
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		
+
 		intent = new Intent();
 		intent.putExtra("claimIndex", 0);
 		setActivityIntent(intent);
-		
-		//Add an expense claim to the expenseClaimController
+
+		// Add an expense claim to the expenseClaimController
 		claim = new ExpenseClaim(claimName, startDate, endDate);
 		claim.setStatus(status);
 		claim.addComment(comment);
-		
-		// Inject an empty list so that saving/loading doesn't interfere,
-		// just in case.
+
 		claimList = new ExpenseClaimList();
+		claimList.addClaim(claim);
+
 		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(claimList));
-		
 		Application.setExpenseClaimController(controller);
-		
-		controller.addExpenseClaim(claim);
-		
 	}
 
 	/**
 	 * Tests that the claims comments are shown in the listView
 	 */
 	public void testCommentsList() {
-		
+
 		activity = getActivity();
-		
+
 		ListView comments = (ListView) activity.findViewById(R.id.commentsListView);
-						
+
 		assertEquals("comments list view not set correctly", comment, comments.getItemAtPosition(0).toString());
-	
+
 		getInstrumentation().waitForIdleSync();
-		
+
 	}
-	
-	/** 
+
+	/**
 	 * Test that when there are no comments 'No Comments' is displayed
 	 */
 	public void testNoComments() {
-		controller.getExpenseClaim(0).setComments(new ArrayList<String>());
-		
-		assertEquals("still comments in the claim", 0, controller.getExpenseClaim(0).getComments().size());
-		
+		controller.getExpenseClaimByID(claim.getID()).setComments(new ArrayList<String>());
+
+		assertEquals("still comments in the claim", 0, controller.getExpenseClaimByID(claim.getID()).getComments()
+				.size());
+
 		activity = getActivity();
-		
+
 		TextView noComments = (TextView) activity.findViewById(R.id.noCommentsTextView);
 		assertEquals("No Expenses not shown", "No Comments", noComments.getText().toString());
-		
+
 		getInstrumentation().waitForIdleSync();
-		
+
 	}
 }

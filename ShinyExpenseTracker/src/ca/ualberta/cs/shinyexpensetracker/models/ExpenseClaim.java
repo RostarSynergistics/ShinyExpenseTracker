@@ -2,21 +2,16 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
-import android.util.Log;
 
 /**
  * Class that represents an expense claim created by a user.
  */
 public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<ExpenseClaim> {
 	public enum Status {
-		IN_PROGRESS("In Progress"),
-		SUBMITTED("Submitted"),
-		RETURNED("Returned"),
-		APPROVED( "Approved");
+		IN_PROGRESS("In Progress"), SUBMITTED("Submitted"), RETURNED("Returned"), APPROVED("Approved");
 
 		private final String text;
 
@@ -40,13 +35,14 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		}
 	}
 
+	private final UUID id;
 	private String name;
 	private Date startDate;
 	private Date endDate;
 	private Status status;
 	private ArrayList<Destination> destinations = new ArrayList<Destination>();
 	private TagList tagList = new TagList();
-	private ArrayList<ExpenseItem> expenses = new ArrayList<ExpenseItem>();
+	private ArrayList<ExpenseItem> expenseItems = new ArrayList<ExpenseItem>();
 	private ArrayList<String> comments = new ArrayList<String>();
 
 	public ExpenseClaim(String name) {
@@ -64,9 +60,18 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	public ExpenseClaim(String name, Date startDate, Date endDate, Status status) {
 		this(name, startDate, endDate, status, new TagList());
 	}
-	
+
+	public ExpenseClaim(UUID id, String name, Date startDate, Date endDate, Status status) {
+		this(id, name, startDate, endDate, status, null);
+	}
+
 	public ExpenseClaim(String name, Date startDate, Date endDate, Status status, TagList tagList) {
+		this(UUID.randomUUID(), name, startDate, endDate, status, tagList);
+	}
+
+	public ExpenseClaim(UUID id, String name, Date startDate, Date endDate, Status status, TagList tagList) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
@@ -74,6 +79,9 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		this.tagList = tagList;
 	}
 
+	public UUID getID() {
+		return id;
+	}
 
 	public String getName() {
 		return name;
@@ -119,9 +127,22 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		this.tagList = tagList;
 		notifyViews();
 	}
-	
-	public Destination getDestination(int index) {
-		return destinations.get(index);
+
+	public Destination getDestinationByID(UUID id) {
+		Destination foundDestination = null;
+
+		for (Destination destination : destinations) {
+			if (destination.getID().equals(id)) {
+				foundDestination = destination;
+				break;
+			}
+		}
+
+		return foundDestination;
+	}
+
+	public Destination getDestinationAtPosition(int position) {
+		return destinations.get(position);
 	}
 
 	public void addDestination(Destination destination) {
@@ -139,8 +160,8 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		notifyViews();
 	}
 
-	public void addExpense(ExpenseItem expense) {
-		expenses.add(expense);
+	public void addExpenseItem(ExpenseItem expense) {
+		expenseItems.add(expense);
 		notifyViews();
 	}
 
@@ -148,29 +169,36 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		// TODO Issue #21.
 		// This function is partially complete, but does not
 		// delete from the local stores or ElasticSearch.
-		expenses.remove(index);
+		expenseItems.remove(index);
 		notifyViews();
 	}
 
 	public void removeExpense(ExpenseItem expense) {
-		expenses.remove(expenses.indexOf(expense));
+		expenseItems.remove(expenseItems.indexOf(expense));
 		notifyViews();
 	}
 
-	/**
-	 * Returns the expense for this claim at the given index
-	 * 
-	 * @param index
-	 *            of the expense item
-	 * @return the requested Expense item
-	 */
-	public ExpenseItem getExpense(int index) {
-		return expenses.get(index);
+	public ExpenseItem getExpenseItemByID(UUID id) {
+		ExpenseItem foundItem = null;
+
+		for (ExpenseItem item : expenseItems) {
+			if (item.getID().equals(id)) {
+				foundItem = item;
+				break;
+			}
+		}
+
+		return foundItem;
 	}
-	
+
+	public ExpenseItem getExpenseItemAtPosition(int position) {
+		return expenseItems.get(position);
+	}
+
 	public ArrayList<ExpenseItem> getExpenses() {
-		return expenses;
+		return expenseItems;
 	}
+
 	/**
 	 * Comparison of two claims is the comparison of their start date.
 	 */
@@ -188,11 +216,11 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	 * @return
 	 */
 	public int getExpenseCount() {
-		return expenses.size();
+		return expenseItems.size();
 	}
 
 	public ArrayList<ExpenseItem> getExpenseItems() {
-		return expenses;
+		return expenseItems;
 	}
 
 	/**
@@ -207,33 +235,37 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	public ArrayList<Destination> getDestinations() {
 		return destinations;
 	}
-	
+
 	/**
 	 * Adds a tag to the claims tag list
-	 * @param tag to put in the 
+	 * 
+	 * @param tag
+	 *            to put in the
 	 * @return boolean if the tag was added
 	 */
-	public boolean addTag(Tag tag){
+	public boolean addTag(Tag tag) {
 		return tagList.addTag(tag);
 	}
-	
+
 	/**
 	 * Removes a tag to the claims tag list
-	 * @param tag to be removed 
+	 * 
+	 * @param tag
+	 *            to be removed
 	 * @return boolean if the tag was removed
 	 */
-	public boolean removedTag(Tag tag){
+	public boolean removeTag(Tag tag) {
 		return tagList.removeTag(tag);
 	}
-	
+
 	public void setComments(ArrayList<String> comments) {
 		this.comments = comments;
 	}
-	
+
 	public ArrayList<String> getComments() {
 		return comments;
 	}
-	
+
 	public void addComment(String comment) {
 		comments.add(comment);
 	}
@@ -252,37 +284,14 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 			return false;
 		}
 		ExpenseClaim rhs = (ExpenseClaim) obj;
-		return new EqualsBuilder()
-				.append(getName(), rhs.getName())
-				.append(getStartDate(), rhs.getStartDate())
-				.append(getEndDate(), rhs.getEndDate())
-				.append(getStatus(), rhs.getStatus())
-				.append(getExpenseItems(), rhs.getExpenseItems())
-				.append(getDestinations(), rhs.getDestinations())
-				.append(getTagList(), rhs.getTagList())
-				.isEquals();
-	}
-	
-	
-	
-
-	// Source:
-	// https://commons.apache.org/proper/commons-lang/javadocs/api-3.3.2/org/apache/commons/lang3/builder/HashCodeBuilder.html
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder(17, 37)
-		.append(getName())
-		.append(getStartDate())
-		.append(getEndDate())
-		.append(getStatus())
-		.append(getExpenseItems())
-		.append(getDestinations())
-		//.append(getTagList())
-		.toHashCode();
+		return new EqualsBuilder().append(getID(), rhs.getID()).append(getName(), rhs.getName())
+				.append(getStartDate(), rhs.getStartDate()).append(getEndDate(), rhs.getEndDate())
+				.append(getStatus(), rhs.getStatus()).append(getExpenseItems(), rhs.getExpenseItems())
+				.append(getDestinations(), rhs.getDestinations()).append(getTagList(), rhs.getTagList()).isEquals();
 	}
 
 	public String getComment(int index) {
 		return comments.get(index);
-		
+
 	}
 }

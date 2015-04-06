@@ -6,8 +6,7 @@ import ca.ualberta.cs.shinyexpensetracker.decorators.ExpenseClaimFilter;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
 /**
- * This object does not apply any filters. This is useful
- * for testing that an 
+ * This object does not apply any filters. This is useful for testing that an
  */
 public class MockClaimFilterNone extends ExpenseClaimFilter {
 	private int lastIndex = 0;
@@ -16,7 +15,7 @@ public class MockClaimFilterNone extends ExpenseClaimFilter {
 
 	public ExpenseClaim getClaim(int index) {
 		lastIndex = index;
-		return source.getClaim(index);
+		return source.getClaimAtPosition(index);
 	}
 
 	public ArrayList<ExpenseClaim> getClaims() {
@@ -27,16 +26,16 @@ public class MockClaimFilterNone extends ExpenseClaimFilter {
 		returnedClaims = true;
 		return source.getCount();
 	}
-	
+
 	public int getLastClaimIndexRequest() {
 		gotCount = true;
 		return lastIndex;
 	}
-	
+
 	public boolean getDidReturnedClaims() {
 		return returnedClaims;
 	}
-	
+
 	public boolean getDidGetCount() {
 		return gotCount;
 	}

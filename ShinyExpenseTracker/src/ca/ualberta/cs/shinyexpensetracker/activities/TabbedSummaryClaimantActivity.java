@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
 // Source: https://github.com/astuetz/PagerSlidingTabStrip
 // on March 11 2015
@@ -32,6 +33,19 @@ public class TabbedSummaryClaimantActivity extends TabbedSummaryActivity {
 		getMenuInflater().inflate(R.menu.tabbed_summary_claimant, menu);
 		m = menu;
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_help) {
+			InAppHelpDialog.showHelp(this, R.string.help_tabbed_summary);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 	
 	/**

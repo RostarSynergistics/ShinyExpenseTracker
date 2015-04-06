@@ -111,5 +111,30 @@
     <string name="view_comments">View Comments</string>
     <string name="title_activity_view_comments">View Comments</string>
     <string name="no_comments">No Comments</string>
+    
+    <string name="action_help">Help</string>
+    <string name="default_help">No help found.</string>
+    
+    <!-- Data for help dialogs -->
+    <string name="help_destination">Indicate a location of travel to attach to this claim</string>
+    
+    <string name="help_add_tags">Select tags that you want to attach to this claim. You can manage your tags from the tag manager in the claim list view.</string>
+    <string name="help_remove_tag">Select tags that you want to remove from this claim</string>
+    <string name="help_manage_tags">Add, remove, or modify tags. Changes here will be reflected in all claims.</string>
+    
+    <string name="help_new_claim">Give the claim a useful name and indicate when the travel claim begins and ends.
+        Your claims will be sorted in reverse chronological order by the start date.</string>
+    <string name="help_claim_list">Add new claims from the context menu. Single press an item to view more info, hold press to delete.</string>
+    
+    <string name="help_new_item">Give some info about an individual expense for this claim. The totals will be reflected in the summary page.</string>
+    <string name="help_item_details">Press the receipt thumbnail to view the receipt.</string>
+    <string name="help_receipt_view">Press back to return to the expense\'s details.</string>
+    
+    <string name="help_geolocation">Set your home location.</string>
+    <string name="help_login">Claimants can create, modify, and submit claims, Approvers can approve or return submitted claims</string>
+    <string name="help_map_view">Tap the new location. Press back to save.</string>
+
+    <string name="help_tabbed_summary">Tap an item in a list to view more details or to edit. You can use the context menu for more actions.</string>
+    <string name="help_view_comments">An approver can add comments to a claim from the summary page using the context menu.</string>
 
 </resources>

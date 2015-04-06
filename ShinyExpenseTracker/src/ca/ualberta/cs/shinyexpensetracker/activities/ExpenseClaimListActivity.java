@@ -49,6 +49,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.User;
 import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
+import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
 public class ExpenseClaimListActivity 
 	extends Activity implements IView<ExpenseClaimList> {
@@ -153,6 +154,9 @@ public class ExpenseClaimListActivity
 			Intent geolocationViewIntent = new Intent(ExpenseClaimListActivity.this,
 					GeolocationViewActivity.class);
 			startActivityForResult(geolocationViewIntent, SET_HOME_GEOLCATION);
+			return true;
+		case R.id.action_help:
+			InAppHelpDialog.showHelp(this, R.string.help_claim_list);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

@@ -44,7 +44,10 @@ public class MapViewTest extends ActivityInstrumentationTestCase2<MapViewActivit
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		instrumentation = getInstrumentation();
+		// FIXME: #187
+		//        The tests in this file pass, but they hang
+		//		  when the entire suite is run.
+		fail();
 		
 		Intent mapViewIntent = new Intent();
 		mapViewIntent.putExtra("latitude", 64.0);
@@ -52,6 +55,7 @@ public class MapViewTest extends ActivityInstrumentationTestCase2<MapViewActivit
 		mapViewIntent.putExtra("requestCode", MapViewActivity.SET_GEOLOCATION);
 		setActivityIntent(mapViewIntent);
 		
+		instrumentation = getInstrumentation();
 		mapViewActivity = getActivity();
 	}
 	
@@ -62,6 +66,7 @@ public class MapViewTest extends ActivityInstrumentationTestCase2<MapViewActivit
 				mapViewActivity.singleTapConfirmedHelper(p);
 			}
 		});
+		instrumentation.waitForIdleSync();
 		assertEquals("latitude wrong", mapViewActivity.getCoordinate().getLatitude(), p.getLatitude());
 		assertEquals("latitude wrong", mapViewActivity.getCoordinate().getLongitude(), p.getLongitude());
 		
@@ -78,6 +83,7 @@ public class MapViewTest extends ActivityInstrumentationTestCase2<MapViewActivit
 				mapViewActivity.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 			}
 		});
+		instrumentation.waitForIdleSync();
 		assertTrue(mapViewActivity.askSaveLocation(p.getLatitude(), p.getLongitude()).isShowing());
 	}
 }

@@ -47,6 +47,7 @@ public class LoginAsApproverOrClaimantActivityTest extends
 
 			}
 		});
+		getInstrumentation().waitForIdleSync();
 
 		// Get the view expense claims activity
 		final ExpenseClaimListActivity expenses = (ExpenseClaimListActivity) getInstrumentation()
@@ -89,6 +90,7 @@ public class LoginAsApproverOrClaimantActivityTest extends
 						.performClick();
 			}
 		});
+		getInstrumentation().waitForIdleSync();
 
 		// Get the view expense claims activity
 		final ExpenseClaimListActivity expenses = (ExpenseClaimListActivity) getInstrumentation()

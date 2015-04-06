@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import ca.ualberta.cs.shinyexpensetracker.R;
-import ca.ualberta.cs.shinyexpensetracker.framework.Application;
-import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 
@@ -107,11 +105,9 @@ public class TabbedSummaryClaimantActivity extends TabbedSummaryActivity {
 	 */
 	public void submitClaimMenuItem(MenuItem menu) {
 		
-		ExpenseClaimController ecc = Application.getExpenseClaimController();
-		
 		Intent intent = getIntent();
 		int claimIndex = intent.getIntExtra("claimIndex", -1);
-		ArrayList<ExpenseItem> expenses = ecc.getExpenseItems(ecc.getExpenseClaim(claimIndex));
+		ArrayList<ExpenseItem> expenses = controller.getExpenseItems(controller.getExpenseClaim(claimIndex));
 		boolean incomplete = false;
 		for (ExpenseItem expense : expenses) {
 			if (expense.getIsMarkedIncomplete()) {
@@ -129,7 +125,7 @@ public class TabbedSummaryClaimantActivity extends TabbedSummaryActivity {
 			}
 		}
 		if (!incomplete) {
-			ecc.getExpenseClaim(claimIndex).setStatus(Status.SUBMITTED);
+			controller.getExpenseClaim(claimIndex).setStatus(Status.SUBMITTED);
 			adb.setMessage("Claim Submitted for Approval");
 			adb.setCancelable(true);
 			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
@@ -146,6 +142,15 @@ public class TabbedSummaryClaimantActivity extends TabbedSummaryActivity {
 			m.getItem(4).setEnabled(false);
 			m.getItem(5).setEnabled(false);
 		}
+	}
+	
+	/**
+	 * Takes the user to a view comments list view to see all of the comments a claim has
+	 */
+	public void viewCommentsMenuItem(MenuItem menu) {
+		intent = new Intent(TabbedSummaryClaimantActivity.this, ViewCommentsActivity.class);
+		intent.putExtra("claimIndex", claimIndex);
+		startActivity(intent);
 	}
 	
 }

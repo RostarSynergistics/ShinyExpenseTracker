@@ -69,6 +69,7 @@ public class TagTest extends InstrumentationTestCase {
 					}
 				}
 			});
+			instrumentation.waitForIdleSync();
 			assertEquals("failed to add a tag: " + t, 1,
 					controller.getTagCount());
 			assertEquals("added a tag incorrectly", tag, controller
@@ -84,6 +85,7 @@ public class TagTest extends InstrumentationTestCase {
 					}
 				}
 			});
+			instrumentation.waitForIdleSync();
 
 			assertEquals("failed to remove a tag: " + t,
 					controller.getTagCount(), 0);
@@ -106,6 +108,7 @@ public class TagTest extends InstrumentationTestCase {
 					}
 				}
 			});
+			instrumentation.waitForIdleSync();
 
 			// The tag list will still be empty because nothing should be added
 			assertEquals("should have discarded non-alphanumeric tag: " + s,

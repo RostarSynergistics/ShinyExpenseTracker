@@ -7,8 +7,6 @@ import java.util.UUID;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import android.util.Log;
-
 /**
  * Class that represents an expense claim created by a user.
  */
@@ -243,11 +241,6 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	}
 	
 	public void addComment(String comment) {
-		if (comments == null) {
-			comments = new ArrayList<String>();
-			Log.wtf("Comments", "comments is null");
-		}
-		
 		comments.add(comment);
 	}
 

@@ -175,6 +175,7 @@ public class ExpenseItemListFragmentTest extends
 					frag.deleteExpenseAt(0);
 				}
 			});
+			getInstrumentation().waitForIdleSync();
 		}
 		
 		// Check that the controller removed an item (UI -> Model)

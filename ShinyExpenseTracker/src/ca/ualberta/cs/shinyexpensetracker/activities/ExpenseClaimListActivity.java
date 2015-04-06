@@ -97,7 +97,7 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 		claim_list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				ExpenseClaim claim = controller.getExpenseClaimAtPosition(position);
+				ExpenseClaim claim = adapter.getItem(position);
 				Intent intent;
 
 				if (Application.getUserType().equals(Type.Claimant)) {

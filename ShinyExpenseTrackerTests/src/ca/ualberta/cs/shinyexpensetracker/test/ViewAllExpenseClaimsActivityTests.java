@@ -546,7 +546,6 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 			assertEquals(claimListView.getItemAtPosition(i).toString(), 0);
 		}
 		
-		
 	}
 	
 	/**

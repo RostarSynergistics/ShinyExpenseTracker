@@ -43,11 +43,14 @@ public class ClaimListAdapter extends BaseAdapter {
 
 	@Override
 	public ExpenseClaim getItem(int position) {
+		// gets called to build the list
 		return filteredClaims.getClaimAtPosition(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
+		// called to get the item that was clicked
+//		return filteredClaims.getSourceIndex(getItem(position));
 		return position;
 	}
 

@@ -92,4 +92,14 @@ public class ExpenseClaimFilter extends ExpenseClaimList
 	public int getCount() {
 		return source.getCount();
 	}
+	
+	/**
+	 * Returns the real index of the item at 
+	 * the given position in the filtered list.
+	 * 
+	 * This should be overloaded if data is filtered out
+	 */
+	public int getSourceIndex(ExpenseClaim claim) {
+		return source.getClaims().indexOf(claim);
+	}
 }

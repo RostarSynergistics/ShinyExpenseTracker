@@ -5,9 +5,11 @@ import java.util.Date;
 
 import android.test.AndroidTestCase;
 import ca.ualberta.cs.shinyexpensetracker.adapters.ClaimListAdapter;
+import ca.ualberta.cs.shinyexpensetracker.decorators.ExpenseClaimSubmittedFilter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockClaimFilterAll;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockClaimFilterNone;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
@@ -126,5 +128,22 @@ public class ClaimListAdapterTest extends AndroidTestCase {
 
 		assertEquals("testClaim was filtered", 1, adapter.getCount());
 
+	}
+	
+	public void testApplySubmittedFilter() {
+		adapter.applyFilter(new ExpenseClaimSubmittedFilter());
+		ExpenseClaim claim = addClaim("Test claim", new Date(100));
+		claim.setStatus(Status.SUBMITTED);
+
+		assertEquals(1, adapter.getCount());
+
+		ExpenseClaim claim2 = addClaim("Test claim 2", new Date(100));
+		claim2.setStatus(Status.SUBMITTED);
+		
+		assertEquals(2, adapter.getCount());
+		
+		ExpenseClaim claim3 = addClaim("Test claim 3", new Date(100));
+		claim3.setStatus(Status.IN_PROGRESS);
+		assertEquals(2, adapter.getCount());
 	}
 }

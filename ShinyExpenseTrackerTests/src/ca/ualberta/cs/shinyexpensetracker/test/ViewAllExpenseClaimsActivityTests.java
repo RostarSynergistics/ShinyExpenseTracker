@@ -45,6 +45,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivi
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
@@ -74,9 +75,6 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(claimsList));
 
 		Application.setExpenseClaimController(controller);
-
-		activity = getActivity();
-		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
 	}
 
 	/**
@@ -129,6 +127,11 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	 * --This test may be removed in future iterations.
 	 */
 	public void testLongPressDialog() {
+		
+		Application.setUserType(Type.Claimant);
+		
+		activity = getActivity();
+		
 		// Not this test's responsibility to check what was deleted.
 		addClaim(new ExpenseClaim("Test Claim"));
 
@@ -147,6 +150,12 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	 * Adds a claim and ensures that it is visible in the listview.
 	 */
 	public void testAddedClaimIsVisible() {
+		
+		Application.setUserType(Type.Claimant);
+		
+		activity = getActivity();
+		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
+		
 		ExpenseClaim claim = addClaim(new ExpenseClaim("Test Claim"));
 		ExpenseClaim visibleClaim;
 
@@ -170,8 +179,16 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	 * all 6 permutations of {new, mid, old}.
 	 */
 	public void testClaimsSorted() throws Exception {
-		ExpenseClaim[] testingClaims = { new ExpenseClaim("Old Claim", new Date(1000)),
-				new ExpenseClaim("Mid Claim", new Date(2000)), new ExpenseClaim("New Claim", new Date(3000)), };
+		Application.setUserType(Type.Claimant);
+		
+		activity = getActivity();
+		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
+		
+		ExpenseClaim[] testingClaims = {
+				new ExpenseClaim("Old Claim", new Date(1000)),
+				new ExpenseClaim("Mid Claim", new Date(2000)),
+				new ExpenseClaim("New Claim", new Date(3000)),
+		};
 		int numTests = 0;
 
 		// Check that our test case items compare correctly
@@ -242,6 +259,12 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	 * outside values is done in testClaimsSorted
 	 */
 	public void testEqualSorted() {
+		
+		Application.setUserType(Type.Claimant);
+		
+		activity = getActivity();
+		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
+		
 		ExpenseClaim claim1 = addClaim(new ExpenseClaim("Mid Claim 1", new Date(2000)));
 		addClaim(new ExpenseClaim("Old Claim", new Date(1000)));
 		addClaim(new ExpenseClaim("New Claim", new Date(3000)));
@@ -264,6 +287,12 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	 * test dialogs.
 	 */
 	public void testDeleteVisibleClaim() {
+		
+		Application.setUserType(Type.Claimant);
+		
+		activity = getActivity();
+		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
+		
 		// Build 2 claims with dates so that claim 1 < claim 2.
 		TagList tags1 = new TagList();
 		tags1.addTag(new Tag("Test 1"));
@@ -300,9 +329,12 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	 */
 
 	public void testMenuClickNewActivity() {
-
-		// Check to see if AddExpenseActivity is visible once the MenuItem is
-		// clicked.
+		Application.setUserType(Type.Claimant);
+		
+		activity = getActivity();
+		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
+		
+		// Check to see if AddExpenseActivity is visible once the MenuItem is clicked.
 		// Code taken from: stackoverflow.com/questions/3084891/how-to-test-menu
 
 		ActivityMonitor am = getInstrumentation().addMonitor(ExpenseClaimActivity.class.getName(), null, false);
@@ -321,9 +353,13 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	 * Test for crash on new expense claim. See #91 for details.
 	 */
 	public void testCrashOnNewExpense() {
+
 		// TabbedSummary has split in 2. We need a way
 		// to specify which one we're looking for.
 		Application.setUserType(Type.Claimant);
+
+		activity = getActivity();
+		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
 
 		// Monitor for AddExpenseClaimActivity
 		ActivityMonitor claimMonitor = getInstrumentation().addMonitor(ExpenseClaimActivity.class.getName(),
@@ -459,6 +495,13 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	}
 
 	public void testSetHomeGeolocation() {
+		
+		Application.setUserType(Type.Claimant);
+		
+		activity = getActivity();
+		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
+		
+		
 		Intent generatedIntent = new Intent();
 		generatedIntent.putExtra("latitude", 64.0);
 		generatedIntent.putExtra("longitude", 128.0);
@@ -469,5 +512,16 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 		assertEquals("launched wrong activity", am.getHits(), 1);
 
 		assertEquals("wrong result received", result.getResultData(), generatedIntent);
+	}
+	
+	/**
+	 * Tests that when an approver has logged in that the 'New Claim' menu item has been disabled
+	 */
+	public void testNewClaimMenuItemDisabledForApprover() {
+		Application.setUserType(Type.Approver);
+		
+		activity = getActivity();
+		
+		assertFalse("'New Claim' menu item still enabled", getInstrumentation().invokeMenuActionSync(activity, R.id.action_new_claim, 0));
 	}
 }

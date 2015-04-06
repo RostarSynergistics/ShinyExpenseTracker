@@ -3,6 +3,7 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.UUID;
 
 /**
  * Represents the collection of ExpenseClaims that exist in the application.
@@ -10,8 +11,8 @@ import java.util.Comparator;
  * As each part of the application should be working with the same list,
  * ExpenseClaimList uses the Singleton pattern.
  */
-public class ExpenseClaimList extends Model<ExpenseClaimList> {
-	private ArrayList<ExpenseClaim> claims;
+public class ExpenseClaimList extends Model<ExpenseClaimList> implements ExpenseClaimListViewer {
+	protected ArrayList<ExpenseClaim> claims;
 	
 	public ExpenseClaimList() {
 		claims = new ArrayList<ExpenseClaim>();
@@ -19,49 +20,80 @@ public class ExpenseClaimList extends Model<ExpenseClaimList> {
 
 	/**
 	 * Returns a claim from the claimList based on index passed in
+	 * 
 	 * @param index
 	 * @return
 	 */
-	public ExpenseClaim getClaim(int index) {
+	public ExpenseClaim getClaimAtPosition(int index) {
 		return claims.get(index);
 	}
-	
+
+	/**
+	 * Returns a claim from the list with the specified ID, if any.
+	 * 
+	 * @param id
+	 *            The ID of the desired claim.
+	 * @return The claim if it exists, or null otherwise.
+	 */
+	public ExpenseClaim getClaimByID(UUID id) {
+		ExpenseClaim foundClaim = null;
+
+		for (ExpenseClaim claim : claims) {
+			if (claim.getID().equals(id)) {
+				foundClaim = claim;
+				break;
+			}
+		}
+
+		return foundClaim;
+	}
+
 	/**
 	 * Adds a claim to the claimList
+	 * 
 	 * @param claim
 	 */
 	public void addClaim(ExpenseClaim claim) {
 		claims.add(claim);
 		notifyViews();
 	}
-	
+
 	/**
-	 * deletes a claim from the claimList
-	 * @param claim
+	 * Deletes the claim with the specified ID.
+	 * 
+	 * @param id
+	 *            The ID of the claim to delete.
 	 */
-	public void removeClaim(ExpenseClaim claim) {
-		claims.remove(claim);
-		notifyViews();
+	public void deleteClaim(UUID id) {
+		ExpenseClaim claim = getClaimByID(id);
+
+		if (claim != null) {
+			claims.remove(claim);
+			notifyViews();
+		}
 	}
-	
+
 	/**
 	 * returns number of claims in claimList
+	 * 
 	 * @return
 	 */
-	public int size(){
+	public int size() {
 		return claims.size();
 	}
-	
+
 	/**
 	 * returns array list of claims
+	 * 
 	 * @return
 	 */
-	public ArrayList<ExpenseClaim> getClaims(){
+	public ArrayList<ExpenseClaim> getClaims() {
 		return claims;
 	}
-	
+
 	/**
 	 * returns number of claims in claimList
+	 * 
 	 * @return
 	 */
 	public int getCount() {
@@ -78,15 +110,5 @@ public class ExpenseClaimList extends Model<ExpenseClaimList> {
 			};
 		};
 		Collections.sort(claims, reverse_compare);
-	}
-	
-	/**
-	 * Replaces the old claim with the new claim.
-	 * @param oldClaim
-	 * @param newClaim
-	 */
-	public void updateExpenseClaim(ExpenseClaim oldClaim, ExpenseClaim newClaim) {
-		int index = claims.indexOf(oldClaim);
-		claims.set(index, newClaim);
 	}
 }

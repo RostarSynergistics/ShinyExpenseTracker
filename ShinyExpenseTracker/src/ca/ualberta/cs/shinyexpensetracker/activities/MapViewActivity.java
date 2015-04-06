@@ -94,12 +94,13 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
 		if (bundle != null) {
+
 			MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(this, this);
 			map.getOverlays().add(0, mapEventsOverlay);
 			requestCode = intent.getIntExtra("requestCode", 0);
 			if (requestCode == GeolocationRequestCode.SET_GEOLOCATION) {
-				double latitude = intent.getDoubleExtra("latitude", Coordinate.NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
-				double longitude = intent.getDoubleExtra("longitude", Coordinate.NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
+				double latitude = intent.getDoubleExtra("latitude", Coordinate.DEFAULT_COORDINATE.getLatitude());
+				double longitude = intent.getDoubleExtra("longitude", Coordinate.DEFAULT_COORDINATE.getLongitude());
 				coordinate.setLatitude(latitude);
 				coordinate.setLongitude(longitude);
 				
@@ -129,7 +130,7 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 				}
 				// no time to implement Iterable interface!
 				for (int i = 0; i < claimList.getCount(); i++) {
-					ExpenseClaim claim = claimList.getClaim(i);
+					ExpenseClaim claim = claimList.getClaimAtPosition(i);
 					// next, put destinations' geolocations on the map
 					// there has to be a geolocation for every destination
 					for (Destination dest: claim.getDestinations()) {

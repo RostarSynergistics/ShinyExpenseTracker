@@ -7,7 +7,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
 import ca.ualberta.cs.shinyexpensetracker.activities.AddDestinationActivity;
-import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
@@ -16,11 +16,10 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 /**
- * Tests various parts of the functionality of AddDestinationActivity that relates
- * to creating new Destinations.
+ * Tests various parts of the functionality of AddDestinationActivity that
+ * relates to creating new Destinations.
  **/
-public class AddDestinationTests extends
-		ActivityInstrumentationTestCase2<AddDestinationActivity> {
+public class AddDestinationTests extends ActivityInstrumentationTestCase2<AddDestinationActivity> {
 
 	AddDestinationActivity activity;
 	Instrumentation instrumentation;
@@ -29,6 +28,7 @@ public class AddDestinationTests extends
 
 	private ExpenseClaimController controller;
 	private MockExpenseClaimListPersister persister;
+	private ExpenseClaim claim;
 
 	public AddDestinationTests() {
 		super(AddDestinationActivity.class);
@@ -39,16 +39,16 @@ public class AddDestinationTests extends
 	}
 
 	/**
-	 * Setup for each test. Creates a new claim and
-	 * sets up commonly used variables.
+	 * Setup for each test. Creates a new claim and sets up commonly used
+	 * variables.
 	 */
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		
+
 		ExpenseClaimList claimList = new ExpenseClaimList();
 
-		ExpenseClaim claim = new ExpenseClaim("Example name");
+		claim = new ExpenseClaim("Example name");
 		claimList.addClaim(claim);
 
 		persister = new MockExpenseClaimListPersister(claimList);
@@ -58,7 +58,7 @@ public class AddDestinationTests extends
 		instrumentation = getInstrumentation();
 
 		Intent intent = new Intent();
-		intent.putExtra(ExpenseClaimActivity.CLAIM_INDEX, 0);
+		intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
 		setActivityIntent(intent);
 
 		activity = getActivity();
@@ -71,7 +71,7 @@ public class AddDestinationTests extends
 	public void testThatTappingDoneCreatesANewDestination() {
 		final String name = "Las Vegas";
 		final String reason = "Vacation";
-		
+
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {
 				// onActivityResult is supposed to be a protected method
@@ -86,7 +86,7 @@ public class AddDestinationTests extends
 
 		instrumentation.waitForIdleSync();
 
-		Destination dest = controller.getExpenseClaim(0).getDestination(0);
+		Destination dest = controller.getExpenseClaimByID(claim.getID()).getDestinationAtPosition(0);
 
 		assertEquals(name, dest.getName());
 		assertEquals(reason, dest.getReasonForTravel());

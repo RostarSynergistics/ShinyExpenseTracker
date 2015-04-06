@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+
 /**
  * Class that represents an expense claim created by a user.
  */
@@ -36,6 +38,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	}
 
 	private final UUID id;
+	private int userId;
 	private String name;
 	private Date startDate;
 	private Date endDate;
@@ -66,7 +69,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	}
 
 	public ExpenseClaim(String name, Date startDate, Date endDate, Status status, TagList tagList) {
-		this(UUID.randomUUID(), name, startDate, endDate, status, tagList);
+		this(UUID.randomUUID(),  name, startDate, endDate, status, tagList);
 	}
 
 	public ExpenseClaim(UUID id, String name, Date startDate, Date endDate, Status status, TagList tagList) {
@@ -77,10 +80,19 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		this.endDate = endDate;
 		this.status = status;
 		this.tagList = tagList;
+		this.userId = Application.getUser().getUserId();
 	}
 
 	public UUID getID() {
 		return id;
+	}
+	
+	public void setUserId(int id) {
+		this.userId = id;
+	}
+	
+	public int getUserId() {
+		return userId;
 	}
 
 	public String getName() {

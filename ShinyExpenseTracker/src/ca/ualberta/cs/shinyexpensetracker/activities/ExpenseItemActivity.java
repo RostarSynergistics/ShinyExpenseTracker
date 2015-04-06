@@ -12,11 +12,9 @@ import java.util.Locale;
 import java.util.UUID;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -36,6 +34,7 @@ import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.DrawableBitmapConverter;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.ValidationErrorAlertDialog;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -64,7 +63,6 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 	private ImageButton button;
 	private Uri imageFileUri;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
-	private AlertDialog.Builder adb;
 	public Dialog alertDialog;
 	private boolean isEditing = false;
 	private ExpenseItem item;
@@ -102,12 +100,10 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 				populateViews();
 			}
 		}
-		adb = new AlertDialog.Builder(this);
 
 		findViewsById();
 
 		setDateTimeField();
-
 	}
 
 	@Override
@@ -267,15 +263,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		String name = "";
 		if (nameText.getText().length() == 0) {
 			// display dialog if no name entered
-			adb.setMessage("Expense Item requires a name");
-			adb.setCancelable(true);
-			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-				}
-			});
-			alertDialog = adb.create();
-			alertDialog.show();
+			new ValidationErrorAlertDialog(this, "Expense Item requires a name").show();
 			return false;
 		} else {
 			name = nameText.getText().toString();
@@ -285,15 +273,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		Date date = new Date();
 		if (dateText.getText().length() == 0) {
 			// display dialog if no date entered
-			adb.setMessage("Expense Item requires a date");
-			adb.setCancelable(true);
-			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-				}
-			});
-			alertDialog = adb.create();
-			alertDialog.show();
+			new ValidationErrorAlertDialog(this, "Expense Item requires a date.").show();
 			return false;
 		} else {
 			date = dateFormatter.parse(dateText.getText().toString());
@@ -306,15 +286,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		BigDecimal amount = new BigDecimal("0.00");
 		if (amountText.getText().length() == 0) {
 			// display error dialog if no amount spent has been entered
-			adb.setMessage("Expense Item requires an amount spent");
-			adb.setCancelable(true);
-			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-				}
-			});
-			alertDialog = adb.create();
-			alertDialog.show();
+			new ValidationErrorAlertDialog(this, "Expense Item requires an amount spent.").show();
 			return false;
 		} else {
 			amount = new BigDecimal(amountText.getText().toString());

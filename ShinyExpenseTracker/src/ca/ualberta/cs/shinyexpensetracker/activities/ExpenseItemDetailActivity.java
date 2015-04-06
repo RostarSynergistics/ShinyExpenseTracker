@@ -1,5 +1,6 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -36,6 +37,7 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 	private ExpenseItem item;
 	private int claimIndex;
 	private int expenseItemIndex;
+	private ExpenseClaimController controller;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,7 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 		if (bundle != null) {
 			claimIndex = intent.getIntExtra("claimIndex", -1);
 			expenseItemIndex = intent.getIntExtra("expenseIndex", -1);
-			ExpenseClaimController controller = Application.getExpenseClaimController();
+			controller = Application.getExpenseClaimController();
 			ExpenseClaim claim = controller.getExpenseClaim(claimIndex);
 			// Fetch the relevant item
 			item = claim.getExpense(expenseItemIndex);
@@ -183,6 +185,12 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 		item.setReceiptPhoto(null);
 		ImageView iv = (ImageView) findViewById(R.id.expenseItemDetailImageButton);
 		iv.setImageDrawable(null);
+		try {
+			controller.update();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	/**

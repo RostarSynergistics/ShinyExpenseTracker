@@ -6,6 +6,10 @@ import android.os.AsyncTask;
 import ca.ualberta.cs.shinyexpensetracker.es.ESClaimManager;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
+/**
+ * This class will handle saving asynchronously with the use of the ESClaimManager
+ *
+ */
 public class ElasticSearchSave extends AsyncTask<ExpenseClaimList, Void, Boolean>{
 	
 	ESClaimManager manager = new ESClaimManager();

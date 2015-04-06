@@ -2,6 +2,7 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -48,6 +49,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	private TagList tagList = new TagList();
 	private ArrayList<ExpenseItem> expenses = new ArrayList<ExpenseItem>();
 	private ArrayList<String> comments;
+	private UUID uuid;
 
 	public ExpenseClaim(String name) {
 		this(name, new Date(), null, Status.IN_PROGRESS, new TagList());
@@ -73,8 +75,13 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		this.status = status;
 		this.tagList = tagList;
 		comments = new ArrayList<String>();
+		uuid = UUID.randomUUID(); 
 	}
 
+
+	public UUID getUuid() {
+		return uuid;
+	}
 
 	public String getName() {
 		return name;

@@ -12,7 +12,8 @@ import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
 public class NetworkStateReceiver extends BroadcastReceiver {
-    public void onReceive(Context context, Intent intent) {
+    @SuppressWarnings("deprecation")
+	public void onReceive(Context context, Intent intent) {
      Log.d("app","Network connectivity change");
      if(intent.getExtras()!=null) {
         NetworkInfo ni=(NetworkInfo) intent.getExtras().get(ConnectivityManager.EXTRA_NETWORK_INFO);

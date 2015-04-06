@@ -3,6 +3,7 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.UUID;
 
 /**
  * Represents the collection of ExpenseClaims that exist in the application.
@@ -88,5 +89,32 @@ public class ExpenseClaimList extends Model<ExpenseClaimList> {
 	public void updateExpenseClaim(ExpenseClaim oldClaim, ExpenseClaim newClaim) {
 		int index = claims.indexOf(oldClaim);
 		claims.set(index, newClaim);
+	}
+	
+	/**
+	 * Check if a claim list contains a claim of a given uuid 
+	 * @param uuid of the claim
+	 */
+	public boolean containsUUID(UUID uuid){
+		for(ExpenseClaim claim: claims){
+			if(claim.getUuid().equals(uuid)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns a claim of a given UUID. 
+	 * @param uuid of the given claim
+	 * @return the claim of the given UUID. null if that claim does not exist
+	 */
+	public ExpenseClaim getClaim(UUID uuid){
+		for(ExpenseClaim claim: claims){
+			if(claim.getUuid().equals(uuid)){
+				return claim;
+			}
+		}
+		return null;
 	}
 }

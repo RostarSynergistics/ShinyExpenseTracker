@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,7 +17,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +24,7 @@ import android.view.View.OnClickListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -38,8 +39,6 @@ import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
  * -on-edittext-click-event
  */
 public class ExpenseClaimActivity extends Activity implements OnClickListener {
-	public static final String CLAIM_INDEX = "claimIndex";
-
 	private ExpenseClaimController controller;
 
 	private EditText startDate, endDate;
@@ -48,7 +47,7 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 	private AlertDialog.Builder adb;
 	public Dialog alertDialog;
 	private ExpenseClaim claim;
-	private int claimIndex;
+	private UUID claimID;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +64,12 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 		controller = Application.getExpenseClaimController();
 
 		Intent intent = getIntent();
-		claimIndex = intent.getIntExtra(CLAIM_INDEX, -1);
-		if (claimIndex == -1) {
-			claim = new ExpenseClaim("");
-		} else {
-			claim = controller.getExpenseClaim(claimIndex);
+		claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
+
+		if (claimID != null) {
+			claim = controller.getExpenseClaimByID(claimID);
 			displayExpenseClaim(claim);
 		}
-
 	}
 
 	@Override
@@ -172,7 +169,8 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 
 			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which) {}
+				public void onClick(DialogInterface dialog, int which) {
+				}
 			});
 			alertDialog = adb.create();
 			alertDialog.show();
@@ -187,7 +185,8 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 			adb.setCancelable(true);
 			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which) {}
+				public void onClick(DialogInterface dialog, int which) {
+				}
 			});
 			alertDialog = adb.create();
 			alertDialog.show();
@@ -202,7 +201,8 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 			adb.setCancelable(true);
 			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which) {}
+				public void onClick(DialogInterface dialog, int which) {
+				}
 			});
 			alertDialog = adb.create();
 			alertDialog.show();
@@ -216,31 +216,22 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 			adb.setMessage("Start Date cannot be set to after the End Date");
 			adb.setCancelable(true);
 			adb.setNeutralButton("Back", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {}
+				public void onClick(DialogInterface dialog, int which) {
+				}
 			});
 			alertDialog = adb.create();
 			alertDialog.show();
 			return null;
 		}
 
-		claim.setName(name);
-		claim.setStartDate(startDate);
-		claim.setEndDate(endDate);
-
 		try {
-			if (claimIndex == -1) {
-				controller.addExpenseClaim(claim);
+			if (claimID == null) {
+				claim = controller.addExpenseClaim(name, startDate, endDate);
 			} else {
-				controller.update();
+				claim = controller.updateExpenseClaim(claim.getID(), name, startDate, endDate);
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
-		}
-
-		// Sanity check
-		if (controller.getIndexOf(claim) == -1) {
-			Log.wtf("Add Claim", "Claim isn't in the claim list?");
-			throw new RuntimeException();
 		}
 
 		return claim;
@@ -270,9 +261,9 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 	public void doneExpenseItem(View v) throws ParseException {
 		ExpenseClaim claim = saveExpenseClaim(v);
 		if (claim != null) {
-			if (claimIndex == -1) {
+			if (claimID == null) {
 				Intent intent = new Intent(this, TabbedSummaryClaimantActivity.class);
-				intent.putExtra(CLAIM_INDEX, controller.getIndexOf(claim));
+				intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
 				finish();
 				startActivity(intent);
 			} else {

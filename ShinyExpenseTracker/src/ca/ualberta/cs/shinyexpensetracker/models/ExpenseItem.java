@@ -16,6 +16,7 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -24,12 +25,8 @@ import android.graphics.Bitmap;
 import ca.ualberta.cs.shinyexpensetracker.utilities.Base64BitmapConverter;
 
 /**
- * Houses ExpenseItem Data. Extends Model
- * 
- * Has name: String, date: Date, category: enum Category amountSpent: BigDecimal
- * currency: enum Currency description: String recieptPhoto: Bitmap
- * 
- * 
+ * An ExpenseItem represents the details of an expense that's a part of an
+ * expense claim.
  */
 public class ExpenseItem extends Model<ExpenseItem> {
 	public enum Category {
@@ -63,6 +60,7 @@ public class ExpenseItem extends Model<ExpenseItem> {
 		CAD, USD, GBP, EUR, CHF, JPY, CNY
 	}
 
+	private UUID id;
 	private String name;
 	private Date date;
 	private Category category;
@@ -93,6 +91,7 @@ public class ExpenseItem extends Model<ExpenseItem> {
 	 */
 	public ExpenseItem(String name, Date date, Category category, BigDecimal amountSpent, Currency currency,
 			String description, Bitmap photo, boolean completenessFlag) {
+		this.id = UUID.randomUUID();
 		this.name = name;
 		this.date = date;
 		this.category = category;
@@ -118,6 +117,10 @@ public class ExpenseItem extends Model<ExpenseItem> {
 	public ExpenseItem(String name, Date date, Category category, BigDecimal amount, Currency currency) {
 		// Call to more specific constructor
 		this(name, date, category, amount, currency, "", null, false);
+	}
+
+	public UUID getID() {
+		return this.id;
 	}
 
 	public void setName(String name) {
@@ -191,7 +194,7 @@ public class ExpenseItem extends Model<ExpenseItem> {
 		} else {
 			this.receiptPhotoBitmap = photo;
 			this.encodedReceiptPhoto = Base64BitmapConverter.convertToBase64(photo);
-		}
+        }
 
 		notifyViews();
 	}

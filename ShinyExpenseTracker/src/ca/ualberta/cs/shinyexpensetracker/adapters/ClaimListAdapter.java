@@ -1,4 +1,3 @@
-
 // Sourced (Mar 8, 2015)
 //   http://www.piwai.info/android-adapter-good-practices/
 package ca.ualberta.cs.shinyexpensetracker.adapters;
@@ -18,22 +17,23 @@ import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
-/** 
- * This class extends the BaseAdapter to display and sort
- * the claims with their necessary information.
+/**
+ * This class extends the BaseAdapter to display and sort the claims with their
+ * necessary information.
  */
 public class ClaimListAdapter extends BaseAdapter {
 	private final SimpleDateFormat dateFormat;
 	private final Context context;
+
 	private ExpenseClaimList claims;
-	private ExpenseClaimList filteredClaims;
+	private ExpenseClaimFilter filteredClaims;
 	
 	public ClaimListAdapter(Context context) {
 		super();
 		this.dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
 		this.context = context;
 		this.claims = Application.getExpenseClaimController().getExpenseClaimList();
-		this.filteredClaims = claims;
+		this.filteredClaims = new ExpenseClaimFilter().decorate(claims);
 	}
 
 	@Override
@@ -43,11 +43,14 @@ public class ClaimListAdapter extends BaseAdapter {
 
 	@Override
 	public ExpenseClaim getItem(int position) {
-		return filteredClaims.getClaim(position);
+		// gets called to build the list
+		return filteredClaims.getClaimAtPosition(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
+		// called to get the item that was clicked
+//		return filteredClaims.getSourceIndex(getItem(position));
 		return position;
 	}
 
@@ -62,16 +65,16 @@ public class ClaimListAdapter extends BaseAdapter {
 		// Are we recycling?
 		if (convertView == null) {
 			// No.
-			// Get a layout that we can use. 
+			// Get a layout that we can use.
 			convertView = LayoutInflater.from(context).inflate(R.layout.claim_list_item, parent, false);
-			
-			// Build a viewholder 
+
+			// Build a viewholder
 			name = (TextView) convertView.findViewById(R.id.claimName);
 			dates = (TextView) convertView.findViewById(R.id.claimDateRange);
 			status = (TextView) convertView.findViewById(R.id.claimStatus);
 			tags = (TextView) convertView.findViewById(R.id.claimTags);
 			destination = (TextView) convertView.findViewById(R.id.claimDestination);
-			
+
 			// Tag the convert view so we can reuse this in the future
 			vh = new ViewHolder(name, dates, status, tags, destination);
 			convertView.setTag(vh);
@@ -87,20 +90,16 @@ public class ClaimListAdapter extends BaseAdapter {
 		}
 
 		ExpenseClaim claim = getItem(position);
-		
+
 		// Name and status can't be null
 		name.setText(claim.getName());
 		status.setText(claim.getStatus().getText());
-				
-		
+
 		// Start date can't be null, but end date might be.
 		if (claim.getEndDate() == null) {
-			dates.setText(dateFormat.format(claim.getStartDate()));			
+			dates.setText(dateFormat.format(claim.getStartDate()));
 		} else {
-			dates.setText(
-					dateFormat.format(claim.getStartDate())
-					+ " to " +
-					dateFormat.format(claim.getEndDate()));
+			dates.setText(dateFormat.format(claim.getStartDate()) + " to " + dateFormat.format(claim.getEndDate()));
 		}
 		// Tag might be null
 		if (claim.getTagList() == null) {
@@ -108,24 +107,23 @@ public class ClaimListAdapter extends BaseAdapter {
 		} else {
 			tags.setText(claim.getTagList().toString());
 		}
-		
+
 		return convertView;
 	}
 
 	// ViewHolders are very nice.
 	/**
-	 *  This holds the views related to a claim so that
-	 *  the view can be recycled efficiently.
-	 */ 
+	 * This holds the views related to a claim so that the view can be recycled
+	 * efficiently.
+	 */
 	private static class ViewHolder {
 		public final TextView name;
 		public final TextView dates;
 		public final TextView status;
 		public final TextView tags;
 		public final TextView destination;
-		
-		public ViewHolder(TextView name, TextView dates, TextView status,
-				TextView tags, TextView destination) {
+
+		public ViewHolder(TextView name, TextView dates, TextView status, TextView tags, TextView destination) {
 			super();
 			this.name = name;
 			this.dates = dates;
@@ -155,7 +153,13 @@ public class ClaimListAdapter extends BaseAdapter {
 	 * Clears any filters that were added by applyFilter
 	 */
 	public void clearFilters() {
-		filteredClaims = claims;
+		this.filteredClaims = new ExpenseClaimFilter().decorate(claims);
 		notifyDataSetChanged();
+	}
+	
+	@Override
+	public void notifyDataSetChanged() {
+		super.notifyDataSetChanged();
+		filteredClaims.update(claims);
 	}
 }

@@ -13,6 +13,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.widget.ImageView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ReceiptViewActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -24,10 +25,11 @@ import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersist
 
 /**
  * Covers Issue 30
+ * 
  * @author Oleg Oleynikov
  * @version 1.0
- * @since 2015-03-16
- * Test viewing receipt of a referred Expense Item, if there is any 
+ * @since 2015-03-16 Test viewing receipt of a referred Expense Item, if there
+ *        is any
  */
 
 public class TestReceiptView extends ActivityInstrumentationTestCase2<ReceiptViewActivity> {
@@ -35,13 +37,13 @@ public class TestReceiptView extends ActivityInstrumentationTestCase2<ReceiptVie
 	public TestReceiptView() {
 		super(ReceiptViewActivity.class);
 	}
-	
+
 	ReceiptViewActivity activity;
 	ExpenseClaimController controller;
 	ExpenseItem item;
 	Bitmap imageSmall;
 	Resources res;
-	
+
 	protected void setUp() throws Exception {
 		/* Set a test item in a claim list and ask the activity to fetch it */
 		super.setUp();
@@ -55,34 +57,42 @@ public class TestReceiptView extends ActivityInstrumentationTestCase2<ReceiptVie
 
 		res = getInstrumentation().getTargetContext().getResources();
 		imageSmall = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
-		item = new ExpenseItem("test item", newDate.getTime(),
-				Category.fromString("air fare"), new BigDecimal("0.125"),
-				Currency.CAD, "Test Item", imageSmall);
+		item = new ExpenseItem("test item",
+				newDate.getTime(),
+				Category.fromString("air fare"),
+				new BigDecimal("0.125"),
+				Currency.CAD,
+				"Test Item",
+				imageSmall);
 
-		claim.addExpense(item);
+		claim.addExpenseItem(item);
 		claimList.addClaim(claim);
 
 		Intent intent = new Intent();
-		intent.putExtra("itemIndex", 0);
-		intent.putExtra("expenseIndex", 0);
+		intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
+		intent.putExtra(IntentExtraIDs.EXPENSE_ITEM_ID, item.getID());
 		setActivityIntent(intent);
 		activity = getActivity();
 	}
-	
-	// copied from https://stackoverflow.com/questions/26842530/roundedimageview-add-border-and-shadow
+
+	// copied from
+	// https://stackoverflow.com/questions/26842530/roundedimageview-add-border-and-shadow
 	// on March 15, 2015
-	/** 
-	 * Convert a Drawable object to Bitmap 
+	/**
+	 * Convert a Drawable object to Bitmap
 	 */
 	private Bitmap convertToBitmap(Drawable drawable, int widthPixels, int heightPixels) {
-        Bitmap mutableBitmap = Bitmap.createBitmap(widthPixels, heightPixels, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(mutableBitmap);
-        drawable.setBounds(0, 0, widthPixels, heightPixels);
-        drawable.draw(canvas);        
-        return mutableBitmap;
-    }
-	
-	public void testReceiptImage(){
+		Bitmap mutableBitmap = Bitmap.createBitmap(widthPixels, heightPixels, Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(mutableBitmap);
+		drawable.setBounds(0, 0, widthPixels, heightPixels);
+		drawable.draw(canvas);
+		return mutableBitmap;
+	}
+
+	public void testReceiptImage() {
+		// this is getting fixed in a pull request that's pending review right
+		// now
+		// fail();
 		ImageView iv = (ImageView) activity.findViewById(R.id.receiptImageView);
 		Drawable dr = iv.getDrawable();
 		Bitmap receiptFromItem = item.getReceiptPhoto();

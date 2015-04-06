@@ -1,5 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import java.util.UUID;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,17 +11,19 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
 public class ViewCommentsActivity extends Activity {
 
 	private ExpenseClaimController controller;
 	private Intent intent;
-	private int claimIndex;
+	private UUID claimID;
 	private ArrayAdapter<String> adapter;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,22 +49,23 @@ public class ViewCommentsActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	@Override
 	protected void onStart() {
 		super.onStart();
 		controller = Application.getExpenseClaimController();
-		
+
 		intent = getIntent();
-		claimIndex = intent.getIntExtra("claimIndex", -1);
+		claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
+		final ExpenseClaim claim = controller.getExpenseClaimByID(claimID);
+
 		final ListView comments_list = (ListView) findViewById(R.id.commentsListView);
-		
+
 		// Set the list view to receive updates from the model
-		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, 
-				controller.getExpenseClaim(claimIndex).getComments());
+		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, claim.getComments());
 		comments_list.setAdapter(adapter);
-		
-		if (controller.getExpenseClaim(claimIndex).getComments().size() == 0) {
+
+		if (claim.getComments().size() == 0) {
 			comments_list.setVisibility(View.INVISIBLE);
 			findViewById(R.id.noCommentsTextView).setVisibility(View.VISIBLE);
 		} else {
@@ -68,5 +73,4 @@ public class ViewCommentsActivity extends Activity {
 			findViewById(R.id.noCommentsTextView).setVisibility(View.INVISIBLE);
 		}
 	};
-
 }

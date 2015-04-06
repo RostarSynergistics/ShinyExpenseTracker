@@ -22,6 +22,7 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -38,7 +39,7 @@ import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersist
 @SuppressLint("SimpleDateFormat")
 public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<ExpenseItemActivity> {
 	static final SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
-	
+
 	private static final int TARGET_YEAR = 2008;
 	private static final int TARGET_MONTH = 11;
 	private static final int TARGET_DAY = 7;
@@ -52,6 +53,9 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 	Spinner currencySpinner, categorySpinner;
 	ImageButton photoField;
 	Button doneButton;
+
+	private MockExpenseClaimListPersister persister;
+	private ExpenseClaim claim;
 
 	Drawable image = new Drawable() {
 		@Override
@@ -85,7 +89,6 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 			day = dayOfMonth;
 		}
 	};
-	private MockExpenseClaimListPersister persister;
 
 	/**
 	 * Setup for each test. Creates a new claim and passes the intent for the 0
@@ -97,19 +100,24 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 		instrumentation = getInstrumentation();
 
 		ExpenseClaimList list = new ExpenseClaimList();
-		list.addClaim(new ExpenseClaim("Test Claim"));
 
 		persister = new MockExpenseClaimListPersister(list);
+
 		controller = new ExpenseClaimController(persister);
 		Application.setExpenseClaimController(controller);
 
+		claim = new ExpenseClaim("Test Claim");
+		list.addClaim(claim);
 		Intent intent = new Intent();
-		intent.putExtra("claimIndex", 0);
+		intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
 		setActivityIntent(intent);
 
 		activity = getActivity();
 
-		datePicker = new DatePickerDialog(instrumentation.getContext(), dateListener, TARGET_YEAR, TARGET_MONTH,
+		datePicker = new DatePickerDialog(instrumentation.getContext(),
+				dateListener,
+				TARGET_YEAR,
+				TARGET_MONTH,
 				TARGET_DAY);
 
 		nameField = (EditText) activity.findViewById(R.id.expenseItemNameEditText);
@@ -151,8 +159,13 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 				BigDecimal amount = new BigDecimal(10.00);
 				Bitmap bitmap = null;
 
-				ExpenseItem expense = new ExpenseItem("name", date, Category.ACCOMODATION, amount, Currency.CAD,
-						"description", bitmap);
+				ExpenseItem expense = new ExpenseItem("name",
+						date,
+						Category.ACCOMODATION,
+						amount,
+						Currency.CAD,
+						"description",
+						bitmap);
 
 				assertEquals("name != name", "name", expense.getName());
 				assertEquals("date != date", date, expense.getDate());
@@ -170,7 +183,8 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 	/**
 	 * tests if the data entered has been correctly saved to an expenseItem when
 	 * the Done button is clicked
-	 * @throws ParseException 
+	 * 
+	 * @throws ParseException
 	 */
 	public void testDone() throws ParseException {
 		final int newSpinnerPosition = 3;
@@ -199,7 +213,8 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 
 		getInstrumentation().waitForIdleSync();
 
-		final ExpenseItem updatedItem = controller.getExpenseClaim(0).getExpense(0);
+		final ExpenseItem updatedItem = controller.getExpenseClaimByID(claim.getID()).getExpenseItemAtPosition(0);
+
 		assertNotNull(updatedItem);
 		assertEquals(newName, updatedItem.getName());
 		assertEquals(newDate, updatedItem.getDate());

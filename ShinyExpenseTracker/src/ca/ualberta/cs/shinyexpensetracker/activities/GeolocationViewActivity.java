@@ -37,6 +37,7 @@ import android.view.View;
 import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
+import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
 
 public class GeolocationViewActivity extends Activity {
 
@@ -44,8 +45,6 @@ public class GeolocationViewActivity extends Activity {
 	private Coordinate coordinates = new Coordinate();
 	private Coordinate coordinatesUpdating = new Coordinate();
 	
-	public static final int SET_GEOLOCATION = 1;
-	private static final Coordinate NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES = new Coordinate(39.03808, 125.7296);
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -105,8 +104,8 @@ public class GeolocationViewActivity extends Activity {
 		Intent mapViewIntent = new Intent(GeolocationViewActivity.this, MapViewActivity.class);
 		mapViewIntent.putExtra("latitude", coordinatesUpdating.getLatitude());
 		mapViewIntent.putExtra("longitude", coordinatesUpdating.getLongitude());
-		mapViewIntent.putExtra("requestCode", SET_GEOLOCATION);
-		startActivityForResult(mapViewIntent, SET_GEOLOCATION);
+		mapViewIntent.putExtra("requestCode", GeolocationRequestCode.SET_GEOLOCATION);
+		startActivityForResult(mapViewIntent, GeolocationRequestCode.SET_GEOLOCATION);
 	}
 	
 	/**
@@ -118,8 +117,8 @@ public class GeolocationViewActivity extends Activity {
 		// Check result is ok
 		lm.removeUpdates(listener);
 		if (resultCode == RESULT_OK) {
-			double latitude = data.getDoubleExtra("latitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
-			double longitude = data.getDoubleExtra("longitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
+			double latitude = data.getDoubleExtra("latitude", Coordinate.NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
+			double longitude = data.getDoubleExtra("longitude", Coordinate.NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
 			coordinates.setLatitude(latitude);
 			coordinates.setLongitude(longitude);
 			returnCoordinatesToParentActivity();

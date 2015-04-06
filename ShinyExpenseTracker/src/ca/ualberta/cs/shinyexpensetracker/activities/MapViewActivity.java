@@ -52,17 +52,14 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.User;
+import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
+
 
 public class MapViewActivity extends Activity implements MapEventsReceiver {
 
 	// constants to compare which activity called this one
 	// the first means setting geolocation for Claimant, expense item or Destination
 	// second means displaying locations stored on the device
-	static public final int SET_GEOLOCATION = 1;
-	static public final int DISPLAY_GEOLOCATIONS = 2;
-	
-	// default geolocation, if the Intent does not contain latitude and longitude
-	private static final Coordinate NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES = new Coordinate(39.03808, 125.7296);
 	
 	private Coordinate coordinate = new Coordinate();
 	private int requestCode;
@@ -100,9 +97,9 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 			MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(this, this);
 			map.getOverlays().add(0, mapEventsOverlay);
 			requestCode = intent.getIntExtra("requestCode", 0);
-			if (requestCode == SET_GEOLOCATION) {
-				double latitude = intent.getDoubleExtra("latitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
-				double longitude = intent.getDoubleExtra("longitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
+			if (requestCode == GeolocationRequestCode.SET_GEOLOCATION) {
+				double latitude = intent.getDoubleExtra("latitude", Coordinate.NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
+				double longitude = intent.getDoubleExtra("longitude", Coordinate.NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
 				coordinate.setLatitude(latitude);
 				coordinate.setLongitude(longitude);
 				
@@ -111,7 +108,7 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 				mapController.setZoom(18);
 				mapController.setCenter(startPoint);
 			}
-			else if (requestCode == DISPLAY_GEOLOCATIONS) {
+			else if (requestCode == GeolocationRequestCode.DISPLAY_GEOLOCATIONS) {
 				// display all geolocations stored on the device 
 				
 				// first, get all claims
@@ -212,7 +209,7 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 	 */
 	@Override
 	public void onBackPressed(){
-		if (requestCode != DISPLAY_GEOLOCATIONS && lastMarker != null) {	
+		if (requestCode != GeolocationRequestCode.DISPLAY_GEOLOCATIONS && lastMarker != null) {	
 			GeoPoint position = lastMarker.getPosition();
 			askSaveLocation(position.getLatitude(), position.getLongitude());
 		}
@@ -228,7 +225,7 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 	 */
 	@Override
 	public boolean singleTapConfirmedHelper(GeoPoint p) {
-		if (requestCode == DISPLAY_GEOLOCATIONS) {
+		if (requestCode == GeolocationRequestCode.DISPLAY_GEOLOCATIONS) {
 			return false;
 		}
 		if (lastMarker != null) {

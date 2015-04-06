@@ -3,7 +3,7 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 public class Coordinate extends Model<Coordinate> {
 	private double latitude;
 	private double longitude;
-	
+	public static final Coordinate NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES = new Coordinate(39.03808, 125.7296);
 	public Coordinate() {
 		super();
 	}

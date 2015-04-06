@@ -46,15 +46,13 @@ import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
+import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
 import ca.ualberta.cs.shinyexpensetracker.models.User;
 import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
 
 public class ExpenseClaimListActivity 
 	extends Activity 
 	implements IView<ExpenseClaimList> {
-	private static final int SET_GEOLOCATION = 1;
-	static public final int DISPLAY_GEOLOCATIONS = 2;
-	private static final Coordinate NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES = new Coordinate(39.03808, 125.7296);
 	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
 	private User user = Application.getUser();
@@ -153,12 +151,12 @@ public class ExpenseClaimListActivity
 		case R.id.set_home_geolocation:
 			Intent geolocationViewIntent = new Intent(ExpenseClaimListActivity.this,
 					GeolocationViewActivity.class);
-			startActivityForResult(geolocationViewIntent, SET_GEOLOCATION);
+			startActivityForResult(geolocationViewIntent, GeolocationRequestCode.SET_GEOLOCATION);
 			return true;
 		case R.id.display_geolocations_on_map:
 			Intent geolocationMapViewIntent = new Intent(ExpenseClaimListActivity.this,
 					MapViewActivity.class);
-			geolocationMapViewIntent.putExtra("requestCode", DISPLAY_GEOLOCATIONS);
+			geolocationMapViewIntent.putExtra("requestCode", GeolocationRequestCode.DISPLAY_GEOLOCATIONS);
 			startActivity(geolocationMapViewIntent);
 			return true;
 		}
@@ -173,10 +171,10 @@ public class ExpenseClaimListActivity
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// Check result is ok
-		if (requestCode == SET_GEOLOCATION) {
+		if (requestCode == GeolocationRequestCode.SET_GEOLOCATION) {
 			if (resultCode == RESULT_OK) {
-				double latitude = data.getDoubleExtra("latitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
-				double longitude = data.getDoubleExtra("longitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
+				double latitude = data.getDoubleExtra("latitude", Coordinate.NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
+				double longitude = data.getDoubleExtra("longitude", Coordinate.NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
 				homeGeolocation.setLatitude(latitude);
 				homeGeolocation.setLongitude(longitude);
 				TextView homeGeolocationValue = (TextView) findViewById(R.id.homeGeolocationValueTextView);

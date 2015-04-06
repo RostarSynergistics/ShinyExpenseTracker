@@ -18,6 +18,7 @@ import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
 
 /**
  * Used for adding and editing destinations. For editing the destination, you
@@ -38,8 +39,6 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
  */
 public class AddDestinationActivity extends Activity {
 	public static final String DESTINATION_INDEX = "destinationIndex";
-	public static final int SET_GEOLOCATION = 1;
-	private static final Coordinate NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES = new Coordinate(39.03808, 125.7296);
 
 	private EditText destinationEditText;
 	private EditText reasonForTravelEditText;
@@ -166,14 +165,14 @@ public class AddDestinationActivity extends Activity {
 	public void onGeolocationValueTextViewClick(View v) {
 		Intent geolocationViewIntent = new Intent(AddDestinationActivity.this,
 				GeolocationViewActivity.class);
-		startActivityForResult(geolocationViewIntent, SET_GEOLOCATION);
+		startActivityForResult(geolocationViewIntent, GeolocationRequestCode.SET_GEOLOCATION);
 	}
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// Check result is ok
 		if (resultCode == RESULT_OK) {
-			double latitude = data.getDoubleExtra("latitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
-			double longitude = data.getDoubleExtra("longitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
+			double latitude = data.getDoubleExtra("latitude", Coordinate.NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
+			double longitude = data.getDoubleExtra("longitude", Coordinate.NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
 			coord.setLatitude(latitude);
 			coord.setLongitude(longitude);
 			TextView coordValue = (TextView) findViewById(R.id.coordinatesValueTextView);

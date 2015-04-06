@@ -17,9 +17,10 @@ public class ValidationErrorAlertDialog {
 
 		builder.setCancelable(true);
 
-		builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+		builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
 			}
 		});
 

@@ -43,6 +43,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.adapters.ClaimListAdapter;
 import ca.ualberta.cs.shinyexpensetracker.decorators.ExpenseClaimSortFilter;
 import ca.ualberta.cs.shinyexpensetracker.decorators.ExpenseClaimSubmittedFilter;
+import ca.ualberta.cs.shinyexpensetracker.decorators.ExpenseClaimUserFilter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.IView;
@@ -85,6 +86,7 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 		// if the user is an approver filter the claims so only the submitted claims are shown
 		if (Application.getUserType().equals(Type.Approver)) {
 			adapter.applyFilter(new ExpenseClaimSubmittedFilter());
+			adapter.applyFilter(new ExpenseClaimUserFilter());
 		} 
 		
 		claim_list.setAdapter(adapter);

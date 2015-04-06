@@ -80,7 +80,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		this.endDate = endDate;
 		this.status = status;
 		this.tagList = tagList;
-		//this.userId = Application.getUser().getUserId();
+		this.userId = Application.getUser().getUserId();
 	}
 
 	public UUID getID() {

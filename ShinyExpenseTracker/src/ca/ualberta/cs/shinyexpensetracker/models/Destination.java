@@ -1,30 +1,36 @@
 package ca.ualberta.cs.shinyexpensetracker.models;
 
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import java.util.UUID;
+
 
 /**
+ * A Destination represents a destination of travel on an expense claim.
  * 
- * Destination object extends Model.  
- * Has a name: String,
- * 		reason for travel: String
- * 
- * Destinations are added to expense claims
- *
  */
 public class Destination extends Model<Destination> {
+
+	private UUID id;
 	private String name;
 	private String reasonForTravel;
 	private Coordinate geolocation;
-	
-	public Destination(String name, String reasonForTravel, Coordinate geolcoation) {
+
+	public Destination(String name, String reasonForTravel, Coordinate geolocation) {
+		this.id = UUID.randomUUID();
 		this.name = name;
 		this.reasonForTravel = reasonForTravel;
-		this.geolocation = geolcoation;
+		this.geolocation = geolocation;
 	}
-	
+
+	public UUID getID() {
+		return id;
+	}
+
 	public String getName() {
 		return this.name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -32,6 +38,7 @@ public class Destination extends Model<Destination> {
 	public String getReasonForTravel() {
 		return this.reasonForTravel;
 	}
+
 	public void setReasonForTravel(String reasonForTravel) {
 		this.reasonForTravel = reasonForTravel;
 	}

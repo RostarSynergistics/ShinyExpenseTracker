@@ -25,7 +25,9 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
@@ -34,7 +36,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
@@ -44,7 +45,6 @@ public class GeolocationViewActivity extends Activity {
 	private LocationManager lm;
 	private Coordinate coordinates = new Coordinate();
 	private Coordinate coordinatesUpdating = new Coordinate();
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,26 +79,47 @@ public class GeolocationViewActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	/**
-	 * On click of Set Automatically Using GPS, get the constantly updating coordinate values
-	 * and save them to the "release version" values
+	 * On click of Set Automatically Using GPS, get the constantly updating
+	 * coordinate values and save them to the "release version" values
 	 */
 	public void clickSetGeolocationAutomatically(View v) {
-		
+
 		coordinates.setLatitude(coordinatesUpdating.getLatitude());
 		coordinates.setLongitude(coordinatesUpdating.getLongitude());
-		if (lm.getLastKnownLocation(LocationManager.GPS_PROVIDER) == null) {
-			Toast.makeText(this, "GPS positioning not enabled.\nEnable GPS positioning or enter the coordiantes manually using the map", Toast.LENGTH_LONG).show();
-		}
-		else {
+		if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+			buildAlertMessageNoGps();
+		} else {
 			returnCoordinatesToParentActivity();
 		}
 	}
-	
+
 	/**
-	 * On click of Set Geolocation Using Map, navigate to the MapViewActivity to let the user
-	 * choose geolocation on an interactive map
+	 * Alert no GPS signal found Source:
+	 * http://stackoverflow.com/questions/843675
+	 * /how-do-i-find-out-if-the-gps-of-an-android-device-is-enabled Apr 5, 2015
+	 */
+	private void buildAlertMessageNoGps() {
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder
+				.setMessage("Your GPS seems to be disabled, do you want to enable it?").setCancelable(false)
+				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					public void onClick(final DialogInterface dialog, final int id) {
+						startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+					}
+				}).setNegativeButton("No", new DialogInterface.OnClickListener() {
+					public void onClick(final DialogInterface dialog, final int id) {
+						dialog.cancel();
+					}
+				});
+		final AlertDialog alert = builder.create();
+		alert.show();
+	}
+
+	/**
+	 * On click of Set Geolocation Using Map, navigate to the MapViewActivity to
+	 * let the user choose geolocation on an interactive map
 	 */
 	public void clickSetGeolocationUsingMap(View v) {
 		Intent mapViewIntent = new Intent(GeolocationViewActivity.this, MapViewActivity.class);
@@ -107,10 +128,10 @@ public class GeolocationViewActivity extends Activity {
 		mapViewIntent.putExtra("requestCode", GeolocationRequestCode.SET_GEOLOCATION);
 		startActivityForResult(mapViewIntent, GeolocationRequestCode.SET_GEOLOCATION);
 	}
-	
+
 	/**
-	 * Accept result from the map activity and immediately return it
-	 * to the parent activity
+	 * Accept result from the map activity and immediately return it to the
+	 * parent activity
 	 */
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -122,12 +143,11 @@ public class GeolocationViewActivity extends Activity {
 			coordinates.setLatitude(latitude);
 			coordinates.setLongitude(longitude);
 			returnCoordinatesToParentActivity();
-		}
-		else {
+		} else {
 			lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, listener);
 		}
 	}
-	
+
 	/**
 	 * Finish the activity and send saved coordinates to the parent activity
 	 */
@@ -138,31 +158,37 @@ public class GeolocationViewActivity extends Activity {
 		setResult(RESULT_OK, geolocationResultIntent);
 		finish();
 	}
-	
+
 	/**
 	 * Location listener that fires every time a location update is requested.
-	 * Updates geolocation based on info from the GPS mdoule until 
-	 * the listener is unbound from its location manager.
-	 * The listener updates a different set of coordinate values because we don't want
-	 * to update the TextView every time that the location is changed and we do want to save
-	 * geolocation retrieved from the MapViewActivity  
+	 * Updates geolocation based on info from the GPS mdoule until the listener
+	 * is unbound from its location manager. The listener updates a different
+	 * set of coordinate values because we don't want to update the TextView
+	 * every time that the location is changed and we do want to save
+	 * geolocation retrieved from the MapViewActivity
 	 */
 	private final LocationListener listener = new LocationListener() {
 		/*
-		 * Adapted from joshua2ua's fork of MockLocationTester, file MockLocationTesterActivity.java on April 2, 2015
-		 * source at: https://github.com/joshua2ua/MockLocationTester/blob/master/src/ualberta/cmput301/mocklocationtester/MockLocationTesterActivity.java
+		 * Adapted from joshua2ua's fork of MockLocationTester, file
+		 * MockLocationTesterActivity.java on April 2, 2015 source at:
+		 * https://github
+		 * .com/joshua2ua/MockLocationTester/blob/master/src/ualberta
+		 * /cmput301/mocklocationtester/MockLocationTesterActivity.java
 		 */
-		public void onLocationChanged (Location location) {
+		public void onLocationChanged(Location location) {
 			if (location != null) {
 				coordinatesUpdating.setLatitude(location.getLatitude());
 				coordinatesUpdating.setLongitude(location.getLongitude());
 			}
 		}
-		public void onProviderDisabled (String provider) {
+
+		public void onProviderDisabled(String provider) {
 		}
-		public void onProviderEnabled (String provider) {
+
+		public void onProviderEnabled(String provider) {
 		}
-		public void onStatusChanged (String provider, int status, Bundle extras) {
+
+		public void onStatusChanged(String provider, int status, Bundle extras) {
 		}
 	};
 }

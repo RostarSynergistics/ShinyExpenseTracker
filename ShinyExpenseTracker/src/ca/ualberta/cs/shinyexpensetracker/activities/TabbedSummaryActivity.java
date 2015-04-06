@@ -1,5 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import java.util.UUID;
+
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -13,6 +15,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.adapters.SectionsPagerAdapter;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
 import ca.ualberta.cs.shinyexpensetracker.fragments.DestinationListFragment;
@@ -39,7 +42,7 @@ public class TabbedSummaryActivity extends FragmentActivity implements ActionBar
 	public Dialog alertDialog;
 	ExpenseClaimController controller = Application.getExpenseClaimController();
 	protected Intent intent;
-	protected int claimIndex;
+	protected UUID claimID;
 	protected Menu m;
 
 	public TabbedSummaryActivity() {
@@ -50,48 +53,45 @@ public class TabbedSummaryActivity extends FragmentActivity implements ActionBar
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tabbed_summary);
-	
+
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-	
+
 		context = getBaseContext();
-		
+
 		adb = new AlertDialog.Builder(this);
-		
+
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the activity.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
-	
+
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-	
+
 		// When swiping between different sections, select the corresponding
 		// tab. We can also use ActionBar.Tab#select() to do this if we have
 		// a reference to the Tab.
-		mViewPager
-				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-					@Override
-					public void onPageSelected(int position) {
-						actionBar.setSelectedNavigationItem(position);
-					}
-				});
-	
+		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+			@Override
+			public void onPageSelected(int position) {
+				actionBar.setSelectedNavigationItem(position);
+			}
+		});
+
 		// For each of the sections in the app, add a tab to the action bar.
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
 			// Create a tab with text corresponding to the page title defined by
 			// the adapter. Also specify this Activity object, which implements
 			// the TabListener interface, as the callback (listener) for when
 			// this tab is selected.
-			actionBar.addTab(actionBar.newTab()
-					.setText(mSectionsPagerAdapter.getPageTitle(i, context))
+			actionBar.addTab(actionBar.newTab().setText(mSectionsPagerAdapter.getPageTitle(i, context))
 					.setTabListener(this));
 		}
-		
+
 		intent = getIntent();
-		claimIndex = intent.getIntExtra("claimIndex", -1);
-		
+		claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
 	}
 
 	@Override
@@ -110,7 +110,8 @@ public class TabbedSummaryActivity extends FragmentActivity implements ActionBar
 	}
 
 	/**
-	 * Force selects the summary tab 
+	 * Force selects the summary tab
+	 * 
 	 * @return the corresponding fragment.
 	 */
 	public ClaimSummaryFragment selectClaimSummaryTab() {
@@ -120,7 +121,8 @@ public class TabbedSummaryActivity extends FragmentActivity implements ActionBar
 	}
 
 	/**
-	 * Force selects the expense list tab 
+	 * Force selects the expense list tab
+	 * 
 	 * @return the corresponding fragment.
 	 */
 	public ExpenseItemListFragment selectExpenseListTab() {
@@ -131,6 +133,7 @@ public class TabbedSummaryActivity extends FragmentActivity implements ActionBar
 
 	/**
 	 * Force selects the destination list tab
+	 * 
 	 * @return the corresponding fragment.
 	 */
 	public DestinationListFragment selectDestinationListTab() {
@@ -154,5 +157,4 @@ public class TabbedSummaryActivity extends FragmentActivity implements ActionBar
 	public Dialog getDialog() {
 		return alertDialog;
 	}
-
 }

@@ -101,7 +101,7 @@ public class Application extends android.app.Application {
 	 * @param state
 	 */
 	public static void setUserType(Type type) {
-		user.setUserType(type);
+		getUser().setUserType(type);
 	}
 	
 	/**
@@ -109,6 +109,6 @@ public class Application extends android.app.Application {
 	 * @return
 	 */
 	public static Type getUserType() {
-		return user.getUserType();
+		return getUser().getUserType();
 	}
 }

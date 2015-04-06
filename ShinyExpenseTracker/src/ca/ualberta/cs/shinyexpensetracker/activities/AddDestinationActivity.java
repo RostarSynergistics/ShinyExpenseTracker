@@ -1,6 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
@@ -21,16 +23,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
 
 /**
- * Used for adding and editing destinations. For editing the destination, you
- * must pass an intent with the extra "destinationIndex" indicating the index of
- * the destination to update. For both adding and editing, you must pass an
- * intent with the extra "claimIndex" indicating the index (relative to the
- * controller) of the claim to update.
- * 
- * Example Usage: Intent intent = new Intent(CurrentActivity.this,
- * AddDesintationActivity.class); intent.putExtra("claimIndex", 3);
- * intent.putExtra("destinationIndex", 2); // Editing a destination
- * startActivity(intent);
+ * Used for adding and editing destinations.
  * 
  * Covers issue #18 - Editing is done there
  * 
@@ -38,22 +31,21 @@ import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
  * 
  */
 public class AddDestinationActivity extends Activity {
-	public static final String DESTINATION_INDEX = "destinationIndex";
-
 	private EditText destinationEditText;
 	private EditText reasonForTravelEditText;
-	
+
 	public Dialog dialog;
 
 	private ExpenseClaimController controller;
-	
-	private ExpenseClaim claim; 
-	private int claimIndex;
-	
+
+	private ExpenseClaim claim;
+	private UUID claimID;
+
 	private Destination destination;
 	private int destinationIndex;
 	
 	private Coordinate coord = null;
+	private UUID destinationID;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,27 +53,27 @@ public class AddDestinationActivity extends Activity {
 		setContentView(R.layout.activity_add_destination);
 
 		Intent intent = getIntent();
-		claimIndex = intent.getIntExtra(ExpenseClaimActivity.CLAIM_INDEX, -1);
+		claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
 		controller = Application.getExpenseClaimController();
-		claim = controller.getExpenseClaim(claimIndex);
-		
-		destinationIndex = getIntent().getIntExtra(DESTINATION_INDEX, -1);
+		claim = controller.getExpenseClaimByID(claimID);
+
+		destinationID = (UUID) intent.getSerializableExtra(IntentExtraIDs.DESTINATION_ID);
 		// Is this a new destination?
-		if (destinationIndex == -1) {
+		if (destinationID == null) {
 			// Yes.
 			// Destination object will be created later.
 			destination = null;
 		} else {
 			// No.
 			// Set the destination object to the existing object
-			destination = claim.getDestination(destinationIndex);
+			destination = claim.getDestinationByID(destinationID);
 		}
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
-		
+
 		if (destination != null) {
 			// If we loaded a destination, load the values
 			coord = destination.getGeolocation();
@@ -90,6 +82,7 @@ public class AddDestinationActivity extends Activity {
 			TextView reason = (TextView) findViewById(R.id.reasonEditText);
 			TextView coordValue = (TextView) findViewById(R.id.coordinatesValueTextView);
 			
+
 			dest.setText(destination.getName());
 			reason.setText(destination.getReasonForTravel());
 			coordValue.setText(coord.toString());
@@ -104,11 +97,11 @@ public class AddDestinationActivity extends Activity {
 	}
 
 	/**
-	 * Creates the new destination if this activity is opened without
-	 * a destination index, or save it to the existing destination.
+	 * Creates the new destination if this activity is opened without a
+	 * destination index, or save it to the existing destination.
 	 * 
 	 * @return true if destination input was valid, false otherwise.
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public boolean saveDestination() throws IOException {
 		destinationEditText = (EditText) findViewById(R.id.destinationEditText);
@@ -116,16 +109,13 @@ public class AddDestinationActivity extends Activity {
 
 		if (destinationEditText.getText().length() == 0) {
 			// Display an error prompt.
-			dialog = new AlertDialog.Builder(this)
-					.setMessage("Destination requires a name")
-					.setNeutralButton(android.R.string.ok,
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									dialog.dismiss();
-								}
-							}).create();
+			dialog = new AlertDialog.Builder(this).setMessage("Destination requires a name")
+					.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					}).create();
 			dialog.show();
 			return false;
 		}
@@ -145,20 +135,17 @@ public class AddDestinationActivity extends Activity {
 		}
 		String dest = destinationEditText.getText().toString();
 		String reason = reasonForTravelEditText.getText().toString();
-		
+
 		if (destination == null) {
 			// If new, create a new one
-			destination = new Destination(dest, reason, coord);
-			claim.addDestination(destination);
+
+			destination = controller.addDestinationToClaim(claimID, dest, reason, coord);
 		} else {
 			// If old, update the data.
-			destination.setName(dest);
-			destination.setReasonForTravel(reason);
-			destination.setGeolocation(coord);
+			destination = controller.updateDestinationOnClaim(claimID, destinationID, dest, reason, coord);
+
 		}
-		
-		controller.update();
-		
+
 		return true;
 	}
 
@@ -185,7 +172,7 @@ public class AddDestinationActivity extends Activity {
 	 * activity is closed.
 	 * 
 	 * @param v
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public void doneCreateDestination(View v) throws IOException {
 		if (saveDestination()) {

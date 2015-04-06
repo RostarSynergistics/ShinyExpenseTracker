@@ -16,6 +16,7 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -24,12 +25,8 @@ import android.graphics.Bitmap;
 import ca.ualberta.cs.shinyexpensetracker.utilities.Base64BitmapConverter;
 
 /**
- * Houses ExpenseItem Data. Extends Model
- * 
- * Has name: String, date: Date, category: enum Category amountSpent: BigDecimal
- * currency: enum Currency description: String recieptPhoto: Bitmap
- * 
- * 
+ * An ExpenseItem represents the details of an expense that's a part of an
+ * expense claim.
  */
 public class ExpenseItem extends Model<ExpenseItem> {
 	public enum Category {
@@ -64,6 +61,8 @@ public class ExpenseItem extends Model<ExpenseItem> {
 	}
 
 
+	private UUID id;
+
 	private String name;
 	private Date date;
 	private Category category;
@@ -72,7 +71,7 @@ public class ExpenseItem extends Model<ExpenseItem> {
 	private String description;
 	private Bitmap receiptPhoto;
 	private boolean incompletenessMarker;
-	private Coordinate geolocation;
+	private Coordinate itemGeolocation;
 	// encoded in Base64
 	private String encodedReceiptPhoto;
 	// temporarily saved to prevent redundant work, but can't be GSON'd
@@ -94,9 +93,12 @@ public class ExpenseItem extends Model<ExpenseItem> {
 	 * @param photo
 	 * @param completenessFlag
 	 */
+
 	public ExpenseItem (String name, Date date, Category category, 
 			BigDecimal amountSpent, Currency currency, String description,
 			Bitmap photo, Coordinate geolocation, boolean completenessFlag) {
+		this.id = UUID.randomUUID();
+
 		this.name = name;
 		this.date = date;
 		this.category = category;
@@ -104,7 +106,7 @@ public class ExpenseItem extends Model<ExpenseItem> {
 		this.currency = currency;
 		this.description = description;
 		this.receiptPhoto = photo;
-		this.geolocation = geolocation;
+		this.itemGeolocation = geolocation;
 		this.incompletenessMarker = completenessFlag;
 	}
 	
@@ -131,6 +133,10 @@ public class ExpenseItem extends Model<ExpenseItem> {
 	public ExpenseItem(String name, Date date, Category category, BigDecimal amount, Currency currency) {
 		// Call to more specific constructor
 		this(name, date, category, amount, currency, "", null, null, false);
+	}
+
+	public UUID getID() {
+		return this.id;
 	}
 
 	public void setName(String name) {
@@ -204,17 +210,17 @@ public class ExpenseItem extends Model<ExpenseItem> {
 		} else {
 			this.receiptPhotoBitmap = photo;
 			this.encodedReceiptPhoto = Base64BitmapConverter.convertToBase64(photo);
-		}
+        }
 
 		notifyViews();
 	}
 
 	public Coordinate getGeolocation() {
-		return geolocation;
+		return itemGeolocation;
 	}
 
 	public void setGeolocation(Coordinate geolocation) {
-		this.geolocation = geolocation;
+		this.itemGeolocation = geolocation;
 	}
 
 	// XXX: #69 <- This should return the formatted JodaMoney string

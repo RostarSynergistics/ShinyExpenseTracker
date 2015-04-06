@@ -21,7 +21,7 @@ public class ExpenseTotalsAdapter extends BaseAdapter implements ListAdapter {
 	private ArrayList<String> totals;
 	private ExpenseClaim claim;
 	private Context context;
-	
+
 	public ExpenseTotalsAdapter(ExpenseClaim claim, Context context) {
 		super();
 		this.claim = claim;
@@ -29,7 +29,7 @@ public class ExpenseTotalsAdapter extends BaseAdapter implements ListAdapter {
 		totals = new ArrayList<String>();
 		createExpenseTotals();
 	}
-	
+
 	@Override
 	public int getCount() {
 		return totals.size();
@@ -47,20 +47,21 @@ public class ExpenseTotalsAdapter extends BaseAdapter implements ListAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// This function gets called on each item so that we have something to put
+		// This function gets called on each item so that we have something to
+		// put
 		// into a list view.
-		
+
 		if (convertView == null) {
 			// Need a new item view
 			convertView = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_1, parent, false);
 		}
-		
+
 		// This is the textview we're setting the value for
 		TextView text = (TextView) convertView.findViewById(android.R.id.text1);
-		
+
 		// Fetch the createExpenseTotals total for this position
-		text.setText( getItem(position).toString() );
-		
+		text.setText(getItem(position).toString());
+
 		// Return the converted view.
 		return convertView;
 	}
@@ -70,7 +71,7 @@ public class ExpenseTotalsAdapter extends BaseAdapter implements ListAdapter {
 		super.notifyDataSetChanged();
 		createExpenseTotals();
 	}
-	
+
 	/**
 	 * Generates the list of expense item totals
 	 */
@@ -82,10 +83,10 @@ public class ExpenseTotalsAdapter extends BaseAdapter implements ListAdapter {
 		BigDecimal cny = new BigDecimal(0);
 		BigDecimal eur = new BigDecimal(0);
 		BigDecimal jpy = new BigDecimal(0);
-		
+
 		ExpenseItem expense;
 		for (int i = 0; i < claim.getExpenseCount(); i++) {
-			expense = claim.getExpense(i);
+			expense = claim.getExpenseItemAtPosition(i);
 			switch (expense.getCurrency()) {
 			case CAD:
 				cad = cad.add(expense.getAmountSpent());
@@ -112,26 +113,26 @@ public class ExpenseTotalsAdapter extends BaseAdapter implements ListAdapter {
 				break;
 			}
 		}
-		
+
 		totals = new ArrayList<String>();
-		if (!cad.equals(new BigDecimal(0))){
+		if (!cad.equals(new BigDecimal(0))) {
 			totals.add(Currency.CAD + " " + cad.toString());
-		} 
+		}
 		if (!usd.equals(new BigDecimal(0))) {
 			totals.add(Currency.USD + " " + usd.toString());
-		} 
+		}
 		if (!gbp.equals(new BigDecimal(0))) {
 			totals.add(Currency.GBP + " " + gbp.toString());
-		} 
+		}
 		if (!chf.equals(new BigDecimal(0))) {
 			totals.add(Currency.CHF + " " + chf.toString());
-		} 
-		if (!cny.equals(new BigDecimal(0))) { 
+		}
+		if (!cny.equals(new BigDecimal(0))) {
 			totals.add(Currency.CNY + " " + cny.toString());
-		} 
+		}
 		if (!eur.equals(new BigDecimal(0))) {
 			totals.add(Currency.EUR + " " + eur.toString());
-		} 
+		}
 		if (!jpy.equals(new BigDecimal(0))) {
 			totals.add(Currency.JPY + " " + jpy.toString());
 		}

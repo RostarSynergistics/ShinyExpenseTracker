@@ -11,21 +11,21 @@ import ca.ualberta.cs.shinyexpensetracker.activities.AddTagToClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.RemoveTagFromClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
-public class TabbedSummaryClaimantActivityTest extends
-		ActivityInstrumentationTestCase2<TabbedSummaryClaimantActivity> {
+public class TabbedSummaryClaimantActivityTest extends ActivityInstrumentationTestCase2<TabbedSummaryClaimantActivity> {
 
-	public TabbedSummaryClaimantActivityTest(
-			Class<TabbedSummaryClaimantActivity> activityClass) {
+	public TabbedSummaryClaimantActivityTest(Class<TabbedSummaryClaimantActivity> activityClass) {
 		super(activityClass);
 		// TODO Auto-generated constructor stub
 	}
@@ -44,8 +44,11 @@ public class TabbedSummaryClaimantActivityTest extends
 	Date endDate = new Date(2000);
 	ExpenseClaim.Status status = ExpenseClaim.Status.IN_PROGRESS;
 	BigDecimal amount = new BigDecimal(10);
-	final ExpenseItem expense = new ExpenseItem("expenseItemName", new Date(
-			1000), Category.ACCOMODATION, amount, Currency.CAD,
+	final ExpenseItem expense = new ExpenseItem("expenseItemName",
+			new Date(1000),
+			Category.ACCOMODATION,
+			amount,
+			Currency.CAD,
 			"expenseItemDescription");
 
 	ExpenseClaimController controller;
@@ -59,23 +62,23 @@ public class TabbedSummaryClaimantActivityTest extends
 	public void setUp() throws Exception {
 		super.setUp();
 
-		controller = new ExpenseClaimController(
-				new MockExpenseClaimListPersister());
+		ExpenseClaimList list = new ExpenseClaimList();
+		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(list));
 		Application.setExpenseClaimController(controller);
+
+		// Add an expense claim to the expenseClaimController
+		claim = new ExpenseClaim(claimName, startDate, endDate);
+		claim.setStatus(status);
+		claim.addExpenseItem(expense);
+		list.addClaim(claim);
 
 		// Source:
 		// http://stackoverflow.com/questions/23728835/in-junit-test-activity-if-it-did-received-the-extra-from-intent
 		// On March 14 2015
 		// set up a mock intent to allow for passing the claimIndex
 		Intent intent = new Intent();
-		intent.putExtra("claimIndex", 0);
+		intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
 		setActivityIntent(intent);
-
-		// Add an expense claim to the expenseClaimController
-		claim = new ExpenseClaim(claimName, startDate, endDate);
-		claim.setStatus(status);
-		controller.addExpenseClaim(claim);
-		controller.addExpenseItem(expense, intent.getIntExtra("claimIndex", 0));
 
 		activity = getActivity();
 
@@ -91,17 +94,14 @@ public class TabbedSummaryClaimantActivityTest extends
 		expense.setIncompletenessMarker(ExpenseItem.INCOMPLETE);
 
 		// Press the "Submit claim" button
-		getInstrumentation()
-				.invokeMenuActionSync(activity, R.id.submitClaim, 0);
+		getInstrumentation().invokeMenuActionSync(activity, R.id.submitClaim, 0);
 
 		// Wait for the UI to finish doing its thing
 		getInstrumentation().waitForIdleSync();
 
-		assertTrue("cannot sumbit incomplete claim dialog not showing",
-				activity.getDialog().isShowing());
+		assertTrue("cannot sumbit incomplete claim dialog not showing", activity.getDialog().isShowing());
 
-		assertTrue("Claim status was changed to submitted", !claim.getStatus()
-				.equals(Status.SUBMITTED));
+		assertTrue("Claim status was changed to submitted", !claim.getStatus().equals(Status.SUBMITTED));
 		assertEquals("status has been changed", status, claim.getStatus());
 	}
 
@@ -114,15 +114,15 @@ public class TabbedSummaryClaimantActivityTest extends
 		expense.setIncompletenessMarker(ExpenseItem.COMPLETE);
 
 		// Monitor for AddTagsActivity
-		ActivityMonitor addTagsActivityMonitor = getInstrumentation()
-				.addMonitor(AddTagToClaimActivity.class.getName(), null, false);
+		ActivityMonitor addTagsActivityMonitor = getInstrumentation().addMonitor(AddTagToClaimActivity.class.getName(),
+				null,
+				false);
 		// Monitor for RemoveTagActivity
 		ActivityMonitor removeTagsActivityMonitor = getInstrumentation()
 				.addMonitor(RemoveTagFromClaimActivity.class.getName(), null, false);
 
 		// Press the "Submit claim" button
-		getInstrumentation()
-				.invokeMenuActionSync(activity, R.id.submitClaim, 0);
+		getInstrumentation().invokeMenuActionSync(activity, R.id.submitClaim, 0);
 
 		// Wait for the UI to finish doing its thing
 		getInstrumentation().waitForIdleSync();
@@ -130,23 +130,28 @@ public class TabbedSummaryClaimantActivityTest extends
 		assertEquals("Claim not submitted", Status.SUBMITTED, claim.getStatus());
 
 		// make sure menu items to edit claim are disabled
-		assertFalse("'Submit claim' menu item still enabled", getInstrumentation().invokeMenuActionSync(activity, R.id.submitClaim, 0));
-		assertFalse("'edit claim' menu item still enabled", getInstrumentation().invokeMenuActionSync(activity,	R.id.editClaim, 0));
-		assertFalse("'Add Expense Item' menu item still enabled", getInstrumentation().invokeMenuActionSync(activity, R.id.addExpenseItem, 0));
-		assertFalse("'Add Destination' menu item still enabled", getInstrumentation().invokeMenuActionSync(activity, R.id.addDestination, 0));
+		assertFalse("'Submit claim' menu item still enabled",
+				getInstrumentation().invokeMenuActionSync(activity, R.id.submitClaim, 0));
+		assertFalse("'edit claim' menu item still enabled",
+				getInstrumentation().invokeMenuActionSync(activity, R.id.editClaim, 0));
+		assertFalse("'Add Expense Item' menu item still enabled",
+				getInstrumentation().invokeMenuActionSync(activity, R.id.addExpenseItem, 0));
+		assertFalse("'Add Destination' menu item still enabled",
+				getInstrumentation().invokeMenuActionSync(activity, R.id.addDestination, 0));
 
 		// make sure you can still add a tag to the claim
 		assertTrue("'Add Tag' menu item disabled", getInstrumentation().invokeMenuActionSync(activity, R.id.addTag, 0));
-		
+
 		// Get the view expense claims activity
 		final AddTagToClaimActivity addTagsActivity = (AddTagToClaimActivity) getInstrumentation()
 				.waitForMonitorWithTimeout(addTagsActivityMonitor, 1000);
 		assertEquals(true, getInstrumentation().checkMonitorHit(addTagsActivityMonitor, 1));
 
 		addTagsActivity.finish();
-		
-		assertTrue("'Remove Tag' menu item disabled", getInstrumentation().invokeMenuActionSync(activity, R.id.RemoveTag, 0));
-		
+
+		assertTrue("'Remove Tag' menu item disabled",
+				getInstrumentation().invokeMenuActionSync(activity, R.id.RemoveTag, 0));
+
 		final RemoveTagFromClaimActivity removeTagsActivity = (RemoveTagFromClaimActivity) getInstrumentation()
 				.waitForMonitorWithTimeout(removeTagsActivityMonitor, 1000);
 		assertEquals(true, getInstrumentation().checkMonitorHit(addTagsActivityMonitor, 1));

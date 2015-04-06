@@ -5,33 +5,36 @@ import java.util.Date;
 import java.util.UUID;
 
 import junit.framework.TestCase;
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 
 /**
- * Tests that verify that ExpenseClaim.equals(...) works.
- * ExpenseClaims are equal if and only if all of its fields are equal
+ * Tests that verify that ExpenseClaim.equals(...) works. ExpenseClaims are
+ * equal if and only if all of its fields are equal
  */
 public class ExpenseClaimEqualsTests extends TestCase {
 	ExpenseClaim claim1;
 	ExpenseClaim claim2;
 
-	private ExpenseClaim getStartingClaim(UUID id) {
+	private ExpenseClaim getStartingClaim(UUID id) throws ValidationException {
 		Date startDate = new Date(5000);
 		Date endDate = new Date(6000);
 
 		return new ExpenseClaim(id, "test", startDate, endDate, ExpenseClaim.Status.IN_PROGRESS);
 	}
-	
+
 	private ExpenseItem getTestExpenseItem() {
-		return new ExpenseItem("test", new Date(500),
-				ExpenseItem.Category.ACCOMODATION, new BigDecimal("20.00"),
+		return new ExpenseItem("test",
+				new Date(500),
+				ExpenseItem.Category.ACCOMODATION,
+				new BigDecimal("20.00"),
 				ExpenseItem.Currency.CAD);
 	}
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		
+
 		UUID id = UUID.randomUUID();
 
 		claim1 = getStartingClaim(id);
@@ -42,12 +45,12 @@ public class ExpenseClaimEqualsTests extends TestCase {
 		assertEquals();
 	}
 
-	public void testThatTwoClaimsWithDifferentIDsAreNotEqual() {
+	public void testThatTwoClaimsWithDifferentIDsAreNotEqual() throws ValidationException {
 		claim2 = getStartingClaim(UUID.randomUUID());
 
 		assertNotEqual();
 	}
-	
+
 	public void testThatTwoClaimsWithDifferentNamesAreNotEqual() {
 		claim2.setName("a different name");
 
@@ -90,7 +93,7 @@ public class ExpenseClaimEqualsTests extends TestCase {
 		ExpenseItem item = getTestExpenseItem();
 		item.setName("foobarbaz");
 		claim2.addExpenseItem(item);
-		
+
 		assertNotEqual();
 	}
 
@@ -103,7 +106,7 @@ public class ExpenseClaimEqualsTests extends TestCase {
 		// Tag association is not fully implemented yet.
 		fail();
 	}
-	
+
 	public void testThatTwoClaimsWithNonIdenticalNonEmptyTagListsAreNotEqual() {
 		// Tag association is not fully implemented yet.
 		fail();

@@ -11,7 +11,6 @@ import java.util.UUID;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
@@ -25,6 +24,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.ValidationErrorAlertDialog;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
 /**
@@ -41,7 +41,7 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 	private EditText startDate, endDate;
 	private DatePickerDialog fromDatePickerDialog, toDatePickerDialog;
 	private SimpleDateFormat dateFormatter;
-	public Dialog alertDialog;
+	public ValidationErrorAlertDialog alertDialog;
 	private ExpenseClaim claim;
 	private UUID claimID;
 
@@ -144,34 +144,16 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 		EditText endDateText = (EditText) findViewById(R.id.editTextEndDate);
 		EditText startDateText = (EditText) findViewById(R.id.editTextStartDate);
 
-		String name = "";
-		if (nameText.getText().length() == 0) {
-			new ValidationErrorAlertDialog(this, "Expense Claim requires a name.").show();
-			return null;
-		} else {
-			name = nameText.getText().toString();
-		}
+		String name = nameText.getText().toString();
 
-		Date startDate = new Date();
-		if (startDateText.getText().length() == 0) {
-			new ValidationErrorAlertDialog(this, "Expense Claim requires a start date.").show();
-			return null;
-		} else {
+		Date startDate = null;
+		if (startDateText.getText().length() != 0) {
 			startDate = dateFormatter.parse(startDateText.getText().toString());
 		}
 
-		Date endDate = new Date();
-		if (endDateText.getText().length() == 0) {
-			new ValidationErrorAlertDialog(this, "Expense Claim requires a end date.").show();
-			return null;
-		} else {
+		Date endDate = null;
+		if (endDateText.getText().length() != 0) {
 			endDate = dateFormatter.parse(endDateText.getText().toString());
-		}
-
-		if (startDate.after(endDate)) {
-			new ValidationErrorAlertDialog(this, "Invalid range of dates.",
-					"Start Date cannot be set to after the End Date.").show();
-			return null;
 		}
 
 		try {
@@ -182,6 +164,9 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
+		} catch (ValidationException e) {
+			alertDialog = new ValidationErrorAlertDialog(this, e);
+			alertDialog.show();
 		}
 
 		return claim;
@@ -225,28 +210,9 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 	/**
 	 * for handling test arguments. See ExpenseItemActivityTest
 	 * 
-	 * @return fromDatePickerDialog
-	 */
-	public DatePickerDialog getStartDateDialog() {
-		return fromDatePickerDialog;
-	}
-
-	/**
-	 * for handling test arguments. See ExpenseItemActivityTest
-	 * 
-	 * @return toDatePickerDialog
-	 */
-
-	public DatePickerDialog getEndDateDialog() {
-		return toDatePickerDialog;
-	}
-
-	/**
-	 * for handling test arguments. See ExpenseItemActivityTest
-	 * 
 	 * @return alertDialog;
 	 */
-	public Dialog getAlertDialog() {
+	public ValidationErrorAlertDialog getAlertDialog() {
 		return alertDialog;
 	}
 }

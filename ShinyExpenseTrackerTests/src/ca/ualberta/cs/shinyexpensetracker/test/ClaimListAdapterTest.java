@@ -38,10 +38,11 @@ public class ClaimListAdapterTest extends AndroidTestCase {
 
 	private ExpenseClaim addClaim(String name, Date date) {
 		ExpenseClaim claim = null;
+
 		try {
 			claim = controller.addExpenseClaim(name, date, null);
 			adapter.notifyDataSetChanged();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
 		}

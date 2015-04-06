@@ -1,8 +1,10 @@
 package ca.ualberta.cs.shinyexpensetracker.test.models;
 
+import java.util.Date;
 import java.util.UUID;
 
 import junit.framework.TestCase;
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
@@ -12,14 +14,14 @@ public class ExpenseClaimListTests extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		
+
 		list = new ExpenseClaimList();
 	}
 
-	public void testThatGetClaimByIDFindsAClaimIfOneExistsWithThatID() {
-		ExpenseClaim claim = new ExpenseClaim("foo");
+	public void testThatGetClaimByIDFindsAClaimIfOneExistsWithThatID() throws ValidationException {
+		ExpenseClaim claim = new ExpenseClaim("foo", new Date(1000), new Date(2000));
 		list.addClaim(claim);
-		
+
 		ExpenseClaim retrievedClaim = list.getClaimByID(claim.getID());
 		assertEquals(claim, retrievedClaim);
 	}
@@ -28,11 +30,11 @@ public class ExpenseClaimListTests extends TestCase {
 		ExpenseClaim retrievedClaim = list.getClaimByID(UUID.randomUUID());
 		assertNull(retrievedClaim);
 	}
-	
-	public void testThatGetClaimByIDFindsNothingIfNoClaimExistsWithThatID() {
-		ExpenseClaim claim = new ExpenseClaim("foo");
+
+	public void testThatGetClaimByIDFindsNothingIfNoClaimExistsWithThatID() throws ValidationException {
+		ExpenseClaim claim = new ExpenseClaim("foo", new Date(1000), new Date(2000));
 		list.addClaim(claim);
-		
+
 		ExpenseClaim retrievedClaim = list.getClaimByID(UUID.randomUUID());
 		assertNull(retrievedClaim);
 	}

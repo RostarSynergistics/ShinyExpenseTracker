@@ -106,7 +106,7 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 		controller = new ExpenseClaimController(persister);
 		Application.setExpenseClaimController(controller);
 
-		claim = new ExpenseClaim("Test Claim");
+		claim = new ExpenseClaim("Test Claim", new Date(1000), new Date(2000));
 		list.addClaim(claim);
 		Intent intent = new Intent();
 		intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());

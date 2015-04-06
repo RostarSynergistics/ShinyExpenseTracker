@@ -60,7 +60,7 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 	}
 
 	public void testThatTappingOnStartDateOpensDateDialog() {
-		assertFalse(activity.getStartDateDialog().isShowing());
+		assertNull(activity.getAlertDialog());
 
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {
@@ -70,11 +70,11 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 
 		instrumentation.waitForIdleSync();
 
-		assertTrue(activity.getStartDateDialog().isShowing());
+		assertNotNull(activity.getAlertDialog());
 	}
 
 	public void testThatTappingOnEndDateOpensDateDialog() {
-		assertFalse(activity.getEndDateDialog().isShowing());
+		assertNull(activity.getAlertDialog());
 
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {
@@ -84,7 +84,7 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 
 		instrumentation.waitForIdleSync();
 
-		assertTrue(activity.getEndDateDialog().isShowing());
+		assertNotNull(activity.getAlertDialog());
 	}
 
 	public void testThatInputtingAnEndDateThatIsBeforeTheStartDateShowsAnAlert() {
@@ -100,7 +100,7 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 
 		instrumentation.waitForIdleSync();
 
-		assertTrue("Date Range error AlertDialog is not showing", activity.getAlertDialog().isShowing());
+		assertNotNull("Date Range error AlertDialog is not showing", activity.getAlertDialog());
 	}
 
 	public void testThatInputtingAnEndDateThatIsAfterTheStartDateIsValid() {

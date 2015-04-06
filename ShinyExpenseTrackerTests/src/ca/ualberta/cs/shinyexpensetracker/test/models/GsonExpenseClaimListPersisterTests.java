@@ -7,6 +7,7 @@ import java.util.Date;
 import junit.framework.TestCase;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
@@ -22,8 +23,10 @@ public class GsonExpenseClaimListPersisterTests extends TestCase {
 	/**
 	 * Tests GsonExpenseClaimListPersister's ability to save and load an
 	 * ExpenseClaimList.
+	 * 
+	 * @throws ValidationException
 	 */
-	public void testPersistenceOfExpenseClaims() {
+	public void testPersistenceOfExpenseClaims() throws ValidationException {
 		ExpenseClaimList list = new ExpenseClaimList();
 		ExpenseClaim claim = getTestClaim();
 		list.addClaim(claim);
@@ -42,7 +45,7 @@ public class GsonExpenseClaimListPersisterTests extends TestCase {
 		}
 	}
 
-	private ExpenseClaim getTestClaim() {
+	private ExpenseClaim getTestClaim() throws ValidationException {
 		Date startDate = new Date(5000);
 		Date endDate = new Date(6000);
 

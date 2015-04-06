@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 
 /**
  * Class that represents an expense claim created by a user.
@@ -48,49 +48,66 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	private ArrayList<ExpenseItem> expenseItems = new ArrayList<ExpenseItem>();
 	private ArrayList<String> comments = new ArrayList<String>();
 
-	public ExpenseClaim(String name) {
-		this(name, new Date(), null, Status.IN_PROGRESS, new TagList());
-	}
-
-	public ExpenseClaim(String name, Date startDate) {
-		this(name, startDate, null, Status.IN_PROGRESS, new TagList());
-	}
-
-	public ExpenseClaim(String name, Date startDate, Date endDate) {
+	public ExpenseClaim(String name, Date startDate, Date endDate) throws ValidationException {
 		this(name, startDate, endDate, Status.IN_PROGRESS, new TagList());
 	}
 
-	public ExpenseClaim(String name, Date startDate, Date endDate, Status status) {
+	public ExpenseClaim(String name, Date startDate, Date endDate, Status status) throws ValidationException {
 		this(name, startDate, endDate, status, new TagList());
 	}
 
-	public ExpenseClaim(UUID id, String name, Date startDate, Date endDate, Status status) {
+	public ExpenseClaim(UUID id, String name, Date startDate, Date endDate, Status status) throws ValidationException {
 		this(id, name, startDate, endDate, status, null);
 	}
 
-	public ExpenseClaim(String name, Date startDate, Date endDate, Status status, TagList tagList) {
-		this(UUID.randomUUID(),  name, startDate, endDate, status, tagList);
+	public ExpenseClaim(String name, Date startDate, Date endDate, Status status, TagList tagList)
+			throws ValidationException {
+		this(UUID.randomUUID(), name, startDate, endDate, status, tagList);
 	}
 
-	public ExpenseClaim(UUID id, String name, Date startDate, Date endDate, Status status, TagList tagList) {
+	public ExpenseClaim(UUID id, String name, Date startDate, Date endDate, Status status, TagList tagList)
+			throws ValidationException {
 		super();
+
+		validateName(name);
+		validateDates(startDate, endDate);
+
 		this.id = id;
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.status = status;
 		this.tagList = tagList;
-		this.userId = Application.getUser().getUserId();
+	}
+
+	private void validateDates(Date newStartDate, Date newEndDate) throws ValidationException {
+		if (newStartDate == null) {
+			throw new ValidationException("Expense Claim requires a start date.");
+		}
+
+		if (newEndDate == null) {
+			throw new ValidationException("Expense Claim requires a end date.");
+		}
+
+		if (newStartDate.after(newEndDate)) {
+			throw new ValidationException("Expense Claim's start date must be before or equal to its end date.");
+		}
+	}
+
+	public void validateName(String newName) throws ValidationException {
+		if (newName == null || newName.length() == 0) {
+			throw new ValidationException("Expense Claim requires a name.");
+		}
 	}
 
 	public UUID getID() {
 		return id;
 	}
-	
+
 	public void setUserId(int id) {
 		this.userId = id;
 	}
-	
+
 	public int getUserId() {
 		return userId;
 	}

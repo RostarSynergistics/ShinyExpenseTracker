@@ -14,7 +14,6 @@ import java.util.UUID;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -63,7 +62,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 	private ImageButton button;
 	private Uri imageFileUri;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
-	public Dialog alertDialog;
+	public ValidationErrorAlertDialog alertDialog;
 	private boolean isEditing = false;
 	private ExpenseItem item;
 	private ExpenseClaim claim;

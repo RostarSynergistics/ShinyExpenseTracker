@@ -44,6 +44,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
@@ -77,12 +78,20 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 		Application.setExpenseClaimController(controller);
 	}
 
-	/**
-	 * Add a claim to the claimsList safely
-	 * 
-	 * @param claim
-	 * @return
-	 */
+	private ExpenseClaim addClaim(final String name) {
+		return addClaim(name, new Date(6000), new Date(7000));
+	}
+
+	private ExpenseClaim addClaim(final String name, final Date startDate, final Date endDate) {
+		try {
+			return addClaim(new ExpenseClaim(name, startDate, endDate));
+		} catch (ValidationException e) {
+			e.printStackTrace();
+			fail();
+			return null;
+		}
+	}
+
 	private ExpenseClaim addClaim(final ExpenseClaim claim) {
 		// Run on the activity thread.
 		activity.runOnUiThread(new Runnable() {
@@ -91,7 +100,9 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 				claimsList.addClaim(claim);
 			}
 		});
+
 		getInstrumentation().waitForIdleSync();
+
 		return claim;
 	}
 
@@ -133,7 +144,7 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 		activity = getActivity();
 		
 		// Not this test's responsibility to check what was deleted.
-		addClaim(new ExpenseClaim("Test Claim"));
+		addClaim("Test Claim");
 
 		// Fake long press
 		//
@@ -150,13 +161,12 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	 * Adds a claim and ensures that it is visible in the listview.
 	 */
 	public void testAddedClaimIsVisible() {
-		
 		Application.setUserType(Type.Claimant);
 		
 		activity = getActivity();
 		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
 		
-		ExpenseClaim claim = addClaim(new ExpenseClaim("Test Claim"));
+		ExpenseClaim claim = addClaim("Test Claim");
 		ExpenseClaim visibleClaim;
 
 		// Get the last position in the list
@@ -184,11 +194,10 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 		activity = getActivity();
 		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
 		
-		ExpenseClaim[] testingClaims = {
-				new ExpenseClaim("Old Claim", new Date(1000)),
-				new ExpenseClaim("Mid Claim", new Date(2000)),
-				new ExpenseClaim("New Claim", new Date(3000)),
-		};
+		ExpenseClaim[] testingClaims = { new ExpenseClaim("Old Claim", new Date(1000), new Date(2000)),
+				new ExpenseClaim("Mid Claim", new Date(2000), new Date(3000)),
+				new ExpenseClaim("New Claim", new Date(3000), new Date(4000)) };
+
 		int numTests = 0;
 
 		// Check that our test case items compare correctly
@@ -258,17 +267,16 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	 * test, but things that are not equal must be on the outside. Testing for
 	 * outside values is done in testClaimsSorted
 	 */
-	public void testEqualSorted() {
+	public void testEqualSorted() throws ValidationException {
 		
 		Application.setUserType(Type.Claimant);
 		
 		activity = getActivity();
 		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
-		
-		ExpenseClaim claim1 = addClaim(new ExpenseClaim("Mid Claim 1", new Date(2000)));
-		addClaim(new ExpenseClaim("Old Claim", new Date(1000)));
-		addClaim(new ExpenseClaim("New Claim", new Date(3000)));
-		ExpenseClaim claim2 = addClaim(new ExpenseClaim("Mid Claim 2", new Date(2000)));
+		ExpenseClaim claim1 = addClaim(new ExpenseClaim("Mid Claim 1", new Date(2000), new Date(3000)));
+		addClaim(new ExpenseClaim("Old Claim", new Date(1000), new Date(2000)));
+		addClaim(new ExpenseClaim("New Claim", new Date(3000), new Date(4000)));
+		ExpenseClaim claim2 = addClaim(new ExpenseClaim("Mid Claim 2", new Date(2000), new Date(3000)));
 
 		// index 0 newer than index 1
 		assertEquals(1, getClaim(0).compareTo(getClaim(1)));
@@ -285,14 +293,16 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	/**
 	 * Deletes a claim and ensure it isn't visible in the listview. Does not
 	 * test dialogs.
+	 * 
+	 * @throws ValidationException
 	 */
-	public void testDeleteVisibleClaim() {
+	public void testDeleteVisibleClaim() throws ValidationException {
 		
 		Application.setUserType(Type.Claimant);
 		
 		activity = getActivity();
 		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
-		
+        //
 		// Build 2 claims with dates so that claim 1 < claim 2.
 		TagList tags1 = new TagList();
 		tags1.addTag(new Tag("Test 1"));

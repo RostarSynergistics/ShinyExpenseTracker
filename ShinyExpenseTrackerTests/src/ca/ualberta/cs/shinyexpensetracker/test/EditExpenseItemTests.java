@@ -70,7 +70,7 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 		controller = new ExpenseClaimController(persister);
 		Application.setExpenseClaimController(controller);
 
-		claim = new ExpenseClaim("test claim");
+		claim = new ExpenseClaim("test claim", new Date(1000), new Date(2000));
 		res = getInstrumentation().getTargetContext().getResources();
 		imageSmall = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
 		imageBig = BitmapFactory.decodeResource(res, R.drawable.keyhole_nebula_hubble_1999);

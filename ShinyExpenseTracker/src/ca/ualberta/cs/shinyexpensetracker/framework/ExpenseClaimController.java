@@ -67,8 +67,10 @@ public class ExpenseClaimController {
 	 *            Its end date.
 	 * @return The new claim.
 	 * @throws IOException
+	 * @throws ValidationException
 	 */
-	public ExpenseClaim addExpenseClaim(String name, Date startDate, Date endDate) throws IOException {
+	public ExpenseClaim addExpenseClaim(String name, Date startDate, Date endDate) throws IOException,
+			ValidationException {
 		ExpenseClaim newClaim = new ExpenseClaim(name, startDate, endDate);
 
 		claimList.addClaim(newClaim);
@@ -123,8 +125,10 @@ public class ExpenseClaimController {
 	 *            The new end date.
 	 * @return The updated expense claim.
 	 * @throws IOException
+	 * @throws ValidationException
 	 */
-	public ExpenseClaim updateExpenseClaim(UUID id, String name, Date startDate, Date endDate) throws IOException {
+	public ExpenseClaim updateExpenseClaim(UUID id, String name, Date startDate, Date endDate) throws IOException,
+			ValidationException {
 		ExpenseClaim claim = claimList.getClaimByID(id);
 
 		claim.setName(name);

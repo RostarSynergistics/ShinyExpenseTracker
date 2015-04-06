@@ -1,6 +1,5 @@
 package ca.ualberta.cs.shinyexpensetracker.test.framework;
 
-import java.io.IOException;
 import java.util.Date;
 
 import junit.framework.TestCase;
@@ -26,7 +25,7 @@ public class ExpenseClaimControllerTests extends TestCase {
 		controller = new ExpenseClaimController(persister);
 	}
 
-	public void testThatAddingANewExpenseClaimWorks() throws IOException {
+	public void testThatAddingANewExpenseClaimWorks() throws Exception {
 		final String name = "FooBar";
 		final Date startDate = new Date(6000);
 		final Date endDate = new Date(7000);
@@ -42,7 +41,7 @@ public class ExpenseClaimControllerTests extends TestCase {
 		assertTrue("Persister's .save() wasn't called.", persister.wasSaveCalled());
 	}
 
-	public void testThatUpdatingAnExistingExpenseClaimWorks() throws IOException {
+	public void testThatUpdatingAnExistingExpenseClaimWorks() throws Exception {
 		ExpenseClaim oldClaim = new ExpenseClaim("FooBar", new Date(6000), new Date(7000));
 		claimList.addClaim(oldClaim);
 

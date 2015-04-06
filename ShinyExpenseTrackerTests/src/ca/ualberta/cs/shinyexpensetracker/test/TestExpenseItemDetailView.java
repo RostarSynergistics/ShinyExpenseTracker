@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 import android.app.Instrumentation.ActivityMonitor;
@@ -59,7 +60,7 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(claimList));
 		Application.setExpenseClaimController(controller);
 
-		claim = new ExpenseClaim("test claim");
+		claim = new ExpenseClaim("test claim", new Date(1000), new Date(2000));
 		Calendar newDate = Calendar.getInstance();
 		newDate.set(2000, 00, 01);
 

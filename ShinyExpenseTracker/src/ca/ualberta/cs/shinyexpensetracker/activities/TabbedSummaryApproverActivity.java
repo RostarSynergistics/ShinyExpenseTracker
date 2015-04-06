@@ -50,7 +50,8 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 
 		final ExpenseClaim claim = controller.getExpenseClaimByID(claimID);
 
-		if (claim.getComments().size() == 0) {
+		if (claim
+				.getComments().size() == 0) {
 			adb.setMessage("You must comment on a claim before you can approve it");
 
 			adb.setNeutralButton("Ok", new DialogInterface.OnClickListener() {

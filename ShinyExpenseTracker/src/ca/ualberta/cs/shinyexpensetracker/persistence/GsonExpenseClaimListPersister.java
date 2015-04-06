@@ -1,12 +1,13 @@
 package ca.ualberta.cs.shinyexpensetracker.persistence;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import ca.ualberta.cs.shinyexpensetracker.es.ESClaimManager;
 import ca.ualberta.cs.shinyexpensetracker.es.data.ConnectivityChecker;
+import ca.ualberta.cs.shinyexpensetracker.es.data.ElasticSearchSave;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
@@ -22,7 +23,7 @@ import com.google.gson.Gson;
 public class GsonExpenseClaimListPersister implements IExpenseClaimListPersister {
 	private final IPersistenceStrategy persistenceStrategy;
 	private final Gson gson;
-
+	ExpenseClaimList list;
 	/**
 	 * Constructor.
 	 * 
@@ -35,7 +36,22 @@ public class GsonExpenseClaimListPersister implements IExpenseClaimListPersister
 
 	@Override
 	public ExpenseClaimList loadExpenseClaims() throws IOException {
+		
 		String travelClaimsListData = persistenceStrategy.load();
+		ConnectivityChecker checker = new ConnectivityChecker();
+		Context context = Application.getAppContext();
+		ElasticSearchLoad load = new ElasticSearchLoad();
+		
+		if(checker.isNetworkAvailable(context)){
+			try {
+				return load.execute().get();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		if (travelClaimsListData.equals("")) {
 			return new ExpenseClaimList();
 		} else {
@@ -49,32 +65,32 @@ public class GsonExpenseClaimListPersister implements IExpenseClaimListPersister
 		persistenceStrategy.save(travelClaimsString);
 		ConnectivityChecker checker = new ConnectivityChecker();
 		Context context = Application.getAppContext();
+		
 		if(checker.isNetworkAvailable(context)){
-			Log.d("WWJD", "True");
 			new ElasticSearchSave().execute(list);
 		}
-		Log.d("WWJD", "False");
 		
-		new ElasticSearchSave().execute(list);
 		
 	}
 	
-	private class ElasticSearchSave extends AsyncTask<ExpenseClaimList, Void, Boolean>{
+	
+	private class ElasticSearchLoad extends AsyncTask<Void, Void, ExpenseClaimList>{
 		
 		ESClaimManager manager = new ESClaimManager();
-		@Override
-		protected Boolean doInBackground(ExpenseClaimList... claimLists) {
-			try {
-				manager.insertClaimList(claimLists[0]);
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-				return false;
-			} catch (IOException e) {
-				e.printStackTrace();
-				return false;
-			}
-			return true;
-		}
 		
+		@Override
+		protected ExpenseClaimList doInBackground(Void... params) {
+			list = manager.getClaimList();
+			return manager.getClaimList();
+		}
+		@Override
+		protected void onPostExecute(ExpenseClaimList result) {
+			list = result;
+		}
+		public ExpenseClaimList getList() {
+			return list;
+		}
+				
 	}
+	
 }

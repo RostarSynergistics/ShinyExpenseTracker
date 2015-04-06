@@ -28,7 +28,13 @@
     </item>
     
     <item android:id="@+id/submitClaim" 
-          android:title="@string/submit_claim" android:onClick="submitClaimMenuItem">
+          android:title="@string/submit_claim" 
+          android:onClick="submitClaimMenuItem">
      </item>
+    <item 
+        android:id="@+id/viewComments" 
+        android:onClick="viewCommentsMenuItem" 
+        android:title="@string/view_comments">
+    </item>
 
 </menu>

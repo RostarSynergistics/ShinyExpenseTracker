@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.adapters.DestinationItemAdapter;
+import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 
@@ -40,9 +41,9 @@ public class DestinationAdapterTest extends AndroidTestCase {
 				);
 		
 		// Create some expenses
-		hollywood = new Destination("Hollywood", "I'm famous!");
-		classyHotel = new Destination("Geneva", "I have toooooo much monneeeeyyy!!");
-		bollywood = new Destination("Bollywood", "I've always wanted to be in a musical");
+		hollywood = new Destination("Hollywood", "I'm famous!", new Coordinate(34.1, -118.33));
+		classyHotel = new Destination("Geneva", "I have toooooo much monneeeeyyy!!", new Coordinate(46.2, 6.15));
+		bollywood = new Destination("Bollywood", "I've always wanted to be in a musical", new Coordinate(18.975, 72.8258));
 		
 		// Set up the thing we're trying to test
 		adapter = new DestinationItemAdapter(claim, getContext());

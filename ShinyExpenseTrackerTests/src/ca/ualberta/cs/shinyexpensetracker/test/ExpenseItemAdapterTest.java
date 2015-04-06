@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.adapters.ExpenseItemAdapter;
+import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 
@@ -47,6 +48,7 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 				ExpenseItem.Currency.CAD,
 				"The fanciest pants",
 				null,
+				null,
 				false);
 
 		classyHotel = new ExpenseItem(
@@ -58,6 +60,7 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 				"FACT: Classy hotels only exist in europe",
 				// Empty bitmap
 				Bitmap.createBitmap(10, 10, Bitmap.Config.RGB_565),
+				new Coordinate(46.22, 6.15),
 				false);
 		
 		scrumptiousFood = new ExpenseItem(
@@ -67,6 +70,7 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 				new BigDecimal(894.50),
 				ExpenseItem.Currency.CAD,
 				"Who puts icecream on fish eggs?",
+				null,
 				null,
 				true);
 		
@@ -79,7 +83,7 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 	 */
 	public void testGetItem() {
 		// Add the expense
-		claim.addExpense(fancyPants);
+		claim.addExpenseItem(fancyPants);
 		adapter.notifyDataSetChanged();
 		assertEquals(fancyPants, adapter.getItem(0));
 		// Easy peasy.
@@ -89,7 +93,7 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 	 * Check that the position is the expected position
 	 */
 	public void testGetItemId() {
-		claim.addExpense(classyHotel);
+		claim.addExpenseItem(classyHotel);
 		adapter.notifyDataSetChanged();
 		assertEquals(0, adapter.getItemId(0));
 	}
@@ -99,13 +103,13 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 	 */
 	public void testGetCount() {
 		// Add just one item
-		claim.addExpense(fancyPants);
+		claim.addExpenseItem(fancyPants);
 		adapter.notifyDataSetChanged();
 		assertEquals(1, adapter.getCount());
 
 		// Add many an item
-		claim.addExpense(classyHotel);
-		claim.addExpense(scrumptiousFood);
+		claim.addExpenseItem(classyHotel);
+		claim.addExpenseItem(scrumptiousFood);
 		adapter.notifyDataSetChanged();
 		assertEquals(3, adapter.getCount());
 		
@@ -127,8 +131,8 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 	 * we expect to see. 
 	 */
 	public void testConsistentGetItem() {
-		claim.addExpense(fancyPants);
-		claim.addExpense(classyHotel);
+		claim.addExpenseItem(fancyPants);
+		claim.addExpenseItem(classyHotel);
 		claim.removeExpense(fancyPants);
 		adapter.notifyDataSetChanged();
 		
@@ -139,7 +143,7 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 	 * Checks that the item data in the fields are what we expect
 	 */
 	public void testItemData() {
-		claim.addExpense(scrumptiousFood);
+		claim.addExpenseItem(scrumptiousFood);
 		adapter.notifyDataSetChanged();
 		View view = adapter.getView(0, null, null);
 
@@ -162,7 +166,7 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 	 */
 	public void testIndicators() {
 		// Flag = True, bitmap = null
-		claim.addExpense(scrumptiousFood);
+		claim.addExpenseItem(scrumptiousFood);
 		adapter.notifyDataSetChanged();
 		View view = adapter.getView(0, null, null);
 
@@ -180,7 +184,7 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 		claim.removeExpense(scrumptiousFood);
 		
 		// Flag = False, bitmap = (exists)
-		claim.addExpense(classyHotel);
+		claim.addExpenseItem(classyHotel);
 		adapter.notifyDataSetChanged();
 		view = adapter.getView(0, null, null);
 		receiptIndicator = (ImageView) view.findViewById(R.id.expenseItemReceiptIndicator);
@@ -197,7 +201,7 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 	
 	public void testMarkIncomplete() {
 		// Flag = True
-		claim.addExpense(scrumptiousFood);
+		claim.addExpenseItem(scrumptiousFood);
 		adapter.notifyDataSetChanged();
 		View view = adapter.getView(0, null, null);
 		

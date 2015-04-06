@@ -21,8 +21,6 @@ public class LoginAsApproverOrClaimantActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sign_in_as_approver_or_claimant);
 		
-		user.setUserId(1);
-		
 	}
 
 	@Override	
@@ -55,10 +53,8 @@ public class LoginAsApproverOrClaimantActivity extends Activity {
 		boolean checked = ((RadioButton) findViewById(R.id.approverRadioButton)).isChecked();
 		
 		if (checked) {
-			user.setUserType(Type.Approver);
 			Application.setUserType(Type.Approver);
 		} else {
-			user.setUserType(Type.Claimant);
 			Application.setUserType(Type.Claimant);
 		}
 	}

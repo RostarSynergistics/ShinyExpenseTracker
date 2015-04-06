@@ -23,7 +23,7 @@ public class ElasticSearchSync {
 	 */
 	public ExpenseClaimList sync(){
 		for(ExpenseClaim claim :cloudList.getClaims()){
-			ExpenseClaim localClaim =localList.getClaim(claim.getUuid());
+			ExpenseClaim localClaim =localList.getClaim(claim.getID());
 			if (localClaim != null){
 				localClaim.setComments(claim.getComments());
 				

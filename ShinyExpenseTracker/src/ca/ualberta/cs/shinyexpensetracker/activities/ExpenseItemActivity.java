@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.UUID;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -33,14 +34,18 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
+import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
 
 /**
  * Covers Issues 5, 15, and 29
@@ -55,8 +60,10 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
  */
 public class ExpenseItemActivity extends Activity implements OnClickListener {
 
+
 	public static final String EXPENSE_INDEX = "expenseIndex";
 	public static final String CLAIM_INDEX = "claimIndex";
+
 	// DatePickerDialog from:
 	// http://androidopentutorials.com/android-datepickerdialog-on-edittext-click-event/
 	// On March 2 2015
@@ -75,6 +82,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 	private HashMap<String, Integer> currenciesMap = new HashMap<String, Integer>();
 	private ExpenseClaimController controller;
 	private Drawable defaultDrawableOnImageButton;
+	private Coordinate expenseItemGeolocation = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,15 +99,15 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		if (bundle != null) {
 			// we have to receive a Claim ID so that we know to what claim to
 			// save an item
-			int claimId = (Integer) bundle.get(CLAIM_INDEX);
-			Integer expenseItemId = (Integer) bundle.get(EXPENSE_INDEX);
+			UUID claimID = (UUID) bundle.getSerializable(IntentExtraIDs.CLAIM_ID);
+			UUID expenseItemID = (UUID) bundle.getSerializable(IntentExtraIDs.EXPENSE_ITEM_ID);
 			controller = Application.getExpenseClaimController();
-			claim = controller.getExpenseClaim(claimId);
+			claim = controller.getExpenseClaimByID(claimID);
 			// if we received an Item ID
 			// then we are editing an item
 			// fetch the item and preset all fields with its values
-			if (expenseItemId != null) {
-				item = claim.getExpense(expenseItemId);
+			if (expenseItemID != null) {
+				item = claim.getExpenseItemByID(expenseItemID);
 				isEditing = true;
 				populateViews();
 			}
@@ -128,29 +136,30 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 
 	/*
 	 * Fixes null pointer on return from camera
-	 * http://stackoverflow.com/questions/8248327/my-android-camera-uri-is-returning-a-null-value-but-the-samsung-fix-is-in-place
-	 * March 26, 2015
+	 * http://stackoverflow.com/questions
+	 * /8248327/my-android-camera-uri-is-returning
+	 * -a-null-value-but-the-samsung-fix-is-in-place March 26, 2015
 	 */
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-	    super.onSaveInstanceState(outState);
-	    if (imageFileUri != null) {
-	        outState.putString("cameraImageUri", imageFileUri.toString());
-	    }
+		super.onSaveInstanceState(outState);
+		if (imageFileUri != null) {
+			outState.putString("cameraImageUri", imageFileUri.toString());
+		}
 	}
 
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-	    super.onRestoreInstanceState(savedInstanceState);
-	    if (savedInstanceState.containsKey("cameraImageUri")) {
-	        imageFileUri = Uri.parse(savedInstanceState.getString("cameraImageUri"));
-	        // Just in case the parsing doesn't work
-	        if (imageFileUri != null) {
-	        	// Create a new drawable instance from the Uri instead of 
-	        	// using the existing fs bitmap object
+		super.onRestoreInstanceState(savedInstanceState);
+		if (savedInstanceState.containsKey("cameraImageUri")) {
+			imageFileUri = Uri.parse(savedInstanceState.getString("cameraImageUri"));
+			// Just in case the parsing doesn't work
+			if (imageFileUri != null) {
+				// Create a new drawable instance from the Uri instead of
+				// using the existing fs bitmap object
 				button.setImageDrawable(Drawable.createFromPath(imageFileUri.getPath()));
-	        }
-	    }
+			}
+		}
 	}
 
 	/**
@@ -161,8 +170,14 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 
 		setEditTextValue(R.id.expenseItemNameEditText, item.getName().toString());
 		setEditTextValue(R.id.expenseItemDateEditText, dateFormatter.format(item.getDate()));
-		setEditTextValue(R.id.expesenItemDescriptionEditText, item.getDescription().toString());
+		setEditTextValue(R.id.expenseItemDescriptionEditText, item.getDescription().toString());
 		setEditTextValue(R.id.expenseItemAmountEditText, item.getAmountSpent().toString());
+		if(item.getGeolocation() != null)
+		{
+			TextView coordValue = (TextView) findViewById(R.id.expenseItemCoordinatesValueTextView);
+			coordValue.setText(item.getGeolocation().toString());
+			expenseItemGeolocation = item.getGeolocation();
+		}
 		Spinner s = (Spinner) findViewById(R.id.expenseItemCategorySpinner);
 		s.setSelection(categoriesMap.get(item.getCategory().toString()));
 		s = (Spinner) findViewById(R.id.expenseItemCurrencySpinner);
@@ -306,7 +321,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		Spinner categorySpinner = (Spinner) findViewById(R.id.expenseItemCategorySpinner);
 		EditText amountText = (EditText) findViewById(R.id.expenseItemAmountEditText);
 		Spinner currencySpinner = (Spinner) findViewById(R.id.expenseItemCurrencySpinner);
-		EditText descriptionText = (EditText) findViewById(R.id.expesenItemDescriptionEditText);
+		EditText descriptionText = (EditText) findViewById(R.id.expenseItemDescriptionEditText);
 
 		// get the name of the expense item
 		String name = "";
@@ -387,23 +402,13 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		}
 
 		if (isEditing) {
-			// Update the existing expense
-			item.setName(name);
-			item.setDate(date);
-			item.setCategory(category);
-			item.setAmountSpent(amount);
-			item.setCurrency(currency);
-			item.setDescription(description);
-			item.setReceiptPhoto(bm);
-		} else {
-			// Add a new expense
-			ExpenseItem expense = new ExpenseItem(name, date, category, amount, currency, description, bm);
-			claim.addExpense(expense);
-		}
-		
-		controller.update();
 
-		controller.update();
+			controller.updateExpenseItemOnClaim(claim.getID(), item.getID(), name, date, category, amount, currency,
+					description, bm, expenseItemGeolocation);
+		} else {
+			controller.addExpenseItemToClaim(claim.getID(), name, date, category, amount, currency, description, bm, expenseItemGeolocation);
+
+		}
 
 		return true;
 	}
@@ -434,6 +439,12 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 	}
 
+	public void onCoordinatesValueTextViewClick(View v) {
+		Intent geolocationViewIntent = new Intent(ExpenseItemActivity.this,
+				GeolocationViewActivity.class);
+		startActivityForResult(geolocationViewIntent, GeolocationRequestCode.SET_GEOLOCATION);
+	}
+	
 	/**
 	 * Runs on return from the camera app. Displays the image taken in the
 	 * expenseItemImageButton
@@ -448,6 +459,15 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 				Toast.makeText(this, "Result: Cancelled", Toast.LENGTH_SHORT).show();
 			} else {
 				Toast.makeText(this, "Result: ???", Toast.LENGTH_SHORT).show();
+			}
+		}
+		if (requestCode == GeolocationRequestCode.SET_GEOLOCATION) {
+			if (resultCode == RESULT_OK) {
+				double latitude = data.getDoubleExtra("latitude", Coordinate.DEFAULT_COORDINATE.getLatitude());
+				double longitude = data.getDoubleExtra("longitude", Coordinate.DEFAULT_COORDINATE.getLongitude());
+				expenseItemGeolocation = new Coordinate(latitude, longitude);
+				TextView coordValue = (TextView) findViewById(R.id.expenseItemCoordinatesValueTextView);
+				coordValue.setText(expenseItemGeolocation.toString() + "\n(tap here to change)");
 			}
 		}
 	}

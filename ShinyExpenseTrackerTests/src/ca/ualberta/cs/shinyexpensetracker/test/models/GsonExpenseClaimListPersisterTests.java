@@ -7,6 +7,7 @@ import java.util.Date;
 import junit.framework.TestCase;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
@@ -28,16 +29,15 @@ public class GsonExpenseClaimListPersisterTests extends TestCase {
 		ExpenseClaim claim = getTestClaim();
 		list.addClaim(claim);
 
-		IExpenseClaimListPersister persister = new GsonExpenseClaimListPersister(
-				new MockPersistenceStrategy());
+		IExpenseClaimListPersister persister = new GsonExpenseClaimListPersister(new MockPersistenceStrategy());
 
 		try {
 			persister.saveExpenseClaims(list);
 			ExpenseClaimList newList = persister.loadExpenseClaims();
 			assertEquals(1, newList.getCount());
-			ExpenseClaim loadedClaim = newList.getClaim(0);
+			ExpenseClaim loadedClaim = newList.getClaimAtPosition(0);
 			assertEquals(claim, loadedClaim);
-			assertEquals(claim.getExpense(0), loadedClaim.getExpense(0));
+			assertEquals(claim.getExpenseItemAtPosition(0), loadedClaim.getExpenseItemAtPosition(0));
 		} catch (IOException e) {
 			fail();
 		}
@@ -47,14 +47,19 @@ public class GsonExpenseClaimListPersisterTests extends TestCase {
 		Date startDate = new Date(5000);
 		Date endDate = new Date(6000);
 
-		ExpenseClaim claim = new ExpenseClaim("test", startDate, endDate,
-				ExpenseClaim.Status.IN_PROGRESS);
-		
+		ExpenseClaim claim = new ExpenseClaim("test", startDate, endDate, ExpenseClaim.Status.IN_PROGRESS);
+
 		int[] colors = new int[] { 1, 2, 3, 4 };
-		claim.addExpense(new ExpenseItem("test", new Date(5000),
-				ExpenseItem.Category.ACCOMODATION, new BigDecimal("20.00"),
-				ExpenseItem.Currency.CAD, "Description", Bitmap.createBitmap(colors, 2, 2, Config.ALPHA_8)));
-		
+
+		claim.addExpenseItem(new ExpenseItem("test",
+				new Date(5000),
+				ExpenseItem.Category.ACCOMODATION,
+				new BigDecimal("20.00"),
+				ExpenseItem.Currency.CAD,
+				"Description",
+				Bitmap.createBitmap(colors, 2, 2, Config.ALPHA_8),
+				new Coordinate(1.0, -1.0)));
+
 		return claim;
 	}
 

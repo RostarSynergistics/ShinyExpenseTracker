@@ -7,22 +7,22 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimListViewer;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 
-public class ExpenseListTagFilter extends ExpenseClaimFilter implements ExpenseClaimListViewer{
+public class ExpenseListTagFilter extends ExpenseClaimFilter implements ExpenseClaimListViewer {
 
 	private ArrayList<ExpenseClaim> cachedClaims;
 	private TagList filter;
-	
+
 	public ExpenseListTagFilter() {
 		filter = new TagList();
 	}
-	
+
 	public ExpenseListTagFilter(TagList tags) {
 		filter = tags;
 	}
-	
+
 	@Override
-	public ExpenseClaim getClaim(int index) {
-		return getClaims().get(index);
+	public ExpenseClaim getClaimAtPosition(int position) {
+		return getClaims().get(position);
 	}
 
 	@Override

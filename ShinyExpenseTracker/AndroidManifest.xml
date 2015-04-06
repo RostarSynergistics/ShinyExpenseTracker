@@ -73,7 +73,7 @@
             android:label="@string/title_activity_geolocation_view" >
         </activity>
         <activity
-            android:name="ca.ualberta.cs.shinyexpensetracker.activities.MapViewActivity"
+            android:name=".activities.MapViewActivity"
             android:label="@string/title_activity_map_view" >
         </activity>
         <activity
@@ -101,7 +101,7 @@
         </receiver>
 
         <activity
-            android:name="ca.ualberta.cs.shinyexpensetracker.activities.ViewCommentsActivity"
+            android:name=".activities.ViewCommentsActivity"
             android:label="@string/title_activity_view_comments" >
         </activity>
     </application>

@@ -53,7 +53,7 @@ public class AddDestinationActivity extends Activity {
 	private Destination destination;
 	private int destinationIndex;
 	
-	private Coordinate coord = new Coordinate();
+	private Coordinate coord = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +129,7 @@ public class AddDestinationActivity extends Activity {
 			dialog.show();
 			return false;
 		}
-		if (coord.equals(new Coordinate())) {
+		if (coord == null) {
 			dialog = new AlertDialog.Builder(this)
 			.setMessage("Destination requires a location")
 			.setNeutralButton(android.R.string.ok,
@@ -173,8 +173,7 @@ public class AddDestinationActivity extends Activity {
 		if (resultCode == RESULT_OK) {
 			double latitude = data.getDoubleExtra("latitude", Coordinate.NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
 			double longitude = data.getDoubleExtra("longitude", Coordinate.NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
-			coord.setLatitude(latitude);
-			coord.setLongitude(longitude);
+			coord = new Coordinate(latitude, longitude);
 			TextView coordValue = (TextView) findViewById(R.id.coordinatesValueTextView);
 			coordValue.setText(coord.toString() + "\n(tap here to change)");
 		}

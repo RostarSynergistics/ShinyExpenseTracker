@@ -6,6 +6,7 @@ public class Coordinate extends Model<Coordinate> {
 	private double latitude;
 	private double longitude;
 	public static final Coordinate DEFAULT_COORDINATE = new Coordinate(53.526821, -113.526591);
+	public static final double LONGEST_DISTANCE_BETWEEN_POINTS = 20037.5;
 	public Coordinate() {
 		super();
 	}

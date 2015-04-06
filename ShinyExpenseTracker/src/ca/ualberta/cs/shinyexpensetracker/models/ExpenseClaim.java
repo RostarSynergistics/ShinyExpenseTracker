@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+
 /**
  * Class that represents an expense claim created by a user.
  */
@@ -300,7 +302,35 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 
 	}
 
+	private void assignColor() {
+		// get home location
+		User user = Application.getUser();
+		Coordinate home = user.getHomeGeolocation();
+		
+		if (home == null || this.getDestinationCount() == 0) {
+			// if no home geolocation or no destinations in claim
+			// return transparent color
+			this.color =  0x00000000;
+			return;
+		}
+		
+		// get coordinate of the first destination of this claim
+		Destination firstDestination = this.getDestinationAtPosition(0);
+		Coordinate firstDestinationCoordinate = firstDestination.getGeolocation();
+		
+		// get distance in km from first destination to home
+		double distance = firstDestinationCoordinate.distanceTo(home);
+		
+		int opacity = 0xff;
+		int shadeOfGray = (int) (0x20 + Math.floor(224*distance/Coordinate.LONGEST_DISTANCE_BETWEEN_POINTS));
+		
+		this.color = 0xff000000 + shadeOfGray<<16 + shadeOfGray<<8 + shadeOfGray;
+	}
+	
 	public int getColor() {
+		if (this.color == 0x00000000) {
+			assignColor();
+		}
 		return this.color;
 	}
 	

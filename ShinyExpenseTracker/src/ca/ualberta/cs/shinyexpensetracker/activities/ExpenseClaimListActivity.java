@@ -46,14 +46,15 @@ import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
+import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
 import ca.ualberta.cs.shinyexpensetracker.models.User;
 import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
 
 public class ExpenseClaimListActivity 
 	extends Activity 
 	implements IView<ExpenseClaimList> {
-	private static final int SET_GEOLOCATION = 1;
-	private static final Coordinate NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES = new Coordinate(39.03808, 125.7296);
+
+	
 	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
 	private User user = Application.getUser();
@@ -152,7 +153,7 @@ public class ExpenseClaimListActivity
 		case R.id.set_home_geolocation:
 			Intent geolocationViewIntent = new Intent(ExpenseClaimListActivity.this,
 					GeolocationViewActivity.class);
-			startActivityForResult(geolocationViewIntent, SET_GEOLOCATION);
+			startActivityForResult(geolocationViewIntent, GeolocationRequestCode.SET_GEOLOCATION);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -167,8 +168,8 @@ public class ExpenseClaimListActivity
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// Check result is ok
 		if (resultCode == RESULT_OK) {
-			double latitude = data.getDoubleExtra("latitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
-			double longitude = data.getDoubleExtra("longitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
+			double latitude = data.getDoubleExtra("latitude", Coordinate.NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
+			double longitude = data.getDoubleExtra("longitude", Coordinate.NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
 			homeGeolocation.setLatitude(latitude);
 			homeGeolocation.setLongitude(longitude);
 			TextView homeGeolocationValue = (TextView) findViewById(R.id.homeGeolocationValueTextView);

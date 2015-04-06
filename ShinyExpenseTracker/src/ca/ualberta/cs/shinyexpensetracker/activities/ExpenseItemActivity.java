@@ -60,7 +60,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 	public static final String EXPENSE_INDEX = "expenseIndex";
 	public static final String CLAIM_INDEX = "claimIndex";
 	public static final int SET_GEOLOCATION = 1;
-	private static final Coordinate NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES = new Coordinate(39.03808, 125.7296);
+
 	// DatePickerDialog from:
 	// http://androidopentutorials.com/android-datepickerdialog-on-edittext-click-event/
 	// On March 2 2015
@@ -454,8 +454,8 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		}
 		if (requestCode == SET_GEOLOCATION) {
 			if (resultCode == RESULT_OK) {
-				double latitude = data.getDoubleExtra("latitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
-				double longitude = data.getDoubleExtra("longitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
+				double latitude = data.getDoubleExtra("latitude", Coordinate.NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
+				double longitude = data.getDoubleExtra("longitude", Coordinate.NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
 				expenseItemGeolocation.setLatitude(latitude);
 				expenseItemGeolocation.setLongitude(longitude);
 				TextView coordValue = (TextView) findViewById(R.id.expenseItemCoordinatesValueTextView);

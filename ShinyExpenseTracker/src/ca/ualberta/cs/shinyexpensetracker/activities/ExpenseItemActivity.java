@@ -19,14 +19,12 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,6 +34,7 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.DrawableBitmapConverter;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -211,50 +210,6 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 
 	}
 
-	// copied from
-	// https://stackoverflow.com/questions/26842530/roundedimageview-add-border-and-shadow
-	// on March 15, 2015
-	/**
-	 * Convert a Drawable object to Bitmap, scale down if needed
-	 */
-	public Bitmap convertToBitmap(Drawable drawable, int widthPixels, int heightPixels) {
-		Bitmap mutableBitmap = Bitmap.createBitmap(widthPixels, heightPixels, Bitmap.Config.ARGB_8888);
-		Canvas canvas = new Canvas(mutableBitmap);
-		drawable.setBounds(0, 0, widthPixels, heightPixels);
-		drawable.draw(canvas);
-		int sizeInBytes = mutableBitmap.getByteCount();
-		if (sizeInBytes > 65536) {
-			mutableBitmap = scaleImage(mutableBitmap, widthPixels, heightPixels);
-		}
-		return mutableBitmap;
-	}
-
-	/**
-	 * Scale image, if needed.
-	 */
-
-	private Bitmap scaleImage(Bitmap mutableBitmap, int width, int height) {
-		/*
-		 * The max size is 64 KB. Since each pixel is stored in 4 bytes, the max
-		 * number of pixels allowed in the image is 16384. Scale height and
-		 * width appropriately and return a new Bitmap with those values
-		 */
-		int sizeInBytes = mutableBitmap.getByteCount();
-
-		// if it's already smaller, just returns
-		if (sizeInBytes <= 65536) {
-			return mutableBitmap;
-		}
-		double ratio = width / height;
-		final int MAX_PIXELS = 16384;
-		int newWidth = (int) Math.floor(Math.sqrt(MAX_PIXELS * ratio));
-		Log.e("newWidth", String.valueOf(newWidth));
-		int newHeight = (int) Math.floor(Math.sqrt(MAX_PIXELS / ratio));
-		Log.e("newHeight", String.valueOf(newHeight));
-		mutableBitmap = Bitmap.createScaledBitmap(mutableBitmap, newWidth, newHeight, false);
-		return mutableBitmap;
-	}
-
 	private void findViewsById() {
 		date = (EditText) findViewById(R.id.expenseItemDateEditText);
 		date.setInputType(InputType.TYPE_NULL);
@@ -383,7 +338,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 			bm = null;
 		} else {
 			Drawable dr = button.getDrawable();
-			bm = convertToBitmap(dr, dr.getMinimumWidth(), dr.getMinimumHeight());
+			bm = DrawableBitmapConverter.convertToBitmap(dr, dr.getMinimumWidth(), dr.getMinimumHeight());
 		}
 
 		if (isEditing) {

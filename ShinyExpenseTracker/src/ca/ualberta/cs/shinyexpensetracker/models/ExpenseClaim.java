@@ -48,6 +48,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	private TagList tagList = new TagList();
 	private ArrayList<ExpenseItem> expenses = new ArrayList<ExpenseItem>();
 	private ArrayList<String> comments;
+	private int color = 0x00000000;
 
 	public ExpenseClaim(String name) {
 		this(name, new Date(), null, Status.IN_PROGRESS, new TagList());
@@ -266,6 +267,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 				.append(getExpenseItems(), rhs.getExpenseItems())
 				.append(getDestinations(), rhs.getDestinations())
 				.append(getTagList(), rhs.getTagList())
+				.append(getColor(), rhs.getColor())
 				.isEquals();
 	}
 	
@@ -290,5 +292,13 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	public String getComment(int index) {
 		return comments.get(index);
 		
+	}
+
+	public int getColor() {
+		return this.color;
+	}
+	
+	public void setColor(int color) {
+		this.color = color;
 	}
 }

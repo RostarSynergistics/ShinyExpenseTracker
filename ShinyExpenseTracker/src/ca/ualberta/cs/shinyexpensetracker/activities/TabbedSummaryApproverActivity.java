@@ -50,8 +50,7 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 
 		final ExpenseClaim claim = controller.getExpenseClaimByID(claimID);
 
-		if (claim
-				.getComments().size() == 0) {
+		if (claim.getComments().size() == 0) {
 			adb.setMessage("You must comment on a claim before you can approve it");
 
 			adb.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
@@ -79,7 +78,7 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 
 			// disable ability to return a claim
 			m.getItem(2).setEnabled(false);
-			
+
 		}
 	}
 
@@ -108,7 +107,11 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				String comment = commentTextBox.getText().toString();
-				controller.getExpenseClaimByID(claimID).addComment(comment);
+				try {
+					controller.addCommentToClaim(claimID, comment);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
 			}
 		});
 
@@ -156,7 +159,7 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 
 			// disable ability to approve claim
 			m.getItem(0).setEnabled(false);
-			
+
 		}
 	}
 

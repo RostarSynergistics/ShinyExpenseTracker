@@ -6,8 +6,6 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-import ca.ualberta.cs.shinyexpensetracker.framework.Application;
-
 /**
  * Class that represents an expense claim created by a user.
  */

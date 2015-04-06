@@ -22,8 +22,6 @@ public class LoginAsApproverOrClaimantActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sign_in_as_approver_or_claimant);
 		
-		user.setUserId(1);
-		
 	}
 
 	@Override	

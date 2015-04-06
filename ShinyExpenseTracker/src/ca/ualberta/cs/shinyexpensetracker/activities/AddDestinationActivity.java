@@ -42,8 +42,7 @@ public class AddDestinationActivity extends Activity {
 	private UUID claimID;
 
 	private Destination destination;
-	private int destinationIndex;
-	
+
 	private Coordinate coord = null;
 	private UUID destinationID;
 
@@ -77,11 +76,10 @@ public class AddDestinationActivity extends Activity {
 		if (destination != null) {
 			// If we loaded a destination, load the values
 			coord = destination.getGeolocation();
-			
+
 			TextView dest = (TextView) findViewById(R.id.destinationEditText);
 			TextView reason = (TextView) findViewById(R.id.reasonEditText);
 			TextView coordValue = (TextView) findViewById(R.id.coordinatesValueTextView);
-			
 
 			dest.setText(destination.getName());
 			reason.setText(destination.getReasonForTravel());
@@ -120,16 +118,13 @@ public class AddDestinationActivity extends Activity {
 			return false;
 		}
 		if (coord == null) {
-			dialog = new AlertDialog.Builder(this)
-			.setMessage("Destination requires a location")
-			.setNeutralButton(android.R.string.ok,
-					new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog,
-						int which) {
-					dialog.dismiss();
-				}
-			}).create();
+			dialog = new AlertDialog.Builder(this).setMessage("Destination requires a location")
+					.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					}).create();
 			dialog.show();
 			return false;
 		}
@@ -150,11 +145,10 @@ public class AddDestinationActivity extends Activity {
 	}
 
 	public void onGeolocationValueTextViewClick(View v) {
-		Intent geolocationViewIntent = new Intent(AddDestinationActivity.this,
-				GeolocationViewActivity.class);
+		Intent geolocationViewIntent = new Intent(AddDestinationActivity.this, GeolocationViewActivity.class);
 		startActivityForResult(geolocationViewIntent, GeolocationRequestCode.SET_GEOLOCATION);
 	}
-	
+
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// Check result is ok
 		if (resultCode == RESULT_OK) {
@@ -165,7 +159,7 @@ public class AddDestinationActivity extends Activity {
 			coordValue.setText(coord.toString() + "\n(tap here to change)");
 		}
 	}
-	
+
 	/**
 	 * Called when the done button is pressed. Attempts to create the
 	 * destination. If it fails, stops and warns the user. Otherwise, the

@@ -60,7 +60,6 @@ public class ExpenseItem extends Model<ExpenseItem> {
 		CAD, USD, GBP, EUR, CHF, JPY, CNY
 	}
 
-
 	private UUID id;
 
 	private String name;
@@ -69,14 +68,12 @@ public class ExpenseItem extends Model<ExpenseItem> {
 	private BigDecimal amountSpent;
 	private Currency currency;
 	private String description;
-	private Bitmap receiptPhoto;
 	private boolean incompletenessMarker;
 	private Coordinate itemGeolocation;
 	// encoded in Base64
 	private String encodedReceiptPhoto;
 	// temporarily saved to prevent redundant work, but can't be GSON'd
 	private transient Bitmap receiptPhotoBitmap;
-
 
 	public static final boolean COMPLETE = false;
 	public static final boolean INCOMPLETE = true;
@@ -94,9 +91,8 @@ public class ExpenseItem extends Model<ExpenseItem> {
 	 * @param completenessFlag
 	 */
 
-	public ExpenseItem (String name, Date date, Category category, 
-			BigDecimal amountSpent, Currency currency, String description,
-			Bitmap photo, Coordinate geolocation, boolean completenessFlag) {
+	public ExpenseItem(String name, Date date, Category category, BigDecimal amountSpent, Currency currency,
+			String description, Bitmap photo, Coordinate geolocation, boolean completenessFlag) {
 		this.id = UUID.randomUUID();
 
 		this.name = name;
@@ -105,27 +101,25 @@ public class ExpenseItem extends Model<ExpenseItem> {
 		this.amountSpent = amountSpent;
 		this.currency = currency;
 		this.description = description;
-		this.receiptPhoto = photo;
+		this.setReceiptPhoto(photo);
 		this.itemGeolocation = geolocation;
 		this.incompletenessMarker = completenessFlag;
 	}
-	
-	
-	public ExpenseItem (String name, Date date, Category category, 
-			BigDecimal amountSpent, Currency currency, String description, Bitmap photo, Coordinate geolocation) {
+
+	public ExpenseItem(String name, Date date, Category category, BigDecimal amountSpent, Currency currency,
+			String description, Bitmap photo, Coordinate geolocation) {
 		// Call to more specific constructor
-		this(name, date, category, amountSpent, currency, description,
-				photo, geolocation, false);
+		this(name, date, category, amountSpent, currency, description, photo, geolocation, false);
 	}
 
-	public ExpenseItem (String name, Date date, Category category, 
-			BigDecimal amountSpent, Currency currency, String description, Coordinate geolocation) {
+	public ExpenseItem(String name, Date date, Category category, BigDecimal amountSpent, Currency currency,
+			String description, Coordinate geolocation) {
 		// Call to more specific constructor
 		this(name, date, category, amountSpent, currency, description, null, geolocation, false);
 	}
-	
-	public ExpenseItem (String name, Date date, Category category, 
-			BigDecimal amountSpent, Currency currency, String description) {
+
+	public ExpenseItem(String name, Date date, Category category, BigDecimal amountSpent, Currency currency,
+			String description) {
 		// Call to more specific constructor
 		this(name, date, category, amountSpent, currency, description, null, null, false);
 	}
@@ -210,7 +204,7 @@ public class ExpenseItem extends Model<ExpenseItem> {
 		} else {
 			this.receiptPhotoBitmap = photo;
 			this.encodedReceiptPhoto = Base64BitmapConverter.convertToBase64(photo);
-        }
+		}
 
 		notifyViews();
 	}
@@ -249,36 +243,11 @@ public class ExpenseItem extends Model<ExpenseItem> {
 			return false;
 		}
 		ExpenseItem rhs = (ExpenseItem) obj;
-		Boolean equal = new EqualsBuilder()
-				.append(getName(), rhs.getName())
-				.append(getDate(), rhs.getDate())
-				.append(getCategory(), rhs.getCategory())
-				.append(getAmountSpent(), rhs.getAmountSpent())
-				.append(getCurrency(), rhs.getCurrency())
-				.append(getDescription(), rhs.getDescription())
-				.append(getGeolocation(), rhs.getGeolocation())
-				.isEquals();
-		
-		// Calling .equals() on two Bitmaps doesn't do what we want
-		// So, need to used .sameAs() instead
-		return equal && hasSameReceiptPhoto(rhs);
-	}
-	
-	/**
-	 * Returns true if this ExpenseItem and the other
-	 * have the exact same receipt photo.
-	 * 
-	 * @param rhs The other ExpenseItem.
-	 * @return True if the two have the exact same receipt photo.
-	 */
-	private boolean hasSameReceiptPhoto(ExpenseItem rhs) {
-		if (getReceiptPhoto() == null) {
-			return rhs.getReceiptPhoto() == null;
-		}
-		if (rhs.getReceiptPhoto() == null) {
-			return false;
-		}
-		return getReceiptPhoto().sameAs(rhs.getReceiptPhoto());
+		return new EqualsBuilder().append(getName(), rhs.getName()).append(getDate(), rhs.getDate())
+				.append(getCategory(), rhs.getCategory()).append(getAmountSpent(), rhs.getAmountSpent())
+				.append(getCurrency(), rhs.getCurrency()).append(getDescription(), rhs.getDescription())
+				.append(getEncodedReceiptPhoto(), rhs.getEncodedReceiptPhoto())
+				.append(getGeolocation(), rhs.getGeolocation()).isEquals();
 	}
 
 	// Source:

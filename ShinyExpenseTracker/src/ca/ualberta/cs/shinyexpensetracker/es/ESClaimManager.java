@@ -102,13 +102,10 @@ public class ESClaimManager {
 		
 			ElasticSearchResponse<ExpenseClaimList> esResponse = gson.fromJson(json, elasticSearchResponseType);
 			claimList = esResponse.getSource();
-			Log.d("WWJD", "LIVES");
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
-			Log.d("WWJD", "Respawn");
 		} catch (IOException e) {
 			e.printStackTrace();
-			Log.d("WWJD", "Respawn");
 		}
 		return claimList;
 	}

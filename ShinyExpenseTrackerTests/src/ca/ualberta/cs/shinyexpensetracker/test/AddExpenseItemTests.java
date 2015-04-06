@@ -54,6 +54,9 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 	ImageButton photoField;
 	Button doneButton;
 
+	private MockExpenseClaimListPersister persister;
+	private ExpenseClaim claim;
+
 	Drawable image = new Drawable() {
 		@Override
 		public void setColorFilter(ColorFilter arg0) {}
@@ -86,9 +89,6 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 			day = dayOfMonth;
 		}
 	};
-	private MockExpenseClaimListPersister persister;
-
-	private ExpenseClaim claim;
 
 	/**
 	 * Setup for each test. Creates a new claim and passes the intent for the 0
@@ -101,7 +101,9 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 
 		ExpenseClaimList list = new ExpenseClaimList();
 
-		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(list));
+		persister = new MockExpenseClaimListPersister(list);
+
+		controller = new ExpenseClaimController(persister);
 		Application.setExpenseClaimController(controller);
 
 		claim = new ExpenseClaim("Test Claim");

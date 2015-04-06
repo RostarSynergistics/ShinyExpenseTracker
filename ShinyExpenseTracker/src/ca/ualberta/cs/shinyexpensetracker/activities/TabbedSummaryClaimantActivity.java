@@ -1,5 +1,6 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -108,8 +109,9 @@ public class TabbedSummaryClaimantActivity extends TabbedSummaryActivity {
 	 * claim is submitted
 	 * 
 	 * @param menu
+	 * @throws IOException
 	 */
-	public void submitClaimMenuItem(MenuItem menu) {
+	public void submitClaimMenuItem(MenuItem menu) throws IOException {
 		Intent intent = getIntent();
 		UUID claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
 		final ExpenseClaim claim = controller.getExpenseClaimByID(claimID);
@@ -133,7 +135,8 @@ public class TabbedSummaryClaimantActivity extends TabbedSummaryActivity {
 			}
 		}
 		if (!incomplete) {
-			claim.setStatus(Status.SUBMITTED);
+			controller.updateExpenseClaimStatus(claimID, Status.SUBMITTED);
+
 			adb.setMessage("Claim Submitted for Approval");
 			adb.setCancelable(true);
 			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {

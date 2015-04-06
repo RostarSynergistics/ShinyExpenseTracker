@@ -1,5 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import java.io.IOException;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -41,8 +43,9 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 	 * they need to comment on the claim before they can approve it.
 	 * 
 	 * @param menu
+	 * @throws IOException
 	 */
-	public void approveClaimMenuItem(MenuItem menu) {
+	public void approveClaimMenuItem(MenuItem menu) throws IOException {
 		adb = new AlertDialog.Builder(this);
 
 		final ExpenseClaim claim = controller.getExpenseClaimByID(claimID);
@@ -60,7 +63,7 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 			alertDialogApproveCommentNeeded.show();
 
 		} else {
-			claim.setStatus(Status.APPROVED);
+			controller.updateExpenseClaimStatus(claimID, Status.APPROVED);
 
 			adb.setMessage("The claim has been approved");
 
@@ -122,8 +125,9 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 	 * Called on MenuItem "Return Claim" click
 	 * 
 	 * @param menu
+	 * @throws IOException
 	 */
-	public void returnClaimMenuItem(MenuItem menu) {
+	public void returnClaimMenuItem(MenuItem menu) throws IOException {
 		adb = new AlertDialog.Builder(this);
 		final ExpenseClaim claim = controller.getExpenseClaimByID(claimID);
 
@@ -137,8 +141,9 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 			alertDialogReturnCommentNeeded = adb.create();
 			alertDialogReturnCommentNeeded.show();
 		} else {
-			claim.setStatus(Status.RETURNED);
-			adb.setMessage("The claim has been approved.");
+			controller.updateExpenseClaimStatus(claimID, Status.RETURNED);
+
+			adb.setMessage("The claim has been returned.");
 			adb.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {

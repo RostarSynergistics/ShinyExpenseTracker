@@ -40,8 +40,8 @@ import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimListActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.GeolocationViewActivity;
-import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
+import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -324,7 +324,7 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 		// TabbedSummary has split in 2. We need a way
 		// to specify which one we're looking for.
 		Application.setUserType(Type.Claimant);
-		
+
 		// Monitor for AddExpenseClaimActivity
 		ActivityMonitor claimMonitor = getInstrumentation().addMonitor(ExpenseClaimActivity.class.getName(),
 				null,
@@ -369,7 +369,8 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 
 		getInstrumentation().waitForIdleSync();
 		// Get the summary activity
-		TabbedSummaryActivity summaryActivity = (TabbedSummaryClaimantActivity) getInstrumentation().waitForMonitorWithTimeout(summaryMonitor, 1000);
+		TabbedSummaryActivity summaryActivity = (TabbedSummaryClaimantActivity) getInstrumentation()
+				.waitForMonitorWithTimeout(summaryMonitor, 1000);
 		assertEquals(true, getInstrumentation().checkMonitorHit(summaryMonitor, 1));
 
 		// Close the summary
@@ -377,7 +378,7 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 
 		// Monitor for TabbedSummaryActivity again
 		summaryMonitor = getInstrumentation().addMonitor(TabbedSummaryClaimantActivity.class.getName(), null, false);
-		
+
 		// Tap an item in the list view this time to display the summary
 		final ListView claimsList = (ListView) activity.findViewById(R.id.expense_claim_list);
 		activity.runOnUiThread(new Runnable() {
@@ -388,9 +389,10 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 			}
 		});
 		getInstrumentation().waitForIdleSync();
-		
+
 		// Get the summary activity
-		summaryActivity = (TabbedSummaryClaimantActivity) getInstrumentation().waitForMonitorWithTimeout(summaryMonitor, 1000);
+		summaryActivity = (TabbedSummaryClaimantActivity) getInstrumentation()
+				.waitForMonitorWithTimeout(summaryMonitor, 1000);
 		assertEquals(true, getInstrumentation().checkMonitorHit(summaryMonitor, 1));
 
 		// Monitor for ExpenseItemActivity
@@ -437,7 +439,7 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 		});
 
 		getInstrumentation().waitForIdleSync();
-		
+
 		// Close the activity safely outside of a thread
 		// Source: Email from Alex Wilson (March 15, 2015)
 		try {
@@ -455,17 +457,17 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 		getInstrumentation().waitForIdleSync();
 
 	}
-	
+
 	public void testSetHomeGeolocation() {
 		Intent generatedIntent = new Intent();
 		generatedIntent.putExtra("latitude", 64.0);
 		generatedIntent.putExtra("longitude", 128.0);
 		Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, generatedIntent);
-		
+
 		ActivityMonitor am = getInstrumentation().addMonitor(GeolocationViewActivity.class.getName(), null, true);
 		getInstrumentation().invokeMenuActionSync(activity, R.id.set_home_geolocation, 0);
 		assertEquals("launched wrong activity", am.getHits(), 1);
-		
+
 		assertEquals("wrong result received", result.getResultData(), generatedIntent);
 	}
 }

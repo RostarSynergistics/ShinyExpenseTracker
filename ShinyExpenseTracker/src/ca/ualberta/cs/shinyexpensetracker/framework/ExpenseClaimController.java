@@ -326,6 +326,26 @@ public class ExpenseClaimController {
 	}
 
 	/**
+	 * Adds a new comment to a claim.
+	 * 
+	 * @param claimID
+	 *            The claim's ID.
+	 * @param comment
+	 *            The new comment to add.
+	 * @return The updated ExpenseClaim.
+	 * @throws IOException
+	 */
+	public ExpenseClaim addCommentToClaim(UUID claimID, String comment) throws IOException {
+		ExpenseClaim claim = claimList.getClaimByID(claimID);
+
+		claim.addComment(comment);
+
+		persister.saveExpenseClaims(claimList);
+
+		return claim;
+	}
+
+	/**
 	 * @return the number of claims in the claim list
 	 */
 	public int getCount() {

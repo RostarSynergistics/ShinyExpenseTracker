@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -109,18 +107,6 @@ public class AddDestinationActivity extends Activity {
 
 		String dest = destinationEditText.getText().toString();
 		String reason = reasonForTravelEditText.getText().toString();
-
-		if (coord == null) {
-			dialog = new AlertDialog.Builder(this).setMessage("Destination requires a location")
-					.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							dialog.dismiss();
-						}
-					}).create();
-			dialog.show();
-			return false;
-		}
 
 		try {
 			if (destination == null) {

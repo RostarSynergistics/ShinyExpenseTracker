@@ -19,11 +19,18 @@ public class Destination extends Model<Destination> {
 
 	public Destination(String name, String reasonForTravel, Coordinate geolocation) throws ValidationException {
 		validateName(name);
+		validateGeolocation(geolocation);
 
 		this.id = UUID.randomUUID();
 		this.name = name;
 		this.reasonForTravel = reasonForTravel;
 		this.geolocation = geolocation;
+	}
+
+	private void validateGeolocation(Coordinate newGeolocation) throws ValidationException {
+		if (newGeolocation == null) {
+			throw new ValidationException("Destination requires a location.");
+		}
 	}
 
 	private void validateName(String name) throws ValidationException {
@@ -57,7 +64,8 @@ public class Destination extends Model<Destination> {
 		return geolocation;
 	}
 
-	public void setGeolocation(Coordinate geolocation) {
+	public void setGeolocation(Coordinate geolocation) throws ValidationException {
+		validateGeolocation(geolocation);
 		this.geolocation = geolocation;
 	}
 

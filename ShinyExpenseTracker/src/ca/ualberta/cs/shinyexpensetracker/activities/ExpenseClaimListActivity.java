@@ -46,13 +46,13 @@ import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.User;
 import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
 
-public class ExpenseClaimListActivity 
-	extends Activity implements IView<ExpenseClaimList> {
-	
+public class ExpenseClaimListActivity extends Activity implements IView<ExpenseClaimList> {
+
 	private static final int SET_HOME_GEOLCATION = 1;
 	private static final Coordinate NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES = new Coordinate(39.03808, 125.7296);
 
@@ -62,7 +62,7 @@ public class ExpenseClaimListActivity
 	// TODO: these have to be moved to another object,
 	// like Claimant or something, when that class is created
 	private Coordinate homeGeolocation = new Coordinate();
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -80,9 +80,9 @@ public class ExpenseClaimListActivity
 		adapter = new ClaimListAdapter(this);
 		// Ensure the adapter is sorted.
 		adapter.applyFilter(new ExpenseClaimSortFilter());
-		
+
 		claim_list.setAdapter(adapter);
-		
+
 		if (user.getHomeGeolocation() != null) {
 			TextView homeGeolocationValue = (TextView) findViewById(R.id.homeGeolocationValueTextView);
 			homeGeolocationValue.setText(user.getHomeGeolocation().toString());
@@ -92,15 +92,12 @@ public class ExpenseClaimListActivity
 		claim_list.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent intent;
 				if (Application.getUserType().equals(Type.Claimant)) {
-					intent = new Intent(ExpenseClaimListActivity.this,
-						TabbedSummaryClaimantActivity.class);
+					intent = new Intent(ExpenseClaimListActivity.this, TabbedSummaryClaimantActivity.class);
 				} else {
-					intent = new Intent(ExpenseClaimListActivity.this,
-						TabbedSummaryApproverActivity.class);
+					intent = new Intent(ExpenseClaimListActivity.this, TabbedSummaryApproverActivity.class);
 				}
 				intent.putExtra("claimIndex", position);
 				startActivity(intent);
@@ -113,16 +110,18 @@ public class ExpenseClaimListActivity
 		claim_list.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view,
-					int position, long id) {
-
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				if (controller.getExpenseClaim(position).getStatus() == Status.SUBMITTED) {
+					disableSubmittedClaimDeletion();
+				}
 				// Don't change this line. Change "askDeleteClaimAt" instead.
-				askDeleteClaimAt(position);
+				else {
+					askDeleteClaimAt(position);
+				}
 				return true;
 			}
 		});
-
-	};
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -145,13 +144,11 @@ public class ExpenseClaimListActivity
 
 			return true;
 		case R.id.action_manage_tags:
-			Intent manageTagsIntent = new Intent(ExpenseClaimListActivity.this,
-					ManageTagActivity.class);
+			Intent manageTagsIntent = new Intent(ExpenseClaimListActivity.this, ManageTagActivity.class);
 			startActivity(manageTagsIntent);
 			return true;
 		case R.id.set_home_geolocation:
-			Intent geolocationViewIntent = new Intent(ExpenseClaimListActivity.this,
-					GeolocationViewActivity.class);
+			Intent geolocationViewIntent = new Intent(ExpenseClaimListActivity.this, GeolocationViewActivity.class);
 			startActivityForResult(geolocationViewIntent, SET_HOME_GEOLCATION);
 			return true;
 		}
@@ -159,16 +156,16 @@ public class ExpenseClaimListActivity
 	}
 
 	/*
-	 * Get result back from setting geolocation
-	 * Put it in a Toast until there is a Claimant class
-	 * where the values can actually be stored
+	 * Get result back from setting geolocation Put it in a Toast until there is
+	 * a Claimant class where the values can actually be stored
 	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// Check result is ok
 		if (resultCode == RESULT_OK) {
 			double latitude = data.getDoubleExtra("latitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
-			double longitude = data.getDoubleExtra("longitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
+			double longitude = data.getDoubleExtra("longitude",
+					NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
 			homeGeolocation.setLatitude(latitude);
 			homeGeolocation.setLongitude(longitude);
 			TextView homeGeolocationValue = (TextView) findViewById(R.id.homeGeolocationValueTextView);
@@ -176,7 +173,7 @@ public class ExpenseClaimListActivity
 			user.setHomeGeolocation(homeGeolocation);
 		}
 	}
-	
+
 	@Override
 	public void update(ExpenseClaimList m) {
 		adapter.notifyDataSetChanged();
@@ -184,6 +181,7 @@ public class ExpenseClaimListActivity
 
 	/**
 	 * Adds a claim to the claim list controller
+	 * 
 	 * @param claim
 	 * @throws IOException
 	 */
@@ -193,16 +191,34 @@ public class ExpenseClaimListActivity
 
 	/**
 	 * Deletes a claim from the claim list controller
+	 * 
 	 * @param claim
 	 * @throws IOException
 	 */
 	public void deleteClaim(ExpenseClaim claim) throws IOException {
 		controller.removeExpenseClaim(claim);
 	}
-	
+
+	public AlertDialog disableSubmittedClaimDeletion() {
+		AlertDialog dialog = new AlertDialog.Builder(this).setTitle("Not availble")
+				.setMessage("You cannot delete a Submitted claim")
+				// Do nothing
+				.setNeutralButton("Okay", new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// Do nothing
+						dialog.dismiss();
+					}
+				}).create();
+
+		dialog.show();
+		return dialog;
+	}
+
 	/**
-	 * This creates and shows an dialog used when a claim is longed clicked. 
-	 * This dialog is used for deleting a claim 
+	 * This creates and shows an dialog used when a claim is longed clicked.
+	 * This dialog is used for deleting a claim
+	 * 
 	 * @param position
 	 * @return The alertDialog for delete claim
 	 */
@@ -213,8 +229,7 @@ public class ExpenseClaimListActivity
 		// Get a final copy of the requested claim
 		final ExpenseClaim claimToDelete = controller.getExpenseClaim(position);
 
-		AlertDialog dialog = new AlertDialog.Builder(this)
-				.setTitle("Delete Claim?")
+		AlertDialog dialog = new AlertDialog.Builder(this).setTitle("Delete Claim?")
 				.setMessage("Delete '" + claimToDelete.toString() + "'?\n(This cannot be undone)")
 				// If OK, delete the claim. (Positive action);
 				.setPositiveButton("OK", new OnClickListener() {

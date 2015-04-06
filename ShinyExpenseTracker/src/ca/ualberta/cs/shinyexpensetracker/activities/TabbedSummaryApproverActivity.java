@@ -1,5 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import java.io.IOException;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -56,6 +58,11 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 			
 		} else {
 			controller.getExpenseClaim(claimIndex).setStatus(Status.APPROVED);
+			try {
+				controller.update();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			
 			adb.setMessage("The claim has been approved");
 			
@@ -97,6 +104,11 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 					public void onClick(DialogInterface dialog, int which) {
 						String comment = commentTextBox.getText().toString();
 						controller.getExpenseClaim(claimIndex).addComment(comment);
+						try {
+							controller.update();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 					}
 				});
 
@@ -130,6 +142,11 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 			alertDialogReturnCommentNeeded.show();
 		} else {
 			controller.getExpenseClaim(claimIndex).setStatus(Status.RETURNED);
+			try {
+				controller.update();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			adb.setMessage("The claim has been approved");
 			adb.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
 				@Override

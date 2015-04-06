@@ -515,40 +515,6 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	}
 	
 	/**
-	 * Tests that when an approver has logged in that only claims with the status submitted
-	 * are shown
-	 */
-	public void testFilteredStatus() {
-		Application.setUserType(Type.Approver);
-		
-		activity = getActivity();
-		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
-		
-		// add a submitted claim
-		ExpenseClaim submittedClaim = new ExpenseClaim("submittedClaim", new Date(1000), new Date(2000));
-		submittedClaim.setStatus(Status.SUBMITTED);
-		ExpenseClaim sClaim = addClaim(submittedClaim);
-
-		assertEquals(1, claimListView.getCount());
-		assertEquals(sClaim, submittedClaim);
-		
-		// Add an in_progress claim
-		ExpenseClaim in_progressClaim = new ExpenseClaim("in_progressClaim", new Date(1000), new Date(2000));
-		in_progressClaim.setStatus(Status.IN_PROGRESS);
-		ExpenseClaim pClaim = addClaim(in_progressClaim);
-		
-		assertEquals(pClaim, in_progressClaim);
-		
-		assertEquals(2, claimsList.getCount());
-		assertEquals(2, claimListView.getCount());
-		
-		for(int i = 0; i < claimsList.getCount(); i++) {
-			assertEquals(claimListView.getItemAtPosition(i).toString(), 0);
-		}
-		
-	}
-	
-	/**
 	 * Tests that when an approver has logged in that the 'New Claim' menu item has been disabled
 	 */
 	public void testNewClaimMenuItemDisabledForApprover() {

@@ -41,6 +41,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
+import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
 public class MapViewActivity extends Activity implements MapEventsReceiver {
@@ -48,9 +49,7 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 	// constants to compare which activity called this one
 	// the first means setting geolocation for Claimant, expense item or Destination
 	// second means displaying locations stored on the device
-	static public final int SET_GEOLOCATION = 1;
-	static public final int DISPLAY_GEOLOCATIONS = 2;
-	private static final Coordinate NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES = new Coordinate(39.03808, 125.7296);
+
 	
 	private Coordinate coordinate = new Coordinate();
 	private int requestCode;
@@ -75,8 +74,8 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
 		if (bundle != null) {
-			double latitude = intent.getDoubleExtra("latitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLatitude());
-			double longitude = intent.getDoubleExtra("longitude", NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES.getLongitude());
+			double latitude = intent.getDoubleExtra("latitude", Coordinate.DEFAULT_COORDINATE.getLatitude());
+			double longitude = intent.getDoubleExtra("longitude", Coordinate.DEFAULT_COORDINATE.getLongitude());
 			coordinate.setLatitude(latitude);
 			coordinate.setLongitude(longitude);
 			requestCode = intent.getIntExtra("requestCode", 0);
@@ -121,7 +120,7 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 	 */
 	@Override
 	public void onBackPressed(){
-		if (requestCode == DISPLAY_GEOLOCATIONS || lastMarker == null) {
+		if (requestCode == GeolocationRequestCode.DISPLAY_GEOLOCATIONS || lastMarker == null) {
 			finish();
 		}
 		GeoPoint position = lastMarker.getPosition();
@@ -134,7 +133,7 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 	 */
 	@Override
 	public boolean singleTapConfirmedHelper(GeoPoint p) {
-		if (requestCode == DISPLAY_GEOLOCATIONS) {
+		if (requestCode == GeolocationRequestCode.DISPLAY_GEOLOCATIONS) {
 			return false;
 		}
 		if (lastMarker != null) {

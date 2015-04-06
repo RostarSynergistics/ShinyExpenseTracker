@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
-import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;

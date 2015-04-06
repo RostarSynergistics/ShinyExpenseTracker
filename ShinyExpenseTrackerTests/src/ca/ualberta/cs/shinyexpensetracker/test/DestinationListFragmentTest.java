@@ -20,6 +20,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.fragments.DestinationListFragment;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
@@ -58,7 +59,7 @@ public class DestinationListFragmentTest extends ActivityInstrumentationTestCase
 
 		claim = new ExpenseClaim("My Cool Expense Claim", new Date(123456), new Date(234567));
 		// Add a destination that we can look at
-		destination = new Destination("Hell", "I'm on a highway.");
+		destination = new Destination("Hell", "I'm on a highway.", new Coordinate(66.6, 66.6));
 		claim.addDestination(destination);
 		// Add the expense claim
 		list.addClaim(claim);
@@ -206,8 +207,8 @@ public class DestinationListFragmentTest extends ActivityInstrumentationTestCase
 		getInstrumentation().runOnMainSync(new Runnable() {
 			@Override
 			public void run() {
-				claim.addDestination(new Destination("Copy-Paste world", "Laziness"));
-				;
+				claim.addDestination(new Destination("Copy-Paste world", "Laziness", new Coordinate(0,0)));;
+
 			}
 		});
 		getInstrumentation().waitForIdleSync();

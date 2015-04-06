@@ -55,10 +55,8 @@ public class LoginAsApproverOrClaimantActivity extends Activity {
 		boolean checked = ((RadioButton) findViewById(R.id.approverRadioButton)).isChecked();
 		
 		if (checked) {
-			user.setUserType(Type.Approver);
 			Application.setUserType(Type.Approver);
 		} else {
-			user.setUserType(Type.Claimant);
 			Application.setUserType(Type.Claimant);
 		}
 	}

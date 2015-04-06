@@ -1,9 +1,11 @@
 package ca.ualberta.cs.shinyexpensetracker.models;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 public class Coordinate extends Model<Coordinate> {
 	private double latitude;
 	private double longitude;
-	
+	public static final Coordinate DEFAULT_COORDINATE = new Coordinate(53.526821, -113.526591);
 	public Coordinate() {
 		super();
 	}
@@ -49,12 +51,13 @@ public class Coordinate extends Model<Coordinate> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
+		
 		Coordinate other = (Coordinate) obj;
-		if (Double.doubleToLongBits(latitude) != Double.doubleToLongBits(other.latitude))
-			return false;
-		if (Double.doubleToLongBits(longitude) != Double.doubleToLongBits(other.longitude))
-			return false;
-		return true;
+		
+		return new EqualsBuilder()
+		.append(getLatitude(), other.getLatitude())
+		.append(getLongitude(), other.getLongitude())
+		.isEquals();
 	}
 	
 }

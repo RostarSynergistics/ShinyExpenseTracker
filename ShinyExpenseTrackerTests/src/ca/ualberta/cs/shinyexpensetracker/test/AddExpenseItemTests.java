@@ -25,6 +25,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
@@ -53,6 +54,7 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 	Spinner currencySpinner, categorySpinner;
 	ImageButton photoField;
 	Button doneButton;
+	Coordinate c;
 
 	private MockExpenseClaimListPersister persister;
 	private ExpenseClaim claim;
@@ -125,7 +127,7 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 		categorySpinner = (Spinner) activity.findViewById(R.id.expenseItemCategorySpinner);
 		amountField = (EditText) activity.findViewById(R.id.expenseItemAmountEditText);
 		currencySpinner = (Spinner) activity.findViewById(R.id.expenseItemCurrencySpinner);
-		descriptionField = (EditText) activity.findViewById(R.id.expesenItemDescriptionEditText);
+		descriptionField = (EditText) activity.findViewById(R.id.expenseItemDescriptionEditText);
 		photoField = (ImageButton) activity.findViewById(R.id.expenseItemReceiptImageButton);
 		doneButton = (Button) activity.findViewById(R.id.expenseItemDoneButton);
 	}
@@ -158,6 +160,7 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 				sdf.format(date);
 				BigDecimal amount = new BigDecimal(10.00);
 				Bitmap bitmap = null;
+				c = new Coordinate(1.0, -1.0);
 
 				ExpenseItem expense = new ExpenseItem("name",
 						date,
@@ -165,7 +168,8 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 						amount,
 						Currency.CAD,
 						"description",
-						bitmap);
+						bitmap,
+						c);
 
 				assertEquals("name != name", "name", expense.getName());
 				assertEquals("date != date", date, expense.getDate());
@@ -174,6 +178,7 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 				assertEquals("currency != CAD", Currency.CAD, expense.getCurrency());
 				assertEquals("description != description", "description", expense.getDescription());
 				assertEquals("bitmap != bitmap", bitmap, expense.getReceiptPhoto());
+				assertEquals("geoloc != geoloc", c, expense.getGeolocation());
 			}
 		});
 

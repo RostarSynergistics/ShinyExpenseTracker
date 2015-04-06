@@ -7,6 +7,7 @@ import java.util.Date;
 import junit.framework.TestCase;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
@@ -49,13 +50,15 @@ public class GsonExpenseClaimListPersisterTests extends TestCase {
 		ExpenseClaim claim = new ExpenseClaim("test", startDate, endDate, ExpenseClaim.Status.IN_PROGRESS);
 
 		int[] colors = new int[] { 1, 2, 3, 4 };
+
 		claim.addExpenseItem(new ExpenseItem("test",
 				new Date(5000),
 				ExpenseItem.Category.ACCOMODATION,
 				new BigDecimal("20.00"),
 				ExpenseItem.Currency.CAD,
 				"Description",
-				Bitmap.createBitmap(colors, 2, 2, Config.ALPHA_8)));
+				Bitmap.createBitmap(colors, 2, 2, Config.ALPHA_8),
+				new Coordinate(1.0, -1.0)));
 
 		return claim;
 	}

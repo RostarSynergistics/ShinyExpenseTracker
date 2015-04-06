@@ -42,6 +42,7 @@ import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.adapters.ClaimListAdapter;
 import ca.ualberta.cs.shinyexpensetracker.decorators.ExpenseClaimSortFilter;
+import ca.ualberta.cs.shinyexpensetracker.decorators.ExpenseClaimSubmittedFilter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.IView;
@@ -79,6 +80,11 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 		adapter = new ClaimListAdapter(this);
 		// Ensure the adapter is sorted.
 		adapter.applyFilter(new ExpenseClaimSortFilter());
+		
+		// if the user is an approver filter the claims so only the submitted claims are shown
+		if (Application.getUserType().equals(Type.Approver)) {
+			adapter.applyFilter(new ExpenseClaimSubmittedFilter());
+		} 
 		
 		claim_list.setAdapter(adapter);
 		
@@ -125,6 +131,11 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.expense_claims_view, menu);
+		
+		if (Application.getUserType().equals(Type.Approver)) {
+			menu.getItem(0).setEnabled(false);
+		}
+		
 		return true;
 	}
 

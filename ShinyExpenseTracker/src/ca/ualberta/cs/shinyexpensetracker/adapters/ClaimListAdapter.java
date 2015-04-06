@@ -26,14 +26,14 @@ public class ClaimListAdapter extends BaseAdapter {
 	private final Context context;
 
 	private ExpenseClaimList claims;
-	private ExpenseClaimList filteredClaims;
+	private ExpenseClaimFilter filteredClaims;
 	
 	public ClaimListAdapter(Context context) {
 		super();
 		this.dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
 		this.context = context;
 		this.claims = Application.getExpenseClaimController().getExpenseClaimList();
-		this.filteredClaims = claims;
+		this.filteredClaims = new ExpenseClaimFilter().decorate(claims);
 	}
 
 	@Override
@@ -150,7 +150,13 @@ public class ClaimListAdapter extends BaseAdapter {
 	 * Clears any filters that were added by applyFilter
 	 */
 	public void clearFilters() {
-		filteredClaims = claims;
+		this.filteredClaims = new ExpenseClaimFilter().decorate(claims);
 		notifyDataSetChanged();
+	}
+	
+	@Override
+	public void notifyDataSetChanged() {
+		super.notifyDataSetChanged();
+		filteredClaims.update(claims);
 	}
 }

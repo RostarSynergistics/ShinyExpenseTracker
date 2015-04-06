@@ -10,12 +10,9 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
@@ -152,42 +149,6 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 		assertEquals(newDescription, updatedItem.getDescription());
 
 		assertTrue("Persister's .save() was never called", persister.wasSaveCalled());
-	}
-
-	/**
-	 * This tests that the image is successfully drawn on the ImageButton
-	 */
-
-	public void testDrawImageButton() {
-		ImageButton button = (ImageButton) activity.findViewById(R.id.expenseItemReceiptImageButton);
-		drawNewImage();
-		assertNotNull("no image on button", button.getDrawable());
-		Drawable dr = button.getDrawable();
-		Bitmap bm = activity.convertToBitmap(dr, imageSmall.getWidth(), imageSmall.getHeight());
-		assertTrue("receipt is not right", bm.sameAs(imageSmall));
-	}
-
-	/**
-	 * This tests that the image is successfully scaled down
-	 */
-	public void testScale() {
-		BitmapDrawable dr = new BitmapDrawable(res, imageBig);
-		Bitmap imageBigScaled = activity.convertToBitmap(dr, imageBig.getWidth(), imageBig.getHeight());
-		assertTrue("image too big", imageBigScaled.getByteCount() <= 65536);
-	}
-
-	/**
-	 * Draw a new image on ImageButton
-	 */
-	private void drawNewImage() {
-		getInstrumentation().runOnMainSync(new Runnable() {
-			@Override
-			public void run() {
-				ImageButton button = (ImageButton) activity.findViewById(R.id.expenseItemReceiptImageButton);
-				button.setImageBitmap(imageSmall);
-			}
-		});
-		getInstrumentation().waitForIdleSync();
 	}
 
 	private Date getDate(EditText dateField) throws ParseException {

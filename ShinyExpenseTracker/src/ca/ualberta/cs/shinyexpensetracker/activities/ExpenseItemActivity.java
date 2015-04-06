@@ -459,7 +459,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 				expenseItemGeolocation.setLatitude(latitude);
 				expenseItemGeolocation.setLongitude(longitude);
 				TextView coordValue = (TextView) findViewById(R.id.expenseItemCoordinatesValueTextView);
-				coordValue.setText(expenseItemGeolocation.toString());
+				coordValue.setText(expenseItemGeolocation.toString() + "\n(tap here to change)");
 			}
 		}
 	}

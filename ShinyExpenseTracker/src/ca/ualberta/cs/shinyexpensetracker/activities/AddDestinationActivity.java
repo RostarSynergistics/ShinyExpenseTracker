@@ -176,7 +176,7 @@ public class AddDestinationActivity extends Activity {
 			coord.setLatitude(latitude);
 			coord.setLongitude(longitude);
 			TextView coordValue = (TextView) findViewById(R.id.coordinatesValueTextView);
-			coordValue.setText(coord.toString());
+			coordValue.setText(coord.toString() + "\n(tap here to change)");
 		}
 	}
 	

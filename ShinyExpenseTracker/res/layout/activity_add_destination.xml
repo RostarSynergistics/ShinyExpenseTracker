@@ -57,7 +57,7 @@
         android:clickable="true"
         android:onClick="onGeolocationValueTextViewClick"
         android:text="@string/geolocationValueDefault"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
         android:id="@+id/reasonTextView"

@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.KeyEvent;
 import ca.ualberta.cs.shinyexpensetracker.activities.MapViewActivity;
+import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
 
 public class MapViewTest extends ActivityInstrumentationTestCase2<MapViewActivity> {
 
@@ -49,7 +50,7 @@ public class MapViewTest extends ActivityInstrumentationTestCase2<MapViewActivit
 		Intent mapViewIntent = new Intent();
 		mapViewIntent.putExtra("latitude", 64.0);
 		mapViewIntent.putExtra("longitude", 128.0);
-		mapViewIntent.putExtra("requestCode", MapViewActivity.SET_GEOLOCATION);
+		mapViewIntent.putExtra("requestCode", GeolocationRequestCode.SET_GEOLOCATION);
 		setActivityIntent(mapViewIntent);
 		
 		mapViewActivity = getActivity();

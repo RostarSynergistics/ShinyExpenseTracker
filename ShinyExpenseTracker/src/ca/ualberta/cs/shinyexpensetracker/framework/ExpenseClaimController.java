@@ -90,15 +90,6 @@ public class ExpenseClaimController {
 	}
 	
 	/**
-	 * Sort the data on the model.
-	 * Warning: This changes the indexes in the model.
-	 */
-	// XXX: May need to be changed. See #64 for details.
-	public void sort() {
-		claimList.sort();
-	}
-	
-	/**
 	 * Returns the model
 	 * @return
 	 */

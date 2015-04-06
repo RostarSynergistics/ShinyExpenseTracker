@@ -40,6 +40,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.adapters.ClaimListAdapter;
+import ca.ualberta.cs.shinyexpensetracker.decorators.ExpenseClaimSortFilter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.IView;
@@ -50,10 +51,11 @@ import ca.ualberta.cs.shinyexpensetracker.models.User;
 import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
 
 public class ExpenseClaimListActivity 
-	extends Activity 
-	implements IView<ExpenseClaimList> {
+	extends Activity implements IView<ExpenseClaimList> {
+	
 	private static final int SET_HOME_GEOLCATION = 1;
 	private static final Coordinate NORTH_KOREA_CONCENTRATION_CAMP_COORDINATES = new Coordinate(39.03808, 125.7296);
+
 	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
 	private User user = Application.getUser();
@@ -76,6 +78,9 @@ public class ExpenseClaimListActivity
 		// Set the list view to receive updates from the model
 		final ListView claim_list = (ListView) findViewById(R.id.expense_claim_list);
 		adapter = new ClaimListAdapter(this);
+		// Ensure the adapter is sorted.
+		adapter.applyFilter(new ExpenseClaimSortFilter());
+		
 		claim_list.setAdapter(adapter);
 		
 		if (user.getHomeGeolocation() != null) {
@@ -138,11 +143,6 @@ public class ExpenseClaimListActivity
 			Intent intent = new Intent(this, ExpenseClaimActivity.class);
 			startActivity(intent);
 
-			return true;
-		case R.id.action_sort:
-			return true;
-		case R.id.action_filter:
-			// TODO #28
 			return true;
 		case R.id.action_manage_tags:
 			Intent manageTagsIntent = new Intent(ExpenseClaimListActivity.this,

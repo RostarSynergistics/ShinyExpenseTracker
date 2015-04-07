@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.UUID;
 
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+
 /**
  * Represents the collection of ExpenseClaims that exist in the application.
  * 
@@ -14,9 +16,15 @@ import java.util.UUID;
  */
 public class ExpenseClaimList extends Model<ExpenseClaimList> implements ExpenseClaimListViewer {
 	protected ArrayList<ExpenseClaim> claims;
-
+	private UUID userID;
+	
 	public ExpenseClaimList() {
 		claims = new ArrayList<ExpenseClaim>();
+		userID = Application.getUser().getUserId();
+	}
+
+	public UUID getUserID() {
+		return userID;
 	}
 
 	/**

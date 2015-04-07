@@ -20,6 +20,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.util.Log;
 import ca.ualberta.cs.shinyexpensetracker.es.data.ElasticSearchResponse;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
 import com.google.gson.Gson;
@@ -40,6 +41,7 @@ public class ESClaimManager {
 	private static final String RESOURCE_URI = "http://cmput301.softwareprocess.es:8080/cmput301w15t08/";
 	public static final String CLAIM_LIST_INDEX = "claimlist/";
 	public static final String CLAIMLIST = "TotalList";
+	public static final String ID = Application.getUser().getUserId().toString();
 
 	/**
 	 * Adds a claimList to our server
@@ -48,7 +50,8 @@ public class ESClaimManager {
 	 * @throws IllegalStateException
 	 */
 	public void insertClaimList(ExpenseClaimList claimController) throws IllegalStateException, IOException {
-		HttpPost httpPost = new HttpPost(RESOURCE_URI + CLAIM_LIST_INDEX + CLAIMLIST);
+		String ID = claimController.getUserID().toString();
+		HttpPost httpPost = new HttpPost(RESOURCE_URI + CLAIM_LIST_INDEX + ID);
 		StringEntity stringentity = null;
 
 		try {
@@ -89,7 +92,7 @@ public class ESClaimManager {
 	public ExpenseClaimList getClaimList() {
 		ExpenseClaimList claimList = null;
 		try {
-			HttpGet getRequest = new HttpGet(RESOURCE_URI + CLAIM_LIST_INDEX + CLAIMLIST);
+			HttpGet getRequest = new HttpGet(RESOURCE_URI + CLAIM_LIST_INDEX + ID);
 
 			getRequest.addHeader("Accept", "application/json");
 

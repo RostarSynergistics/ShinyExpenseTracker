@@ -37,4 +37,9 @@
         android:title="@string/view_comments">
     </item>
 
+    <item
+        android:id="@+id/action_help"
+        android:orderInCategory="10000"
+        android:showAsAction="never"
+        android:title="@string/action_help"/>
 </menu>

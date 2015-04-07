@@ -15,6 +15,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
 public class ViewCommentsActivity extends Activity {
 
@@ -42,7 +43,8 @@ public class ViewCommentsActivity extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		if (id == R.id.action_help) {
+			InAppHelpDialog.showHelp(this, R.string.help_view_comments);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

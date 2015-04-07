@@ -109,6 +109,9 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 				} else {
 					intent = new Intent(ExpenseClaimListActivity.this,
 						TabbedSummaryApproverActivity.class);
+					
+
+					
 				}
 
 				intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());

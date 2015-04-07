@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.EditText;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
 
@@ -28,12 +29,14 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 	protected static AlertDialog alertDialogApproveCommentNeeded;
 	protected static AlertDialog alertDialogReturnClaim;
 	protected static AlertDialog alertDialogReturnCommentNeeded;
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.tabbed_summary_approver, menu);
 		m = menu;
+
 		return true;
 	}
 
@@ -90,23 +93,25 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 	 */
 	@SuppressLint("InflateParams")
 	public void commentMenuItem(MenuItem menu) {
-
+		
 		adb = new AlertDialog.Builder(this);
-
+		
 		LayoutInflater layoutInflater = this.getLayoutInflater();
 		View dialogView = layoutInflater.inflate(R.layout.dialog_comment_input, null);
 		adb.setView(dialogView);
+		
 		final EditText commentTextBox = (EditText) dialogView.findViewById(R.id.EditTextDialogComment);
 
 		adb.setMessage("Comment: ");
 
 		// Setting the positive button to save the text in the dialog as a
-		// comment
+		// comment	
 		// if valid
 		adb.setPositiveButton("Add Comment", new android.content.DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				String comment = commentTextBox.getText().toString();
+				comment.concat(Application.getUser().getUserName());
 				controller.getExpenseClaimByID(claimID).addComment(comment);
 			}
 		});
@@ -167,7 +172,7 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 		intent.putExtra(IntentExtraIDs.CLAIM_ID, claimID);
 		startActivity(intent);
 	}
-
+	
 	/*
 	 * return dialog for testing purposes only
 	 */

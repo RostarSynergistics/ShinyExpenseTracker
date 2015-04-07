@@ -1,26 +1,66 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
-import ca.ualberta.cs.shinyexpensetracker.models.User;
 import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
 
 public class LoginAsApproverOrClaimantActivity extends Activity {
 
-	User user = Application.getUser();
+	private AlertDialog.Builder adb;
+	private AlertDialog alertDialogGetUserName;
 	
+	@SuppressLint("InflateParams")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sign_in_as_approver_or_claimant);
 		
+		// check if we have a user name
+		if (Application.getUser().getUserName() == null) {
+			// No, get it
+			adb = new AlertDialog.Builder(this);
+			
+			LayoutInflater layoutInflater = this.getLayoutInflater();
+			View dialogView = layoutInflater.inflate(R.layout.dialog_approver_name_input, null);
+			adb.setView(dialogView);
+			
+			final EditText nameTextBox = (EditText) dialogView.findViewById(R.id.EditTextDialogUserName);
+
+			adb.setMessage("Name: ");
+
+			// Setting the positive button to save the text in the dialog as a
+			// comment
+			// if valid
+			adb.setPositiveButton("Name", new android.content.DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					String name = nameTextBox.getText().toString();
+					Application.getUser().setUserName(name);
+				}
+			});
+
+			// Setting the negative button to close the dialog
+			adb.setNegativeButton("Cancel", new android.content.DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+				}
+			});
+
+			alertDialogGetUserName = adb.create();
+			alertDialogGetUserName.show();
+		}
 	}
 
 	@Override	
@@ -70,7 +110,7 @@ public class LoginAsApproverOrClaimantActivity extends Activity {
 		Intent intent;
 		
 		saveUserType(v);
-	
+		
 		intent = new Intent(LoginAsApproverOrClaimantActivity.this,
 				ExpenseClaimListActivity.class);
 		

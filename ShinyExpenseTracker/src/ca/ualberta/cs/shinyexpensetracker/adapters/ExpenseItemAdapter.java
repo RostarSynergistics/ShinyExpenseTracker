@@ -1,8 +1,5 @@
 package ca.ualberta.cs.shinyexpensetracker.adapters;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +13,7 @@ import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+import ca.ualberta.cs.shinyexpensetracker.utilities.GlobalDateFormat;
 
 /**
  * Adapter for the list Views that display ExpenseItems. It fills the
@@ -98,11 +96,10 @@ public class ExpenseItemAdapter extends BaseAdapter implements ListAdapter {
 		expenseItemFlagCheckBox.setChecked(expense.getIsMarkedIncomplete());
 
 		// Fill in the values
-		SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
 
 		expenseItemName.setText(expense.getName().toString());
 		expenseItemValue.setText(expense.getValueString().toString());
-		expenseItemDate.setText(df.format(expense.getDate()));
+		expenseItemDate.setText(GlobalDateFormat.format(expense.getDate()));
 		expenseItemCategory.setText(expense.getCategory().toString());
 		expenseItemDescTextView.setText(expense.getDescription().toString());
 

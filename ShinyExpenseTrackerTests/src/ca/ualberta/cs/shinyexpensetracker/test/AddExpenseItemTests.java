@@ -2,10 +2,8 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Instrumentation;
@@ -32,15 +30,13 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
+import ca.ualberta.cs.shinyexpensetracker.utilities.GlobalDateFormat;
 
 /**
  * Tests various parts of the functionality of ExpenseItemActivity that relates
  * to creating new ExpenseItems.
  **/
-@SuppressLint("SimpleDateFormat")
 public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<ExpenseItemActivity> {
-	static final SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
-
 	private static final int TARGET_YEAR = 2008;
 	private static final int TARGET_MONTH = 11;
 	private static final int TARGET_DAY = 7;
@@ -151,13 +147,11 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 	/** test if an expense Item is successfully created */
 	public void testCreateExpenseItem() {
 		instrumentation.runOnMainSync(new Runnable() {
-			@SuppressLint("SimpleDateFormat")
 			public void run() {
 				assertNotNull(doneButton);
 
-				SimpleDateFormat sdf = new SimpleDateFormat();
 				Date date = new Date();
-				sdf.format(date);
+				GlobalDateFormat.format(date);
 				BigDecimal amount = new BigDecimal(10.00);
 				Bitmap bitmap = null;
 				c = new Coordinate(1.0, -1.0);
@@ -194,13 +188,13 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 	public void testDone() throws ParseException {
 		final int newSpinnerPosition = 3;
 		final String newName = "McDonald's";
-		final String newDateString = "2015-01-01";
+		final String newDateString = GlobalDateFormat.makeString(2015, 1, 10);
 		final String newCategory = (String) categorySpinner.getItemAtPosition(newSpinnerPosition);
 		final BigDecimal newAmount = new BigDecimal("5000");
 		final String newCurrency = (String) currencySpinner.getItemAtPosition(newSpinnerPosition);
 		final String newDescription = "FooBarBaz";
 
-		final Date newDate = sdf.parse(newDateString);
+		final Date newDate = GlobalDateFormat.parse(newDateString);
 
 		getInstrumentation().runOnMainSync(new Runnable() {
 			@Override

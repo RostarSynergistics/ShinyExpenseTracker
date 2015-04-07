@@ -30,6 +30,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
+import ca.ualberta.cs.shinyexpensetracker.utilities.GlobalDateFormat;
 
 /**
  * Test suite to test activity that lets the user view information of the
@@ -125,7 +126,7 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 
 	public void testDateValue() {
 		TextView date = (TextView) activity.findViewById(R.id.expenseItemDateValue);
-		assertEquals("date is not right", date.getText().toString(), "01-01-2000");
+		assertEquals("date is not right", date.getText().toString(), GlobalDateFormat.makeString(2000, 01, 01));
 	}
 
 	public void testCategoryValue() {

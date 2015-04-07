@@ -2,10 +2,8 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -30,15 +28,13 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
+import ca.ualberta.cs.shinyexpensetracker.utilities.GlobalDateFormat;
 
 /**
  * Tests various parts of the functionality of ExpenseItemActivity that relates
  * to editing existing ExpenseItems.
  **/
-@SuppressLint("SimpleDateFormat")
 public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<ExpenseItemActivity> {
-	static final SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
-
 	ExpenseItemActivity activity;
 	ExpenseClaimController controller;
 	Bitmap imageSmall;
@@ -85,7 +81,7 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 		c = new Coordinate(1.0, -1.0);
 
 		item = new ExpenseItem("test item",
-				sdf.parse("2001-01-01"),
+				GlobalDateFormat.makeDate(2001, 01, 01),
 				Category.fromString("air fare"),
 				new BigDecimal("0.125"),
 				Currency.CAD,
@@ -128,13 +124,13 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 	public void testThatTappingDoneWhileEditingAnExistingExpenseClaimUpdatesThatExpenseClaim() throws ParseException {
 		final int newSpinnerPosition = 3;
 		final String newName = "McDonald's";
-		final String newDateString = "2015-01-01";
+		final String newDateString = GlobalDateFormat.makeString(2015, 01, 01);
 		final String newCategory = (String) categorySpinner.getItemAtPosition(newSpinnerPosition);
 		final BigDecimal newAmount = new BigDecimal("5000");
 		final String newCurrency = (String) currencySpinner.getItemAtPosition(newSpinnerPosition);
 		final String newDescription = "FooBarBaz";
 
-		final Date newDate = sdf.parse(newDateString);
+		final Date newDate = GlobalDateFormat.parse(newDateString);
 
 		getInstrumentation().runOnMainSync(new Runnable() {
 			@Override
@@ -200,6 +196,6 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 	}
 
 	private Date getDate(EditText dateField) throws ParseException {
-		return sdf.parse(dateField.getText().toString());
+		return GlobalDateFormat.parse(dateField.getText().toString());
 	}
 }

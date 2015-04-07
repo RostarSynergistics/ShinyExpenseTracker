@@ -1,10 +1,8 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Instrumentation;
 import android.app.Instrumentation.ActivityMonitor;
@@ -20,6 +18,7 @@ import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
+import ca.ualberta.cs.shinyexpensetracker.utilities.GlobalDateFormat;
 
 /**
  * Tests various parts of the functionality of ExpenseClaimActivity that relates
@@ -91,8 +90,8 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				startDateField.setText("01-10-2015");
-				endDateField.setText("01-01-2015");
+				startDateField.setText(GlobalDateFormat.makeString(2015, 10, 01));
+				endDateField.setText(GlobalDateFormat.makeString(2015, 1, 1));
 				nameField.setText("URoma Trip");
 				doneButton.performClick();
 			}
@@ -111,8 +110,8 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				startDateField.setText("01-01-2015");
-				endDateField.setText("01-10-2015");
+				startDateField.setText(GlobalDateFormat.makeString(2015, 1,1));
+				endDateField.setText(GlobalDateFormat.makeString(2015, 1, 10));
 				nameField.setText("URoma Trip");
 				doneButton.performClick();
 			}
@@ -125,7 +124,6 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 		nextActivity.finish();
 	}
 
-	@SuppressLint("SimpleDateFormat")
 	public void testThatTappingDoneWhileCreatingNewExpenseClaimCreatesANewExpenseClaim() throws ParseException {
 		ActivityMonitor monitor = instrumentation
 				.addMonitor(TabbedSummaryClaimantActivity.class.getName(), null, false);
@@ -135,8 +133,8 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 			@Override
 			public void run() {
 
-				startDateField.setText("01-01-2015");
-				endDateField.setText("01-10-2015");
+				startDateField.setText(GlobalDateFormat.makeString(2015, 1,1));
+				endDateField.setText(GlobalDateFormat.makeString(2015, 1, 10));
 				nameField.setText(claimName);
 
 				doneButton.performClick();
@@ -149,9 +147,8 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 		TabbedSummaryActivity nextActivity = (TabbedSummaryClaimantActivity) instrumentation.waitForMonitor(monitor);
 		assertNotNull("Next activity not started", nextActivity);
 
-		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
-		Date startDateObject = sdf.parse(startDateField.getText().toString());
-		Date endDateObject = sdf.parse(endDateField.getText().toString());
+		Date startDateObject = GlobalDateFormat.parse(startDateField.getText().toString());
+		Date endDateObject = GlobalDateFormat.parse(endDateField.getText().toString());
 
 		ExpenseClaim claim = controller.getExpenseClaimAtPosition(0);
 

@@ -4,11 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.UUID;
 
 import android.app.Activity;
@@ -47,6 +45,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
+import ca.ualberta.cs.shinyexpensetracker.utilities.GlobalDateFormat;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
 
@@ -72,7 +71,6 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 	// On March 2 2015
 	private EditText date;
 	private DatePickerDialog datePickerDialog;
-	private SimpleDateFormat dateFormatter;
 	private ImageButton button;
 	private Uri imageFileUri;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
@@ -91,8 +89,6 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_expense_item);
-
-		dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.CANADA);
 
 		button = (ImageButton) findViewById(R.id.expenseItemReceiptImageButton);
 		defaultDrawableOnImageButton = button.getDrawable();
@@ -185,7 +181,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		populateHashMaps();
 
 		setEditTextValue(R.id.expenseItemNameEditText, item.getName().toString());
-		setEditTextValue(R.id.expenseItemDateEditText, dateFormatter.format(item.getDate()));
+		setEditTextValue(R.id.expenseItemDateEditText, GlobalDateFormat.format(item.getDate()));
 		setEditTextValue(R.id.expenseItemDescriptionEditText, item.getDescription().toString());
 		setEditTextValue(R.id.expenseItemAmountEditText, item.getAmountSpent().toString());
 		if(item.getGeolocation() != null)
@@ -306,7 +302,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 				Calendar newDate = Calendar.getInstance();
 				newDate.set(year, monthOfYear, dayOfMonth);
-				date.setText(dateFormatter.format(newDate.getTime()));
+				date.setText(GlobalDateFormat.format(newDate.getTime()));
 			}
 
 		}, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
@@ -372,7 +368,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 			alertDialog.show();
 			return false;
 		} else {
-			date = dateFormatter.parse(dateText.getText().toString());
+			date = GlobalDateFormat.parse(dateText.getText().toString());
 		}
 
 		// get the current selection of the category spinner

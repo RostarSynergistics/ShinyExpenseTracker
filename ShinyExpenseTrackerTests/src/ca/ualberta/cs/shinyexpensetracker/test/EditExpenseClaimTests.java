@@ -1,10 +1,8 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import android.annotation.SuppressLint;
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
@@ -18,15 +16,13 @@ import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
+import ca.ualberta.cs.shinyexpensetracker.utilities.GlobalDateFormat;
 
 /**
  * Tests various parts of the functionality of ExpenseClaimActivity that relates
  * to editing existing ExpenseClaims.
  **/
-@SuppressLint("SimpleDateFormat")
 public class EditExpenseClaimTests extends ActivityInstrumentationTestCase2<ExpenseClaimActivity> {
-	static final SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
-
 	MockExpenseClaimListPersister persister;
 	ExpenseClaimController controller;
 	Instrumentation instrumentation;
@@ -84,11 +80,11 @@ public class EditExpenseClaimTests extends ActivityInstrumentationTestCase2<Expe
 
 	public void testThatTappingDoneWhileEditingAnExistingExpenseClaimUpdatesThatExpenseClaim() throws ParseException {
 		final String newName = "URoma";
-		final String newStartDateText = "2015-03-01";
-		final String newEndDateText = "2015-03-07";
+		final String newStartDateText = GlobalDateFormat.makeString(2015,  03, 07);
+		final String newEndDateText = GlobalDateFormat.makeString(2015,  03, 07);
 
-		Date newStartDate = sdf.parse(newStartDateText);
-		Date newEndDate = sdf.parse(newEndDateText);
+		Date newStartDate = GlobalDateFormat.parse(newStartDateText);
+		Date newEndDate = GlobalDateFormat.parse(newEndDateText);
 
 		activity.runOnUiThread(new Runnable() {
 			@Override
@@ -114,13 +110,13 @@ public class EditExpenseClaimTests extends ActivityInstrumentationTestCase2<Expe
 	}
 
 	private ExpenseClaim getStartingClaim() throws ParseException {
-		Date startDate = sdf.parse("2015-01-01");
-		Date endDate = sdf.parse("2015-01-02");
+		Date startDate = GlobalDateFormat.makeDate(2015, 01, 01);
+		Date endDate = GlobalDateFormat.makeDate(2015, 01, 02);
 
 		return new ExpenseClaim("test", startDate, endDate, ExpenseClaim.Status.IN_PROGRESS);
 	}
 
 	private Date getDate(EditText dateField) throws ParseException {
-		return sdf.parse(dateField.getText().toString());
+		return GlobalDateFormat.parse(dateField.getText().toString());
 	}
 }

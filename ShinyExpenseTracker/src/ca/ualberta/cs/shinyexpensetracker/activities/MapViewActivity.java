@@ -181,17 +181,6 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 		return itemMarker;
 	}
 
-	private GeoPoint putHomeGeolocationOnMap() {
-		GeoPoint startPoint;
-		startPoint = new GeoPoint(coordinate.getLatitude(), coordinate.getLongitude());
-		Marker newMarker = new Marker(map);
-		newMarker.setPosition(startPoint);
-		newMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-		map.getOverlays().add(newMarker);
-		newMarker.setSnippet("Home Geolocation");
-		return startPoint;
-	}
-
 	private void setMapForSettingGeolocation(Intent intent) {
 		double latitude = intent.getDoubleExtra(IntentExtraIDs.LATITUDE, Coordinate.DEFAULT_COORDINATE.getLatitude());
 		double longitude = intent.getDoubleExtra(IntentExtraIDs.LONGITUDE, Coordinate.DEFAULT_COORDINATE.getLongitude());

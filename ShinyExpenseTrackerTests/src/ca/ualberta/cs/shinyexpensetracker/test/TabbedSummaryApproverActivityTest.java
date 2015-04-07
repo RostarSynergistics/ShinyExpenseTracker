@@ -110,8 +110,7 @@ public class TabbedSummaryApproverActivityTest extends ActivityInstrumentationTe
 		getInstrumentation().waitForIdleSync();
 
 		assertEquals("comment not saved correctly to expense claim",
-				"test comment",
-				controller.getExpenseClaimByID(claim.getID()).getComment(0));
+				"test comment" + " — " + Application.getUser().getUserName(), controller.getExpenseClaimByID(claim.getID()).getComment(0));
 
 	}
 

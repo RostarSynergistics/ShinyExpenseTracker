@@ -109,5 +109,14 @@ public class LoginAsApproverOrClaimantActivityTest extends
 		assertEquals("User State was not set to Claimant", Type.Claimant ,Application.getUserType());
 		
 	}
-
+	
+	/**
+	 * Tests to ensure that when no user name has been added that a dialog appears to get it
+	 * from the user
+	 */
+	public void testGetNameDialogAppears() {
+		assertEquals("User already has a name", null, Application.getUser().getUserName());
+		
+		assertTrue("getUserName dialog did not appear", activity.getDialog().isShowing());
+	}
 }

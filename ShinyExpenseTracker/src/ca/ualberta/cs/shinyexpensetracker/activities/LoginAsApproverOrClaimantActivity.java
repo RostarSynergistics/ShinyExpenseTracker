@@ -27,7 +27,7 @@ public class LoginAsApproverOrClaimantActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sign_in_as_approver_or_claimant);
-		
+				
 		// check if we have a user name
 		if (Application.getUser().getUserName() == null) {
 			// No, get it
@@ -118,5 +118,12 @@ public class LoginAsApproverOrClaimantActivity extends Activity {
 		
 		startActivity(intent);
 
+	}
+	
+	/**
+	 * for testing purposes only
+	 */
+	public AlertDialog getDialog() {
+		return alertDialogGetUserName;
 	}
 }

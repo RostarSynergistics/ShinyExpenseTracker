@@ -170,6 +170,11 @@ public class AddDestinationActivity extends Activity {
 			double latitude = data.getDoubleExtra(IntentExtraIDs.LATITUDE, Coordinate.DEFAULT_COORDINATE.getLatitude());
 			double longitude = data.getDoubleExtra(IntentExtraIDs.LONGITUDE, Coordinate.DEFAULT_COORDINATE.getLongitude());
 			coord = new Coordinate(latitude, longitude);
+			try {
+				controller.setColor(claimID);
+			} catch (IOException e) {
+				throw new RuntimeException();
+			}
 			TextView coordValue = (TextView) findViewById(R.id.coordinatesValueTextView);
 			coordValue.setText(coord.toString() + "\n(tap here to change)");
 		}

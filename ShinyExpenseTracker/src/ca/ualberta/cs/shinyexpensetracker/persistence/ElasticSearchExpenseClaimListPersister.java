@@ -17,17 +17,17 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 public class ElasticSearchExpenseClaimListPersister implements IExpenseClaimListPersister {
 	private final Context context;
 	private final GsonExpenseClaimListPersister childPersister;
+	private final ConnectivityChecker connectivityChecker;
 
 	public ElasticSearchExpenseClaimListPersister(Context context, GsonExpenseClaimListPersister childPersister,
 			ConnectivityChecker connectivityChecker) {
 		this.context = context;
 		this.childPersister = childPersister;
+		this.connectivityChecker = connectivityChecker;
 	}
 
 	@Override
 	public ExpenseClaimList loadExpenseClaims() throws IOException {
-
-		ConnectivityChecker checker = new ConnectivityChecker();
 		ElasticSearchLoad load = new ElasticSearchLoad();
 
 		// Creating the two lists to sync if necessary
@@ -35,7 +35,7 @@ public class ElasticSearchExpenseClaimListPersister implements IExpenseClaimList
 
 		// If a network is a available then get the server copy of the claim
 		// list
-		if (checker.isNetworkAvailable(context)) {
+		if (connectivityChecker.isNetworkAvailable(context)) {
 			try {
 				// Loading the data
 				ExpenseClaimList cloudList = load.execute().get();
@@ -61,10 +61,8 @@ public class ElasticSearchExpenseClaimListPersister implements IExpenseClaimList
 	public void saveExpenseClaims(ExpenseClaimList list) throws IOException {
 		childPersister.saveExpenseClaims(list);
 
-		ConnectivityChecker checker = new ConnectivityChecker();
-
 		// Saving online if the network is available
-		if (checker.isNetworkAvailable(context)) {
+		if (connectivityChecker.isNetworkAvailable(context)) {
 			new ElasticSearchSave().execute(list);
 		}
 	}

@@ -45,15 +45,13 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	private Status status;
 	private ArrayList<Destination> destinations = new ArrayList<Destination>();
 	private TagList tagList = new TagList();
+
+	private int color;
 	private ArrayList<ExpenseItem> expenseItems = new ArrayList<ExpenseItem>();
 	private ArrayList<String> comments = new ArrayList<String>();
 
 	public ExpenseClaim(UUID userID, String name) throws ValidationException {
-		this(userID, name, new Date(), null, Status.IN_PROGRESS, new TagList());
-	}
-
-	public ExpenseClaim(UUID userID, String name, Date startDate) throws ValidationException {
-		this(userID, name, startDate, null, Status.IN_PROGRESS, new TagList());
+		this(userID, name, new Date(), new Date(), Status.IN_PROGRESS, new TagList());
 	}
 
 	public ExpenseClaim(UUID userID, String name, Date startDate, Date endDate) throws ValidationException {
@@ -350,15 +348,25 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 			return false;
 		}
 		ExpenseClaim rhs = (ExpenseClaim) obj;
+
 		return new EqualsBuilder().append(getID(), rhs.getID()).append(getUserID(), rhs.getUserID())
 				.append(getName(), rhs.getName()).append(getStartDate(), rhs.getStartDate())
 				.append(getEndDate(), rhs.getEndDate()).append(getStatus(), rhs.getStatus())
 				.append(getExpenseItems(), rhs.getExpenseItems()).append(getDestinations(), rhs.getDestinations())
 				.append(getTagList(), rhs.getTagList()).isEquals();
+
 	}
 
 	public String getComment(int index) {
 		return comments.get(index);
 
+	}
+	
+	public int getColor() {
+		return this.color;
+	}
+	
+	public void setColor(int color) {
+		this.color = color;
 	}
 }

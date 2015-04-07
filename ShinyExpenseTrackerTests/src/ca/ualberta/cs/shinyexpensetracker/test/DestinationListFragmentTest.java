@@ -211,13 +211,6 @@ public class DestinationListFragmentTest extends ActivityInstrumentationTestCase
 			@Override
 			public void run() {
 				try {
-					claim.addDestination(new Destination("Copy-Paste world", "Laziness", new Coordinate(0, 0)));
-				} catch (ValidationException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				;
-				try {
 					claim.addDestination(new Destination("Copy-Paste world", "Laziness", new Coordinate(0,0)));
 				} catch (ValidationException e) {
 					e.printStackTrace();

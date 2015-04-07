@@ -1,5 +1,6 @@
 package ca.ualberta.cs.shinyexpensetracker.test.models;
 
+import java.util.Date;
 import java.util.UUID;
 
 import junit.framework.TestCase;
@@ -18,7 +19,8 @@ public class ExpenseClaimListTests extends TestCase {
 	}
 
 	public void testThatGetClaimByIDFindsAClaimIfOneExistsWithThatID() throws ValidationException {
-		ExpenseClaim claim = new ExpenseClaim(UUID.randomUUID(), "foo");
+		ExpenseClaim claim = new ExpenseClaim(UUID.randomUUID(), "foo", new Date(1000), new Date(2000));
+		list.addClaim(claim);
 
 		ExpenseClaim retrievedClaim = list.getClaimByID(claim.getID());
 		assertEquals(claim, retrievedClaim);

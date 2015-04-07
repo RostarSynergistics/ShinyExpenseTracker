@@ -25,4 +25,11 @@ public class CoordinateTests extends TestCase {
 		assertEquals("coordinates not equal, negative overflow", c1, c2);
 	}
 	
+	public void testDistance() {
+		Coordinate c3 = new Coordinate(1.0, -1.0);
+
+		assertEquals("wrong distance", 0.0, c1.distanceTo(c3));
+		Coordinate c4 = new Coordinate(181, 359);
+		assertEquals("wrong distance", 0.0, c1.distanceTo(c4));
+	}
 }

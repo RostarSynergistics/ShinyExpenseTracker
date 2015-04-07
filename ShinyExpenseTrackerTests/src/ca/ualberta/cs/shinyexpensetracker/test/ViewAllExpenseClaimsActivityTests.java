@@ -183,9 +183,9 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
 
 		ExpenseClaim[] testingClaims = {
-				new ExpenseClaim(userID, "Old Claim", new Date(1000)),
-				new ExpenseClaim(userID, "Mid Claim", new Date(2000)),
-				new ExpenseClaim(userID, "New Claim", new Date(3000)),
+				new ExpenseClaim(userID, "Old Claim", new Date(1000), new Date(2000)),
+				new ExpenseClaim(userID, "Mid Claim", new Date(2000), new Date(3000)),
+				new ExpenseClaim(userID, "New Claim", new Date(3000), new Date(4000)),
 		};
 		int numTests = 0;
 
@@ -263,10 +263,10 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 		activity = getActivity();
 		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
 
-		ExpenseClaim claim1 = addClaim(new ExpenseClaim(userID, "Mid Claim 1", new Date(2000)));
-		addClaim(new ExpenseClaim(userID, "Old Claim", new Date(1000)));
-		addClaim(new ExpenseClaim(userID, "New Claim", new Date(3000)));
-		ExpenseClaim claim2 = addClaim(new ExpenseClaim(userID, "Mid Claim 2", new Date(2000)));
+		ExpenseClaim claim1 = addClaim(new ExpenseClaim(userID, "Mid Claim 1", new Date(2000), new Date(3000)));
+		addClaim(new ExpenseClaim(userID, "Old Claim", new Date(1000), new Date(2000)));
+		addClaim(new ExpenseClaim(userID, "New Claim", new Date(3000), new Date(4000)));
+		ExpenseClaim claim2 = addClaim(new ExpenseClaim(userID, "Mid Claim 2", new Date(2000), new Date(3000)));
 
 		// index 0 newer than index 1
 		assertEquals(1, getClaim(0).compareTo(getClaim(1)));
@@ -295,13 +295,16 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 		// Build 2 claims with dates so that claim 1 < claim 2.
 		TagList tags1 = new TagList();
 		tags1.addTag(new Tag("Test 1"));
+		
 		ExpenseClaim claim1 = addClaim(new ExpenseClaim(userID,	"Delete Claim 1", 
-				new Date(), null, ExpenseClaim.Status.IN_PROGRESS, tags1));
+				new Date(100), new Date(200), ExpenseClaim.Status.IN_PROGRESS, tags1));
 		
 		TagList tags2 = new TagList();
 		tags2.addTag(new Tag("Test 2"));
+		
 		ExpenseClaim claim2 = addClaim(new ExpenseClaim(userID,"Delete Claim 2", 
-				new Date(),null,ExpenseClaim.Status.IN_PROGRESS,tags2));
+				new Date(100), new Date(200),ExpenseClaim.Status.IN_PROGRESS,tags2));
+		
 		ExpenseClaim visibleClaim;
 
 		// Check that an item is actually deleted

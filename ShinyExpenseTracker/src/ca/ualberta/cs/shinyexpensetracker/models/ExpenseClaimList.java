@@ -1,6 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.util.ArrayList;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.UUID;
@@ -13,7 +14,7 @@ import java.util.UUID;
  */
 public class ExpenseClaimList extends Model<ExpenseClaimList> implements ExpenseClaimListViewer {
 	protected ArrayList<ExpenseClaim> claims;
-	
+
 	public ExpenseClaimList() {
 		claims = new ArrayList<ExpenseClaim>();
 	}
@@ -110,5 +111,36 @@ public class ExpenseClaimList extends Model<ExpenseClaimList> implements Expense
 			};
 		};
 		Collections.sort(claims, reverse_compare);
+	}
+
+	/**
+	 * Check if a claim list contains a claim of a given uuid
+	 * 
+	 * @param uuid
+	 *            of the claim
+	 */
+	public boolean containsUUID(UUID uuid) {
+		for (ExpenseClaim claim : claims) {
+			if (claim.getID().equals(uuid)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Returns a claim of a given UUID.
+	 * 
+	 * @param uuid
+	 *            of the given claim
+	 * @return the claim of the given UUID. null if that claim does not exist
+	 */
+	public ExpenseClaim getClaim(UUID uuid) {
+		for (ExpenseClaim claim : claims) {
+			if (claim.getID().equals(uuid)) {
+				return claim;
+			}
+		}
+		return null;
 	}
 }

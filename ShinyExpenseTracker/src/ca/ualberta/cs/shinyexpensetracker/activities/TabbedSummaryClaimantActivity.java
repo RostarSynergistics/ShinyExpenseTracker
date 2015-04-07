@@ -44,14 +44,14 @@ public class TabbedSummaryClaimantActivity extends TabbedSummaryActivity {
 			menu.findItem(R.id.addDestination).setEnabled(false);
 			menu.findItem(R.id.submitClaim).setEnabled(false);
 		}
-		
+
 		if (controller.getExpenseClaimByID(claimID).getStatus().equals(Status.SUBMITTED)) {
 			menu.findItem(R.id.editClaim).setEnabled(false);
 			menu.findItem(R.id.addExpenseItem).setEnabled(false);
 			menu.findItem(R.id.addDestination).setEnabled(false);
 			menu.findItem(R.id.submitClaim).setEnabled(false);
 		}
-		
+
 		return true;
 	}
 

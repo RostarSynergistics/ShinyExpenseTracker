@@ -7,8 +7,8 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import com.google.gson.Gson;
 
 /**
- * Handles the persistence of {@link ExpenseClaimList} to a file for offline usage,
- * using Gson to serialize it.
+ * Handles the persistence of {@link ExpenseClaimList} to a file for offline
+ * usage, using Gson to serialize it.
  * 
  * Source: https://www.youtube.com/watch?v=gmNfc6u1qk0 (2015-01-31)
  * https://www.youtube.com/watch?v=uat-8Z6U_Co (2015-02-01)
@@ -16,11 +16,13 @@ import com.google.gson.Gson;
 public class GsonExpenseClaimListPersister implements IExpenseClaimListPersister {
 	private final IPersistenceStrategy persistenceStrategy;
 	private final Gson gson;
+	ExpenseClaimList list;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param persistenceStrategy The desired persistence strategy.
+	 * @param persistenceStrategy
+	 *            The desired persistence strategy.
 	 */
 	public GsonExpenseClaimListPersister(IPersistenceStrategy persistenceStrategy) {
 		this.persistenceStrategy = persistenceStrategy;
@@ -30,6 +32,7 @@ public class GsonExpenseClaimListPersister implements IExpenseClaimListPersister
 	@Override
 	public ExpenseClaimList loadExpenseClaims() throws IOException {
 		String travelClaimsListData = persistenceStrategy.load();
+
 		if (travelClaimsListData.equals("")) {
 			return new ExpenseClaimList();
 		} else {

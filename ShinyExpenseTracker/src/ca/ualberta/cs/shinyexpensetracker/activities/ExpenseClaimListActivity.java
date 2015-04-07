@@ -49,23 +49,22 @@ import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
 import ca.ualberta.cs.shinyexpensetracker.models.User;
 import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
-
 public class ExpenseClaimListActivity extends Activity implements IView<ExpenseClaimList> {
 
-	
 	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
 	private User user = Application.getUser();
 	// TODO: these have to be moved to another object,
 	// like Claimant or something, when that class is created
 	private Coordinate homeGeolocation = new Coordinate();
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -83,15 +82,16 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 		adapter = new ClaimListAdapter(this);
 		// Ensure the adapter is sorted.
 		adapter.applyFilter(new ExpenseClaimSortFilter());
-		
-		// if the user is an approver filter the claims so only the submitted claims are shown
+
+		// if the user is an approver filter the claims so only the submitted
+		// claims are shown
 		if (Application.getUserType().equals(Type.Approver)) {
 			adapter.applyFilter(new ExpenseClaimSubmittedFilter());
 			adapter.applyFilter(new ExpenseClaimUserFilter());
 		} 
-		
+
 		claim_list.setAdapter(adapter);
-		
+
 		if (user.getHomeGeolocation() != null) {
 			TextView homeGeolocationValue = (TextView) findViewById(R.id.homeGeolocationValueTextView);
 			homeGeolocationValue.setText(user.getHomeGeolocation().toString());
@@ -101,18 +101,15 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 		claim_list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
 				ExpenseClaim claim = adapter.getItem(position);
+
 				Intent intent;
 
 				if (Application.getUserType().equals(Type.Claimant)) {
-					intent = new Intent(ExpenseClaimListActivity.this,
-						TabbedSummaryClaimantActivity.class);
+					intent = new Intent(ExpenseClaimListActivity.this, TabbedSummaryClaimantActivity.class);
 				} else {
-					intent = new Intent(ExpenseClaimListActivity.this,
-						TabbedSummaryApproverActivity.class);
-					
-
-					
+					intent = new Intent(ExpenseClaimListActivity.this, TabbedSummaryApproverActivity.class);
 				}
 
 				intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
@@ -126,23 +123,27 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
+				if (controller.getExpenseClaimAtPosition(position).getStatus() == Status.SUBMITTED) {
+					disableSubmittedClaimDeletion();
+				}
 				// Don't change this line. Change "askDeleteClaimAt" instead.
-				askDeleteClaimAt(position);
+				else {
+					askDeleteClaimAt(position);
+				}
 				return true;
 			}
 		});
-
-	};
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.expense_claims_view, menu);
-		
+
 		if (Application.getUserType().equals(Type.Approver)) {
 			menu.getItem(0).setEnabled(false);
 		}
-		
+
 		return true;
 	}
 
@@ -164,8 +165,7 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 			startActivity(manageTagsIntent);
 			return true;
 		case R.id.set_home_geolocation:
-			Intent geolocationViewIntent = new Intent(ExpenseClaimListActivity.this,
-					GeolocationViewActivity.class);
+			Intent geolocationViewIntent = new Intent(ExpenseClaimListActivity.this, GeolocationViewActivity.class);
 			startActivityForResult(geolocationViewIntent, GeolocationRequestCode.SET_GEOLOCATION);
 			return true;
 		case R.id.action_help:
@@ -176,9 +176,8 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 	}
 
 	/*
-	 * Get result back from setting geolocation
-	 * Put it in a Toast until there is a Claimant class
-	 * where the values can actually be stored
+	 * Get result back from setting geolocation Put it in a Toast until there is
+	 * a Claimant class where the values can actually be stored
 	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -193,7 +192,7 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 			user.setHomeGeolocation(homeGeolocation);
 		}
 	}
-	
+
 	@Override
 	public void update(ExpenseClaimList m) {
 		adapter.notifyDataSetChanged();
@@ -207,6 +206,28 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 	 */
 	public void deleteClaim(ExpenseClaim claim) throws IOException {
 		controller.deleteExpenseClaim(claim.getID());
+	}
+
+	/**
+	 * Disables deletion of submitted claim
+	 * 
+	 * @return
+	 */
+
+	public AlertDialog disableSubmittedClaimDeletion() {
+		AlertDialog dialog = new AlertDialog.Builder(this).setTitle("Not availble")
+				.setMessage("You cannot delete a Submitted claim")
+				// Do nothing
+				.setNeutralButton("Okay", new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// Do nothing
+						dialog.dismiss();
+					}
+				}).create();
+
+		dialog.show();
+		return dialog;
 	}
 
 	/**

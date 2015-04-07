@@ -8,6 +8,7 @@ import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 
 public class ValidationErrorAlertDialog {
 	private Dialog dialog;
+	private boolean isShowing = false;
 
 	public ValidationErrorAlertDialog(Context context, ValidationException validationException) {
 		this(context, validationException.getMessage());
@@ -34,5 +35,10 @@ public class ValidationErrorAlertDialog {
 
 	public void show() {
 		dialog.show();
+		isShowing = true;
+	}
+
+	public boolean isShowing() {
+		return isShowing;
 	}
 }

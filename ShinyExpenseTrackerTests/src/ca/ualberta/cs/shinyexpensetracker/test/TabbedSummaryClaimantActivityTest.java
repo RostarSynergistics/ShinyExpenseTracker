@@ -9,7 +9,6 @@ import android.test.ActivityInstrumentationTestCase2;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.AddTagToClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.RemoveTagFromClaimActivity;
-import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
@@ -35,7 +34,7 @@ public class TabbedSummaryClaimantActivityTest extends ActivityInstrumentationTe
 	}
 
 	static ClaimSummaryFragment frag;
-	TabbedSummaryActivity activity;
+	TabbedSummaryClaimantActivity activity;
 
 	ExpenseClaim claim;
 
@@ -83,7 +82,6 @@ public class TabbedSummaryClaimantActivityTest extends ActivityInstrumentationTe
 		setActivityIntent(intent);
 
 		activity = getActivity();
-
 	}
 
 	/**
@@ -101,7 +99,7 @@ public class TabbedSummaryClaimantActivityTest extends ActivityInstrumentationTe
 		// Wait for the UI to finish doing its thing
 		getInstrumentation().waitForIdleSync();
 
-		assertTrue("cannot sumbit incomplete claim dialog not showing", activity.getDialog().isShowing());
+		assertTrue("cannot sumbit incomplete claim dialog not showing", activity.getValidationErrorDialog().isShowing());
 
 		assertTrue("Claim status was changed to submitted", !claim.getStatus().equals(Status.SUBMITTED));
 		assertEquals("status has been changed", status, claim.getStatus());
@@ -121,7 +119,9 @@ public class TabbedSummaryClaimantActivityTest extends ActivityInstrumentationTe
 				false);
 		// Monitor for RemoveTagActivity
 		ActivityMonitor removeTagsActivityMonitor = getInstrumentation()
-				.addMonitor(RemoveTagFromClaimActivity.class.getName(), null, false);
+																		.addMonitor(RemoveTagFromClaimActivity.class.getName(),
+																				null,
+																				false);
 
 		// Press the "Submit claim" button
 		getInstrumentation().invokeMenuActionSync(activity, R.id.submitClaim, 0);
@@ -146,7 +146,8 @@ public class TabbedSummaryClaimantActivityTest extends ActivityInstrumentationTe
 
 		// Get the view expense claims activity
 		final AddTagToClaimActivity addTagsActivity = (AddTagToClaimActivity) getInstrumentation()
-				.waitForMonitorWithTimeout(addTagsActivityMonitor, 1000);
+																									.waitForMonitorWithTimeout(addTagsActivityMonitor,
+																											1000);
 		assertEquals(true, getInstrumentation().checkMonitorHit(addTagsActivityMonitor, 1));
 
 		addTagsActivity.finish();
@@ -155,7 +156,8 @@ public class TabbedSummaryClaimantActivityTest extends ActivityInstrumentationTe
 				getInstrumentation().invokeMenuActionSync(activity, R.id.RemoveTag, 0));
 
 		final RemoveTagFromClaimActivity removeTagsActivity = (RemoveTagFromClaimActivity) getInstrumentation()
-				.waitForMonitorWithTimeout(removeTagsActivityMonitor, 1000);
+																												.waitForMonitorWithTimeout(removeTagsActivityMonitor,
+																														1000);
 		assertEquals(true, getInstrumentation().checkMonitorHit(addTagsActivityMonitor, 1));
 
 		removeTagsActivity.finish();

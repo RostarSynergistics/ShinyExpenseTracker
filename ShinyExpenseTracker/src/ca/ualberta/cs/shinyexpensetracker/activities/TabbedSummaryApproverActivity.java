@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.EditText;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.ValidationErrorAlertDialog;
 import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
 
@@ -25,9 +26,9 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 
 	protected static AlertDialog alertDialogAddComment;
 	protected static AlertDialog alertDialogApproveClaim;
-	protected static AlertDialog alertDialogApproveCommentNeeded;
+	protected static ValidationErrorAlertDialog alertDialogApproveCommentNeeded;
 	protected static AlertDialog alertDialogReturnClaim;
-	protected static AlertDialog alertDialogReturnCommentNeeded;
+	protected static ValidationErrorAlertDialog alertDialogReturnCommentNeeded;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -46,10 +47,15 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 	 * @throws IOException
 	 * @throws ValidationException
 	 */
-	public void approveClaimMenuItem(MenuItem menu) throws IOException, ValidationException {
+	public void approveClaimMenuItem(MenuItem menu) throws IOException {
 		adb = new AlertDialog.Builder(this);
 
-		controller.updateExpenseClaimStatus(claimID, Status.APPROVED);
+		try {
+			controller.updateExpenseClaimStatus(claimID, Status.APPROVED);
+		} catch (ValidationException e) {
+			alertDialogApproveCommentNeeded = new ValidationErrorAlertDialog(this, e);
+			alertDialogApproveCommentNeeded.show();
+		}
 
 		adb.setMessage("The claim has been approved");
 
@@ -117,10 +123,15 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 	 * @throws IOException
 	 * @throws ValidationException
 	 */
-	public void returnClaimMenuItem(MenuItem menu) throws IOException, ValidationException {
+	public void returnClaimMenuItem(MenuItem menu) throws IOException {
 		adb = new AlertDialog.Builder(this);
 
-		controller.updateExpenseClaimStatus(claimID, Status.RETURNED);
+		try {
+			controller.updateExpenseClaimStatus(claimID, Status.RETURNED);
+		} catch (ValidationException e) {
+			alertDialogReturnCommentNeeded = new ValidationErrorAlertDialog(this, e);
+			alertDialogReturnCommentNeeded.show();
+		}
 
 		adb.setMessage("The claim has been returned.");
 		adb.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
@@ -156,7 +167,7 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 		return alertDialogApproveClaim;
 	}
 
-	public AlertDialog getCommentApproveNeededDialog() {
+	public ValidationErrorAlertDialog getCommentApproveNeededDialog() {
 		return alertDialogApproveCommentNeeded;
 	}
 
@@ -164,7 +175,7 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 		return alertDialogReturnClaim;
 	}
 
-	public Dialog getCommentNeededReturnDialog() {
+	public ValidationErrorAlertDialog getCommentNeededReturnDialog() {
 		return alertDialogReturnCommentNeeded;
 	}
 

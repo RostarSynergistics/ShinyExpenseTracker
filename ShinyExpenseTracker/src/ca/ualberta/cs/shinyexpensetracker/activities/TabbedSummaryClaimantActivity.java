@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.ValidationErrorAlertDialog;
 import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
 
@@ -125,11 +126,16 @@ public class TabbedSummaryClaimantActivity extends TabbedSummaryActivity {
 	 * @throws IOException
 	 * @throws ValidationException
 	 */
-	public void submitClaimMenuItem(MenuItem menu) throws IOException, ValidationException {
+	public void submitClaimMenuItem(MenuItem menu) throws IOException {
 		Intent intent = getIntent();
 		UUID claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
 
-		controller.updateExpenseClaimStatus(claimID, Status.SUBMITTED);
+		try {
+			controller.updateExpenseClaimStatus(claimID, Status.SUBMITTED);
+		} catch (ValidationException e) {
+			validationErrorDialog = new ValidationErrorAlertDialog(this, e);
+			validationErrorDialog.show();
+		}
 
 		adb.setMessage("Claim Submitted for Approval");
 		adb.setCancelable(true);

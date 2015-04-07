@@ -28,6 +28,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
+import ca.ualberta.cs.shinyexpensetracker.utilities.Base64BitmapConverter;
 import ca.ualberta.cs.shinyexpensetracker.utilities.GlobalDateFormat;
 
 /**
@@ -178,7 +179,8 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 	public void testScale() {
 		BitmapDrawable dr = new BitmapDrawable(res, imageBig);
 		Bitmap imageBigScaled = activity.convertToBitmap(dr, imageBig.getWidth(), imageBig.getHeight());
-		assertTrue("image too big", imageBigScaled.getByteCount() <= 65536);
+		String base64Img = Base64BitmapConverter.convertToBase64(imageBigScaled);
+		assertTrue("image too big", base64Img.length() <= 65536);
 	}
 
 	/**

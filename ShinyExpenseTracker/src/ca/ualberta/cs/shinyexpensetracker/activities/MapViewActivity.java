@@ -118,11 +118,10 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 		ExpenseClaimList claimList = controller.getExpenseClaimList();
 		
 		// put home geolocation on map, if there is any
-		GeoPoint startPoint = null;
+
 		IMapController mapController = map.getController();
 		coordinate = user.getHomeGeolocation();
 		if (coordinate != null) {
-			//startPoint = putHomeGeolocationOnMap();
 			Marker homeMarker = putMarkerOnMap(coordinate);
 			homeMarker.setSnippet("Home Geolocation");
 		}
@@ -133,15 +132,8 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 		
 		// set more or less tolerable zoom factor
 		mapController.setZoom(3);
-		
-		if (startPoint != null) {
-			// center at home geolocation, if there is any
-			mapController.setCenter(startPoint);
-		}
-		else {
-			// otherwise, at default location
-			mapController.setCenter(new GeoPoint(0.0, 0.0));
-		}
+
+		mapController.setCenter(new GeoPoint(0.0, 0.0));
 		// now, it doesn't really center at those locations.
 		// must be a bug in the library
 		
@@ -187,17 +179,6 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 		itemMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
 		map.getOverlays().add(itemMarker);
 		return itemMarker;
-	}
-
-	private GeoPoint putHomeGeolocationOnMap() {
-		GeoPoint startPoint;
-		startPoint = new GeoPoint(coordinate.getLatitude(), coordinate.getLongitude());
-		Marker newMarker = new Marker(map);
-		newMarker.setPosition(startPoint);
-		newMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-		map.getOverlays().add(newMarker);
-		newMarker.setSnippet("Home Geolocation");
-		return startPoint;
 	}
 
 	private void setMapForSettingGeolocation(Intent intent) {

@@ -100,17 +100,17 @@ public class ExpenseClaimEqualsTests extends TestCase {
 	}
 
 	public void testThatTwoClaimsWithIdenticalNonEmptyTagListsAreEqual() {
-		// Tag association is not fully implemented yet.
+		// Tag association is not fully implemented yet. #220
 		fail();
 	}
 
 	public void testThatOneClaimWithOneWithAnEmptyTagListAndTheOtherNotEmptyAreNotEqual() {
-		// Tag association is not fully implemented yet.
+		// Tag association is not fully implemented yet. #220
 		fail();
 	}
 
 	public void testThatTwoClaimsWithNonIdenticalNonEmptyTagListsAreNotEqual() {
-		// Tag association is not fully implemented yet.
+		// Tag association is not fully implemented yet. #220
 		fail();
 	}
 

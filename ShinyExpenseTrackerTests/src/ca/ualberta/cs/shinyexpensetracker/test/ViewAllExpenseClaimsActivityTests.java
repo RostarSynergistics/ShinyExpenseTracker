@@ -365,6 +365,9 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	 * Test for crash on new expense claim. See #91 for details.
 	 */
 	public void testCrashOnNewExpense() {
+		// Test hangs the suite. Must be fixed when the
+		// Approver parts are fully completed. #220
+		fail();
 
 		// TabbedSummary has split in 2. We need a way
 		// to specify which one we're looking for.
@@ -442,7 +445,7 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 
 		// Get the summary activity
 		summaryActivity = (TabbedSummaryClaimantActivity) getInstrumentation()
-																				.waitForMonitorWithTimeout(summaryMonitor,
+				.waitForMonitorWithTimeout(summaryMonitor,
 																						1000);
 		assertEquals(true, getInstrumentation().checkMonitorHit(summaryMonitor, 1));
 
@@ -456,7 +459,7 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 
 		// Get the expense item activity
 		final ExpenseItemActivity createExpense = (ExpenseItemActivity) getInstrumentation()
-																							.waitForMonitorWithTimeout(expenseMonitor,
+				.waitForMonitorWithTimeout(expenseMonitor,
 																									1000);
 		assertEquals(true, getInstrumentation().checkMonitorHit(expenseMonitor, 1));
 

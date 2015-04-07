@@ -62,6 +62,9 @@ public class GeolocationViewTest extends
 	 * Test if the text view contains correct values after pressing Set Automatically Using GPS
 	 */
 	public void testGeolocationFetch() {
+		// Test inconsistently fails or hangs #220
+		fail();
+		
 		LocationManager lm = (LocationManager) instrumentation.getTargetContext().getSystemService(Context.LOCATION_SERVICE);
 		Location loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		assertNotNull("there is no last known location", loc);

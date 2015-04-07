@@ -33,6 +33,10 @@ public class ManageTagsTest extends ActivityInstrumentationTestCase2<ManageTagAc
 	}
 
 	public void testViewTag() {
+		// FIXME: #220
+		//        This test passes but causes tests followingg
+		//		  it to fail.
+		fail();
 		assertNotNull(tagController.getTagList());
 		assertTrue(tagController.getTagList().size() == 0);
 		assertTrue(manageTagsListView.getCount() == 0);
@@ -43,8 +47,6 @@ public class ManageTagsTest extends ActivityInstrumentationTestCase2<ManageTagAc
 		assertEquals(tag, (Tag)manageTagsListView.getItemAtPosition(0));
 		assertTrue(tagController.getTagList().size() == 1);
 		assertTrue(manageTagsListView.getCount() == 1);	
-		
-		instrumentation.waitForIdleSync();
 	}
 	
 	private Tag addTagToTagList(final Tag tag) {

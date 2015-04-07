@@ -18,6 +18,7 @@ import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.utilities.GlobalDateFormat;
 
 /**
  * Displays a summary of a claims information (name, status, start date, end
@@ -113,8 +114,8 @@ public class ClaimSummaryFragment extends Fragment implements
 
 		claimName.setText(claim.getName());
 		claimStatus.setText("Claim Status: " + claim.getStatus().getText());
-		claimStartDate.setText("Start Date: " + claim.getStartDate());
-		claimEndDate.setText("End Date: " + claim.getEndDate());
+		claimStartDate.setText("Start Date: " + GlobalDateFormat.format(claim.getStartDate()));
+		claimEndDate.setText("End Date: " + GlobalDateFormat.format(claim.getEndDate()));
 
 		// set the tags
 		String tags;

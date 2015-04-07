@@ -117,7 +117,7 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 
 		// Update the incompleteness indicator
 		CheckBox flag = (CheckBox) findViewById(R.id.expenseItemCompletenessFlag);
-		flag.setChecked(item.getIsMarkedIncomplete());
+		flag.setChecked(item.isMarkedIncomplete());
 	}
 
 	@Override

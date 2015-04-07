@@ -10,12 +10,9 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
@@ -30,7 +27,6 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
-import ca.ualberta.cs.shinyexpensetracker.utilities.Base64BitmapConverter;
 
 /**
  * Tests various parts of the functionality of ExpenseItemActivity that relates
@@ -78,7 +74,7 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 		controller = new ExpenseClaimController(persister);
 		Application.setExpenseClaimController(controller);
 
-		claim = new ExpenseClaim("test claim");
+		claim = new ExpenseClaim("test claim", new Date(1000), new Date(2000));
 		res = getInstrumentation().getTargetContext().getResources();
 		imageSmall = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
 		imageBig = BitmapFactory.decodeResource(res, R.drawable.keyhole_nebula_hubble_1999);
@@ -162,43 +158,6 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 		assertEquals(newDescription, updatedItem.getDescription());
 
 		assertTrue("Persister's .save() was never called", persister.wasSaveCalled());
-	}
-
-	/**
-	 * This tests that the image is successfully drawn on the ImageButton
-	 */
-
-	public void testDrawImageButton() {
-		ImageButton button = (ImageButton) activity.findViewById(R.id.expenseItemReceiptImageButton);
-		drawNewImage();
-		assertNotNull("no image on button", button.getDrawable());
-		Drawable dr = button.getDrawable();
-		Bitmap bm = activity.convertToBitmap(dr, imageSmall.getWidth(), imageSmall.getHeight());
-		assertTrue("receipt is not right", bm.sameAs(imageSmall));
-	}
-
-	/**
-	 * This tests that the image is successfully scaled down
-	 */
-	public void testScale() {
-		BitmapDrawable dr = new BitmapDrawable(res, imageBig);
-		Bitmap imageBigScaled = activity.convertToBitmap(dr, imageBig.getWidth(), imageBig.getHeight());
-		String base64Img = Base64BitmapConverter.convertToBase64(imageBigScaled);
-		assertTrue("image too big", base64Img.length() <= 65536);
-	}
-
-	/**
-	 * Draw a new image on ImageButton
-	 */
-	private void drawNewImage() {
-		getInstrumentation().runOnMainSync(new Runnable() {
-			@Override
-			public void run() {
-				ImageButton button = (ImageButton) activity.findViewById(R.id.expenseItemReceiptImageButton);
-				button.setImageBitmap(imageSmall);
-			}
-		});
-		getInstrumentation().waitForIdleSync();
 	}
 
 	private Date getDate(EditText dateField) throws ParseException {

@@ -27,7 +27,7 @@ import com.google.gson.reflect.TypeToken;
 
 /**
  * This class will implement all the elastic search functionality
- *
+ * 
  */
 public class ESClaimManager {
 

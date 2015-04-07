@@ -37,6 +37,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.ValidationErrorAlertDialog;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -46,28 +47,21 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import ca.ualberta.cs.shinyexpensetracker.utilities.GlobalDateFormat;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
-
 /**
- * Allows a user to edit a new or existing expense item.
- * This activity should be opened with an intent indicating
- * the UUID of the claim that is being modified. If a new
- * expense item is being made, a UUID for the expense should
- * not be included. If an expense item is being edited, the
- * UUID of the existing expense should be included.
+ * Allows a user to edit a new or existing expense item. This activity should be
+ * opened with an intent indicating the UUID of the claim that is being
+ * modified. If a new expense item is being made, a UUID for the expense should
+ * not be included. If an expense item is being edited, the UUID of the existing
+ * expense should be included.
  * 
  * Covers Issues 5, 15, and 29
  * 
  * @version 1.2
  * @since 2015-03-15
  * 
- * Displays activity_create_expense_item activity, to give the user an
+ *        Displays activity_create_expense_item activity, to give the user an
  */
-public class ExpenseItemActivity extends Activity implements OnClickListener {
-
-
-	public static final String EXPENSE_INDEX = "expenseIndex";
-	public static final String CLAIM_INDEX = "claimIndex";
-
+public class ExpenseItemActivity extends Activity implements OnClickListener, IView<ExpenseItem> {
 	// DatePickerDialog from:
 	// http://androidopentutorials.com/android-datepickerdialog-on-edittext-click-event/
 	// On March 2 2015
@@ -108,6 +102,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 			// fetch the item and preset all fields with its values
 			if (expenseItemID != null) {
 				item = claim.getExpenseItemByID(expenseItemID);
+				item.addView(this);
 				isEditing = true;
 				populateViews();
 			}
@@ -131,7 +126,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		getMenuInflater().inflate(R.menu.expense_item, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
@@ -183,8 +178,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		setEditTextValue(R.id.expenseItemDateEditText, GlobalDateFormat.format(item.getDate()));
 		setEditTextValue(R.id.expenseItemDescriptionEditText, item.getDescription().toString());
 		setEditTextValue(R.id.expenseItemAmountEditText, item.getAmountSpent().toString());
-		if(item.getGeolocation() != null)
-		{
+		if (item.getGeolocation() != null) {
 			TextView coordValue = (TextView) findViewById(R.id.expenseItemCoordinatesValueTextView);
 			coordValue.setText(item.getGeolocation().toString());
 			expenseItemGeolocation = item.getGeolocation();
@@ -329,10 +323,11 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 
 		try {
 			if (isEditing) {
-			controller.updateExpenseItemOnClaim(claim.getID(), item.getID(), name, date, category, amount, currency,
-					description, bm, expenseItemGeolocation);
+				controller.updateExpenseItemOnClaim(claim.getID(), item.getID(), name, date, category, amount,
+						currency, description, bm, expenseItemGeolocation);
 			} else {
-			controller.addExpenseItemToClaim(claim.getID(), name, date, category, amount, currency, description, bm, expenseItemGeolocation);
+				controller.addExpenseItemToClaim(claim.getID(), name, date, category, amount, currency, description,
+						bm, expenseItemGeolocation);
 			}
 		} catch (ValidationException e) {
 			alertDialog = new ValidationErrorAlertDialog(this, e);
@@ -369,16 +364,16 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 	}
 
 	/**
-	 * Handler for coordinates text click. Opens the GeolocationViewActivity
-	 * so that it can be modified.
+	 * Handler for coordinates text click. Opens the GeolocationViewActivity so
+	 * that it can be modified.
+	 * 
 	 * @param v
 	 */
 	public void onCoordinatesValueTextViewClick(View v) {
-		Intent geolocationViewIntent = new Intent(ExpenseItemActivity.this,
-				GeolocationViewActivity.class);
+		Intent geolocationViewIntent = new Intent(ExpenseItemActivity.this, GeolocationViewActivity.class);
 		startActivityForResult(geolocationViewIntent, GeolocationRequestCode.SET_GEOLOCATION);
 	}
-	
+
 	/**
 	 * Runs on return from the camera app. Displays the image taken in the
 	 * expenseItemImageButton
@@ -397,8 +392,10 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		}
 		if (requestCode == GeolocationRequestCode.SET_GEOLOCATION) {
 			if (resultCode == RESULT_OK) {
-				double latitude = data.getDoubleExtra(IntentExtraIDs.LATITUDE, Coordinate.DEFAULT_COORDINATE.getLatitude());
-				double longitude = data.getDoubleExtra(IntentExtraIDs.LONGITUDE, Coordinate.DEFAULT_COORDINATE.getLongitude());
+				double latitude = data.getDoubleExtra(IntentExtraIDs.LATITUDE,
+						Coordinate.DEFAULT_COORDINATE.getLatitude());
+				double longitude = data.getDoubleExtra(IntentExtraIDs.LONGITUDE,
+						Coordinate.DEFAULT_COORDINATE.getLongitude());
 				expenseItemGeolocation = new Coordinate(latitude, longitude);
 				TextView coordValue = (TextView) findViewById(R.id.expenseItemCoordinatesValueTextView);
 				coordValue.setText(expenseItemGeolocation.toString() + "\n(tap here to change)");
@@ -427,5 +424,11 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 	 */
 	public DatePickerDialog getDialog() {
 		return datePickerDialog;
+	}
+
+	@Override
+	public void update(ExpenseItem m) {
+		item = m;
+		populateViews();
 	}
 }

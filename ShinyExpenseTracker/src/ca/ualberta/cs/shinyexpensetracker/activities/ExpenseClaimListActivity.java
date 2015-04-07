@@ -39,6 +39,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.GeolocationRequestCode;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.adapters.ClaimListAdapter;
 import ca.ualberta.cs.shinyexpensetracker.decorators.ExpenseClaimSortFilter;
@@ -50,12 +51,13 @@ import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
-import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
 import ca.ualberta.cs.shinyexpensetracker.models.User;
 import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
+
 public class ExpenseClaimListActivity extends Activity implements IView<ExpenseClaimList> {
+
 
 	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
@@ -166,6 +168,12 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 			Intent geolocationViewIntent = new Intent(ExpenseClaimListActivity.this, GeolocationViewActivity.class);
 			startActivityForResult(geolocationViewIntent, GeolocationRequestCode.SET_GEOLOCATION);
 			return true;
+		case R.id.display_geolocations_on_map:
+			Intent geolocationMapViewIntent = new Intent(ExpenseClaimListActivity.this,
+					MapViewActivity.class);
+			geolocationMapViewIntent.putExtra(IntentExtraIDs.REQUEST_CODE, GeolocationRequestCode.DISPLAY_GEOLOCATIONS);
+			startActivity(geolocationMapViewIntent);
+			return true;
 		case R.id.action_help:
 			InAppHelpDialog.showHelp(this, R.string.help_claim_list);
 			return true;
@@ -181,8 +189,8 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// Check result is ok
 		if (resultCode == RESULT_OK) {
-			double latitude = data.getDoubleExtra("latitude", Coordinate.DEFAULT_COORDINATE.getLatitude());
-			double longitude = data.getDoubleExtra("longitude", Coordinate.DEFAULT_COORDINATE.getLongitude());
+			double latitude = data.getDoubleExtra(IntentExtraIDs.LATITUDE, Coordinate.DEFAULT_COORDINATE.getLatitude());
+			double longitude = data.getDoubleExtra(IntentExtraIDs.LONGITUDE, Coordinate.DEFAULT_COORDINATE.getLongitude());
 			homeGeolocation.setLatitude(latitude);
 			homeGeolocation.setLongitude(longitude);
 			TextView homeGeolocationValue = (TextView) findViewById(R.id.homeGeolocationValueTextView);

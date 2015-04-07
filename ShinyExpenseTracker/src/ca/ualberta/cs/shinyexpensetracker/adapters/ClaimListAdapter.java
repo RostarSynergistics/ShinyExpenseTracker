@@ -2,9 +2,6 @@
 //   http://www.piwai.info/android-adapter-good-practices/
 package ca.ualberta.cs.shinyexpensetracker.adapters;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +14,13 @@ import ca.ualberta.cs.shinyexpensetracker.decorators.ExpenseClaimFilter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
+import ca.ualberta.cs.shinyexpensetracker.utilities.GlobalDateFormat;
 
 /**
  * This class extends the BaseAdapter to display and sort the claims with their
  * necessary information.
  */
 public class ClaimListAdapter extends BaseAdapter {
-	private final SimpleDateFormat dateFormat;
 	private final Context context;
 
 	private ExpenseClaimList claims;
@@ -31,7 +28,6 @@ public class ClaimListAdapter extends BaseAdapter {
 	
 	public ClaimListAdapter(Context context) {
 		super();
-		this.dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
 		this.context = context;
 		this.claims = Application.getExpenseClaimController().getExpenseClaimList();
 		this.filteredClaims = new ExpenseClaimFilter().decorate(claims);
@@ -101,9 +97,9 @@ public class ClaimListAdapter extends BaseAdapter {
 
 		// Start date can't be null, but end date might be.
 		if (claim.getEndDate() == null) {
-			dates.setText(dateFormat.format(claim.getStartDate()));
+			dates.setText(GlobalDateFormat.format(claim.getStartDate()));
 		} else {
-			dates.setText(dateFormat.format(claim.getStartDate()) + " to " + dateFormat.format(claim.getEndDate()));
+			dates.setText(GlobalDateFormat.format(claim.getStartDate()) + " to " + GlobalDateFormat.format(claim.getEndDate()));
 		}
 		// Tag might be null
 		if (claim.getTagList() == null) {

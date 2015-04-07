@@ -1,9 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -17,6 +15,7 @@ import ca.ualberta.cs.shinyexpensetracker.adapters.ExpenseItemAdapter;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+import ca.ualberta.cs.shinyexpensetracker.utilities.GlobalDateFormat;
 
 /**
  * Class for testing the ExpenseItemAdapter
@@ -151,12 +150,10 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 		TextView viewValue = (TextView) view.findViewById(R.id.expenseItemValue);
 		TextView viewDate = (TextView) view.findViewById(R.id.expenseItemDate);
 		TextView viewCategory = (TextView) view.findViewById(R.id.expenseItemCategory);
-
-		SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
 		
 		assertEquals(viewName.getText().toString(), scrumptiousFood.getName());
 		assertEquals(viewValue.getText().toString(), scrumptiousFood.getValueString());
-		assertEquals(viewDate.getText().toString(), df.format(scrumptiousFood.getDate()));
+		assertEquals(viewDate.getText().toString(), GlobalDateFormat.format(scrumptiousFood.getDate()));
 		assertEquals(viewCategory.getText().toString(), scrumptiousFood.getCategory().toString());
 		
 	}

@@ -52,6 +52,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 import ca.ualberta.cs.shinyexpensetracker.models.UserType;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
+import ca.ualberta.cs.shinyexpensetracker.utilities.GlobalDateFormat;
 
 public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTestCase2<ExpenseClaimListActivity> {
 
@@ -406,8 +407,8 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 
 				// Set values
 				name.setText("Test Claim");
-				startDate.setText("03-05-2015");
-				endDate.setText("04-05-2015");
+				startDate.setText(GlobalDateFormat.makeString(2015, 03, 04));
+				endDate.setText(GlobalDateFormat.makeString(2015, 04, 05));
 
 				// Close the activity
 				doneButton.performClick();
@@ -470,7 +471,7 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 
 				// Set values
 				name.setText("Test Expense");
-				date.setText("03-05-2015");
+				date.setText(GlobalDateFormat.makeString(03, 05, 2015));
 				amount.setText("100");
 
 				// Create the expense item

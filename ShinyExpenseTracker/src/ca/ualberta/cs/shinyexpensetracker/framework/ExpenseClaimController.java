@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import ca.ualberta.cs.shinyexpensetracker.es.data.ConnectivityChecker;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -17,6 +18,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
+import ca.ualberta.cs.shinyexpensetracker.persistence.ElasticSearchExpenseClaimListPersister;
 import ca.ualberta.cs.shinyexpensetracker.persistence.FilePersistenceStrategy;
 import ca.ualberta.cs.shinyexpensetracker.persistence.GsonExpenseClaimListPersister;
 import ca.ualberta.cs.shinyexpensetracker.persistence.IExpenseClaimListPersister;
@@ -42,7 +44,8 @@ public class ExpenseClaimController {
 	 * @throws IOException
 	 */
 	public ExpenseClaimController(Context context) throws IOException {
-		this(new GsonExpenseClaimListPersister(new FilePersistenceStrategy(context, "expenseClaims")));
+		this(new ElasticSearchExpenseClaimListPersister(context, new GsonExpenseClaimListPersister(
+				new FilePersistenceStrategy(context, "expenseClaims")), new ConnectivityChecker()));
 	}
 
 	/**
@@ -315,6 +318,12 @@ public class ExpenseClaimController {
 
 		persister.saveExpenseClaims(claimList);
 		return claim;
+	}
+
+	public void removePhoto(UUID claimId, UUID itemId) throws IOException {
+		ExpenseItem item = claimList.getClaim(claimId).getExpenseItemByID(itemId);
+		item.setReceiptPhoto(null);
+		persister.saveExpenseClaims(claimList);
 	}
 
 	/**

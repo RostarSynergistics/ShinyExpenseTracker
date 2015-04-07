@@ -77,6 +77,7 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 			alertDialogApproveCommentNeeded.show();
 
 		} else {
+
 			controller.updateExpenseClaimStatus(claimID, Status.APPROVED);
 
 			adb.setMessage("The claim has been approved");
@@ -117,14 +118,17 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 		// Setting the positive button to save the text in the dialog as a
 		// comment
 		// if valid
+
 		adb.setPositiveButton("Add Comment", new android.content.DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				String comment = commentTextBox.getText().toString();
+
 				try {
 					controller.addCommentToClaim(claimID, comment);
 				} catch (IOException e) {
 					throw new RuntimeException(e);
+
 				}
 			}
 		});
@@ -160,6 +164,7 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 			alertDialogReturnCommentNeeded = adb.create();
 			alertDialogReturnCommentNeeded.show();
 		} else {
+
 			controller.updateExpenseClaimStatus(claimID, Status.RETURNED);
 
 			adb.setMessage("The claim has been returned.");

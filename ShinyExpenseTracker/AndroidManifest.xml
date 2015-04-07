@@ -81,7 +81,7 @@
             android:label="@string/title_activity_add_tag_to_claim" >
         </activity>
         <activity
-            android:name=".activities.LoginAsApproverOrClaimantActivity"
+            android:name="ca.ualberta.cs.shinyexpensetracker.activities.LoginAsApproverOrClaimantActivity"
             android:label="@string/title_activity_sign_in_as_approver_or_claimant" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -89,11 +89,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.RemoveTagFromClaimActivity"
             android:label="@string/title_activity_remove_tag_from_claim" >
         </activity>
+
+        <receiver android:name="ca.ualberta.cs.shinyexpensetracker.es.data.NetworkStateReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".activities.ViewCommentsActivity"
             android:label="@string/title_activity_view_comments" >

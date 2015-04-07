@@ -28,7 +28,7 @@ import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.KeyEvent;
 import ca.ualberta.cs.shinyexpensetracker.activities.MapViewActivity;
-import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.GeolocationRequestCode;
 
 public class MapViewTest extends ActivityInstrumentationTestCase2<MapViewActivity> {
 

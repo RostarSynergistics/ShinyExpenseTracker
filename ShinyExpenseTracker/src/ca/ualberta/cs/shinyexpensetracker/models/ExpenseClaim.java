@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
+
 /**
  * Class that represents an expense claim created by a user.
  */
@@ -46,32 +48,38 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	private ArrayList<ExpenseItem> expenseItems = new ArrayList<ExpenseItem>();
 	private ArrayList<String> comments = new ArrayList<String>();
 
-	public ExpenseClaim(UUID userID, String name) {
+	public ExpenseClaim(UUID userID, String name) throws ValidationException {
 		this(userID, name, new Date(), null, Status.IN_PROGRESS, new TagList());
 	}
 
-	public ExpenseClaim(UUID userID, String name, Date startDate) {
+	public ExpenseClaim(UUID userID, String name, Date startDate) throws ValidationException {
 		this(userID, name, startDate, null, Status.IN_PROGRESS, new TagList());
 	}
 
-	public ExpenseClaim(UUID userID, String name, Date startDate, Date endDate) {
+	public ExpenseClaim(UUID userID, String name, Date startDate, Date endDate) throws ValidationException {
 		this(userID, name, startDate, endDate, Status.IN_PROGRESS, new TagList());
 	}
 
-	public ExpenseClaim(UUID userID, String name, Date startDate, Date endDate, Status status) {
+	public ExpenseClaim(UUID userID, String name, Date startDate, Date endDate, Status status) throws ValidationException {
 		this(userID, name, startDate, endDate, status, new TagList());
 	}
 
-	public ExpenseClaim(UUID userID, String name, Date startDate, Date endDate, Status status, TagList tagList) {
+	public ExpenseClaim(UUID userID, String name, Date startDate, Date endDate, Status status, TagList tagList) throws ValidationException {
 		this(UUID.randomUUID(), userID, name, startDate, endDate, status, tagList);
 	}
 
-	public ExpenseClaim(UUID id, UUID userID, String name, Date startDate, Date endDate, Status status) {
+	public ExpenseClaim(UUID id, UUID userID, String name, Date startDate, Date endDate, Status status) throws ValidationException {
 		this(id, name, startDate, endDate, status, null);
 	}
 
-	public ExpenseClaim(UUID id, UUID userID, String name, Date startDate, Date endDate, Status status, TagList tagList) {
+	public ExpenseClaim(UUID id, UUID userID, String name, Date startDate, Date endDate, Status status, TagList tagList) throws ValidationException {
+
 		super();
+
+		validateName(name);
+		validateDates(startDate, endDate);
+		validateStatus(status);
+
 		this.id = id;
 		this.userID = userID;
 		this.name = name;
@@ -79,6 +87,27 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		this.endDate = endDate;
 		this.status = status;
 		this.tagList = tagList;
+
+	}
+
+	private void validateDates(Date newStartDate, Date newEndDate) throws ValidationException {
+		if (newStartDate == null) {
+			throw new ValidationException("Expense Claim requires a start date.");
+		}
+
+		if (newEndDate == null) {
+			throw new ValidationException("Expense Claim requires a end date.");
+		}
+
+		if (newStartDate.after(newEndDate)) {
+			throw new ValidationException("Expense Claim's start date must be before or equal to its end date.");
+		}
+	}
+
+	public void validateName(String newName) throws ValidationException {
+		if (newName == null || newName.length() == 0) {
+			throw new ValidationException("Expense Claim requires a name.");
+		}
 	}
 
 	public UUID getID() {
@@ -124,9 +153,36 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		return status;
 	}
 
-	public void setStatus(Status status) {
+	public void setStatus(Status status) throws ValidationException {
+		validateStatus(status);
 		this.status = status;
 		notifyViews();
+	}
+
+	private void validateStatus(Status newStatus) throws ValidationException {
+		if (newStatus == Status.SUBMITTED && hasIncompleteExpenseItems()) {
+			throw new ValidationException("Cannot submit an incomplete claim.");
+		}
+
+		if (newStatus == Status.APPROVED || newStatus == Status.RETURNED) {
+			if (getComments().size() == 0) {
+				String verb = newStatus == Status.APPROVED ? "approve" : "return";
+				throw new ValidationException("You must comment on a claim before you " + verb + "it.");
+			}
+		}
+	}
+
+	public boolean hasIncompleteExpenseItems() {
+		boolean value = false;
+
+		for (ExpenseItem item : expenseItems) {
+			if (item.isMarkedIncomplete()) {
+				value = true;
+				break;
+			}
+		}
+
+		return value;
 	}
 
 	public TagList getTagList() {

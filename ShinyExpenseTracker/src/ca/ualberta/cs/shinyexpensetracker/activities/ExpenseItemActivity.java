@@ -12,21 +12,16 @@ import java.util.Locale;
 import java.util.UUID;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,16 +33,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.DrawableBitmapConverter;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.GeolocationRequestCode;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.ValidationErrorAlertDialog;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
-import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
+
 
 /**
  * Covers Issues 5, 15, and 29
@@ -75,8 +74,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 	private ImageButton button;
 	private Uri imageFileUri;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
-	private AlertDialog.Builder adb;
-	public Dialog alertDialog;
+	public ValidationErrorAlertDialog alertDialog;
 	private boolean isEditing = false;
 	private ExpenseItem item;
 	private ExpenseClaim claim;
@@ -114,12 +112,10 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 				populateViews();
 			}
 		}
-		adb = new AlertDialog.Builder(this);
 
 		findViewsById();
 
 		setDateTimeField();
-
 	}
 
 	@Override
@@ -241,50 +237,6 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 
 	}
 
-	// copied from
-	// https://stackoverflow.com/questions/26842530/roundedimageview-add-border-and-shadow
-	// on March 15, 2015
-	/**
-	 * Convert a Drawable object to Bitmap, scale down if needed
-	 */
-	public Bitmap convertToBitmap(Drawable drawable, int widthPixels, int heightPixels) {
-		Bitmap mutableBitmap = Bitmap.createBitmap(widthPixels, heightPixels, Bitmap.Config.ARGB_8888);
-		Canvas canvas = new Canvas(mutableBitmap);
-		drawable.setBounds(0, 0, widthPixels, heightPixels);
-		drawable.draw(canvas);
-		int sizeInBytes = mutableBitmap.getByteCount();
-		if (sizeInBytes > 65536) {
-			mutableBitmap = scaleImage(mutableBitmap, widthPixels, heightPixels);
-		}
-		return mutableBitmap;
-	}
-
-	/**
-	 * Scale image, if needed.
-	 */
-
-	private Bitmap scaleImage(Bitmap mutableBitmap, int width, int height) {
-		/*
-		 * The max size is 64 KB. Since each pixel is stored in 4 bytes, the max
-		 * number of pixels allowed in the image is 16384. Scale height and
-		 * width appropriately and return a new Bitmap with those values
-		 */
-		int sizeInBytes = mutableBitmap.getByteCount();
-
-		// if it's already smaller, just returns
-		if (sizeInBytes <= 65536) {
-			return mutableBitmap;
-		}
-		double ratio = width / height;
-		final int MAX_PIXELS = 16384;
-		int newWidth = (int) Math.floor(Math.sqrt(MAX_PIXELS * ratio));
-		Log.e("newWidth", String.valueOf(newWidth));
-		int newHeight = (int) Math.floor(Math.sqrt(MAX_PIXELS / ratio));
-		Log.e("newHeight", String.valueOf(newHeight));
-		mutableBitmap = Bitmap.createScaledBitmap(mutableBitmap, newWidth, newHeight, false);
-		return mutableBitmap;
-	}
-
 	private void findViewsById() {
 		date = (EditText) findViewById(R.id.expenseItemDateEditText);
 		date.setInputType(InputType.TYPE_NULL);
@@ -338,39 +290,11 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		Spinner currencySpinner = (Spinner) findViewById(R.id.expenseItemCurrencySpinner);
 		EditText descriptionText = (EditText) findViewById(R.id.expenseItemDescriptionEditText);
 
-		// get the name of the expense item
-		String name = "";
-		if (nameText.getText().length() == 0) {
-			// display dialog if no name entered
-			adb.setMessage("Expense Item requires a name");
-			adb.setCancelable(true);
-			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-				}
-			});
-			alertDialog = adb.create();
-			alertDialog.show();
-			return false;
-		} else {
-			name = nameText.getText().toString();
-		}
+		String name = nameText.getText().toString();
 
 		// get the date of the expense item
-		Date date = new Date();
-		if (dateText.getText().length() == 0) {
-			// display dialog if no date entered
-			adb.setMessage("Expense Item requires a date");
-			adb.setCancelable(true);
-			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-				}
-			});
-			alertDialog = adb.create();
-			alertDialog.show();
-			return false;
-		} else {
+		Date date = null;
+		if (dateText.getText().length() != 0) {
 			date = dateFormatter.parse(dateText.getText().toString());
 		}
 
@@ -379,19 +303,7 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 
 		// get the amount Spent from the editText, checking if not entered
 		BigDecimal amount = new BigDecimal("0.00");
-		if (amountText.getText().length() == 0) {
-			// display error dialog if no amount spent has been entered
-			adb.setMessage("Expense Item requires an amount spent");
-			adb.setCancelable(true);
-			adb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-				}
-			});
-			alertDialog = adb.create();
-			alertDialog.show();
-			return false;
-		} else {
+		if (amountText.getText().length() != 0) {
 			amount = new BigDecimal(amountText.getText().toString());
 		}
 
@@ -413,16 +325,19 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 			bm = null;
 		} else {
 			Drawable dr = button.getDrawable();
-			bm = convertToBitmap(dr, dr.getMinimumWidth(), dr.getMinimumHeight());
+			bm = DrawableBitmapConverter.convertToBitmap(dr, dr.getMinimumWidth(), dr.getMinimumHeight());
 		}
 
-		if (isEditing) {
-
+		try {
+			if (isEditing) {
 			controller.updateExpenseItemOnClaim(claim.getID(), item.getID(), name, date, category, amount, currency,
 					description, bm, expenseItemGeolocation);
-		} else {
+			} else {
 			controller.addExpenseItemToClaim(claim.getID(), name, date, category, amount, currency, description, bm, expenseItemGeolocation);
-
+			}
+		} catch (ValidationException e) {
+			alertDialog = new ValidationErrorAlertDialog(this, e);
+			alertDialog.show();
 		}
 
 		return true;
@@ -478,8 +393,8 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		}
 		if (requestCode == GeolocationRequestCode.SET_GEOLOCATION) {
 			if (resultCode == RESULT_OK) {
-				double latitude = data.getDoubleExtra("latitude", Coordinate.DEFAULT_COORDINATE.getLatitude());
-				double longitude = data.getDoubleExtra("longitude", Coordinate.DEFAULT_COORDINATE.getLongitude());
+				double latitude = data.getDoubleExtra(IntentExtraIDs.LATITUDE, Coordinate.DEFAULT_COORDINATE.getLatitude());
+				double longitude = data.getDoubleExtra(IntentExtraIDs.LONGITUDE, Coordinate.DEFAULT_COORDINATE.getLongitude());
 				expenseItemGeolocation = new Coordinate(latitude, longitude);
 				TextView coordValue = (TextView) findViewById(R.id.expenseItemCoordinatesValueTextView);
 				coordValue.setText(expenseItemGeolocation.toString() + "\n(tap here to change)");

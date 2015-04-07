@@ -22,6 +22,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import android.graphics.Bitmap;
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.utilities.Base64BitmapConverter;
 
 /**
@@ -89,10 +90,15 @@ public class ExpenseItem extends Model<ExpenseItem> {
 	 * @param description
 	 * @param photo
 	 * @param completenessFlag
+	 * @throws ValidationException
 	 */
 
 	public ExpenseItem(String name, Date date, Category category, BigDecimal amountSpent, Currency currency,
-			String description, Bitmap photo, Coordinate geolocation, boolean completenessFlag) {
+			String description, Bitmap photo, Coordinate geolocation, boolean completenessFlag)
+			throws ValidationException {
+		validateName(name);
+		validateDate(date);
+		validateAmountSpent(amountSpent);
 		this.id = UUID.randomUUID();
 
 		this.name = name;
@@ -106,25 +112,44 @@ public class ExpenseItem extends Model<ExpenseItem> {
 		this.incompletenessMarker = completenessFlag;
 	}
 
+	private void validateAmountSpent(BigDecimal newAmountSpent) throws ValidationException {
+		if (newAmountSpent == null) {
+			throw new ValidationException("Expense Item requires an amount spent.");
+		}
+	}
+
+	private void validateDate(Date newDate) throws ValidationException {
+		if (newDate == null) {
+			throw new ValidationException("Expense Item requires a date.");
+		}
+	}
+
+	private void validateName(String newName) throws ValidationException {
+		if (newName == null || newName.length() == 0) {
+			throw new ValidationException("Expense Item requires a name.");
+		}
+	}
+
 	public ExpenseItem(String name, Date date, Category category, BigDecimal amountSpent, Currency currency,
-			String description, Bitmap photo, Coordinate geolocation) {
+			String description, Bitmap photo, Coordinate geolocation) throws ValidationException {
 		// Call to more specific constructor
 		this(name, date, category, amountSpent, currency, description, photo, geolocation, false);
 	}
 
 	public ExpenseItem(String name, Date date, Category category, BigDecimal amountSpent, Currency currency,
-			String description, Coordinate geolocation) {
+			String description, Coordinate geolocation) throws ValidationException {
 		// Call to more specific constructor
 		this(name, date, category, amountSpent, currency, description, null, geolocation, false);
 	}
 
 	public ExpenseItem(String name, Date date, Category category, BigDecimal amountSpent, Currency currency,
-			String description) {
+			String description) throws ValidationException {
 		// Call to more specific constructor
 		this(name, date, category, amountSpent, currency, description, null, null, false);
 	}
 
-	public ExpenseItem(String name, Date date, Category category, BigDecimal amount, Currency currency) {
+	public ExpenseItem(String name, Date date, Category category, BigDecimal amount, Currency currency)
+			throws ValidationException {
 		// Call to more specific constructor
 		this(name, date, category, amount, currency, "", null, null, false);
 	}
@@ -133,7 +158,8 @@ public class ExpenseItem extends Model<ExpenseItem> {
 		return this.id;
 	}
 
-	public void setName(String name) {
+	public void setName(String name) throws ValidationException {
+		validateName(name);
 		this.name = name;
 	}
 
@@ -141,7 +167,8 @@ public class ExpenseItem extends Model<ExpenseItem> {
 		return this.name;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(Date date) throws ValidationException {
+		validateDate(date);
 		this.date = date;
 	}
 
@@ -165,7 +192,8 @@ public class ExpenseItem extends Model<ExpenseItem> {
 		return this.category;
 	}
 
-	public void setAmountSpent(BigDecimal amountSpent) {
+	public void setAmountSpent(BigDecimal amountSpent) throws ValidationException {
+		validateAmountSpent(amountSpent);
 		this.amountSpent = amountSpent;
 	}
 
@@ -273,7 +301,7 @@ public class ExpenseItem extends Model<ExpenseItem> {
 	/**
 	 * @return true if the expense is marked incomplete, false otherwise.
 	 */
-	public boolean getIsMarkedIncomplete() {
+	public boolean isMarkedIncomplete() {
 		return incompletenessMarker;
 	}
 
@@ -281,7 +309,7 @@ public class ExpenseItem extends Model<ExpenseItem> {
 	 * Toggles the incompleteness marker
 	 */
 	public void toggleIncompletenessMarker() {
-		if (getIsMarkedIncomplete()) {
+		if (isMarkedIncomplete()) {
 			setIncompletenessMarker(COMPLETE);
 		} else {
 			setIncompletenessMarker(INCOMPLETE);

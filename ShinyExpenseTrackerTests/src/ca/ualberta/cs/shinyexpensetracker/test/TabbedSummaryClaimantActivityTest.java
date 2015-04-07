@@ -10,7 +10,6 @@ import android.test.ActivityInstrumentationTestCase2;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.AddTagToClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.RemoveTagFromClaimActivity;
-import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
@@ -36,7 +35,7 @@ public class TabbedSummaryClaimantActivityTest extends ActivityInstrumentationTe
 	}
 
 	static ClaimSummaryFragment frag;
-	TabbedSummaryActivity activity;
+	TabbedSummaryClaimantActivity activity;
 
 	ExpenseClaim claim;
 
@@ -45,12 +44,7 @@ public class TabbedSummaryClaimantActivityTest extends ActivityInstrumentationTe
 	Date endDate = new Date(2000);
 	ExpenseClaim.Status status = ExpenseClaim.Status.IN_PROGRESS;
 	BigDecimal amount = new BigDecimal(10);
-	final ExpenseItem expense = new ExpenseItem("expenseItemName",
-			new Date(1000),
-			Category.ACCOMODATION,
-			amount,
-			Currency.CAD,
-			"expenseItemDescription");
+	ExpenseItem expense;
 
 	ExpenseClaimController controller;
 
@@ -62,6 +56,13 @@ public class TabbedSummaryClaimantActivityTest extends ActivityInstrumentationTe
 	 */
 	public void setUp() throws Exception {
 		super.setUp();
+
+		expense = new ExpenseItem("expenseItemName",
+				new Date(1000),
+				Category.ACCOMODATION,
+				amount,
+				Currency.CAD,
+				"expenseItemDescription");
 
 		ExpenseClaimList list = new ExpenseClaimList();
 		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(list));
@@ -82,7 +83,6 @@ public class TabbedSummaryClaimantActivityTest extends ActivityInstrumentationTe
 		setActivityIntent(intent);
 
 		activity = getActivity();
-
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class TabbedSummaryClaimantActivityTest extends ActivityInstrumentationTe
 		// Wait for the UI to finish doing its thing
 		getInstrumentation().waitForIdleSync();
 
-		assertTrue("cannot sumbit incomplete claim dialog not showing", activity.getDialog().isShowing());
+		assertTrue("cannot sumbit incomplete claim dialog not showing", activity.getValidationErrorDialog().isShowing());
 
 		assertTrue("Claim status was changed to submitted", !claim.getStatus().equals(Status.SUBMITTED));
 		assertEquals("status has been changed", status, claim.getStatus());

@@ -14,8 +14,9 @@ import android.view.View;
 import android.widget.EditText;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.ValidationErrorAlertDialog;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
@@ -27,9 +28,9 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 
 	protected static AlertDialog alertDialogAddComment;
 	protected static AlertDialog alertDialogApproveClaim;
-	protected static AlertDialog alertDialogApproveCommentNeeded;
+	protected static ValidationErrorAlertDialog alertDialogApproveCommentNeeded;
 	protected static AlertDialog alertDialogReturnClaim;
-	protected static AlertDialog alertDialogReturnCommentNeeded;
+	protected static ValidationErrorAlertDialog alertDialogReturnCommentNeeded;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -60,42 +61,30 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 	 * 
 	 * @param menu
 	 * @throws IOException
+	 * @throws ValidationException
 	 */
 	public void approveClaimMenuItem(MenuItem menu) throws IOException {
 		adb = new AlertDialog.Builder(this);
 
-		final ExpenseClaim claim = controller.getExpenseClaimByID(claimID);
-
-		if (claim.getComments().size() == 0) {
-			adb.setMessage("You must comment on a claim before you can approve it");
-
-			adb.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-				}
-			});
-
-			alertDialogApproveCommentNeeded = adb.create();
-			alertDialogApproveCommentNeeded.show();
-
-		} else {
-
+		try {
 			controller.updateExpenseClaimStatus(claimID, Status.APPROVED);
+		} catch (ValidationException e) {
+			alertDialogApproveCommentNeeded = new ValidationErrorAlertDialog(this, e);
+			alertDialogApproveCommentNeeded.show();
+		}
 
-			adb.setMessage("The claim has been approved");
+		adb.setMessage("The claim has been approved");
 
-			adb.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-				}
-			});
-
-			alertDialogApproveClaim = adb.create();
-			alertDialogApproveClaim.show();
+		adb.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+			}
+		});
 
 			// disable ability to return a claim
 			m.findItem(R.id.returnClaim).setEnabled(false);
-		}
+			alertDialogApproveClaim = adb.create();
+			alertDialogApproveClaim.show();
 	}
 
 	/**
@@ -151,23 +140,17 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 	 * 
 	 * @param menu
 	 * @throws IOException
+	 * @throws ValidationException
 	 */
 	public void returnClaimMenuItem(MenuItem menu) throws IOException {
 		adb = new AlertDialog.Builder(this);
-		final ExpenseClaim claim = controller.getExpenseClaimByID(claimID);
 
-		if (claim.getComments().size() == 0) {
-			adb.setMessage("You must comment on a claim before you can return it.");
-			adb.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-				}
-			});
-			alertDialogReturnCommentNeeded = adb.create();
-			alertDialogReturnCommentNeeded.show();
-		} else {
-
+		try {
 			controller.updateExpenseClaimStatus(claimID, Status.RETURNED);
+		} catch (ValidationException e) {
+			alertDialogReturnCommentNeeded = new ValidationErrorAlertDialog(this, e);
+			alertDialogReturnCommentNeeded.show();
+		}
 
 			adb.setMessage("The claim has been returned.");
 			adb.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
@@ -181,7 +164,7 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 			// disable ability to approve claim
 			m.findItem(R.id.approveClaim).setEnabled(false);
 		}
-	}
+
 
 	/**
 	 * Takes the user to a view comments list view to see all of the comments a
@@ -204,7 +187,7 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 		return alertDialogApproveClaim;
 	}
 
-	public AlertDialog getCommentApproveNeededDialog() {
+	public ValidationErrorAlertDialog getCommentApproveNeededDialog() {
 		return alertDialogApproveCommentNeeded;
 	}
 
@@ -212,7 +195,7 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 		return alertDialogReturnClaim;
 	}
 
-	public Dialog getCommentNeededReturnDialog() {
+	public ValidationErrorAlertDialog getCommentNeededReturnDialog() {
 		return alertDialogReturnCommentNeeded;
 	}
 

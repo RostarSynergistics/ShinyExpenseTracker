@@ -22,6 +22,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ExpenseItemListFragment;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
@@ -202,15 +203,21 @@ public class ExpenseItemListFragmentTest extends ActivityInstrumentationTestCase
 		getInstrumentation().runOnMainSync(new Runnable() {
 			@Override
 			public void run() {
-				claim.addExpenseItem(new ExpenseItem("TDD things",
-						new Date(123123),
-						ExpenseItem.Category.ACCOMODATION,
-						new BigDecimal(1000000),
-						ExpenseItem.Currency.CAD,
-						"Look out! It's TDD!",
-						null));
+				try {
+					claim.addExpenseItem(new ExpenseItem("TDD things",
+							new Date(123123),
+							ExpenseItem.Category.ACCOMODATION,
+							new BigDecimal(1000000),
+							ExpenseItem.Currency.CAD,
+							"Look out! It's TDD!",
+							null));
+				} catch (ValidationException e) {
+					e.printStackTrace();
+					fail();
+				}
 			}
 		});
+
 		getInstrumentation().waitForIdleSync();
 		// Make sure we have a new claim
 		// - Sanity check

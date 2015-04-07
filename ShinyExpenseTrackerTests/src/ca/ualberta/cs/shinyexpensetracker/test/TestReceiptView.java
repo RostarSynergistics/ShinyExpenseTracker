@@ -27,7 +27,6 @@ import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersist
 /**
  * Covers Issue 30
  * 
- * @author Oleg Oleynikov
  * @version 1.0
  * @since 2015-03-16 Test viewing receipt of a referred Expense Item, if there
  *        is any
@@ -99,7 +98,8 @@ public class TestReceiptView extends ActivityInstrumentationTestCase2<ReceiptVie
 		ImageView iv = (ImageView) activity.findViewById(R.id.receiptImageView);
 		Drawable dr = iv.getDrawable();
 		Bitmap receiptFromItem = item.getReceiptPhoto();
-		Bitmap receiptFromImage = convertToBitmap(dr, receiptFromItem.getWidth(), receiptFromItem.getHeight());
+		Bitmap receiptFromImage = convertToBitmap(dr, receiptFromItem.getWidth(), 
+				receiptFromItem.getHeight());
 		assertTrue("different image", receiptFromImage.sameAs(receiptFromItem));
 	}
 }

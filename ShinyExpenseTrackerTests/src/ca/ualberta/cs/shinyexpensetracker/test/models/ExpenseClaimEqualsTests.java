@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import junit.framework.TestCase;
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 
@@ -17,17 +18,17 @@ public class ExpenseClaimEqualsTests extends TestCase {
 	ExpenseClaim claim2;
 	private UUID userID;
 
-	private ExpenseClaim getStartingClaim(UUID claimID, UUID userID) {
+	private ExpenseClaim getStartingClaim(UUID claimID, UUID userID) throws ValidationException {
 		Date startDate = new Date(5000);
 		Date endDate = new Date(6000);
 
-		return new ExpenseClaim(userID, claimID, "test", startDate, endDate, ExpenseClaim.Status.IN_PROGRESS);
+		return new ExpenseClaim(userID, claimID, "test", startDate, 
+				endDate, ExpenseClaim.Status.IN_PROGRESS);
 	}
 
-	private ExpenseItem getTestExpenseItem() {
-		return new ExpenseItem("test", new Date(500),
-				ExpenseItem.Category.ACCOMODATION, new BigDecimal("20.00"),
-				ExpenseItem.Currency.CAD);
+	private ExpenseItem getTestExpenseItem() throws ValidationException {
+		return new ExpenseItem("test", new Date(500), ExpenseItem.Category.ACCOMODATION, 
+				new BigDecimal("20.00"), ExpenseItem.Currency.CAD);
 	}
 
 	protected void setUp() throws Exception {
@@ -44,9 +45,8 @@ public class ExpenseClaimEqualsTests extends TestCase {
 		assertEquals();
 	}
 
-	public void testThatTwoClaimsWithDifferentIDsAreNotEqual() {
+	public void testThatTwoClaimsWithDifferentIDsAreNotEqual() throws ValidationException {
 		claim2 = getStartingClaim(UUID.randomUUID(), userID);
-
 		assertNotEqual();
 	}
 
@@ -68,26 +68,27 @@ public class ExpenseClaimEqualsTests extends TestCase {
 		assertNotEqual();
 	}
 
-	public void testThatTwoClaimsWithDifferentStatusesAreNotEqual() {
+	public void testThatTwoClaimsWithDifferentStatusesAreNotEqual() throws ValidationException {
 		claim2.setStatus(ExpenseClaim.Status.SUBMITTED);
 
 		assertNotEqual();
 	}
 
-	public void testThatTwoClaimsWithIdenticalNonEmptyExpenseItemsListsAreEqual() {
+	public void testThatTwoClaimsWithIdenticalNonEmptyExpenseItemsListsAreEqual() throws ValidationException {
 		claim1.addExpenseItem(getTestExpenseItem());
 		claim2.addExpenseItem(getTestExpenseItem());
 
 		assertEquals();
 	}
 
-	public void testThatOneClaimWithOneWithAnEmptyExpenseItemsListAndTheOtherNotEmptyAreNotEqual() {
+	public void testThatOneClaimWithOneWithAnEmptyExpenseItemsListAndTheOtherNotEmptyAreNotEqual()
+			throws ValidationException {
 		claim2.addExpenseItem(getTestExpenseItem());
 
 		assertNotEqual();
 	}
 
-	public void testThatTwoClaimsWithNonIdenticalNonEmptyExpenseItemsListsAreNotEqual() {
+	public void testThatTwoClaimsWithNonIdenticalNonEmptyExpenseItemsListsAreNotEqual() throws ValidationException {
 		claim1.addExpenseItem(getTestExpenseItem());
 		ExpenseItem item = getTestExpenseItem();
 		item.setName("foobarbaz");

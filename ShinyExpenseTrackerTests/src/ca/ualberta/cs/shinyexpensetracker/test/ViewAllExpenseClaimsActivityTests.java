@@ -45,6 +45,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
@@ -78,12 +79,6 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 		userID = UUID.randomUUID();
 	}
 
-	/**
-	 * Add a claim to the claimsList safely
-	 * 
-	 * @param claim
-	 * @return
-	 */
 	private ExpenseClaim addClaim(final ExpenseClaim claim) {
 		// Run on the activity thread.
 		activity.runOnUiThread(new Runnable() {
@@ -92,7 +87,9 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 				claimsList.addClaim(claim);
 			}
 		});
+
 		getInstrumentation().waitForIdleSync();
+
 		return claim;
 	}
 
@@ -126,11 +123,11 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	 * checking the API functionality itself.
 	 * 
 	 * --This test may be removed in future iterations.
+	 * @throws ValidationException 
 	 */
-	public void testLongPressDialog() {
+	public void testLongPressDialog() throws ValidationException {
 
 		Application.switchToClaimantMode();
-
 		activity = getActivity();
 
 		// Not this test's responsibility to check what was deleted.
@@ -149,14 +146,14 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 
 	/**
 	 * Adds a claim and ensures that it is visible in the listview.
+	 * @throws ValidationException 
 	 */
-	public void testAddedClaimIsVisible() {
+	public void testAddedClaimIsVisible() throws ValidationException {
 
 		Application.switchToClaimantMode();
 
 		activity = getActivity();
 		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
-
 		ExpenseClaim claim = addClaim(new ExpenseClaim(userID, "Test Claim"));
 		ExpenseClaim visibleClaim;
 
@@ -259,7 +256,8 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	 * test, but things that are not equal must be on the outside. Testing for
 	 * outside values is done in testClaimsSorted
 	 */
-	public void testEqualSorted() {
+
+	public void testEqualSorted() throws ValidationException {
 		Application.switchToClaimantMode();
 
 		activity = getActivity();
@@ -285,8 +283,10 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	/**
 	 * Deletes a claim and ensure it isn't visible in the listview. Does not
 	 * test dialogs.
+	 * 
+	 * @throws ValidationException
 	 */
-	public void testDeleteVisibleClaim() {
+	public void testDeleteVisibleClaim() throws ValidationException {
 		Application.switchToClaimantMode();
 
 		activity = getActivity();
@@ -295,22 +295,13 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 		// Build 2 claims with dates so that claim 1 < claim 2.
 		TagList tags1 = new TagList();
 		tags1.addTag(new Tag("Test 1"));
-		ExpenseClaim claim1 = addClaim(new ExpenseClaim(
-				userID,
-				"Delete Claim 1",
-				new Date(),
-				null,
-				ExpenseClaim.Status.IN_PROGRESS,
-				tags1));
+		ExpenseClaim claim1 = addClaim(new ExpenseClaim(userID,	"Delete Claim 1", 
+				new Date(), null, ExpenseClaim.Status.IN_PROGRESS, tags1));
+		
 		TagList tags2 = new TagList();
 		tags2.addTag(new Tag("Test 2"));
-		ExpenseClaim claim2 = addClaim(new ExpenseClaim(
-				userID,
-				"Delete Claim 2",
-				new Date(),
-				null,
-				ExpenseClaim.Status.IN_PROGRESS,
-				tags2));
+		ExpenseClaim claim2 = addClaim(new ExpenseClaim(userID,"Delete Claim 2", 
+				new Date(),null,ExpenseClaim.Status.IN_PROGRESS,tags2));
 		ExpenseClaim visibleClaim;
 
 		// Check that an item is actually deleted

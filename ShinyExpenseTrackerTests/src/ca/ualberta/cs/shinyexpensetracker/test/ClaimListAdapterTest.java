@@ -1,15 +1,17 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
-import java.io.IOException;
 import java.util.Date;
+import java.util.UUID;
 
 import android.test.AndroidTestCase;
 import ca.ualberta.cs.shinyexpensetracker.adapters.ClaimListAdapter;
 import ca.ualberta.cs.shinyexpensetracker.decorators.ExpenseClaimSubmittedFilter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockClaimFilterAll;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockClaimFilterNone;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
@@ -21,6 +23,7 @@ import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersist
 public class ClaimListAdapterTest extends AndroidTestCase {
 	private ClaimListAdapter adapter;
 	private ExpenseClaimController controller;
+	private ExpenseClaimList list;
 
 	/**
 	 * Setup for each test. Creates three expenses but does not add them to the
@@ -30,40 +33,34 @@ public class ClaimListAdapterTest extends AndroidTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
+		list = new ExpenseClaimList();
+
+		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(list));
 		Application.setExpenseClaimController(controller);
 
 		adapter = new ClaimListAdapter(getContext());
 	}
 
-	private ExpenseClaim addClaim(String name, Date date) {
-		ExpenseClaim claim = null;
-		try {
-			claim = controller.addExpenseClaim(name, date, null);
-			adapter.notifyDataSetChanged();
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail(e.getMessage());
-		}
+	private ExpenseClaim addClaim(String name) throws ValidationException {
+		final ExpenseClaim claim = new ExpenseClaim(UUID.randomUUID(), name, new Date(1000), new Date(2000));
+		list.addClaim(claim);
+		adapter.notifyDataSetChanged();
 		return claim;
 	}
 
 	private ExpenseClaim removeClaim(ExpenseClaim claim) {
-		try {
-			controller.deleteExpenseClaim(claim.getID());
-			adapter.notifyDataSetChanged();
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail(e.getMessage());
-		}
+		list.deleteClaim(claim.getID());
+		adapter.notifyDataSetChanged();
 		return claim;
 	}
 
 	/**
 	 * Check that adding an item adds the item to the adapter
+	 * 
+	 * @throws ValidationException
 	 */
-	public void testGetItem() {
-		ExpenseClaim testClaim = addClaim("Test Claim 1", new Date(100));
+	public void testGetItem() throws ValidationException {
+		ExpenseClaim testClaim = addClaim("Test Claim 1");
 		assertEquals(testClaim, adapter.getItem(0));
 	}
 
@@ -76,16 +73,18 @@ public class ClaimListAdapterTest extends AndroidTestCase {
 
 	/**
 	 * Check that the adapter can count
+	 * 
+	 * @throws ValidationException
 	 */
-	public void testGetCount() {
+	public void testGetCount() throws ValidationException {
 		assertEquals("Sanity check failed: list not empty", 0, adapter.getCount());
 		assertEquals(controller.getCount(), adapter.getCount());
 
-		ExpenseClaim testClaim1 = addClaim("Test Claim 1", null);
+		ExpenseClaim testClaim1 = addClaim("Test Claim 1");
 		assertEquals(controller.getCount(), adapter.getCount());
 		assertEquals(1, adapter.getCount());
 
-		ExpenseClaim testClaim2 = addClaim("Test Claim 2", null);
+		ExpenseClaim testClaim2 = addClaim("Test Claim 2");
 		assertEquals(controller.getCount(), adapter.getCount());
 		assertEquals(2, adapter.getCount());
 
@@ -101,10 +100,12 @@ public class ClaimListAdapterTest extends AndroidTestCase {
 	/**
 	 * Check that adding then removing doesn't change what we expect to see
 	 * (consistent display)
+	 * 
+	 * @throws ValidationException
 	 */
-	public void testConsistentGetItem() {
-		ExpenseClaim testClaim1 = addClaim("Test Claim 1", null);
-		ExpenseClaim testClaim2 = addClaim("Test Claim 2", null);
+	public void testConsistentGetItem() throws ValidationException {
+		ExpenseClaim testClaim1 = addClaim("Test Claim 1");
+		ExpenseClaim testClaim2 = addClaim("Test Claim 2");
 		removeClaim(testClaim1);
 
 		assertEquals(testClaim2, adapter.getItem(0));
@@ -112,10 +113,12 @@ public class ClaimListAdapterTest extends AndroidTestCase {
 
 	/**
 	 * Checks that filtering can be done on the ExpenseClaimList
+	 * 
+	 * @throws ValidationException
 	 */
-	public void testApplyFilter() {
+	public void testApplyFilter() throws ValidationException {
 		adapter.applyFilter(new MockClaimFilterNone());
-		addClaim("Test Claim", null);
+		addClaim("Test Claim");
 
 		assertEquals("testClaim was filtered", 1, adapter.getCount());
 
@@ -129,20 +132,20 @@ public class ClaimListAdapterTest extends AndroidTestCase {
 		assertEquals("testClaim was filtered", 1, adapter.getCount());
 
 	}
-	
-	public void testApplySubmittedFilter() {
+
+	public void testApplySubmittedFilter() throws ValidationException {
 		adapter.applyFilter(new ExpenseClaimSubmittedFilter());
-		ExpenseClaim claim = addClaim("Test claim", new Date(100));
+		ExpenseClaim claim = addClaim("Test claim");
 		claim.setStatus(Status.SUBMITTED);
 
 		assertEquals(1, adapter.getCount());
 
-		ExpenseClaim claim2 = addClaim("Test claim 2", new Date(100));
+		ExpenseClaim claim2 = addClaim("Test claim 2");
 		claim2.setStatus(Status.SUBMITTED);
-		
+
 		assertEquals(2, adapter.getCount());
-		
-		ExpenseClaim claim3 = addClaim("Test claim 3", new Date(100));
+
+		ExpenseClaim claim3 = addClaim("Test claim 3");
 		claim3.setStatus(Status.IN_PROGRESS);
 		assertEquals(2, adapter.getCount());
 	}

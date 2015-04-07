@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -16,6 +15,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.ValidationErrorAlertDialog;
 import ca.ualberta.cs.shinyexpensetracker.adapters.SectionsPagerAdapter;
 import ca.ualberta.cs.shinyexpensetracker.fragments.ClaimSummaryFragment;
 import ca.ualberta.cs.shinyexpensetracker.fragments.DestinationListFragment;
@@ -39,7 +39,8 @@ public class TabbedSummaryActivity extends FragmentActivity implements ActionBar
 	ViewPager mViewPager;
 	Context context;
 	protected AlertDialog.Builder adb;
-	public Dialog alertDialog;
+	protected AlertDialog alertDialog;
+	protected ValidationErrorAlertDialog validationErrorDialog;
 	ExpenseClaimController controller = Application.getExpenseClaimController();
 	protected Intent intent;
 	protected UUID claimID;
@@ -154,7 +155,11 @@ public class TabbedSummaryActivity extends FragmentActivity implements ActionBar
 		return fragment;
 	}
 
-	public Dialog getDialog() {
+	public AlertDialog getDialog() {
 		return alertDialog;
+	}
+
+	public ValidationErrorAlertDialog getValidationErrorDialog() {
+		return validationErrorDialog;
 	}
 }

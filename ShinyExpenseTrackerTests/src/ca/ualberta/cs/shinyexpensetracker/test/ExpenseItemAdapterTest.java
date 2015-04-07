@@ -179,7 +179,7 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 		assertNull(((BitmapDrawable) receiptIndicator.getDrawable()).getBitmap());
 
 		// Ensure that the manual flag is flagged (incomplete)
-		assertTrue(scrumptiousFood.getIsMarkedIncomplete());
+		assertTrue(scrumptiousFood.isMarkedIncomplete());
 		assertTrue(incompletenessFlag.isChecked());
 
 		claim.removeExpense(scrumptiousFood);
@@ -196,7 +196,7 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 		assertNotNull(((BitmapDrawable) receiptIndicator.getDrawable()).getBitmap());
 
 		// Ensure that the manual flag is not flagged (not incomplete)
-		assertFalse(classyHotel.getIsMarkedIncomplete());
+		assertFalse(classyHotel.isMarkedIncomplete());
 		assertFalse(incompletenessFlag.isChecked());
 	}
 
@@ -209,8 +209,8 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 		CheckBox incompletenessFlag = (CheckBox) view.findViewById(R.id.expenseItemCompletenessFlag);
 
 		// Sanity check
-		assertTrue(scrumptiousFood.getIsMarkedIncomplete());
-		assertEquals(scrumptiousFood.getIsMarkedIncomplete(),
+		assertTrue(scrumptiousFood.isMarkedIncomplete());
+		assertEquals(scrumptiousFood.isMarkedIncomplete(),
 				incompletenessFlag.isChecked());
 
 		// Toggle the value
@@ -221,8 +221,8 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 		incompletenessFlag = (CheckBox) view.findViewById(R.id.expenseItemCompletenessFlag);
 
 		// Check if value changed
-		assertFalse(scrumptiousFood.getIsMarkedIncomplete());
-		assertEquals(scrumptiousFood.getIsMarkedIncomplete(),
+		assertFalse(scrumptiousFood.isMarkedIncomplete());
+		assertEquals(scrumptiousFood.isMarkedIncomplete(),
 				incompletenessFlag.isChecked());
 
 		// Toggle once more and check if the values match
@@ -233,8 +233,8 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 		incompletenessFlag = (CheckBox) view.findViewById(R.id.expenseItemCompletenessFlag);
 
 		// Check if value changed
-		assertTrue(scrumptiousFood.getIsMarkedIncomplete());
-		assertEquals(scrumptiousFood.getIsMarkedIncomplete(),
+		assertTrue(scrumptiousFood.isMarkedIncomplete());
+		assertEquals(scrumptiousFood.isMarkedIncomplete(),
 				incompletenessFlag.isChecked());
 
 	}

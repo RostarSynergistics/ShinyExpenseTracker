@@ -71,8 +71,10 @@ public class ExpenseClaimController {
 	 *            Its end date.
 	 * @return The new claim.
 	 * @throws IOException
+	 * @throws ValidationException
 	 */
-	public ExpenseClaim addExpenseClaim(String name, Date startDate, Date endDate) throws IOException {
+	public ExpenseClaim addExpenseClaim(String name, Date startDate, Date endDate) throws IOException,
+			ValidationException {
 		ExpenseClaim newClaim = new ExpenseClaim(Application.getUser().getUserID(), name, startDate, endDate);
 
 		claimList.addClaim(newClaim);
@@ -127,8 +129,10 @@ public class ExpenseClaimController {
 	 *            The new end date.
 	 * @return The updated expense claim.
 	 * @throws IOException
+	 * @throws ValidationException
 	 */
-	public ExpenseClaim updateExpenseClaim(UUID id, String name, Date startDate, Date endDate) throws IOException {
+	public ExpenseClaim updateExpenseClaim(UUID id, String name, Date startDate, Date endDate) throws IOException,
+			ValidationException {
 		ExpenseClaim claim = claimList.getClaimByID(id);
 
 		claim.setName(name);
@@ -147,8 +151,10 @@ public class ExpenseClaimController {
 	 *            The new status.
 	 * @return The updated expense claim.
 	 * @throws IOException
+	 * @throws ValidationException
 	 */
-	public ExpenseClaim updateExpenseClaimStatus(UUID id, ExpenseClaim.Status status) throws IOException {
+	public ExpenseClaim updateExpenseClaimStatus(UUID id, ExpenseClaim.Status status) throws IOException,
+			ValidationException {
 		ExpenseClaim claim = claimList.getClaimByID(id);
 		claim.setStatus(status);
 		persister.saveExpenseClaims(claimList);
@@ -166,9 +172,10 @@ public class ExpenseClaimController {
 	 *            The destination's reason for travel.
 	 * @return The new Destination.
 	 * @throws IOException
+	 * @throws ValidationException
 	 */
 	public Destination addDestinationToClaim(UUID claimID, String name, String reasonForTravel, Coordinate geolocation)
-			throws IOException {
+			throws IOException, ValidationException {
 		ExpenseClaim claim = claimList.getClaimByID(claimID);
 		Destination destination = new Destination(name, reasonForTravel, geolocation);
 		claim.addDestination(destination);
@@ -189,9 +196,10 @@ public class ExpenseClaimController {
 	 *            the new reason for travel.
 	 * @return The updated Destination.
 	 * @throws IOException
+	 * @throws ValidationException
 	 */
 	public Destination updateDestinationOnClaim(UUID claimID, UUID destinationID, String name, String reasonForTravel, Coordinate geolocation)
-			throws IOException {
+			throws IOException, ValidationException {
 		ExpenseClaim claim = claimList.getClaimByID(claimID);
 		Destination destination = claim.getDestinationByID(destinationID);
 
@@ -224,9 +232,10 @@ public class ExpenseClaimController {
 	 *            The item's receipt photo.
 	 * @return The new ExpenseItem.
 	 * @throws IOException
+	 * @throws ValidationException
 	 */
 	public ExpenseItem addExpenseItemToClaim(UUID claimID, String name, Date date, Category category, BigDecimal amountSpent, Currency currency, String description, Bitmap photo, Coordinate geolocation)
-			throws IOException {
+			throws IOException, ValidationException {
 		ExpenseClaim claim = claimList.getClaimByID(claimID);
 		ExpenseItem item = new ExpenseItem(name, date, category, amountSpent, currency, description, photo, geolocation);
 
@@ -259,9 +268,10 @@ public class ExpenseClaimController {
 	 *            The new receipt photo.
 	 * @return The updated ExpenseItem.
 	 * @throws IOException
+	 * @throws ValidationException
 	 */
 	public ExpenseItem updateExpenseItemOnClaim(UUID claimID, UUID expenseItemID, String name, Date date, Category category, BigDecimal amountSpent, Currency currency, String description, Bitmap photo, Coordinate geolocation)
-			throws IOException {
+			throws IOException, ValidationException {
 		ExpenseClaim claim = claimList.getClaimByID(claimID);
 		ExpenseItem item = claim.getExpenseItemByID(expenseItemID);
 

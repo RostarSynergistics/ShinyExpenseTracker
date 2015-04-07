@@ -95,9 +95,8 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 	 */
 	public void testEditExpense() {
 		// Monitor for ExpenseItemActivity
-		ActivityMonitor expenseMonitor = getInstrumentation().addMonitor(ExpenseItemActivity.class.getName(),
-				null,
-				false);
+		ActivityMonitor expenseMonitor = getInstrumentation()
+				.addMonitor(ExpenseItemActivity.class.getName(), null, false);
 
 		// Press "Edit Claim"
 		getInstrumentation().invokeMenuActionSync(activity, R.id.editExpenseItem, 0);
@@ -105,14 +104,14 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 		// Get the activity
 		getInstrumentation().waitForIdleSync();
 		final ExpenseItemActivity expenseActivity = (ExpenseItemActivity) getInstrumentation()
-																								.waitForMonitorWithTimeout(expenseMonitor,
-																										1000);
+				.waitForMonitorWithTimeout(expenseMonitor, 1000);
 		assertEquals("Did not open the expense activity", true, getInstrumentation().checkMonitorHit(expenseMonitor, 1));
 
 		// Check that the activity received valid intents
-		assertEquals(claim.getID(), (UUID) expenseActivity.getIntent().getSerializableExtra(IntentExtraIDs.CLAIM_ID));
-		assertEquals(item.getID(),
-				(UUID) expenseActivity.getIntent().getSerializableExtra(IntentExtraIDs.EXPENSE_ITEM_ID));
+		assertEquals(claim.getID(), (UUID) expenseActivity.getIntent()
+				.getSerializableExtra(IntentExtraIDs.CLAIM_ID));
+		assertEquals(item.getID(),(UUID) expenseActivity.getIntent()
+				.getSerializableExtra(IntentExtraIDs.EXPENSE_ITEM_ID));
 
 		// Close the activity
 		expenseActivity.finish();
@@ -181,9 +180,8 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 	 */
 	public void testEditUpdatesViews() throws ParseException {
 		// Monitor for ExpenseItemActivity
-		ActivityMonitor expenseMonitor = getInstrumentation().addMonitor(ExpenseItemActivity.class.getName(),
-				null,
-				false);
+		ActivityMonitor expenseMonitor = getInstrumentation()
+				.addMonitor(ExpenseItemActivity.class.getName(), null, false);
 
 		// Press "Edit Claim"
 		getInstrumentation().invokeMenuActionSync(activity, R.id.editExpenseItem, 0);
@@ -191,9 +189,9 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 		// Get the activity
 		getInstrumentation().waitForIdleSync();
 		final ExpenseItemActivity expenseActivity = (ExpenseItemActivity) getInstrumentation()
-																								.waitForMonitorWithTimeout(expenseMonitor,
-																										1000);
-		assertEquals("Did not open the expense activity", true, getInstrumentation().checkMonitorHit(expenseMonitor, 1));
+				.waitForMonitorWithTimeout(expenseMonitor, 1000);
+		assertEquals("Did not open the expense activity", true, getInstrumentation()
+				.checkMonitorHit(expenseMonitor, 1));
 
 		// Fill the activity
 		final String veryDifferentName = "DIFFERENT NAME A9T1091A";
@@ -231,11 +229,12 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 	 * Checks if the incompleteness marker behaves correctly
 	 */
 	public void testMarkIncomplete() {
-		final CheckBox incompletenessFlag = (CheckBox) activity.findViewById(R.id.expenseItemCompletenessFlag);
+		final CheckBox incompletenessFlag = (CheckBox) activity.
+				findViewById(R.id.expenseItemCompletenessFlag);
 
 		// False positive check : Marked Incomplete = True
-		assertTrue(item.getIsMarkedIncomplete());
-		assertEquals(item.getIsMarkedIncomplete(), incompletenessFlag.isChecked());
+		assertTrue(item.isMarkedIncomplete());
+		assertEquals(item.isMarkedIncomplete(), incompletenessFlag.isChecked());
 
 		// Toggle the value
 		activity.runOnUiThread(new Runnable() {
@@ -247,7 +246,7 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 		getInstrumentation().waitForIdleSync();
 
 		// Check if value changed : MarkedIncomplete = False
-		assertFalse(item.getIsMarkedIncomplete());
-		assertEquals(item.getIsMarkedIncomplete(), incompletenessFlag.isChecked());
+		assertFalse(item.isMarkedIncomplete());
+		assertEquals(item.isMarkedIncomplete(), incompletenessFlag.isChecked());
 	}
 }

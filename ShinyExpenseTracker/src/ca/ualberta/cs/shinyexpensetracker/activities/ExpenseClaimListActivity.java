@@ -54,11 +54,8 @@ import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
 import ca.ualberta.cs.shinyexpensetracker.models.User;
 import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
 
-
-
 public class ExpenseClaimListActivity extends Activity implements IView<ExpenseClaimList> {
 
-	
 	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
 	private User user = Application.getUser();
@@ -83,12 +80,13 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 		adapter = new ClaimListAdapter(this);
 		// Ensure the adapter is sorted.
 		adapter.applyFilter(new ExpenseClaimSortFilter());
-		
-		// if the user is an approver filter the claims so only the submitted claims are shown
+
+		// if the user is an approver filter the claims so only the submitted
+		// claims are shown
 		if (Application.getUserType().equals(Type.Approver)) {
 			adapter.applyFilter(new ExpenseClaimSubmittedFilter());
-		} 
-		
+		}
+
 		claim_list.setAdapter(adapter);
 
 		if (user.getHomeGeolocation() != null) {
@@ -138,11 +136,11 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.expense_claims_view, menu);
-		
+
 		if (Application.getUserType().equals(Type.Approver)) {
 			menu.getItem(0).setEnabled(false);
 		}
-		
+
 		return true;
 	}
 
@@ -164,8 +162,7 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 			startActivity(manageTagsIntent);
 			return true;
 		case R.id.set_home_geolocation:
-			Intent geolocationViewIntent = new Intent(ExpenseClaimListActivity.this,
-					GeolocationViewActivity.class);
+			Intent geolocationViewIntent = new Intent(ExpenseClaimListActivity.this, GeolocationViewActivity.class);
 			startActivityForResult(geolocationViewIntent, GeolocationRequestCode.SET_GEOLOCATION);
 			return true;
 		}
@@ -204,9 +201,10 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 	public void deleteClaim(ExpenseClaim claim) throws IOException {
 		controller.deleteExpenseClaim(claim.getID());
 	}
-	
+
 	/**
 	 * Disables deletion of submitted claim
+	 * 
 	 * @return
 	 */
 

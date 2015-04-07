@@ -316,14 +316,14 @@ public class ExpenseClaimController {
 		persister.saveExpenseClaims(claimList);
 		return claim;
 	}
-	
-	public void removePhoto(UUID claimId, UUID itemId) throws IOException{
+
+	public void removePhoto(UUID claimId, UUID itemId) throws IOException {
 		ExpenseItem item = claimList.getClaim(claimId).getExpenseItemByID(itemId);
 		item.setReceiptPhoto(null);
-		persister.saveExpenseClaims(claimList);		
+		persister.saveExpenseClaims(claimList);
 	}
-	
-	public void update() throws IOException{
+
+	public void update() throws IOException {
 		persister.saveExpenseClaims(claimList);
 	}
 

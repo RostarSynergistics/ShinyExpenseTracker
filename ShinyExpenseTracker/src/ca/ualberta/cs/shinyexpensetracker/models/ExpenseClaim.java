@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-
 /**
  * Class that represents an expense claim created by a user.
  */
@@ -47,7 +46,6 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	private ArrayList<ExpenseItem> expenseItems = new ArrayList<ExpenseItem>();
 	private ArrayList<String> comments = new ArrayList<String>();
 
-
 	public ExpenseClaim(String name) {
 		this(name, new Date(), null, Status.IN_PROGRESS, new TagList());
 	}
@@ -69,7 +67,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	}
 
 	public ExpenseClaim(String name, Date startDate, Date endDate, Status status, TagList tagList) {
-		this(UUID.randomUUID(),  name, startDate, endDate, status, tagList);
+		this(UUID.randomUUID(), name, startDate, endDate, status, tagList);
 	}
 
 	public ExpenseClaim(UUID id, String name, Date startDate, Date endDate, Status status, TagList tagList) {
@@ -80,21 +78,20 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		this.endDate = endDate;
 		this.status = status;
 		this.tagList = tagList;
-		//this.userId = Application.getUser().getUserId();
+		// this.userId = Application.getUser().getUserId();
 	}
 
 	public UUID getID() {
 		return id;
 	}
-	
+
 	public void setUserId(UUID id) {
 		this.userId = id;
 	}
-	
+
 	public UUID getUserId() {
 		return userId;
 	}
-
 
 	public String getName() {
 		return name;

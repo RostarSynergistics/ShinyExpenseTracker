@@ -12,24 +12,24 @@ import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
 public class NetworkStateReceiver extends BroadcastReceiver {
-    @SuppressWarnings("deprecation")
+	@SuppressWarnings("deprecation")
 	public void onReceive(Context context, Intent intent) {
-     Log.d("app","Network connectivity change");
-     if(intent.getExtras()!=null) {
-        NetworkInfo ni=(NetworkInfo) intent.getExtras().get(ConnectivityManager.EXTRA_NETWORK_INFO);
-        if(ni!=null && ni.getState()==NetworkInfo.State.CONNECTED) {
-            Log.i("app","Network "+ni.getTypeName()+" connected");
-            ExpenseClaimList list = Application.getExpenseClaimController().getExpenseClaimList();
-            ConnectivityChecker checker = new ConnectivityChecker();
-    		
-            if(checker.isNetworkAvailable(context)){
-    			new ElasticSearchSave().execute(list);
-    		}
-        }
-     }
-     if(intent.getExtras().getBoolean(ConnectivityManager.EXTRA_NO_CONNECTIVITY,Boolean.FALSE)) {
-            Log.d("app","There's no network connectivity");
-            
-     }
-   }
+		Log.d("app", "Network connectivity change");
+		if (intent.getExtras() != null) {
+			NetworkInfo ni = (NetworkInfo) intent.getExtras().get(ConnectivityManager.EXTRA_NETWORK_INFO);
+			if (ni != null && ni.getState() == NetworkInfo.State.CONNECTED) {
+				Log.i("app", "Network " + ni.getTypeName() + " connected");
+				ExpenseClaimList list = Application.getExpenseClaimController().getExpenseClaimList();
+				ConnectivityChecker checker = new ConnectivityChecker();
+
+				if (checker.isNetworkAvailable(context)) {
+					new ElasticSearchSave().execute(list);
+				}
+			}
+		}
+		if (intent.getExtras().getBoolean(ConnectivityManager.EXTRA_NO_CONNECTIVITY, Boolean.FALSE)) {
+			Log.d("app", "There's no network connectivity");
+
+		}
+	}
 }

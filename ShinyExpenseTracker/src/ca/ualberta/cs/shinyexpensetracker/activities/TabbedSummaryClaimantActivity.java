@@ -35,21 +35,21 @@ public class TabbedSummaryClaimantActivity extends TabbedSummaryActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.tabbed_summary_claimant, menu);
 		m = menu;
-		
+
 		if (controller.getExpenseClaimByID(claimID).getStatus().equals(Status.APPROVED)) {
 			menu.getItem(0).setEnabled(false);
 			menu.getItem(3).setEnabled(false);
 			menu.getItem(4).setEnabled(false);
 			menu.getItem(5).setEnabled(false);
 		}
-		
+
 		if (controller.getExpenseClaimByID(claimID).getStatus().equals(Status.SUBMITTED)) {
 			menu.getItem(0).setEnabled(false);
 			menu.getItem(3).setEnabled(false);
 			menu.getItem(4).setEnabled(false);
 			menu.getItem(5).setEnabled(false);
 		}
-		
+
 		return true;
 	}
 

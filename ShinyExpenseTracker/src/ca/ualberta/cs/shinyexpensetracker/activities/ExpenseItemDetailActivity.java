@@ -41,7 +41,6 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 	private UUID claimID;
 	private UUID expenseItemID;
 
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -197,7 +196,6 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 		ImageView iv = (ImageView) findViewById(R.id.expenseItemDetailImageButton);
 		iv.setImageDrawable(null);
 
-		
 	}
 
 	/**

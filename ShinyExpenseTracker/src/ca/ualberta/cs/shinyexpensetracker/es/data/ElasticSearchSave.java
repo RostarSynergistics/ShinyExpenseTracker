@@ -7,12 +7,14 @@ import ca.ualberta.cs.shinyexpensetracker.es.ESClaimManager;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
 /**
- * This class will handle saving asynchronously with the use of the ESClaimManager
+ * This class will handle saving asynchronously with the use of the
+ * ESClaimManager
  *
  */
-public class ElasticSearchSave extends AsyncTask<ExpenseClaimList, Void, Boolean>{
-	
+public class ElasticSearchSave extends AsyncTask<ExpenseClaimList, Void, Boolean> {
+
 	ESClaimManager manager = new ESClaimManager();
+
 	@Override
 	protected Boolean doInBackground(ExpenseClaimList... claimLists) {
 		try {
@@ -26,5 +28,5 @@ public class ElasticSearchSave extends AsyncTask<ExpenseClaimList, Void, Boolean
 		}
 		return true;
 	}
-	
+
 }

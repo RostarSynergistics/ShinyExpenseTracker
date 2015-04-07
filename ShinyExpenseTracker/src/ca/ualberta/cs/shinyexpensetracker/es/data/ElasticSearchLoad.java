@@ -5,7 +5,8 @@ import ca.ualberta.cs.shinyexpensetracker.es.ESClaimManager;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
 /**
- * This class will handle loading asynchronously with the use of the ESClaimManager
+ * This class will handle loading asynchronously with the use of the
+ * ESClaimManager
  *
  */
 public class ElasticSearchLoad extends AsyncTask<Void, Void, ExpenseClaimList> {
@@ -16,8 +17,5 @@ public class ElasticSearchLoad extends AsyncTask<Void, Void, ExpenseClaimList> {
 	protected ExpenseClaimList doInBackground(Void... params) {
 		return manager.getClaimList();
 	}
-
-	
-	
 
 }

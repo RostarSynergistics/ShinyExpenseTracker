@@ -24,37 +24,39 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 /**
  * This class will implement all the elastic search functionality
  *
  */
 public class ESClaimManager {
-	
+
 	// HTTP Connector
 	private HttpClient httpclient = new DefaultHttpClient();
 
 	// JSON Utilities
 	private Gson gson = new Gson();
-	
+
 	private static final String RESOURCE_URI = "http://cmput301.softwareprocess.es:8080/cmput301w15t08/";
 	public static final String CLAIM_LIST_INDEX = "claimlist/";
 	public static final String CLAIMLIST = "TotalList";
-	
+
 	/**
-	 * Adds a claimList to our server 
-	 * @throws IOException 
-	 * @throws IllegalStateException 
+	 * Adds a claimList to our server
+	 * 
+	 * @throws IOException
+	 * @throws IllegalStateException
 	 */
-	public void insertClaimList(ExpenseClaimList claimController) throws IllegalStateException, IOException{
-		HttpPost httpPost = new HttpPost(RESOURCE_URI+CLAIM_LIST_INDEX+CLAIMLIST);
+	public void insertClaimList(ExpenseClaimList claimController) throws IllegalStateException, IOException {
+		HttpPost httpPost = new HttpPost(RESOURCE_URI + CLAIM_LIST_INDEX + CLAIMLIST);
 		StringEntity stringentity = null;
-		
+
 		try {
 			stringentity = new StringEntity(gson.toJson(claimController));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		httpPost.setHeader("Accept","application/json");
+		httpPost.setHeader("Accept", "application/json");
 
 		httpPost.setEntity(stringentity);
 		HttpResponse response = null;
@@ -62,7 +64,7 @@ public class ESClaimManager {
 			response = httpclient.execute(httpPost);
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
-			Log.wtf("Fail","Fail");
+			Log.wtf("Fail", "Fail");
 		} catch (IOException e) {
 			e.printStackTrace();
 			Log.wtf("Fail", "Fail");
@@ -78,17 +80,18 @@ public class ESClaimManager {
 			System.err.println(output);
 		}
 	}
-	
+
 	/**
 	 * Gets the saved claim list from the server
+	 * 
 	 * @return
 	 */
-	public ExpenseClaimList getClaimList(){
+	public ExpenseClaimList getClaimList() {
 		ExpenseClaimList claimList = null;
-		try{
-			HttpGet getRequest = new HttpGet(RESOURCE_URI+CLAIM_LIST_INDEX+CLAIMLIST);
+		try {
+			HttpGet getRequest = new HttpGet(RESOURCE_URI + CLAIM_LIST_INDEX + CLAIMLIST);
 
-			getRequest.addHeader("Accept","application/json");
+			getRequest.addHeader("Accept", "application/json");
 
 			HttpResponse response = httpclient.execute(getRequest);
 
@@ -96,10 +99,10 @@ public class ESClaimManager {
 			System.out.println(status);
 
 			String json = getEntityContent(response);
-			
-			
-			Type elasticSearchResponseType = new TypeToken<ElasticSearchResponse<ExpenseClaimList>>(){}.getType();
-		
+
+			Type elasticSearchResponseType = new TypeToken<ElasticSearchResponse<ExpenseClaimList>>() {
+			}.getType();
+
 			ElasticSearchResponse<ExpenseClaimList> esResponse = gson.fromJson(json, elasticSearchResponseType);
 			claimList = esResponse.getSource();
 		} catch (ClientProtocolException e) {
@@ -109,16 +112,16 @@ public class ESClaimManager {
 		}
 		return claimList;
 	}
-	
+
 	/**
 	 * Get the HTTP response and return json string
+	 * 
 	 * @param response
 	 * @return
 	 * @throws IOException
 	 */
 	String getEntityContent(HttpResponse response) throws IOException {
-		BufferedReader br = new BufferedReader(
-				new InputStreamReader((response.getEntity().getContent())));
+		BufferedReader br = new BufferedReader(new InputStreamReader((response.getEntity().getContent())));
 		String output;
 		String json = "";
 		while ((output = br.readLine()) != null) {

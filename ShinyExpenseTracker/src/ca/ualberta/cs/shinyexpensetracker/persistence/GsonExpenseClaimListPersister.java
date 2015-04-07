@@ -44,28 +44,29 @@ public class GsonExpenseClaimListPersister implements IExpenseClaimListPersister
 		Context context = Application.getAppContext();
 		ElasticSearchLoad load = new ElasticSearchLoad();
 
-		//Creating the two lists to sync if necessary
+		// Creating the two lists to sync if necessary
 		ExpenseClaimList localList;
 		ExpenseClaimList cloudList;
 
-		//Loading local data 
+		// Loading local data
 		if (travelClaimsListData.equals("")) {
 			localList = new ExpenseClaimList();
 		} else {
 			localList = gson.fromJson(travelClaimsListData, ExpenseClaimList.class);
 		}
 
-		//If a network is a avialable then get the server copy of the claim list  
+		// If a network is a avialable then get the server copy of the claim
+		// list
 		if (checker.isNetworkAvailable(context)) {
 			try {
-				//Loading the data 
+				// Loading the data
 				cloudList = load.execute().get();
-				
-				//Syncing the two data sources in case of change
+
+				// Syncing the two data sources in case of change
 				ElasticSearchSync elasticSearchSync = new ElasticSearchSync(localList, cloudList);
 				localList = elasticSearchSync.sync();
-				
-				//Saving the combined list 
+
+				// Saving the combined list
 				saveExpenseClaims(localList);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -85,13 +86,11 @@ public class GsonExpenseClaimListPersister implements IExpenseClaimListPersister
 		ConnectivityChecker checker = new ConnectivityChecker();
 		Context context = Application.getAppContext();
 
-		//Saving online if the network is available 
+		// Saving online if the network is available
 		if (checker.isNetworkAvailable(context)) {
 			new ElasticSearchSave().execute(list);
 		}
 
 	}
-
-	
 
 }

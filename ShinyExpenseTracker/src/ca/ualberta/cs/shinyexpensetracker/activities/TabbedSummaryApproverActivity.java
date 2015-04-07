@@ -66,7 +66,6 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 
 			controller.updateExpenseClaimStatus(claimID, Status.APPROVED);
 
-
 			adb.setMessage("The claim has been approved");
 
 			adb.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
@@ -119,7 +118,6 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 				}
 			}
 		});
-
 
 		// Setting the negative button to close the dialog
 		adb.setNegativeButton("Cancel", new android.content.DialogInterface.OnClickListener() {

@@ -169,6 +169,7 @@ public class ExpenseClaimListActivity
 					MapViewActivity.class);
 			geolocationMapViewIntent.putExtra(IntentExtraIDs.REQUEST_CODE, GeolocationRequestCode.DISPLAY_GEOLOCATIONS);
 			startActivity(geolocationMapViewIntent);
+			return true;
 		case R.id.action_help:
 			InAppHelpDialog.showHelp(this, R.string.help_claim_list);
 			return true;

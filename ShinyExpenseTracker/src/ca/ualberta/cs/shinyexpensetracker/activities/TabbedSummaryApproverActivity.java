@@ -111,7 +111,7 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				String comment = commentTextBox.getText().toString();
-				comment.concat(Application.getUser().getUserName());
+				comment = comment + " — " + Application.getUser().getUserName();
 				controller.getExpenseClaimByID(claimID).addComment(comment);
 			}
 		});

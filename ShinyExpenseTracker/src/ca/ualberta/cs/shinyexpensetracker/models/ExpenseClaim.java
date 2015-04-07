@@ -60,8 +60,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		this(id, name, startDate, endDate, status, null);
 	}
 
-	public ExpenseClaim(String name, Date startDate, Date endDate, Status status, TagList tagList)
-			throws ValidationException {
+	public ExpenseClaim(String name, Date startDate, Date endDate, Status status, TagList tagList) throws ValidationException {
 		this(UUID.randomUUID(), name, startDate, endDate, status, tagList);
 	}
 

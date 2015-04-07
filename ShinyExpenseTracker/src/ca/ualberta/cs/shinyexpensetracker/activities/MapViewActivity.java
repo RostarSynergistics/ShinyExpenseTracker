@@ -2,6 +2,10 @@
  * 	Geolocations can be chosen as a home geolocation for a user,
  * 	while filling out information on a destination (mandatory),
  * 	or while filling out information on an expense item (optional)
+ * 
+ *  Additionally, this activity lets the user view 
+ *  all geolocations stored on the device, when called from the appropriate
+ *  menu option in ClaimListViewActivity 
  *  
  *  Copyright (C) 2015  github.com/RostarSynergistics
  *  
@@ -18,7 +22,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Issues #157, #158
+ * Issues #157, #158, #159
  */
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
@@ -40,8 +44,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.GeolocationRequestCode;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
+import ca.ualberta.cs.shinyexpensetracker.framework.Application;
+import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
-import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
+import ca.ualberta.cs.shinyexpensetracker.models.Destination;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+import ca.ualberta.cs.shinyexpensetracker.models.User;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
 public class MapViewActivity extends Activity implements MapEventsReceiver {
@@ -49,12 +61,13 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 	// constants to compare which activity called this one
 	// the first means setting geolocation for Claimant, expense item or Destination
 	// second means displaying locations stored on the device
-
 	
 	private Coordinate coordinate = new Coordinate();
 	private int requestCode;
 	private MapView map;
 	private Marker lastMarker = null;
+	private User user = Application.getUser();
+	private ExpenseClaimController controller;
 	
 	public Coordinate getCoordinate() {
 		return coordinate;
@@ -66,32 +79,116 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// Map initialization taken from the osmdroid bonus pack tutorials
+		// Map initialization and event handling
+		// taken from the osmdroid bonus pack tutorials
 		// at https://code.google.com/p/osmbonuspack/wiki/Tutorial_0
+		// https://code.google.com/p/osmbonuspack/wiki/Tutorial_1
+		// and https://code.google.com/p/osmbonuspack/wiki/Tutorial_5
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map_view);
+		
+		map = (MapView) findViewById(R.id.map);
+		map.setTileSource(TileSourceFactory.MAPNIK);
+		map.setBuiltInZoomControls(true);
+		map.setMultiTouchControls(true);
 		
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
 		if (bundle != null) {
-			double latitude = intent.getDoubleExtra("latitude", Coordinate.DEFAULT_COORDINATE.getLatitude());
-			double longitude = intent.getDoubleExtra("longitude", Coordinate.DEFAULT_COORDINATE.getLongitude());
-			coordinate.setLatitude(latitude);
-			coordinate.setLongitude(longitude);
-			requestCode = intent.getIntExtra("requestCode", 0);
-			map = (MapView) findViewById(R.id.map);
-			map.setTileSource(TileSourceFactory.MAPNIK);
-			map.setBuiltInZoomControls(true);
-			map.setMultiTouchControls(true);
 
 			MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(this, this);
 			map.getOverlays().add(0, mapEventsOverlay);
-			
-			GeoPoint startPoint = new GeoPoint(coordinate.getLatitude(), coordinate.getLongitude());
-			IMapController mapController = map.getController();
-			mapController.setZoom(18);
-			mapController.setCenter(startPoint);
+			requestCode = intent.getIntExtra(IntentExtraIDs.REQUEST_CODE, 0);
+			if (requestCode == GeolocationRequestCode.SET_GEOLOCATION) {
+				setMapForSettingGeolocation(intent);
+			}
+			else if (requestCode == GeolocationRequestCode.DISPLAY_GEOLOCATIONS) {
+				// display all geolocations stored on the device 
+				
+				setMapForDisplayingGeolocations();
+			}
 		}
+	}
+
+	private void setMapForDisplayingGeolocations() {
+		// first, get all claims
+		controller = Application.getExpenseClaimController();
+		ExpenseClaimList claimList = controller.getExpenseClaimList();
+		
+		// put home geolocation on map, if there is any
+
+		IMapController mapController = map.getController();
+		coordinate = user.getHomeGeolocation();
+		if (coordinate != null) {
+			Marker homeMarker = putMarkerOnMap(coordinate);
+			homeMarker.setSnippet("Home Geolocation");
+		}
+		// no time to implement Iterable interface!
+		for (int i = 0; i < claimList.getCount(); i++) {
+			iterateThroughClaims(claimList, i);
+		}
+		
+		// set more or less tolerable zoom factor
+		mapController.setZoom(3);
+
+		mapController.setCenter(new GeoPoint(0.0, 0.0));
+		// now, it doesn't really center at those locations.
+		// must be a bug in the library
+		
+		// everything is set up
+		// refresh the map
+		map.invalidate();
+	}
+
+	private void iterateThroughClaims(ExpenseClaimList claimList, int i) {
+		ExpenseClaim claim = claimList.getClaimAtPosition(i);
+		// put destinations' geolocations on the map
+		// there has to be a geolocation for every destination
+		for (Destination dest: claim.getDestinations()) {
+			putMarkerForDestination(claim, dest);
+		}
+		// put expense items' geolocations on the map
+		// an expense item may or may not have a location associated with it
+		for (ExpenseItem item: claim.getExpenseItems()) {
+			putMarkerForExpenseItem(claim, item);
+		}
+	}
+
+	private void putMarkerForExpenseItem(ExpenseClaim claim, ExpenseItem item) {
+		Coordinate loc = item.getGeolocation();
+		if (loc != null) {
+			Marker itemMarker = putMarkerOnMap(loc);
+			itemMarker.setSnippet("Expense Item: " + item.getName());
+			itemMarker.setSubDescription("From claim: " + claim.getName());
+		}
+	}
+
+	private void putMarkerForDestination(ExpenseClaim claim, Destination dest) {
+		Coordinate loc = dest.getGeolocation();
+		Marker destMarker = putMarkerOnMap(loc);
+		destMarker.setSnippet("Destination: " + dest.getName());
+		destMarker.setSubDescription("From claim: " + claim.getName());
+	}
+	
+	private Marker putMarkerOnMap(Coordinate loc) {
+		GeoPoint itemPoint = new GeoPoint(loc.getLatitude(), loc.getLongitude());
+		Marker itemMarker = new Marker(map);
+		itemMarker.setPosition(itemPoint);
+		itemMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+		map.getOverlays().add(itemMarker);
+		return itemMarker;
+	}
+
+	private void setMapForSettingGeolocation(Intent intent) {
+		double latitude = intent.getDoubleExtra(IntentExtraIDs.LATITUDE, Coordinate.DEFAULT_COORDINATE.getLatitude());
+		double longitude = intent.getDoubleExtra(IntentExtraIDs.LONGITUDE, Coordinate.DEFAULT_COORDINATE.getLongitude());
+		coordinate.setLatitude(latitude);
+		coordinate.setLongitude(longitude);
+		
+		GeoPoint startPoint = new GeoPoint(coordinate.getLatitude(), coordinate.getLongitude());
+		IMapController mapController = map.getController();
+		mapController.setZoom(18);
+		mapController.setCenter(startPoint);
 	}
 
 	@Override
@@ -115,16 +212,24 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 	}
 
 	/**
-	 * Handle long tap.
-	 * Launch prompt asking user if they want to save the chosen location to the device
+	 * Handle back button press.
+	 * If setting a geolocation,
+	 * launch prompt asking user if they want 
+	 * to save the chosen location to the device
+	 * or come back to the map
+	 * 
+	 * Otherwise, exit the activity
 	 */
 	@Override
 	public void onBackPressed(){
-		if (requestCode == GeolocationRequestCode.DISPLAY_GEOLOCATIONS || lastMarker == null) {
+		if (requestCode != GeolocationRequestCode.DISPLAY_GEOLOCATIONS && lastMarker != null) {	
+			GeoPoint position = lastMarker.getPosition();
+			askSaveLocation(position.getLatitude(), position.getLongitude());
+		}
+		else {
+			setResult(ExpenseClaimListActivity.RESULT_CANCELED, new Intent());
 			finish();
 		}
-		GeoPoint position = lastMarker.getPosition();
-		askSaveLocation(position.getLatitude(), position.getLongitude());
 	}
 
 	/**
@@ -137,6 +242,7 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 			return false;
 		}
 		if (lastMarker != null) {
+			lastMarker.closeInfoWindow();
 			map.getOverlays().remove(lastMarker);
 		}
 		Toast.makeText(this, "Latitude: "+p.getLatitude()+"\nLongitude: "+p.getLongitude(), Toast.LENGTH_SHORT).show();
@@ -144,6 +250,8 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 		newMarker.setPosition(p);
 		newMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
 		map.getOverlays().add(newMarker);
+		newMarker.setSnippet("Latitude: "+p.getLatitude());
+		newMarker.setSubDescription("Longitude: "+p.getLongitude());
 		lastMarker = newMarker;
 		map.invalidate();
 		return true;
@@ -151,6 +259,7 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 	
 	/**
 	 * Prompt asking user if they want to save the chosen location to the device
+	 * or come back to the map to set a new location
 	 */
 	public AlertDialog askSaveLocation(final double latitude, final double longitude) {
 		// Alert Dialog (Mar 7, 2015):
@@ -166,8 +275,8 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 					public void onClick(DialogInterface dialog, int which) {
 						try {
 							Intent geolocationResultIntent = new Intent();
-							geolocationResultIntent.putExtra("latitude", latitude);
-							geolocationResultIntent.putExtra("longitude", longitude);
+							geolocationResultIntent.putExtra(IntentExtraIDs.LATITUDE, latitude);
+							geolocationResultIntent.putExtra(IntentExtraIDs.LONGITUDE, longitude);
 							setResult(GeolocationViewActivity.RESULT_OK, geolocationResultIntent);
 						} catch (Exception e) {
 							throw new RuntimeException(e);

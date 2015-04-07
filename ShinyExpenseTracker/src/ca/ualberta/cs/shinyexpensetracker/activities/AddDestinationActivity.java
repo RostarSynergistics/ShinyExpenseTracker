@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.GeolocationRequestCode;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.ValidationErrorAlertDialog;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
@@ -21,7 +22,6 @@ import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
 /**
@@ -147,8 +147,8 @@ public class AddDestinationActivity extends Activity {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// Check result is ok
 		if (resultCode == RESULT_OK) {
-			double latitude = data.getDoubleExtra("latitude", Coordinate.DEFAULT_COORDINATE.getLatitude());
-			double longitude = data.getDoubleExtra("longitude", Coordinate.DEFAULT_COORDINATE.getLongitude());
+			double latitude = data.getDoubleExtra(IntentExtraIDs.LATITUDE, Coordinate.DEFAULT_COORDINATE.getLatitude());
+			double longitude = data.getDoubleExtra(IntentExtraIDs.LONGITUDE, Coordinate.DEFAULT_COORDINATE.getLongitude());
 			coord = new Coordinate(latitude, longitude);
 			TextView coordValue = (TextView) findViewById(R.id.coordinatesValueTextView);
 			coordValue.setText(coord.toString() + "\n(tap here to change)");

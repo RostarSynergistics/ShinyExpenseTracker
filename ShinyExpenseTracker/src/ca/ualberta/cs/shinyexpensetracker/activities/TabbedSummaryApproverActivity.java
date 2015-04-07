@@ -107,14 +107,17 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 		// Setting the positive button to save the text in the dialog as a
 		// comment
 		// if valid
+
 		adb.setPositiveButton("Add Comment", new android.content.DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				String comment = commentTextBox.getText().toString();
+
 				try {
 					controller.addCommentToClaim(claimID, comment);
 				} catch (IOException e) {
 					throw new RuntimeException(e);
+
 				}
 			}
 		});

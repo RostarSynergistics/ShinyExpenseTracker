@@ -1,5 +1,6 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.UUID;
@@ -37,6 +38,7 @@ import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 public class ExpenseItemDetailActivity extends Activity implements IView<ExpenseItem> {
 
 	private ExpenseItem item;
+	private ExpenseClaimController controller;
 	private UUID claimID;
 	private UUID expenseItemID;
 
@@ -49,10 +51,12 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 		Bundle bundle = intent.getExtras();
 
 		if (bundle != null) {
+
 			claimID = (UUID) intent.getSerializableExtra(IntentExtraIDs.CLAIM_ID);
 			expenseItemID = (UUID) intent.getSerializableExtra(IntentExtraIDs.EXPENSE_ITEM_ID);
-			ExpenseClaimController controller = Application.getExpenseClaimController();
+			controller = Application.getExpenseClaimController();
 			ExpenseClaim claim = controller.getExpenseClaimByID(claimID);
+
 			// Fetch the relevant item
 			item = claim.getExpenseItemByID(expenseItemID);
 
@@ -188,9 +192,14 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 	 * @param v
 	 */
 	public void onClickRemoveReceipt(View v) {
-		item.setReceiptPhoto(null);
+		try {
+			controller.removePhoto(claimID, expenseItemID);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		ImageView iv = (ImageView) findViewById(R.id.expenseItemDetailImageButton);
 		iv.setImageDrawable(null);
+
 	}
 
 	/**

@@ -37,8 +37,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.GeolocationRequestCode;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
-import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
 public class GeolocationViewActivity extends Activity {
@@ -124,9 +125,9 @@ public class GeolocationViewActivity extends Activity {
 	 */
 	public void clickSetGeolocationUsingMap(View v) {
 		Intent mapViewIntent = new Intent(GeolocationViewActivity.this, MapViewActivity.class);
-		mapViewIntent.putExtra("latitude", coordinatesUpdating.getLatitude());
-		mapViewIntent.putExtra("longitude", coordinatesUpdating.getLongitude());
-		mapViewIntent.putExtra("requestCode", GeolocationRequestCode.SET_GEOLOCATION);
+		mapViewIntent.putExtra(IntentExtraIDs.LATITUDE, coordinatesUpdating.getLatitude());
+		mapViewIntent.putExtra(IntentExtraIDs.LONGITUDE, coordinatesUpdating.getLongitude());
+		mapViewIntent.putExtra(IntentExtraIDs.REQUEST_CODE, GeolocationRequestCode.SET_GEOLOCATION);
 		startActivityForResult(mapViewIntent, GeolocationRequestCode.SET_GEOLOCATION);
 	}
 
@@ -139,8 +140,8 @@ public class GeolocationViewActivity extends Activity {
 		// Check result is ok
 		lm.removeUpdates(listener);
 		if (resultCode == RESULT_OK) {
-			double latitude = data.getDoubleExtra("latitude", Coordinate.DEFAULT_COORDINATE.getLatitude());
-			double longitude = data.getDoubleExtra("longitude", Coordinate.DEFAULT_COORDINATE.getLongitude());
+			double latitude = data.getDoubleExtra(IntentExtraIDs.LATITUDE, Coordinate.DEFAULT_COORDINATE.getLatitude());
+			double longitude = data.getDoubleExtra(IntentExtraIDs.LONGITUDE, Coordinate.DEFAULT_COORDINATE.getLongitude());
 			coordinates.setLatitude(latitude);
 			coordinates.setLongitude(longitude);
 			returnCoordinatesToParentActivity();
@@ -154,8 +155,8 @@ public class GeolocationViewActivity extends Activity {
 	 */
 	private void returnCoordinatesToParentActivity() {
 		Intent geolocationResultIntent = new Intent(GeolocationViewActivity.this, ExpenseClaimListActivity.class);
-		geolocationResultIntent.putExtra("latitude", coordinates.getLatitude());
-		geolocationResultIntent.putExtra("longitude", coordinates.getLongitude());
+		geolocationResultIntent.putExtra(IntentExtraIDs.LATITUDE, coordinates.getLatitude());
+		geolocationResultIntent.putExtra(IntentExtraIDs.LONGITUDE, coordinates.getLongitude());
 		setResult(RESULT_OK, geolocationResultIntent);
 		finish();
 	}

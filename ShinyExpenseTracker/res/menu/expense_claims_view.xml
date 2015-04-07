@@ -17,6 +17,7 @@
         android:orderInCategory="500" 
         android:showAsAction="never" 
         android:title="@string/set_home_geolocation"/>
+    <item android:id="@+id/display_geolocations_on_map" android:orderInCategory="600" android:showAsAction="never" android:title="@string/displayAllGeolocationsStored"></item>
 
     <item
         android:id="@+id/action_help"

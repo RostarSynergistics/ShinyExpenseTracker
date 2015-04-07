@@ -323,10 +323,6 @@ public class ExpenseClaimController {
 		persister.saveExpenseClaims(claimList);
 	}
 
-	public void update() throws IOException {
-		persister.saveExpenseClaims(claimList);
-	}
-
 	/**
 	 * Adds a new comment to a claim.
 	 * 

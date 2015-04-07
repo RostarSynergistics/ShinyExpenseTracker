@@ -184,11 +184,6 @@ public class TabbedSummaryClaimantActivity extends TabbedSummaryActivity {
 			m.getItem(4).setEnabled(false);
 			m.getItem(5).setEnabled(false);
 		}
-		try {
-			controller.update();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**

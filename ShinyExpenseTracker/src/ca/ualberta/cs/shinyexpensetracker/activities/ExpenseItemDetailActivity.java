@@ -23,6 +23,7 @@ import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
@@ -124,6 +125,11 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.expense_item_detail_view, menu);
+		
+		if (Application.inApproverMode() || controller.getExpenseClaimByID(claimID).getStatus().equals(Status.SUBMITTED)) {
+			menu.findItem(R.id.editExpenseItem).setEnabled(false);
+		}
+		
 		return true;
 	}
 

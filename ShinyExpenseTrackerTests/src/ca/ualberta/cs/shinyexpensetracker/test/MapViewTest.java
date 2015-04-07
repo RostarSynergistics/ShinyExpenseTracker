@@ -45,7 +45,7 @@ public class MapViewTest extends ActivityInstrumentationTestCase2<MapViewActivit
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		// FIXME: #187
+		// FIXME: #220
 		//        The tests in this file pass, but they hang
 		//		  when the entire suite is run.
 		fail();
@@ -61,6 +61,10 @@ public class MapViewTest extends ActivityInstrumentationTestCase2<MapViewActivit
 	}
 	
 	public void testSingleTapEventHandler() {
+		// FIXME: #220
+		//        The tests in this file pass, but they hang
+		//		  when the entire suite is run.
+		fail();
 		final GeoPoint p = new GeoPoint(64.0, 128.0);
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {
@@ -78,6 +82,10 @@ public class MapViewTest extends ActivityInstrumentationTestCase2<MapViewActivit
 	}
 
 	public void testPopupShowingOnBackPress() {
+		// FIXME: #220
+		//        The tests in this file pass, but they hang
+		//		  when the entire suite is run.
+		fail();
 		final GeoPoint p = new GeoPoint(64.0, 128.0);
 		instrumentation.runOnMainSync(new Runnable() {
 			public void run() {

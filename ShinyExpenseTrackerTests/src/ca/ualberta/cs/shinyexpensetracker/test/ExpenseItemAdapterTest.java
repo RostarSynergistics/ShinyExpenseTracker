@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -23,9 +24,9 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
  */
 public class ExpenseItemAdapterTest extends AndroidTestCase {
 	private ExpenseItemAdapter adapter;
-	
+
 	private ExpenseClaim claim;
-	
+
 	private ExpenseItem fancyPants;
 	private ExpenseItem classyHotel;
 	private ExpenseItem scrumptiousFood;
@@ -34,11 +35,12 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 		super.setUp();
 		// Create our own amazing claim
 		claim = new ExpenseClaim(
+				UUID.randomUUID(),
 				"The Amazing Claim",
 				new Date(19860607),
 				new Date(19860809)
 				);
-		
+
 		// Create some expenses
 		fancyPants = new ExpenseItem(
 				"Fancy Pants",
@@ -62,7 +64,7 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 				Bitmap.createBitmap(10, 10, Bitmap.Config.RGB_565),
 				new Coordinate(46.22, 6.15),
 				false);
-		
+
 		scrumptiousFood = new ExpenseItem(
 				"Cavier a la mode",
 				new Date(19860705),
@@ -73,7 +75,7 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 				null,
 				null,
 				true);
-		
+
 		// Set up the thing we're trying to test
 		adapter = new ExpenseItemAdapter(claim, getContext());
 	}
@@ -88,7 +90,7 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 		assertEquals(fancyPants, adapter.getItem(0));
 		// Easy peasy.
 	}
-	
+
 	/**
 	 * Check that the position is the expected position
 	 */
@@ -97,7 +99,7 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 		adapter.notifyDataSetChanged();
 		assertEquals(0, adapter.getItemId(0));
 	}
-	
+
 	/**
 	 * Check that the adapter can count the same as the claim
 	 */
@@ -112,33 +114,32 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 		claim.addExpenseItem(scrumptiousFood);
 		adapter.notifyDataSetChanged();
 		assertEquals(3, adapter.getCount());
-		
+
 		// Remove an item
 		claim.removeExpense(fancyPants);
 		adapter.notifyDataSetChanged();
 		assertEquals(2, adapter.getCount());
-		
+
 		// Remove all items
 		claim.removeExpense(scrumptiousFood);
 		claim.removeExpense(classyHotel);
 		adapter.notifyDataSetChanged();
 		assertEquals(0, adapter.getCount());
-		
+
 	}
 
 	/**
-	 * Check that adding then removing doesn't change what
-	 * we expect to see. 
+	 * Check that adding then removing doesn't change what we expect to see.
 	 */
 	public void testConsistentGetItem() {
 		claim.addExpenseItem(fancyPants);
 		claim.addExpenseItem(classyHotel);
 		claim.removeExpense(fancyPants);
 		adapter.notifyDataSetChanged();
-		
+
 		assertEquals(classyHotel, adapter.getItem(0));
 	}
-	
+
 	/**
 	 * Checks that the item data in the fields are what we expect
 	 */
@@ -153,14 +154,14 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 		TextView viewCategory = (TextView) view.findViewById(R.id.expenseItemCategory);
 
 		SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
-		
+
 		assertEquals(viewName.getText().toString(), scrumptiousFood.getName());
 		assertEquals(viewValue.getText().toString(), scrumptiousFood.getValueString());
 		assertEquals(viewDate.getText().toString(), df.format(scrumptiousFood.getDate()));
 		assertEquals(viewCategory.getText().toString(), scrumptiousFood.getCategory().toString());
-		
+
 	}
-	
+
 	/**
 	 * Checks if indicators appear as expected
 	 */
@@ -172,17 +173,17 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 
 		ImageView receiptIndicator = (ImageView) view.findViewById(R.id.expenseItemReceiptIndicator);
 		CheckBox incompletenessFlag = (CheckBox) view.findViewById(R.id.expenseItemCompletenessFlag);
-		
+
 		// Ensure that the photo indicator is not set (no photo)
 		assertNull(scrumptiousFood.getReceiptPhoto());
-		assertNull(((BitmapDrawable)receiptIndicator.getDrawable()).getBitmap());
-		
+		assertNull(((BitmapDrawable) receiptIndicator.getDrawable()).getBitmap());
+
 		// Ensure that the manual flag is flagged (incomplete)
 		assertTrue(scrumptiousFood.getIsMarkedIncomplete());
 		assertTrue(incompletenessFlag.isChecked());
 
 		claim.removeExpense(scrumptiousFood);
-		
+
 		// Flag = False, bitmap = (exists)
 		claim.addExpenseItem(classyHotel);
 		adapter.notifyDataSetChanged();
@@ -192,49 +193,49 @@ public class ExpenseItemAdapterTest extends AndroidTestCase {
 
 		// Ensure that the photo indicator is set (photo exists)
 		assertNotNull(classyHotel.getReceiptPhoto());
-		assertNotNull(((BitmapDrawable)receiptIndicator.getDrawable()).getBitmap());
-		
+		assertNotNull(((BitmapDrawable) receiptIndicator.getDrawable()).getBitmap());
+
 		// Ensure that the manual flag is not flagged (not incomplete)
 		assertFalse(classyHotel.getIsMarkedIncomplete());
 		assertFalse(incompletenessFlag.isChecked());
 	}
-	
+
 	public void testMarkIncomplete() {
 		// Flag = True
 		claim.addExpenseItem(scrumptiousFood);
 		adapter.notifyDataSetChanged();
 		View view = adapter.getView(0, null, null);
-		
+
 		CheckBox incompletenessFlag = (CheckBox) view.findViewById(R.id.expenseItemCompletenessFlag);
-		
+
 		// Sanity check
 		assertTrue(scrumptiousFood.getIsMarkedIncomplete());
 		assertEquals(scrumptiousFood.getIsMarkedIncomplete(),
 				incompletenessFlag.isChecked());
-		
+
 		// Toggle the value
 		incompletenessFlag.performClick();
-		
+
 		adapter.notifyDataSetChanged();
 		view = adapter.getView(0, null, null);
 		incompletenessFlag = (CheckBox) view.findViewById(R.id.expenseItemCompletenessFlag);
-		
+
 		// Check if value changed
 		assertFalse(scrumptiousFood.getIsMarkedIncomplete());
 		assertEquals(scrumptiousFood.getIsMarkedIncomplete(),
 				incompletenessFlag.isChecked());
-		
+
 		// Toggle once more and check if the values match
 		incompletenessFlag.performClick();
-		
+
 		adapter.notifyDataSetChanged();
 		view = adapter.getView(0, null, null);
 		incompletenessFlag = (CheckBox) view.findViewById(R.id.expenseItemCompletenessFlag);
-		
+
 		// Check if value changed
 		assertTrue(scrumptiousFood.getIsMarkedIncomplete());
 		assertEquals(scrumptiousFood.getIsMarkedIncomplete(),
 				incompletenessFlag.isChecked());
-		
+
 	}
 }

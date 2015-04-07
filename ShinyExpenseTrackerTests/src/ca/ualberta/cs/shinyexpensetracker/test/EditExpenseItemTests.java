@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -77,7 +78,7 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 		controller = new ExpenseClaimController(persister);
 		Application.setExpenseClaimController(controller);
 
-		claim = new ExpenseClaim("test claim");
+		claim = new ExpenseClaim(UUID.randomUUID(), "test claim");
 		res = getInstrumentation().getTargetContext().getResources();
 		imageSmall = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
 		imageBig = BitmapFactory.decodeResource(res, R.drawable.keyhole_nebula_hubble_1999);
@@ -117,10 +118,10 @@ public class EditExpenseItemTests extends ActivityInstrumentationTestCase2<Expen
 		assertEquals("name is not right", item.getName(), nameField.getText().toString());
 		assertEquals("date is not right", item.getDate(), getDate(dateField));
 		assertEquals("category is not right", item.getCategory().toString(), categorySpinner.getSelectedItem()
-				.toString());
+																							.toString());
 		assertEquals("amount is not right", item.getAmountSpent().toString(), amountField.getText().toString());
 		assertEquals("currency is not right", item.getCurrency().toString(), currencySpinner.getSelectedItem()
-				.toString());
+																							.toString());
 		assertEquals("description is not right", item.getDescription(), descriptionField.getText().toString());
 		assertEquals("wrong geolocation", item.getGeolocation().toString(), geoloc.getText().toString());
 	}

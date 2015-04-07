@@ -6,8 +6,6 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-import ca.ualberta.cs.shinyexpensetracker.framework.Application;
-
 /**
  * Class that represents an expense claim created by a user.
  */
@@ -38,7 +36,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	}
 
 	private final UUID id;
-	private UUID userId;
+	private UUID userID;
 	private String name;
 	private Date startDate;
 	private Date endDate;
@@ -48,39 +46,39 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	private ArrayList<ExpenseItem> expenseItems = new ArrayList<ExpenseItem>();
 	private ArrayList<String> comments = new ArrayList<String>();
 
-	public ExpenseClaim(String name) {
-		this(name, new Date(), null, Status.IN_PROGRESS, new TagList());
+	public ExpenseClaim(UUID userID, String name) {
+		this(userID, name, new Date(), null, Status.IN_PROGRESS, new TagList());
 	}
 
-	public ExpenseClaim(String name, Date startDate) {
-		this(name, startDate, null, Status.IN_PROGRESS, new TagList());
+	public ExpenseClaim(UUID userID, String name, Date startDate) {
+		this(userID, name, startDate, null, Status.IN_PROGRESS, new TagList());
 	}
 
-	public ExpenseClaim(String name, Date startDate, Date endDate) {
-		this(name, startDate, endDate, Status.IN_PROGRESS, new TagList());
+	public ExpenseClaim(UUID userID, String name, Date startDate, Date endDate) {
+		this(userID, name, startDate, endDate, Status.IN_PROGRESS, new TagList());
 	}
 
-	public ExpenseClaim(String name, Date startDate, Date endDate, Status status) {
-		this(name, startDate, endDate, status, new TagList());
+	public ExpenseClaim(UUID userID, String name, Date startDate, Date endDate, Status status) {
+		this(userID, name, startDate, endDate, status, new TagList());
 	}
 
-	public ExpenseClaim(UUID id, String name, Date startDate, Date endDate, Status status) {
+	public ExpenseClaim(UUID userID, String name, Date startDate, Date endDate, Status status, TagList tagList) {
+		this(UUID.randomUUID(), userID, name, startDate, endDate, status, tagList);
+	}
+
+	public ExpenseClaim(UUID id, UUID userID, String name, Date startDate, Date endDate, Status status) {
 		this(id, name, startDate, endDate, status, null);
 	}
 
-	public ExpenseClaim(String name, Date startDate, Date endDate, Status status, TagList tagList) {
-		this(UUID.randomUUID(), name, startDate, endDate, status, tagList);
-	}
-
-	public ExpenseClaim(UUID id, String name, Date startDate, Date endDate, Status status, TagList tagList) {
+	public ExpenseClaim(UUID id, UUID userID, String name, Date startDate, Date endDate, Status status, TagList tagList) {
 		super();
 		this.id = id;
+		this.userID = userID;
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.status = status;
 		this.tagList = tagList;
-		this.userId = Application.getUser().getUserId();
 	}
 
 	public UUID getID() {
@@ -88,11 +86,11 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	}
 
 	public void setUserId(UUID id) {
-		this.userId = id;
+		this.userID = id;
 	}
 
-	public UUID getUserId() {
-		return userId;
+	public UUID getUserID() {
+		return userID;
 	}
 
 	public String getName() {
@@ -296,10 +294,11 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 			return false;
 		}
 		ExpenseClaim rhs = (ExpenseClaim) obj;
-		return new EqualsBuilder().append(getID(), rhs.getID()).append(getName(), rhs.getName())
-				.append(getStartDate(), rhs.getStartDate()).append(getEndDate(), rhs.getEndDate())
-				.append(getStatus(), rhs.getStatus()).append(getExpenseItems(), rhs.getExpenseItems())
-				.append(getDestinations(), rhs.getDestinations()).append(getTagList(), rhs.getTagList()).isEquals();
+		return new EqualsBuilder().append(getID(), rhs.getID()).append(getUserID(), rhs.getUserID())
+				.append(getName(), rhs.getName()).append(getStartDate(), rhs.getStartDate())
+				.append(getEndDate(), rhs.getEndDate()).append(getStatus(), rhs.getStatus())
+				.append(getExpenseItems(), rhs.getExpenseItems()).append(getDestinations(), rhs.getDestinations())
+				.append(getTagList(), rhs.getTagList()).isEquals();
 	}
 
 	public String getComment(int index) {

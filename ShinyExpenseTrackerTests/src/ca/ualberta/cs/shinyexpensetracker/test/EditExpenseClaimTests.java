@@ -3,6 +3,7 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import android.annotation.SuppressLint;
 import android.app.Instrumentation;
@@ -117,7 +118,7 @@ public class EditExpenseClaimTests extends ActivityInstrumentationTestCase2<Expe
 		Date startDate = sdf.parse("2015-01-01");
 		Date endDate = sdf.parse("2015-01-02");
 
-		return new ExpenseClaim("test", startDate, endDate, ExpenseClaim.Status.IN_PROGRESS);
+		return new ExpenseClaim(UUID.randomUUID(), "test", startDate, endDate, ExpenseClaim.Status.IN_PROGRESS);
 	}
 
 	private Date getDate(EditText dateField) throws ParseException {

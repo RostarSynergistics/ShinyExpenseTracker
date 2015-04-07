@@ -61,7 +61,7 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(claimList));
 		Application.setExpenseClaimController(controller);
 
-		claim = new ExpenseClaim("test claim");
+		claim = new ExpenseClaim(UUID.randomUUID(), "test claim");
 		Calendar newDate = Calendar.getInstance();
 		newDate.set(2000, 00, 01);
 
@@ -105,7 +105,8 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 		// Get the activity
 		getInstrumentation().waitForIdleSync();
 		final ExpenseItemActivity expenseActivity = (ExpenseItemActivity) getInstrumentation()
-				.waitForMonitorWithTimeout(expenseMonitor, 1000);
+																								.waitForMonitorWithTimeout(expenseMonitor,
+																										1000);
 		assertEquals("Did not open the expense activity", true, getInstrumentation().checkMonitorHit(expenseMonitor, 1));
 
 		// Check that the activity received valid intents
@@ -147,7 +148,7 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 		TextView geoloc = (TextView) activity.findViewById(R.id.expenseItemGeolocationValue);
 		assertEquals("geolcoation is not right", geoloc.getText().toString(), c.toString());
 	}
-	
+
 	/**
 	 * Checks if the indicator of a photo is present and behaves correctly. The
 	 * indicator in this view is the existence of an attached photo.
@@ -190,7 +191,8 @@ public class TestExpenseItemDetailView extends ActivityInstrumentationTestCase2<
 		// Get the activity
 		getInstrumentation().waitForIdleSync();
 		final ExpenseItemActivity expenseActivity = (ExpenseItemActivity) getInstrumentation()
-				.waitForMonitorWithTimeout(expenseMonitor, 1000);
+																								.waitForMonitorWithTimeout(expenseMonitor,
+																										1000);
 		assertEquals("Did not open the expense activity", true, getInstrumentation().checkMonitorHit(expenseMonitor, 1));
 
 		// Fill the activity

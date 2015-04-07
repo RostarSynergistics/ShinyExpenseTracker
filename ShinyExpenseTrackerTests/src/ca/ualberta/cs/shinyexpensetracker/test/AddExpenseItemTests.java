@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -108,7 +109,7 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 		controller = new ExpenseClaimController(persister);
 		Application.setExpenseClaimController(controller);
 
-		claim = new ExpenseClaim("Test Claim");
+		claim = new ExpenseClaim(UUID.randomUUID(), "Test Claim");
 		list.addClaim(claim);
 		Intent intent = new Intent();
 		intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());

@@ -1,5 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
+import java.io.IOException;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,29 +16,36 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
-import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
+import ca.ualberta.cs.shinyexpensetracker.models.User;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
 public class LoginAsApproverOrClaimantActivity extends Activity {
 
 	private AlertDialog.Builder adb;
 	private AlertDialog alertDialogGetUserName;
-	
+
 	@SuppressLint("InflateParams")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sign_in_as_approver_or_claimant);
-				
-		// check if we have a user name
-		if (Application.getUser().getUserName() == null) {
+
+		User user;
+
+		try {
+			user = Application.getUser();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+		if (user == null) {
 			// No, get it
 			adb = new AlertDialog.Builder(this);
-			
+
 			LayoutInflater layoutInflater = this.getLayoutInflater();
 			View dialogView = layoutInflater.inflate(R.layout.dialog_approver_name_input, null);
 			adb.setView(dialogView);
-			
+
 			final EditText nameTextBox = (EditText) dialogView.findViewById(R.id.EditTextDialogUserName);
 
 			adb.setMessage("Name: ");
@@ -48,7 +57,12 @@ public class LoginAsApproverOrClaimantActivity extends Activity {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					String name = nameTextBox.getText().toString();
-					Application.getUser().setUserName(name);
+
+					try {
+						Application.setUser(new User(name));
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
 				}
 			});
 
@@ -64,7 +78,7 @@ public class LoginAsApproverOrClaimantActivity extends Activity {
 		}
 	}
 
-	@Override	
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.sign_in_as_approver_or_claimant, menu);
@@ -85,41 +99,43 @@ public class LoginAsApproverOrClaimantActivity extends Activity {
 	}
 
 	/**
-	 * Saves the type of the user to the User and the application upon logging in to the system
+	 * Saves the type of the user to the User and the application upon logging
+	 * in to the system
 	 * 
 	 * @param v
 	 */
-	/* source http://developer.android.com/guide/topics/ui/controls/radiobutton.html on April 1 2015 */
+	/*
+	 * source
+	 * http://developer.android.com/guide/topics/ui/controls/radiobutton.html on
+	 * April 1 2015
+	 */
 	public void saveUserType(View v) {
-		
 		boolean checked = ((RadioButton) findViewById(R.id.approverRadioButton)).isChecked();
-		
+
 		if (checked) {
-			Application.setUserType(Type.Approver);
+			Application.switchToApproverMode();
 		} else {
-			Application.setUserType(Type.Claimant);
+			Application.switchToClaimantMode();
 		}
 	}
 
 	/**
-	 * when user selects continue button, saves the selection of user type into the application
-	 * as well as into the user takes user to claim view activity
+	 * when user selects continue button, saves the selection of user type into
+	 * the application as well as into the user takes user to claim view
+	 * activity
 	 * 
 	 * @param v
 	 */
 	public void login(View v) {
-
 		Intent intent;
-		
-		saveUserType(v);
-		
-		intent = new Intent(LoginAsApproverOrClaimantActivity.this,
-				ExpenseClaimListActivity.class);
-		
-		startActivity(intent);
 
+		saveUserType(v);
+
+		intent = new Intent(LoginAsApproverOrClaimantActivity.this, ExpenseClaimListActivity.class);
+
+		startActivity(intent);
 	}
-	
+
 	/**
 	 * for testing purposes only
 	 */

@@ -18,7 +18,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivi
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
+import ca.ualberta.cs.shinyexpensetracker.models.User;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 /**
@@ -45,10 +45,12 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		Application.setUserType(Type.Claimant);
+		Application.switchToClaimantMode();
 
 		controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
 		Application.setExpenseClaimController(controller);
+
+		Application.setUser(new User("Test User"));
 
 		instrumentation = getInstrumentation();
 		activity = getActivity();
@@ -106,7 +108,9 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 	public void testThatInputtingAnEndDateThatIsAfterTheStartDateIsValid() {
 
 		ActivityMonitor monitor = instrumentation
-				.addMonitor(TabbedSummaryClaimantActivity.class.getName(), null, false);
+													.addMonitor(TabbedSummaryClaimantActivity.class.getName(),
+															null,
+															false);
 
 		activity.runOnUiThread(new Runnable() {
 			@Override
@@ -128,7 +132,9 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 	@SuppressLint("SimpleDateFormat")
 	public void testThatTappingDoneWhileCreatingNewExpenseClaimCreatesANewExpenseClaim() throws ParseException {
 		ActivityMonitor monitor = instrumentation
-				.addMonitor(TabbedSummaryClaimantActivity.class.getName(), null, false);
+													.addMonitor(TabbedSummaryClaimantActivity.class.getName(),
+															null,
+															false);
 
 		final String claimName = "URoma";
 		activity.runOnUiThread(new Runnable() {

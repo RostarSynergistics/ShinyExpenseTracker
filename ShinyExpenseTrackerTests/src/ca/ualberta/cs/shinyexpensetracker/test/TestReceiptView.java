@@ -2,6 +2,7 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.UUID;
 
 import android.content.Intent;
 import android.content.res.Resources;
@@ -51,7 +52,7 @@ public class TestReceiptView extends ActivityInstrumentationTestCase2<ReceiptVie
 		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(claimList));
 		Application.setExpenseClaimController(controller);
 
-		ExpenseClaim claim = new ExpenseClaim("test claim");
+		ExpenseClaim claim = new ExpenseClaim(UUID.randomUUID(), "test claim");
 		Calendar newDate = Calendar.getInstance();
 		newDate.set(2000, 00, 01);
 

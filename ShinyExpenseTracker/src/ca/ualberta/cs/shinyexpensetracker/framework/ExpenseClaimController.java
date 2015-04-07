@@ -73,7 +73,7 @@ public class ExpenseClaimController {
 	 * @throws IOException
 	 */
 	public ExpenseClaim addExpenseClaim(String name, Date startDate, Date endDate) throws IOException {
-		ExpenseClaim newClaim = new ExpenseClaim(name, startDate, endDate);
+		ExpenseClaim newClaim = new ExpenseClaim(Application.getUser().getUserID(), name, startDate, endDate);
 
 		claimList.addClaim(newClaim);
 		persister.saveExpenseClaims(claimList);

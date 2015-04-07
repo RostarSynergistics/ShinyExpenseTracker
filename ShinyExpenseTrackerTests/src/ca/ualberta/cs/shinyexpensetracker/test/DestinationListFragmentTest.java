@@ -2,6 +2,7 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.UUID;
 
 import android.app.AlertDialog;
 import android.app.Instrumentation.ActivityMonitor;
@@ -57,7 +58,7 @@ public class DestinationListFragmentTest extends ActivityInstrumentationTestCase
 
 		ExpenseClaimList list = new ExpenseClaimList();
 
-		claim = new ExpenseClaim("My Cool Expense Claim", new Date(123456), new Date(234567));
+		claim = new ExpenseClaim(UUID.randomUUID(), "My Cool Expense Claim", new Date(123456), new Date(234567));
 		// Add a destination that we can look at
 		destination = new Destination("Hell", "I'm on a highway.", new Coordinate(66.6, 66.6));
 		claim.addDestination(destination);
@@ -134,7 +135,8 @@ public class DestinationListFragmentTest extends ActivityInstrumentationTestCase
 		// Wait up to 5 seconds for the next activity open, if available,
 		// timing out if it blocks.
 		AddDestinationActivity nextActivity = (AddDestinationActivity) getInstrumentation()
-				.waitForMonitorWithTimeout(monitor, 5);
+																							.waitForMonitorWithTimeout(monitor,
+																									5);
 		assertNotNull("Next activity wasn't opened", nextActivity);
 		nextActivity.finish();
 	}
@@ -207,7 +209,8 @@ public class DestinationListFragmentTest extends ActivityInstrumentationTestCase
 		getInstrumentation().runOnMainSync(new Runnable() {
 			@Override
 			public void run() {
-				claim.addDestination(new Destination("Copy-Paste world", "Laziness", new Coordinate(0,0)));;
+				claim.addDestination(new Destination("Copy-Paste world", "Laziness", new Coordinate(0, 0)));
+				;
 
 			}
 		});
@@ -276,7 +279,8 @@ public class DestinationListFragmentTest extends ActivityInstrumentationTestCase
 
 		// Get the new activity
 		final AddDestinationActivity editDestination = (AddDestinationActivity) getInstrumentation()
-				.waitForMonitorWithTimeout(monitor, 3);
+																									.waitForMonitorWithTimeout(monitor,
+																											3);
 		assertTrue(getInstrumentation().checkMonitorHit(monitor, 1));
 
 		// Get the name textview

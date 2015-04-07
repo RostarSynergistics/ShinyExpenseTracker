@@ -1,5 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+import java.util.UUID;
+
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
@@ -51,9 +53,9 @@ public class EditDestinationTests extends ActivityInstrumentationTestCase2<AddDe
 
 		ExpenseClaimList claimList = new ExpenseClaimList();
 
-		claim = new ExpenseClaim("Example name");
+		claim = new ExpenseClaim(UUID.randomUUID(), "Example name");
 		claimList.addClaim(claim);
-		
+
 		destination = new Destination("Indianapolis", "Gen Con", new Coordinate(39.791, -86.1480));
 
 		claim.addDestination(destination);

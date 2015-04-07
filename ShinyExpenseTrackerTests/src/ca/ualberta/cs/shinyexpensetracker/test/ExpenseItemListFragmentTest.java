@@ -2,6 +2,7 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -48,7 +49,7 @@ public class ExpenseItemListFragmentTest extends ActivityInstrumentationTestCase
 		final ExpenseClaimController controller = new ExpenseClaimController(new MockExpenseClaimListPersister(list));
 		Application.setExpenseClaimController(controller);
 
-		claim = new ExpenseClaim("My Cool Expense Claim", new Date(123456), new Date(234567));
+		claim = new ExpenseClaim(UUID.randomUUID(), "My Cool Expense Claim", new Date(123456), new Date(234567));
 		// Add an expense that we can look at
 		claim.addExpenseItem(new ExpenseItem("Really expensive thing",
 				new Date(159371),

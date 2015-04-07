@@ -6,7 +6,6 @@ import android.widget.RadioButton;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimListActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.LoginAsApproverOrClaimantActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
-import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
 
 public class LoginAsApproverOrClaimantActivityTest extends
 		ActivityInstrumentationTestCase2<LoginAsApproverOrClaimantActivity> {
@@ -32,15 +31,17 @@ public class LoginAsApproverOrClaimantActivityTest extends
 
 		// Monitor for ExpenseItemActivity
 		ActivityMonitor expenseClaimListMonitor = getInstrumentation()
-				.addMonitor(ExpenseClaimListActivity.class.getName(), null, false);
+																		.addMonitor(ExpenseClaimListActivity.class.getName(),
+																				null,
+																				false);
 
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				// set the approver radio button to checked
 				((RadioButton) activity
-						.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.approverRadioButton))
-						.setChecked(true);
+										.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.approverRadioButton))
+																													.setChecked(true);
 				activity.findViewById(
 						ca.ualberta.cs.shinyexpensetracker.R.id.continueButton)
 						.performClick();
@@ -51,19 +52,19 @@ public class LoginAsApproverOrClaimantActivityTest extends
 
 		// Get the view expense claims activity
 		final ExpenseClaimListActivity expenses = (ExpenseClaimListActivity) getInstrumentation()
-				.waitForMonitorWithTimeout(expenseClaimListMonitor, 1000);
+																									.waitForMonitorWithTimeout(expenseClaimListMonitor,
+																											1000);
 		assertEquals(true,
 				getInstrumentation()
-						.checkMonitorHit(expenseClaimListMonitor, 1));
+									.checkMonitorHit(expenseClaimListMonitor, 1));
 
-		assertEquals("User State was not set to Approver", Type.Approver,
-				Application.getUserType());
+		assertTrue("Application mode was not set to Approver", Application.inApproverMode());
 
 		expenses.finish();
 
 		getInstrumentation().waitForIdleSync();
-		
-		assertEquals("User State was not set to Approver", Type.Approver ,Application.getUserType());
+
+		assertTrue("Application mode was not set to Approver", Application.inApproverMode());
 
 	}
 
@@ -76,15 +77,17 @@ public class LoginAsApproverOrClaimantActivityTest extends
 
 		// Monitor for ExpenseItemActivity
 		ActivityMonitor expenseClaimListMonitor = getInstrumentation()
-				.addMonitor(ExpenseClaimListActivity.class.getName(), null, false);
+																		.addMonitor(ExpenseClaimListActivity.class.getName(),
+																				null,
+																				false);
 
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				// set the approver radio button to checked
 				((RadioButton) activity
-						.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.claimantRadioButton))
-						.setChecked(true);
+										.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.claimantRadioButton))
+																													.setChecked(true);
 				activity.findViewById(
 						ca.ualberta.cs.shinyexpensetracker.R.id.continueButton)
 						.performClick();
@@ -94,29 +97,19 @@ public class LoginAsApproverOrClaimantActivityTest extends
 
 		// Get the view expense claims activity
 		final ExpenseClaimListActivity expenses = (ExpenseClaimListActivity) getInstrumentation()
-				.waitForMonitorWithTimeout(expenseClaimListMonitor, 1000);
+																									.waitForMonitorWithTimeout(expenseClaimListMonitor,
+																											1000);
 		assertEquals(true,
 				getInstrumentation()
-						.checkMonitorHit(expenseClaimListMonitor, 1));
+									.checkMonitorHit(expenseClaimListMonitor, 1));
 
 		expenses.finish();
 
-		assertEquals("User State was not set to Claimant", Type.Claimant,
-				Application.getUserType());
+		assertTrue("Application mode was not set to Claimant", Application.inClaimantMode());
 
 		getInstrumentation().waitForIdleSync();
-		
-		assertEquals("User State was not set to Claimant", Type.Claimant ,Application.getUserType());
-		
-	}
-	
-	/**
-	 * Tests to ensure that when no user name has been added that a dialog appears to get it
-	 * from the user
-	 */
-	public void testGetNameDialogAppears() {
-		assertEquals("User already has a name", null, Application.getUser().getUserName());
-		
-		assertTrue("getUserName dialog did not appear", activity.getDialog().isShowing());
+
+		assertTrue("Application mode was not set to Claimant", Application.inClaimantMode());
+
 	}
 }

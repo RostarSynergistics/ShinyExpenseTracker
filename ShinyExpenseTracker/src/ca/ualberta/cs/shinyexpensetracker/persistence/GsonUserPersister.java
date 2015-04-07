@@ -33,7 +33,7 @@ public class GsonUserPersister implements IUserPersister {
 	public User loadUser() throws IOException {
 		String userData = persistenceStrategy.load();
 		if (userData.equals("")) {
-			return new User();
+			return null;
 		} else {
 			return gson.fromJson(userData, User.class);
 		}

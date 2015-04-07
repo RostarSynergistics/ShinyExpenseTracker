@@ -2,6 +2,7 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
@@ -16,7 +17,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
-public class ViewCommetsActivityTest extends ActivityInstrumentationTestCase2<ViewCommentsActivity> {
+public class ViewCommentsActivityTest extends ActivityInstrumentationTestCase2<ViewCommentsActivity> {
 
 	ViewCommentsActivity activity;
 	ExpenseClaimController controller;
@@ -31,11 +32,11 @@ public class ViewCommetsActivityTest extends ActivityInstrumentationTestCase2<Vi
 	ExpenseClaim.Status status = ExpenseClaim.Status.SUBMITTED;
 	String comment = "test comment";
 
-	public ViewCommetsActivityTest() {
+	public ViewCommentsActivityTest() {
 		super(ViewCommentsActivity.class);
 	}
 
-	public ViewCommetsActivityTest(Class<ViewCommentsActivity> activityClass) {
+	public ViewCommentsActivityTest(Class<ViewCommentsActivity> activityClass) {
 		super(activityClass);
 	}
 
@@ -43,7 +44,7 @@ public class ViewCommetsActivityTest extends ActivityInstrumentationTestCase2<Vi
 		super.setUp();
 
 		// Add an expense claim to the expenseClaimController
-		claim = new ExpenseClaim(claimName, startDate, endDate);
+		claim = new ExpenseClaim(UUID.randomUUID(), claimName, startDate, endDate);
 		claim.setStatus(status);
 		claim.addComment(comment);
 
@@ -80,7 +81,7 @@ public class ViewCommetsActivityTest extends ActivityInstrumentationTestCase2<Vi
 		controller.getExpenseClaimByID(claim.getID()).setComments(new ArrayList<String>());
 
 		assertEquals("still comments in the claim", 0, controller.getExpenseClaimByID(claim.getID()).getComments()
-				.size());
+																	.size());
 
 		activity = getActivity();
 

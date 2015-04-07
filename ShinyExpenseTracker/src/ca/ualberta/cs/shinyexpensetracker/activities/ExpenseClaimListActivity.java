@@ -53,14 +53,13 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
 import ca.ualberta.cs.shinyexpensetracker.models.User;
-import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
 public class ExpenseClaimListActivity extends Activity implements IView<ExpenseClaimList> {
 
 	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
-	private User user = Application.getUser();
+	private User user;
 	// TODO: these have to be moved to another object,
 	// like Claimant or something, when that class is created
 	private Coordinate homeGeolocation = new Coordinate();
@@ -77,6 +76,12 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 		controller = Application.getExpenseClaimController();
 		controller.getExpenseClaimList().addView(this);
 
+		try {
+			user = Application.getUser();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
 		// Set the list view to receive updates from the model
 		final ListView claim_list = (ListView) findViewById(R.id.expense_claim_list);
 		adapter = new ClaimListAdapter(this);
@@ -85,10 +90,10 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 
 		// if the user is an approver filter the claims so only the submitted
 		// claims are shown
-		if (Application.getUserType().equals(Type.Approver)) {
+		if (Application.inApproverMode()) {
 			adapter.applyFilter(new ExpenseClaimSubmittedFilter());
 			adapter.applyFilter(new ExpenseClaimUserFilter());
-		} 
+		}
 
 		claim_list.setAdapter(adapter);
 
@@ -106,7 +111,7 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 
 				Intent intent;
 
-				if (Application.getUserType().equals(Type.Claimant)) {
+				if (Application.inClaimantMode()) {
 					intent = new Intent(ExpenseClaimListActivity.this, TabbedSummaryClaimantActivity.class);
 				} else {
 					intent = new Intent(ExpenseClaimListActivity.this, TabbedSummaryApproverActivity.class);
@@ -140,7 +145,7 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.expense_claims_view, menu);
 
-		if (Application.getUserType().equals(Type.Approver)) {
+		if (Application.inApproverMode()) {
 			menu.getItem(0).setEnabled(false);
 		}
 

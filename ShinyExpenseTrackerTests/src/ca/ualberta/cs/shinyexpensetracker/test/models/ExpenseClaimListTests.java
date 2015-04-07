@@ -12,14 +12,14 @@ public class ExpenseClaimListTests extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		
+
 		list = new ExpenseClaimList();
 	}
 
 	public void testThatGetClaimByIDFindsAClaimIfOneExistsWithThatID() {
-		ExpenseClaim claim = new ExpenseClaim("foo");
+		ExpenseClaim claim = new ExpenseClaim(UUID.randomUUID(), "foo");
 		list.addClaim(claim);
-		
+
 		ExpenseClaim retrievedClaim = list.getClaimByID(claim.getID());
 		assertEquals(claim, retrievedClaim);
 	}
@@ -28,11 +28,11 @@ public class ExpenseClaimListTests extends TestCase {
 		ExpenseClaim retrievedClaim = list.getClaimByID(UUID.randomUUID());
 		assertNull(retrievedClaim);
 	}
-	
+
 	public void testThatGetClaimByIDFindsNothingIfNoClaimExistsWithThatID() {
-		ExpenseClaim claim = new ExpenseClaim("foo");
+		ExpenseClaim claim = new ExpenseClaim(UUID.randomUUID(), "foo");
 		list.addClaim(claim);
-		
+
 		ExpenseClaim retrievedClaim = list.getClaimByID(UUID.randomUUID());
 		assertNull(retrievedClaim);
 	}

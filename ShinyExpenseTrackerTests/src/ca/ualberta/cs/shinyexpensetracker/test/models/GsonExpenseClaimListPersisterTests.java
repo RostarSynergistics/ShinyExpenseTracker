@@ -3,6 +3,7 @@ package ca.ualberta.cs.shinyexpensetracker.test.models;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 
 import junit.framework.TestCase;
 import android.graphics.Bitmap;
@@ -47,7 +48,11 @@ public class GsonExpenseClaimListPersisterTests extends TestCase {
 		Date startDate = new Date(5000);
 		Date endDate = new Date(6000);
 
-		ExpenseClaim claim = new ExpenseClaim("test", startDate, endDate, ExpenseClaim.Status.IN_PROGRESS);
+		ExpenseClaim claim = new ExpenseClaim(UUID.randomUUID(),
+				"test",
+				startDate,
+				endDate,
+				ExpenseClaim.Status.IN_PROGRESS);
 
 		int[] colors = new int[] { 1, 2, 3, 4 };
 

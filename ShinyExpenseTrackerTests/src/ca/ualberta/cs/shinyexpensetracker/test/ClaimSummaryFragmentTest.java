@@ -3,6 +3,7 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
@@ -68,7 +69,7 @@ public class ClaimSummaryFragmentTest extends ActivityInstrumentationTestCase2<T
 		Application.setExpenseClaimController(controller);
 
 		// Add an expense claim to the expenseClaimController
-		claim = new ExpenseClaim(claimName, startDate, endDate);
+		claim = new ExpenseClaim(UUID.randomUUID(), claimName, startDate, endDate);
 		claim.setStatus(status);
 		list.addClaim(claim);
 
@@ -141,16 +142,18 @@ public class ClaimSummaryFragmentTest extends ActivityInstrumentationTestCase2<T
 		assertEquals("claim name not set correctly", claimName, claimNameText.getText().toString());
 
 		TextView claimStartDateText = (TextView) frag.getView().findViewById(R.id.claimStartDateTextView);
-		assertEquals("claim Start date not set correctly", "Start Date: " + startDate.toString(), claimStartDateText
-				.getText().toString());
+		assertEquals("claim Start date not set correctly",
+				"Start Date: " + startDate.toString(),
+				claimStartDateText
+									.getText().toString());
 
 		TextView claimEndDateText = (TextView) frag.getView().findViewById(R.id.claimEndDateTextView);
 		assertEquals("claim end date not set correctly", "End Date: " + endDate.toString(), claimEndDateText.getText()
-				.toString());
+																											.toString());
 
 		TextView statusText = (TextView) frag.getView().findViewById(R.id.claimStatusTextView);
 		assertEquals("Claim status not set correctly", "Claim Status: " + status.getText(), statusText.getText()
-				.toString());
+																										.toString());
 
 		TextView tagText = (TextView) frag.getView().findViewById(R.id.claimTagsTextView);
 
@@ -221,7 +224,7 @@ public class ClaimSummaryFragmentTest extends ActivityInstrumentationTestCase2<T
 		// Test
 		ListView expenseTotals = (ListView) frag.getView().findViewById(R.id.claimExpenseTotalsListView);
 		assertEquals("expense was not added to expensesTotal list", "CAD 10", expenseTotals.getItemAtPosition(0)
-				.toString());
+																							.toString());
 
 		amount = new BigDecimal(20);
 		final ExpenseItem expense2 = new ExpenseItem("test expense 2",
@@ -244,9 +247,9 @@ public class ClaimSummaryFragmentTest extends ActivityInstrumentationTestCase2<T
 		// Test
 		expenseTotals = (ListView) frag.getView().findViewById(R.id.claimExpenseTotalsListView);
 		assertEquals("expense was not added to expensesTotal list", "CAD 10", expenseTotals.getItemAtPosition(0)
-				.toString());
+																							.toString());
 		assertEquals("expense was not added to expensesTotal list", "CHF 20", expenseTotals.getItemAtPosition(1)
-				.toString());
+																							.toString());
 
 		// Add one more expense
 		final ExpenseItem expense3 = new ExpenseItem("test expense 3", startDate, Category.FUEL, amount, Currency.CAD);
@@ -264,9 +267,9 @@ public class ClaimSummaryFragmentTest extends ActivityInstrumentationTestCase2<T
 		// Test
 		expenseTotals = (ListView) frag.getView().findViewById(R.id.claimExpenseTotalsListView);
 		assertEquals("expense was not added to expensesTotal list", "CAD 30", expenseTotals.getItemAtPosition(0)
-				.toString());
+																							.toString());
 		assertEquals("expense was not added to expensesTotal list", "CHF 20", expenseTotals.getItemAtPosition(1)
-				.toString());
+																							.toString());
 	}
 
 }

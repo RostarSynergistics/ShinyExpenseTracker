@@ -2,6 +2,7 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 
 import android.app.Instrumentation.ActivityMonitor;
 import android.content.Intent;
@@ -67,7 +68,7 @@ public class TabbedSummaryClaimantActivityTest extends ActivityInstrumentationTe
 		Application.setExpenseClaimController(controller);
 
 		// Add an expense claim to the expenseClaimController
-		claim = new ExpenseClaim(claimName, startDate, endDate);
+		claim = new ExpenseClaim(UUID.randomUUID(), claimName, startDate, endDate);
 		claim.setStatus(status);
 		claim.addExpenseItem(expense);
 		list.addClaim(claim);
@@ -119,7 +120,9 @@ public class TabbedSummaryClaimantActivityTest extends ActivityInstrumentationTe
 				false);
 		// Monitor for RemoveTagActivity
 		ActivityMonitor removeTagsActivityMonitor = getInstrumentation()
-				.addMonitor(RemoveTagFromClaimActivity.class.getName(), null, false);
+																		.addMonitor(RemoveTagFromClaimActivity.class.getName(),
+																				null,
+																				false);
 
 		// Press the "Submit claim" button
 		getInstrumentation().invokeMenuActionSync(activity, R.id.submitClaim, 0);
@@ -144,7 +147,8 @@ public class TabbedSummaryClaimantActivityTest extends ActivityInstrumentationTe
 
 		// Get the view expense claims activity
 		final AddTagToClaimActivity addTagsActivity = (AddTagToClaimActivity) getInstrumentation()
-				.waitForMonitorWithTimeout(addTagsActivityMonitor, 1000);
+																									.waitForMonitorWithTimeout(addTagsActivityMonitor,
+																											1000);
 		assertEquals(true, getInstrumentation().checkMonitorHit(addTagsActivityMonitor, 1));
 
 		addTagsActivity.finish();
@@ -153,7 +157,8 @@ public class TabbedSummaryClaimantActivityTest extends ActivityInstrumentationTe
 				getInstrumentation().invokeMenuActionSync(activity, R.id.RemoveTag, 0));
 
 		final RemoveTagFromClaimActivity removeTagsActivity = (RemoveTagFromClaimActivity) getInstrumentation()
-				.waitForMonitorWithTimeout(removeTagsActivityMonitor, 1000);
+																												.waitForMonitorWithTimeout(removeTagsActivityMonitor,
+																														1000);
 		assertEquals(true, getInstrumentation().checkMonitorHit(addTagsActivityMonitor, 1));
 
 		removeTagsActivity.finish();

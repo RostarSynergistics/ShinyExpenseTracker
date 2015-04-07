@@ -2,6 +2,7 @@ package ca.ualberta.cs.shinyexpensetracker.test.framework;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.UUID;
 
 import junit.framework.TestCase;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -43,7 +44,7 @@ public class ExpenseClaimControllerTests extends TestCase {
 	}
 
 	public void testThatUpdatingAnExistingExpenseClaimWorks() throws IOException {
-		ExpenseClaim oldClaim = new ExpenseClaim("FooBar", new Date(6000), new Date(7000));
+		ExpenseClaim oldClaim = new ExpenseClaim(UUID.randomUUID(), "FooBar", new Date(6000), new Date(7000));
 		claimList.addClaim(oldClaim);
 
 		final String name = "Baz";

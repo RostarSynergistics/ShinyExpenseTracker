@@ -1,5 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+import java.util.UUID;
+
 import android.app.AlertDialog;
 import android.app.Instrumentation;
 import android.content.DialogInterface;
@@ -40,7 +42,7 @@ public class AddTagToExpenseClaimActivityTest extends ActivityInstrumentationTes
 		super.setUp();
 
 		ExpenseClaimList claimList = new ExpenseClaimList();
-		ExpenseClaim claim = new ExpenseClaim("TEST");
+		ExpenseClaim claim = new ExpenseClaim(UUID.randomUUID(), "TEST");
 		claimList.addClaim(claim);
 
 		// Setting up the controllers
@@ -62,7 +64,7 @@ public class AddTagToExpenseClaimActivityTest extends ActivityInstrumentationTes
 		activity = (AddTagToClaimActivity) getActivity();
 		instrumentation = getInstrumentation();
 		manageTagsListView = (ListView) activity
-				.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.listViewManageTags);
+												.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.listViewManageTags);
 		done = (Button) activity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.doneButtonManageTags);
 
 	}

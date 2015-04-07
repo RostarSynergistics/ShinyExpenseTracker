@@ -15,6 +15,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+import ca.ualberta.cs.shinyexpensetracker.models.User;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import ca.ualberta.cs.shinyexpensetracker.models.Status;
@@ -404,5 +405,50 @@ public class ExpenseClaimController {
 		for (ExpenseClaim claim : claimList.getClaims()) {
 			claim.getTagList().deleteTag(tag);
 		}
+	}
+	
+	public void setColor(UUID claimID) throws IOException {
+		// get home location
+		ExpenseClaim claim = claimList.getClaimByID(claimID);
+		User user = Application.getUser();
+		Coordinate home = user.getHomeGeolocation();
+		int color = 0x00000000;
+		
+		if (home != null && claim.getDestinationCount() != 0) {
+			// get coordinate of the first destination of this claim
+			Destination firstDestination = claim.getDestinationAtPosition(0);
+			Coordinate firstDestinationCoordinate = firstDestination.getGeolocation();
+			
+			// get distance in km from first destination to home
+			double distance = firstDestinationCoordinate.distanceTo(home);
+			
+			// 256 shades of red
+			// new shade for every 80 or so kilometers of distance
+			int level = (int) (Math.floor(256*distance/Coordinate.LONGEST_DISTANCE_BETWEEN_POINTS));
+			
+			color = 0xffffffff - level - (level<<8);
+		}
+		
+		claim.setColor(color);
+		
+		persister.saveExpenseClaims(claimList);
+	}
+	
+	public void setAllColors() {
+		for (int i = 0; i < claimList.getCount(); i++) {
+			UUID id = claimList.getClaimAtPosition(i).getID();
+			try {
+				setColor(id);
+			} 
+			catch (IOException e) {
+				e.printStackTrace();
+				continue;
+			}
+		}
+		
+	}
+	
+	public int getColor(UUID claimID) {
+		return claimList.getClaimByID(claimID).getColor();
 	}
 }

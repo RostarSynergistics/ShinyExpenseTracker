@@ -198,6 +198,7 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 			TextView homeGeolocationValue = (TextView) findViewById(R.id.homeGeolocationValueTextView);
 			homeGeolocationValue.setText(homeGeolocation.toString());
 			user.setHomeGeolocation(homeGeolocation);
+			controller.setAllColors();
 		}
 	}
 

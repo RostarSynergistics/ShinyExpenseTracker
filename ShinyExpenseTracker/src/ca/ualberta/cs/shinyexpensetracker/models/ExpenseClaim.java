@@ -321,16 +321,15 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		// get distance in km from first destination to home
 		double distance = firstDestinationCoordinate.distanceTo(home);
 		
-		int opacity = 0xff;
-		int shadeOfGray = (int) (0x20 + Math.floor(224*distance/Coordinate.LONGEST_DISTANCE_BETWEEN_POINTS));
+		// 32 shades of red
+		// new shade for every 80 or so kilometers of distance
+		int shadeOfRed = (int) (Math.floor(256*distance/Coordinate.LONGEST_DISTANCE_BETWEEN_POINTS));
 		
-		this.color = 0xff000000 + shadeOfGray<<16 + shadeOfGray<<8 + shadeOfGray;
+		this.color = 0xffff0000 + shadeOfRed<<8 + shadeOfRed;
 	}
 	
 	public int getColor() {
-		if (this.color == 0x00000000) {
-			assignColor();
-		}
+		assignColor();
 		return this.color;
 	}
 	

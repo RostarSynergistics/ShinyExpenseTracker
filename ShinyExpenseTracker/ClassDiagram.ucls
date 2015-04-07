@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.1.8" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
-  associations="true" dependencies="false" nesting-relationships="true">  
+<class-diagram version="1.1.8" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
   <class id="1" language="java" name="ca.ualberta.cs.shinyexpensetracker.activities.ViewCommentsActivity" 
     project="ShinyExpenseTracker" 
     file="/ShinyExpenseTracker/src/ca/ualberta/cs/shinyexpensetracker/activities/ViewCommentsActivity.java" 
@@ -226,7 +226,7 @@
     project="ShinyExpenseTracker" 
     file="/ShinyExpenseTracker/src/ca/ualberta/cs/shinyexpensetracker/framework/Application.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="3171" y="2572"/>    
+    <position height="-1" width="-1" x="3124" y="2666"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="false" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -620,7 +620,7 @@
     </display>  
   </class>  
   <note id="58">    
-    <position height="100" width="200" x="3245" y="2285"/>    
+    <position height="100" width="200" x="3277" y="2429"/>    
     <text><![CDATA[Uses the Service Locator pattern to manage dependencies.]]>
     </text>  
   </note>  
@@ -727,7 +727,7 @@
   <association id="82">    
     <end type="SOURCE" refId="8" navigable="false" variant="ASSOCIATION">      
       <attribute id="83" name="controller">        
-        <position height="18" width="55" x="1661" y="2563"/>      
+        <position height="18" width="55" x="1888" y="2353"/>      
       </attribute>      
       <multiplicity id="84" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
@@ -876,10 +876,10 @@
     <bendpoint x="1192" y="408"/>    
     <end type="SOURCE" refId="1" navigable="false" variant="ASSOCIATION">      
       <attribute id="120" name="controller">        
-        <position height="18" width="53" x="1685" y="2427"/>      
+        <position height="18" width="53" x="1697" y="2394"/>      
       </attribute>      
       <multiplicity id="121" minimum="0" maximum="1">        
-        <position height="16" width="23" x="1727" y="2507"/>      
+        <position height="16" width="23" x="1895" y="2384"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="20" navigable="true" variant="ASSOCIATION"/>    
@@ -960,7 +960,7 @@
   <association id="140">    
     <end type="SOURCE" refId="9" navigable="false" variant="ASSOCIATION">      
       <attribute id="141" name="controller">        
-        <position height="0" width="0" x="0" y="0"/>      
+        <position height="18" width="53" x="2098" y="2366"/>      
       </attribute>      
       <multiplicity id="142" minimum="0" maximum="1">        
         <position height="16" width="23" x="1992" y="2374"/>      
@@ -972,7 +972,7 @@
   <association id="143">    
     <end type="SOURCE" refId="15" navigable="false" variant="ASSOCIATION">      
       <attribute id="144" name="controller">        
-        <position height="0" width="0" x="0" y="0"/>      
+        <position height="18" width="53" x="1977" y="2358"/>      
       </attribute>      
       <multiplicity id="145" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
@@ -1136,10 +1136,10 @@
   <association id="183">    
     <end type="SOURCE" refId="5" navigable="false" variant="ASSOCIATION">      
       <attribute id="184" name="controller">        
-        <position height="18" width="53" x="1655" y="2523"/>      
+        <position height="18" width="53" x="2060" y="2360"/>      
       </attribute>      
       <multiplicity id="185" minimum="0" maximum="1">        
-        <position height="16" width="23" x="1704" y="2540"/>      
+        <position height="16" width="23" x="1927" y="2320"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="20" navigable="true" variant="ASSOCIATION"/>    
@@ -1250,7 +1250,7 @@
         <position height="18" width="53" x="1800" y="2390"/>      
       </attribute>      
       <multiplicity id="212" minimum="0" maximum="1">        
-        <position height="16" width="23" x="1727" y="2544"/>      
+        <position height="16" width="23" x="1955" y="2332"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="20" navigable="true" variant="ASSOCIATION"/>    

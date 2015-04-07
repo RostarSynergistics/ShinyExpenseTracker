@@ -36,6 +36,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	}
 
 	private final UUID id;
+	private UUID userId;
 	private String name;
 	private Date startDate;
 	private Date endDate;
@@ -66,7 +67,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	}
 
 	public ExpenseClaim(String name, Date startDate, Date endDate, Status status, TagList tagList) {
-		this(UUID.randomUUID(), name, startDate, endDate, status, tagList);
+		this(UUID.randomUUID(),  name, startDate, endDate, status, tagList);
 	}
 
 	public ExpenseClaim(UUID id, String name, Date startDate, Date endDate, Status status, TagList tagList) {
@@ -77,10 +78,19 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		this.endDate = endDate;
 		this.status = status;
 		this.tagList = tagList;
+		//this.userId = Application.getUser().getUserId();
 	}
 
 	public UUID getID() {
 		return id;
+	}
+	
+	public void setUserId(UUID id) {
+		this.userId = id;
+	}
+	
+	public UUID getUserId() {
+		return userId;
 	}
 
 	public String getName() {

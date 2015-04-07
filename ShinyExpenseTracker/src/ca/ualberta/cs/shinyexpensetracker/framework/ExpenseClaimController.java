@@ -164,7 +164,8 @@ public class ExpenseClaimController {
 	 * @return The new Destination.
 	 * @throws IOException
 	 */
-	public Destination addDestinationToClaim(UUID claimID, String name, String reasonForTravel, Coordinate geolocation) throws IOException {
+	public Destination addDestinationToClaim(UUID claimID, String name, String reasonForTravel, Coordinate geolocation)
+			throws IOException {
 		ExpenseClaim claim = claimList.getClaimByID(claimID);
 		Destination destination = new Destination(name, reasonForTravel, geolocation);
 		claim.addDestination(destination);
@@ -194,7 +195,7 @@ public class ExpenseClaimController {
 		destination.setName(name);
 		destination.setReasonForTravel(reasonForTravel);
 		destination.setGeolocation(geolocation);
-		
+
 		persister.saveExpenseClaims(claimList);
 		return destination;
 	}
@@ -313,6 +314,26 @@ public class ExpenseClaimController {
 		}
 
 		persister.saveExpenseClaims(claimList);
+		return claim;
+	}
+
+	/**
+	 * Adds a new comment to a claim.
+	 * 
+	 * @param claimID
+	 *            The claim's ID.
+	 * @param comment
+	 *            The new comment to add.
+	 * @return The updated ExpenseClaim.
+	 * @throws IOException
+	 */
+	public ExpenseClaim addCommentToClaim(UUID claimID, String comment) throws IOException {
+		ExpenseClaim claim = claimList.getClaimByID(claimID);
+
+		claim.addComment(comment);
+
+		persister.saveExpenseClaims(claimList);
+
 		return claim;
 	}
 

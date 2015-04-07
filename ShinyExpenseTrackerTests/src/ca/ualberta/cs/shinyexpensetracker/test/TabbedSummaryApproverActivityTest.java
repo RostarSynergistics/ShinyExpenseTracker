@@ -1,6 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 
 import android.app.Instrumentation.ActivityMonitor;
@@ -147,7 +148,7 @@ public class TabbedSummaryApproverActivityTest extends ActivityInstrumentationTe
 	 */
 	public void testApproveUncommentedClaim() {
 		// make sure the claim has no comments
-		controller.getExpenseClaimByID(claim.getID()).setComments(null);
+		controller.getExpenseClaimByID(claim.getID()).setComments(new ArrayList<String>());
 
 		// invoke the approve claim menu item
 		getInstrumentation().invokeMenuActionSync(activity, R.id.approveClaim, 0);
@@ -193,7 +194,7 @@ public class TabbedSummaryApproverActivityTest extends ActivityInstrumentationTe
 	 */
 	public void testReturnUncommentedClaim() {
 		// make sure the claim doesn't have any comments
-		controller.getExpenseClaimByID(claim.getID()).setComments(null);
+		controller.getExpenseClaimByID(claim.getID()).setComments(new ArrayList<String>());
 
 		// invoke the return claim menu item
 		getInstrumentation().invokeMenuActionSync(activity, R.id.returnClaim, 0);

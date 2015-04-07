@@ -53,6 +53,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.User;
 import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
+import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
 
 public class MapViewActivity extends Activity implements MapEventsReceiver {
@@ -193,7 +194,8 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		if (id == R.id.action_help) {
+			InAppHelpDialog.showHelp(this, R.string.help_map_view);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

@@ -205,6 +205,8 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 	public void onToggleCompletenessFlag(View v) {
 		// Precondition: v is a CheckBox view.
 		item.setIncompletenessMarker(((CheckBox) v).isChecked());
+		if (item.isMarkedIncomplete()) {
+			Toast.makeText(ExpenseItemDetailActivity.this, "Item marked as incomplete", Toast.LENGTH_LONG).show();
+		}
 	}
-
 }

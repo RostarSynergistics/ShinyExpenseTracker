@@ -1,0 +1,4 @@
+adbPath = /usr/local/share/android-sdk-linux/platform-tools/adb
+gitDir = /cshome/tmeleshk/CMPUT301/ShinyExpenseTracker
+appCodeDir = /cshome/tmeleshk/CMPUT301/ShinyExpenseTracker/ShinyExpenseTracker
+testCodeDir = /cshome/tmeleshk/CMPUT301/ShinyExpenseTracker/ShinyExpenseTrackerTests

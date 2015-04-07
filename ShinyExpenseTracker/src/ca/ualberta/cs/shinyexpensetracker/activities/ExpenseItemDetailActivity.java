@@ -23,6 +23,7 @@ import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
 /**
  * Activity that lets the user view information of the selected ExpenseItem Used
@@ -130,6 +131,9 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 		switch (item.getItemId()) {
 		case R.id.editExpenseItem:
 			editExpense();
+			return true;
+		case R.id.action_help:
+			InAppHelpDialog.showHelp(this, R.string.help_item_details);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

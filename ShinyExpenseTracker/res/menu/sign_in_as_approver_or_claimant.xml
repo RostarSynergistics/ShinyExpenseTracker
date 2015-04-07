@@ -3,9 +3,9 @@
     tools:context="ca.ualberta.cs.shinyexpensetracker.SignInAsApproverOrClaimant" >
 
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:id="@+id/action_help"
+        android:orderInCategory="10000"
         android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:title="@string/action_help"/>
 
 </menu>

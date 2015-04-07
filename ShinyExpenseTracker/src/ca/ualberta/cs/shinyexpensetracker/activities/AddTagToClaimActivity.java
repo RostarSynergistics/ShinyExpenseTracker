@@ -28,6 +28,7 @@ import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.framework.TagController;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
+import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
 public class AddTagToClaimActivity extends Activity implements IView<TagList> {
 
@@ -96,11 +97,15 @@ public class AddTagToClaimActivity extends Activity implements IView<TagList> {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		default:
-			return super.onOptionsItemSelected(item);
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_help) {
+			InAppHelpDialog.showHelp(this, R.string.help_add_tags);
+			return true;
 		}
-
+		return super.onOptionsItemSelected(item);
 	}
 
 	/**

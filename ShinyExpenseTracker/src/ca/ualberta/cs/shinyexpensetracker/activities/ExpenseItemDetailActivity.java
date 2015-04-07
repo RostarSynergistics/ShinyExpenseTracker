@@ -1,8 +1,6 @@
 package ca.ualberta.cs.shinyexpensetracker.activities;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 import java.util.UUID;
 
 import android.app.Activity;
@@ -24,6 +22,7 @@ import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+import ca.ualberta.cs.shinyexpensetracker.utilities.GlobalDateFormat;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
 /**
@@ -101,10 +100,8 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 	private void populateViews() {
 		Log.d("ExpenseItemDetailView", "Updating text views.");
 
-		SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.CANADA);
-
 		setTextViewValue(R.id.expenseItemNameValue, item.getName().toString());
-		setTextViewValue(R.id.expenseItemDateValue, dateFormatter.format(item.getDate()));
+		setTextViewValue(R.id.expenseItemDateValue, GlobalDateFormat.format(item.getDate()));
 		setTextViewValue(R.id.expenseItemCategoryValue, item.getCategory().toString());
 		setTextViewValue(R.id.expenseItemDescriptionValue, item.getDescription().toString());
 		setTextViewValue(R.id.expenseItemAmountValue, item.getValueString().toString());
@@ -208,6 +205,8 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 	public void onToggleCompletenessFlag(View v) {
 		// Precondition: v is a CheckBox view.
 		item.setIncompletenessMarker(((CheckBox) v).isChecked());
+		if (item.isMarkedIncomplete()) {
+			Toast.makeText(ExpenseItemDetailActivity.this, "Item marked as incomplete", Toast.LENGTH_LONG).show();
+		}
 	}
-
 }

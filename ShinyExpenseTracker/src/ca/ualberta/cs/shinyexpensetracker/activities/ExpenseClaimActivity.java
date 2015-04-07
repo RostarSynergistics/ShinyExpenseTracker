@@ -2,10 +2,8 @@ package ca.ualberta.cs.shinyexpensetracker.activities;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.UUID;
 
 import android.app.Activity;
@@ -28,6 +26,7 @@ import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
+import ca.ualberta.cs.shinyexpensetracker.utilities.GlobalDateFormat;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
 /**
@@ -43,7 +42,6 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener, I
 
 	private EditText startDate, endDate;
 	private DatePickerDialog startDatePickerDialog, endDatePickerDialog;
-	private SimpleDateFormat dateFormatter;
 	public ValidationErrorAlertDialog alertDialog;
 	private ExpenseClaim claim;
 	private UUID claimID;
@@ -52,8 +50,6 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener, I
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_expense_claim);
-
-		dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.CANADA);
 
 		findViewsById();
 
@@ -105,7 +101,7 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener, I
 			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 				Calendar newDate = Calendar.getInstance();
 				newDate.set(year, monthOfYear, dayOfMonth);
-				startDate.setText(dateFormatter.format(newDate.getTime()));
+				startDate.setText(GlobalDateFormat.format(newDate.getTime()));
 			}
 		}, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
@@ -114,7 +110,7 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener, I
 			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 				Calendar newDate = Calendar.getInstance();
 				newDate.set(year, monthOfYear, dayOfMonth);
-				endDate.setText(dateFormatter.format(newDate.getTime()));
+				endDate.setText(GlobalDateFormat.format(newDate.getTime()));
 			}
 		}, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 	}
@@ -165,12 +161,12 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener, I
 
 		Date startDate = null;
 		if (startDateText.getText().length() != 0) {
-			startDate = dateFormatter.parse(startDateText.getText().toString());
+			startDate = GlobalDateFormat.parse(startDateText.getText().toString());
 		}
 
 		Date endDate = null;
 		if (endDateText.getText().length() != 0) {
-			endDate = dateFormatter.parse(endDateText.getText().toString());
+			endDate = GlobalDateFormat.parse(endDateText.getText().toString());
 		}
 
 		try {
@@ -199,8 +195,8 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener, I
 		EditText claimName = (EditText) findViewById(R.id.editTextExpenseClaimName);
 
 		claimName.setText(claim.getName().toString());
-		startDate.setText(dateFormatter.format(claim.getStartDate()));
-		endDate.setText(dateFormatter.format(claim.getEndDate()));
+		startDate.setText(GlobalDateFormat.format(claim.getStartDate()));
+		endDate.setText(GlobalDateFormat.format(claim.getEndDate()));
 	}
 
 	/**

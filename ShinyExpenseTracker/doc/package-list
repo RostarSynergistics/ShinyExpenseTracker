@@ -1,7 +1,16 @@
 ca.ualberta.cs.shinyexpensetracker
 ca.ualberta.cs.shinyexpensetracker.activities
+ca.ualberta.cs.shinyexpensetracker.activities.utilities
 ca.ualberta.cs.shinyexpensetracker.adapters
+ca.ualberta.cs.shinyexpensetracker.decorators
+ca.ualberta.cs.shinyexpensetracker.es
+ca.ualberta.cs.shinyexpensetracker.es.data
 ca.ualberta.cs.shinyexpensetracker.fragments
 ca.ualberta.cs.shinyexpensetracker.framework
 ca.ualberta.cs.shinyexpensetracker.models
 ca.ualberta.cs.shinyexpensetracker.persistence
+ca.ualberta.cs.shinyexpensetracker.test
+ca.ualberta.cs.shinyexpensetracker.test.framework
+ca.ualberta.cs.shinyexpensetracker.test.mocks
+ca.ualberta.cs.shinyexpensetracker.test.models
+ca.ualberta.cs.shinyexpensetracker.utilities

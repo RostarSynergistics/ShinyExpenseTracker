@@ -4,8 +4,8 @@
     <string name="app_name">ShinyExpenseTracker</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_view_expense_claim">ViewExpenseClaimActivity</string>
-    <string name="title_activity_add_expense_claim">AddExpenseClaimActivity</string>
+    <string name="title_activity_view_expense_claim">View Expense Claims</string>
+    <string name="title_activity_add_expense_claim">Add an Expense Claim</string>
     <string name="title_activity_manage_tag">Manage Tags</string>
     <string name="add_tag">Add Tag</string>
     <string name="action_new_claim">New Claim</string>
@@ -28,7 +28,7 @@
         <item>supplies</item>
     </string-array>
 
-    <string name="title_activity_expense_item">ExpenseItemActivity</string>
+    <string name="title_activity_expense_item">Add an Expense Item</string>
 
     <string-array name="expenseItemCurrencies">
         <item>CAD</item>
@@ -40,7 +40,7 @@
         <item>CNY</item>
     </string-array>
 
-    <string name="title_activity_add_destination">AddDestinationActivity</string>
+    <string name="title_activity_add_destination">Add a Destination</string>
     <string name="title_activity_tabbed_summary">Claim Summary</string>
     <string name="title_section1">Summary</string>
     <string name="title_section2">Expenses</string>
@@ -64,7 +64,7 @@
     <string name="edit_claim">Edit Claim</string>
     <string name="no_destinations">No Destinations</string>
     <string name="delete_selected_tag">Delete selected tag?</string>
-    <string name="title_activity_expense_item_detail_view">ExpenseItemDetailView</string>
+    <string name="title_activity_expense_item_detail_view">Expense Item Details</string>
     <string name="destination_Done_Button">Done</string>
     <string name="reason_For_Travel">Reason For Travel</string>
     <string name="destination_name">Destination</string>
@@ -78,29 +78,29 @@
     <string name="expense_item_completeness">Complete</string>
     <string name="expense_item_date">Date</string>
     <string name="expense_item_receipt">Receipt</string>
-    <string name="title_activity_receipt_view">ReceiptViewActivity</string>
+    <string name="title_activity_receipt_view">View Receipt</string>
     <string name="expense_item_thumbnail_desc">Receipt Thumbnail</string>
     <string name="expense_item_completeness_flag">Completeness Flag Picture</string>
     <string name="edit_expense_item">Edit Expense Item</string>
     <string name="submit_claim">Submit Claim</string>
     <string name="remove_receipt">Remove Receipt</string>
     <string name="set_home_geolocation">Set Home Geolocation</string>
-    <string name="title_activity_geolocation_view">Geolocation View</string>
+    <string name="title_activity_geolocation_view">Geolocation</string>
     <string name="geolocationTitle">Selected Coordinates</string>
     <string name="geolocationValueDefault">None Selected (tap here to select)</string>
     <string name="automaticGeolocationSetupButtonText">Set Automatically Using GPS</string>
     <string name="mapAssistedGeolocationSetupButtonText">Set Location Using Map</string>
     <string name="title_activity_map_view">Map View</string>
     <string name="saveGeolocationButtonText">Save Geolocation</string>
-    <string name="title_activity_add_tag_to_claim">AddTagToClaimActivity</string>
-    <string name="title_activity_sign_in_as_approver_or_claimant">SignInAsApproverOrClaimant</string>
+    <string name="title_activity_add_tag_to_claim">Add Tags To Claim</string>
+    <string name="title_activity_sign_in_as_approver_or_claimant">Log in</string>
     <string name="claimant">Claimant</string>
     <string name="approver">Approver</string>
     <string name="login_as">Login as:</string>
     <string name="continue_button">Continue</string>
-    <string name="title_activity_remove_tag_from_claim">RemoveTagFromClaimActivity</string>
+    <string name="title_activity_remove_tag_from_claim">Remove Tags From Claim</string>
     <string name="remove_tags">Remove Tags</string>
-    <string name="no_tags_to_add">No Tags to add</string>
+    <string name="no_tags_to_add">No Tags to add. Please go to the main menu to add Tags</string>
     <string name="add_tags">Add Tags</string>
     <string name="expenseItemDetailGeolocationTitle">Geolocation</string>
     <string name="homeGeolocationTitle">Home Geolocation</string>

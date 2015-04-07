@@ -1,12 +1,4 @@
-/**  This Activity lets Claimant set on a map by putting a marker.
- * 	Geolocations can be chosen as a home geolocation for a user,
- * 	while filling out information on a destination (mandatory),
- * 	or while filling out information on an expense item (optional)
- * 
- *  Additionally, this activity lets the user view 
- *  all geolocations stored on the device, when called from the appropriate
- *  menu option in ClaimListViewActivity 
- *  
+/**  
  *  Copyright (C) 2015  github.com/RostarSynergistics
  *  
  *  This program is free software: you can redistribute it and/or modify
@@ -56,6 +48,17 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.User;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
+/**
+ * This Activity lets Claimant set on a map by putting a marker.
+ * Geolocations can be chosen as a home geolocation for a user,
+ * while filling out information on a destination (mandatory),
+ * or while filling out information on an expense item (optional)
+ * 
+ * Additionally, this activity lets the user view 
+ * all geolocations stored on the device, when called from the appropriate
+ * menu option in ClaimListViewActivity
+ *
+ */
 public class MapViewActivity extends Activity implements MapEventsReceiver {
 
 	// constants to compare which activity called this one
@@ -140,6 +143,10 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 		map.invalidate();
 	}
 
+	/**
+	 * Iterates through a claim list and puts a marker on the map
+	 * view for its destination.
+	 */
 	private void iterateThroughClaims(ExpenseClaimList claimList, int i) {
 		ExpenseClaim claim = claimList.getClaimAtPosition(i);
 		// put destinations' geolocations on the map
@@ -154,6 +161,11 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 		}
 	}
 
+	/**
+	 * Puts a marker on the map for a given expense item
+	 * @param claim The claim that the expense came from
+	 * @param item The item that is being marked
+	 */
 	private void putMarkerForExpenseItem(ExpenseClaim claim, ExpenseItem item) {
 		Coordinate loc = item.getGeolocation();
 		if (loc != null) {
@@ -163,6 +175,11 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 		}
 	}
 
+	/**
+	 * Puts a marker on the map for a given destination
+	 * @param claim The claim that the destination came from
+	 * @param dest The destination that is being marked.
+	 */
 	private void putMarkerForDestination(ExpenseClaim claim, Destination dest) {
 		Coordinate loc = dest.getGeolocation();
 		Marker destMarker = putMarkerOnMap(loc);
@@ -170,6 +187,11 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 		destMarker.setSubDescription("From claim: " + claim.getName());
 	}
 	
+	/**
+	 * Places a marker on the map at a given coordinate.
+	 * @param loc A gelocation to place a marker on
+	 * @return The marker that was placed
+	 */
 	private Marker putMarkerOnMap(Coordinate loc) {
 		GeoPoint itemPoint = new GeoPoint(loc.getLatitude(), loc.getLongitude());
 		Marker itemMarker = new Marker(map);
@@ -179,6 +201,10 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 		return itemMarker;
 	}
 
+	/**
+	 * Sets up the map so that it can be used by the activity 
+	 * @param intent An intent containing a latitude and longitude to start.
+	 */
 	private void setMapForSettingGeolocation(Intent intent) {
 		double latitude = intent.getDoubleExtra(IntentExtraIDs.LATITUDE, Coordinate.DEFAULT_COORDINATE.getLatitude());
 		double longitude = intent.getDoubleExtra(IntentExtraIDs.LONGITUDE, Coordinate.DEFAULT_COORDINATE.getLongitude());

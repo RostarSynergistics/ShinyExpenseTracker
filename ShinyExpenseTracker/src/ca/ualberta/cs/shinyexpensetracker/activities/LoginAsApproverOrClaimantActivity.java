@@ -10,9 +10,14 @@ import android.widget.RadioButton;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.models.User;
-import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
+import ca.ualberta.cs.shinyexpensetracker.models.UserType;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
+/**
+ * Activity for choosing between a Claimant and Approver UI.
+ * The user's name and status is propogated through the app
+ * to provide a different user interface for each context.
+ */
 public class LoginAsApproverOrClaimantActivity extends Activity {
 
 	User user = Application.getUser();
@@ -55,9 +60,9 @@ public class LoginAsApproverOrClaimantActivity extends Activity {
 		boolean checked = ((RadioButton) findViewById(R.id.approverRadioButton)).isChecked();
 		
 		if (checked) {
-			Application.setUserType(Type.Approver);
+			Application.setUserType(UserType.Approver);
 		} else {
-			Application.setUserType(Type.Claimant);
+			Application.setUserType(UserType.Claimant);
 		}
 	}
 
@@ -73,7 +78,7 @@ public class LoginAsApproverOrClaimantActivity extends Activity {
 		
 		saveUserType(v);
 		
-		if (user.getUserType().equals(Type.Claimant)) {
+		if (user.getUserType().equals(UserType.Claimant)) {
 			intent = new Intent(LoginAsApproverOrClaimantActivity.this,
 					ExpenseClaimListActivity.class);
 		} else {

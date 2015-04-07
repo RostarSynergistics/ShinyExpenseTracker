@@ -30,6 +30,11 @@ import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
+/**
+ * Activity to add tags to an existing claim. Must be
+ * called with an intent containing the UUID of the claim
+ * to be edited.
+ */
 public class AddTagToClaimActivity extends Activity implements IView<TagList> {
 
 	private ListView manageTags;

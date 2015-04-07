@@ -12,31 +12,6 @@ import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
  * Class that represents an expense claim created by a user.
  */
 public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<ExpenseClaim> {
-	public enum Status {
-		IN_PROGRESS("In Progress"), SUBMITTED("Submitted"), RETURNED("Returned"), APPROVED("Approved");
-
-		private final String text;
-
-		private Status(final String text) {
-			this.text = text;
-		}
-
-		public String getText() {
-			return this.text;
-		}
-
-		public static Status fromString(String text) {
-			if (text != null) {
-				for (Status s : Status.values()) {
-					if (text.equalsIgnoreCase(s.text)) {
-						return s;
-					}
-				}
-			}
-			return null;
-		}
-	}
-
 	private final UUID id;
 	private UUID userId;
 	private String name;
@@ -151,6 +126,14 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		notifyViews();
 	}
 
+	/**
+	 * Ensures the new status is valid. Invalide states include
+	 * trying to submit a claim that has incomplete expense items,
+	 * or approving/returning a claim without comments.
+	 * 
+	 * @param newStatus The status to change the claim to
+	 * @throws ValidationException Thrown on an invalid state
+	 */
 	private void validateStatus(Status newStatus) throws ValidationException {
 		if (newStatus == Status.SUBMITTED && hasIncompleteExpenseItems()) {
 			throw new ValidationException("Cannot submit an incomplete claim.");

@@ -21,6 +21,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
+import ca.ualberta.cs.shinyexpensetracker.models.Status;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
@@ -50,7 +51,7 @@ public class ClaimSummaryFragmentTest extends ActivityInstrumentationTestCase2<T
 	String claimName = "test claim name";
 	Date startDate = new Date(1000);
 	Date endDate = new Date(2000);
-	ExpenseClaim.Status status = ExpenseClaim.Status.IN_PROGRESS;
+	Status status = Status.IN_PROGRESS;
 
 	ExpenseClaimController controller;
 

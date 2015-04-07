@@ -49,15 +49,19 @@ import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
 
 /**
+ * Allows a user to edit a new or existing expense item.
+ * This activity should be opened with an intent indicating
+ * the UUID of the claim that is being modified. If a new
+ * expense item is being made, a UUID for the expense should
+ * not be included. If an expense item is being edited, the
+ * UUID of the existing expense should be included.
+ * 
  * Covers Issues 5, 15, and 29
  * 
  * @version 1.2
  * @since 2015-03-15
  * 
- *        Displays activity_create_expense_item activity, to give the user an
- *        interface to add the name, date, category, amount spent, currency,
- *        description and a photo of a receipt for expense items. Also allows
- *        editing of a referred Expense Item, if there is any
+ * Displays activity_create_expense_item activity, to give the user an
  */
 public class ExpenseItemActivity extends Activity implements OnClickListener {
 
@@ -278,7 +282,6 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 	 * Gets inputed data from text fields and spinners, saving them in an
 	 * expenseItem object.
 	 * 
-	 * @param v
 	 * @throws ParseException
 	 * @throws IOException
 	 */
@@ -369,6 +372,11 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 	}
 
+	/**
+	 * Handler for coordinates text click. Opens the GeolocationViewActivity
+	 * so that it can be modified.
+	 * @param v
+	 */
 	public void onCoordinatesValueTextViewClick(View v) {
 		Intent geolocationViewIntent = new Intent(ExpenseItemActivity.this,
 				GeolocationViewActivity.class);

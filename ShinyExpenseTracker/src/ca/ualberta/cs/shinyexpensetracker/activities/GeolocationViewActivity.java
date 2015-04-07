@@ -42,6 +42,11 @@ import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
+/**
+ * Activity responsible for getting a geolocation coordinate.
+ * Returns an intent containing the coordinates the user
+ * has selected.
+ */
 public class GeolocationViewActivity extends Activity {
 
 	private LocationManager lm;

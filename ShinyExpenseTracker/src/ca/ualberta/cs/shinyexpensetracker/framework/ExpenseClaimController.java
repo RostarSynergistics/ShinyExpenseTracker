@@ -18,6 +18,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.User;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
+import ca.ualberta.cs.shinyexpensetracker.models.Status;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.persistence.ElasticSearchExpenseClaimListPersister;
 import ca.ualberta.cs.shinyexpensetracker.persistence.FilePersistenceStrategy;
@@ -154,7 +155,7 @@ public class ExpenseClaimController {
 	 * @throws IOException
 	 * @throws ValidationException
 	 */
-	public ExpenseClaim updateExpenseClaimStatus(UUID id, ExpenseClaim.Status status) throws IOException,
+	public ExpenseClaim updateExpenseClaimStatus(UUID id, Status status) throws IOException,
 			ValidationException {
 		ExpenseClaim claim = claimList.getClaimByID(id);
 		claim.setStatus(status);
@@ -397,7 +398,7 @@ public class ExpenseClaimController {
 	 * Removes the tag given to all claim's taglists. Used when a tag is deleted
 	 * from the tag controller
 	 * 
-	 * @param tagController
+	 * @param tag The tag to remove
 	 */
 	public void removeTag(Tag tag) {
 

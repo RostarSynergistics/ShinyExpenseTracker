@@ -68,7 +68,7 @@ public class TagController {
 	/**
 	 * Add a tag to the current tag list
 	 * <p>
-	 * @param The tag object to add
+	 * @param tag The tag object to add
 	 * @return boolean stating if the tag was added
 	 */
 	public boolean addTag(Tag tag) throws IOException {
@@ -134,7 +134,7 @@ public class TagController {
 	/**
 	 * Deletes a tag from the master tagList.
 	 * Also deletes the tag from any claim lists tag list
-	 * @param index
+	 * @param tag The tag object to delete
 	 * @return
 	 */
 	public boolean deleteTag(Tag tag) throws IOException {

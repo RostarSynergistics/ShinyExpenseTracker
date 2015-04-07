@@ -112,18 +112,33 @@ public class ExpenseItem extends Model<ExpenseItem> {
 		this.incompletenessMarker = completenessFlag;
 	}
 
+	/**
+	 * Checks that the amount spent is included
+	 * @param newAmountSpent
+	 * @throws ValidationException Thrown if no amount is given
+	 */
 	private void validateAmountSpent(BigDecimal newAmountSpent) throws ValidationException {
 		if (newAmountSpent == null) {
 			throw new ValidationException("Expense Item requires an amount spent.");
 		}
 	}
 
+	/**
+	 * Checks that the date is valid
+	 * @param newDate
+	 * @throws ValidationException Thrown if no date is given 
+	 */
 	private void validateDate(Date newDate) throws ValidationException {
 		if (newDate == null) {
 			throw new ValidationException("Expense Item requires a date.");
 		}
 	}
 
+	/**
+	 * Validates the name of the expense item
+	 * @param newName
+	 * @throws ValidationException Thrown if no name is given
+	 */
 	private void validateName(String newName) throws ValidationException {
 		if (newName == null || newName.length() == 0) {
 			throw new ValidationException("Expense Item requires a name.");

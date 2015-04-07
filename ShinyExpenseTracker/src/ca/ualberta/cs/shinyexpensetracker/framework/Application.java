@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import android.content.Context;
 import ca.ualberta.cs.shinyexpensetracker.models.User;
-import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
+import ca.ualberta.cs.shinyexpensetracker.models.UserType;
 
 /**
  * Serves as a Service Locator (http://en.wikipedia.org/wiki/Service_locator_pattern).
@@ -85,6 +85,10 @@ public class Application extends android.app.Application {
 		user = u;
 	}
 	
+	/**
+	 * User singleton. Tries to load from system, or creates a new user object.
+	 * @return
+	 */
 	public static User getUser() {
 		if (user == null) {
 			try {
@@ -98,10 +102,11 @@ public class Application extends android.app.Application {
 	}
 	
 	/**
-	 * Sets the application's state (claimant or approver) when the user logs in
-	 * @param state
+	 * Sets the application's user type (claimant or approver) when
+	 * the user logs in
+	 * @param type The user type to set. 
 	 */
-	public static void setUserType(Type type) {
+	public static void setUserType(UserType type) {
 		getUser().setUserType(type);
 	}
 	
@@ -109,7 +114,7 @@ public class Application extends android.app.Application {
 	 * Gets the application's user type (claimant or approver)
 	 * @return
 	 */
-	public static Type getUserType() {
+	public static UserType getUserType() {
 		return getUser().getUserType();
 	}
 }

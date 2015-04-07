@@ -12,8 +12,6 @@ import java.util.regex.Pattern;
  * claims individually to keeps a claim dependant list of tags associated 
  * with given claim
  * 
- * Has tags: ArrayList<Tag>
- *
  */
 public class TagList extends Model<TagList> implements Iterable<Tag> {
 	private ArrayList<Tag> tags = new ArrayList<Tag>();
@@ -89,7 +87,7 @@ public class TagList extends Model<TagList> implements Iterable<Tag> {
 	
 	/**
 	 * Deletes a tag in the tag list at a given position
-	 * @param postion of tag to delete
+	 * @param position of tag to delete
 	 * @return boolean stating if change could be made
 	 */
 	public boolean deleteTag(int position){

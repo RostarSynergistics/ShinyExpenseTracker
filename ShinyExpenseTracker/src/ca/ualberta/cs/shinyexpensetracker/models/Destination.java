@@ -27,12 +27,22 @@ public class Destination extends Model<Destination> {
 		this.geolocation = geolocation;
 	}
 
+	/**
+	 * Ensures that the new geolocation is valid
+	 * @param newGeolocation The geolocation to validate in the destination.
+	 * @throws ValidationException Thrown if newGeolocation is null
+	 */
 	private void validateGeolocation(Coordinate newGeolocation) throws ValidationException {
 		if (newGeolocation == null) {
 			throw new ValidationException("Destination requires a location.");
 		}
 	}
 
+	/**
+	 * Ensures the name of the destination is valid
+	 * @param name The name to give to the destination
+	 * @throws ValidationException Thrown if name is empty
+	 */
 	private void validateName(String name) throws ValidationException {
 		if (name == null || name.length() == 0) {
 			throw new ValidationException("Destination requires a name.");

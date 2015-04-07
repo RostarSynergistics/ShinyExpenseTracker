@@ -14,6 +14,7 @@ import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
+import ca.ualberta.cs.shinyexpensetracker.models.Status;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 public class ViewCommetsActivityTest extends ActivityInstrumentationTestCase2<ViewCommentsActivity> {
@@ -28,7 +29,7 @@ public class ViewCommetsActivityTest extends ActivityInstrumentationTestCase2<Vi
 	String claimName = "test claim name";
 	Date startDate = new Date(1000);
 	Date endDate = new Date(2000);
-	ExpenseClaim.Status status = ExpenseClaim.Status.SUBMITTED;
+	Status status = Status.SUBMITTED;
 	String comment = "test comment";
 
 	public ViewCommetsActivityTest() {

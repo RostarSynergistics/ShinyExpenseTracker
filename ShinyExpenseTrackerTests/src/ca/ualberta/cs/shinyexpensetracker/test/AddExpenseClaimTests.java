@@ -18,7 +18,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.TabbedSummaryClaimantActivi
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
+import ca.ualberta.cs.shinyexpensetracker.models.UserType;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 /**
@@ -45,7 +45,7 @@ public class AddExpenseClaimTests extends ActivityInstrumentationTestCase2<Expen
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		Application.setUserType(Type.Claimant);
+		Application.setUserType(UserType.Claimant);
 
 		controller = new ExpenseClaimController(new MockExpenseClaimListPersister());
 		Application.setExpenseClaimController(controller);

@@ -28,6 +28,7 @@ import android.provider.MediaStore;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.DatePicker;
@@ -37,6 +38,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.GeolocationRequestCode;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -45,7 +47,8 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
-import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
+import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
+
 
 /**
  * Covers Issues 5, 15, and 29
@@ -132,6 +135,19 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.expense_item, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_help) {
+			InAppHelpDialog.showHelp(this, R.string.help_new_item);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	/*
@@ -463,8 +479,8 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		}
 		if (requestCode == GeolocationRequestCode.SET_GEOLOCATION) {
 			if (resultCode == RESULT_OK) {
-				double latitude = data.getDoubleExtra("latitude", Coordinate.DEFAULT_COORDINATE.getLatitude());
-				double longitude = data.getDoubleExtra("longitude", Coordinate.DEFAULT_COORDINATE.getLongitude());
+				double latitude = data.getDoubleExtra(IntentExtraIDs.LATITUDE, Coordinate.DEFAULT_COORDINATE.getLatitude());
+				double longitude = data.getDoubleExtra(IntentExtraIDs.LONGITUDE, Coordinate.DEFAULT_COORDINATE.getLongitude());
 				expenseItemGeolocation = new Coordinate(latitude, longitude);
 				TextView coordValue = (TextView) findViewById(R.id.expenseItemCoordinatesValueTextView);
 				coordValue.setText(expenseItemGeolocation.toString() + "\n(tap here to change)");

@@ -44,16 +44,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.GeolocationRequestCode;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
+
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.User;
-import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
 
+import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
 public class MapViewActivity extends Activity implements MapEventsReceiver {
 
@@ -97,87 +100,116 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 
 			MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(this, this);
 			map.getOverlays().add(0, mapEventsOverlay);
-			requestCode = intent.getIntExtra("requestCode", 0);
+			requestCode = intent.getIntExtra(IntentExtraIDs.REQUEST_CODE, 0);
 			if (requestCode == GeolocationRequestCode.SET_GEOLOCATION) {
-				double latitude = intent.getDoubleExtra("latitude", Coordinate.DEFAULT_COORDINATE.getLatitude());
-				double longitude = intent.getDoubleExtra("longitude", Coordinate.DEFAULT_COORDINATE.getLongitude());
-				coordinate.setLatitude(latitude);
-				coordinate.setLongitude(longitude);
-				
-				GeoPoint startPoint = new GeoPoint(coordinate.getLatitude(), coordinate.getLongitude());
-				IMapController mapController = map.getController();
-				mapController.setZoom(18);
-				mapController.setCenter(startPoint);
+				setMapForSettingGeolocation(intent);
 			}
 			else if (requestCode == GeolocationRequestCode.DISPLAY_GEOLOCATIONS) {
 				// display all geolocations stored on the device 
 				
-				// first, get all claims
-				controller = Application.getExpenseClaimController();
-				ExpenseClaimList claimList = controller.getExpenseClaimList();
-				
-				// put home geolocation on map, if there is any
-				GeoPoint startPoint = null;
-				IMapController mapController = map.getController();
-				coordinate = user.getHomeGeolocation();
-				if (coordinate != null) {
-					startPoint = new GeoPoint(coordinate.getLatitude(), coordinate.getLongitude());
-					Marker newMarker = new Marker(map);
-					newMarker.setPosition(startPoint);
-					newMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-					map.getOverlays().add(newMarker);
-					newMarker.setSnippet("Home Geolocation");
-				}
-				// no time to implement Iterable interface!
-				for (int i = 0; i < claimList.getCount(); i++) {
-					ExpenseClaim claim = claimList.getClaimAtPosition(i);
-					// next, put destinations' geolocations on the map
-					// there has to be a geolocation for every destination
-					for (Destination dest: claim.getDestinations()) {
-						Coordinate loc = dest.getGeolocation();
-						GeoPoint destPoint = new GeoPoint(loc.getLatitude(), loc.getLongitude());
-						Marker destMarker = new Marker(map);
-						destMarker.setPosition(destPoint);
-						destMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-						map.getOverlays().add(destMarker);
-						destMarker.setSnippet("Destination: " + dest.getName());
-						destMarker.setSubDescription("From claim: " + claim.getName());
-					}
-					// put expense items' geolocations on the map
-					// an expense item may or may not have a location associated with it
-					for (ExpenseItem item: claim.getExpenseItems()) {
-						Coordinate loc = item.getGeolocation();
-						if (loc != null) {
-							GeoPoint itemPoint = new GeoPoint(loc.getLatitude(), loc.getLongitude());
-							Marker itemMarker = new Marker(map);
-							itemMarker.setPosition(itemPoint);
-							itemMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-							map.getOverlays().add(itemMarker);
-							itemMarker.setSnippet("Expense Item: " + item.getName());
-							itemMarker.setSubDescription("From claim: " + claim.getName());
-						}
-					}
-				}
-				
-				// set more or less tolerable zoom factor
-				mapController.setZoom(3);
-				
-				if (startPoint != null) {
-					// center at home geolocation, if there is any
-					mapController.setCenter(startPoint);
-				}
-				else {
-					// otherwise, at default location
-					mapController.setCenter(new GeoPoint(0.0, 0.0));
-				}
-				// now, it doesn't really center at those locations.
-				// must be a bug in the library
-				
-				// everything is set up
-				// refresh the map
-				map.invalidate();
+				setMapForDisplayingGeolocations();
 			}
 		}
+	}
+
+	private void setMapForDisplayingGeolocations() {
+		// first, get all claims
+		controller = Application.getExpenseClaimController();
+		ExpenseClaimList claimList = controller.getExpenseClaimList();
+		
+		// put home geolocation on map, if there is any
+		GeoPoint startPoint = null;
+		IMapController mapController = map.getController();
+		coordinate = user.getHomeGeolocation();
+		if (coordinate != null) {
+			//startPoint = putHomeGeolocationOnMap();
+			Marker homeMarker = putMarkerOnMap(coordinate);
+			homeMarker.setSnippet("Home Geolocation");
+		}
+		// no time to implement Iterable interface!
+		for (int i = 0; i < claimList.getCount(); i++) {
+			iterateThroughClaims(claimList, i);
+		}
+		
+		// set more or less tolerable zoom factor
+		mapController.setZoom(3);
+		
+		if (startPoint != null) {
+			// center at home geolocation, if there is any
+			mapController.setCenter(startPoint);
+		}
+		else {
+			// otherwise, at default location
+			mapController.setCenter(new GeoPoint(0.0, 0.0));
+		}
+		// now, it doesn't really center at those locations.
+		// must be a bug in the library
+		
+		// everything is set up
+		// refresh the map
+		map.invalidate();
+	}
+
+	private void iterateThroughClaims(ExpenseClaimList claimList, int i) {
+		ExpenseClaim claim = claimList.getClaimAtPosition(i);
+		// put destinations' geolocations on the map
+		// there has to be a geolocation for every destination
+		for (Destination dest: claim.getDestinations()) {
+			putMarkerForDestination(claim, dest);
+		}
+		// put expense items' geolocations on the map
+		// an expense item may or may not have a location associated with it
+		for (ExpenseItem item: claim.getExpenseItems()) {
+			putMarkerForExpenseItem(claim, item);
+		}
+	}
+
+	private void putMarkerForExpenseItem(ExpenseClaim claim, ExpenseItem item) {
+		Coordinate loc = item.getGeolocation();
+		if (loc != null) {
+			Marker itemMarker = putMarkerOnMap(loc);
+			itemMarker.setSnippet("Expense Item: " + item.getName());
+			itemMarker.setSubDescription("From claim: " + claim.getName());
+		}
+	}
+
+	private void putMarkerForDestination(ExpenseClaim claim, Destination dest) {
+		Coordinate loc = dest.getGeolocation();
+		Marker destMarker = putMarkerOnMap(loc);
+		destMarker.setSnippet("Destination: " + dest.getName());
+		destMarker.setSubDescription("From claim: " + claim.getName());
+	}
+	
+	private Marker putMarkerOnMap(Coordinate loc) {
+		GeoPoint itemPoint = new GeoPoint(loc.getLatitude(), loc.getLongitude());
+		Marker itemMarker = new Marker(map);
+		itemMarker.setPosition(itemPoint);
+		itemMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+		map.getOverlays().add(itemMarker);
+		return itemMarker;
+	}
+
+	private GeoPoint putHomeGeolocationOnMap() {
+		GeoPoint startPoint;
+		startPoint = new GeoPoint(coordinate.getLatitude(), coordinate.getLongitude());
+		Marker newMarker = new Marker(map);
+		newMarker.setPosition(startPoint);
+		newMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+		map.getOverlays().add(newMarker);
+		newMarker.setSnippet("Home Geolocation");
+		return startPoint;
+	}
+
+	private void setMapForSettingGeolocation(Intent intent) {
+		double latitude = intent.getDoubleExtra(IntentExtraIDs.LATITUDE, Coordinate.DEFAULT_COORDINATE.getLatitude());
+		double longitude = intent.getDoubleExtra(IntentExtraIDs.LONGITUDE, Coordinate.DEFAULT_COORDINATE.getLongitude());
+		coordinate.setLatitude(latitude);
+		coordinate.setLongitude(longitude);
+		
+		GeoPoint startPoint = new GeoPoint(coordinate.getLatitude(), coordinate.getLongitude());
+		IMapController mapController = map.getController();
+		mapController.setZoom(18);
+		mapController.setCenter(startPoint);
 	}
 
 	@Override
@@ -193,7 +225,8 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		if (id == R.id.action_help) {
+			InAppHelpDialog.showHelp(this, R.string.help_map_view);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -263,8 +296,8 @@ public class MapViewActivity extends Activity implements MapEventsReceiver {
 					public void onClick(DialogInterface dialog, int which) {
 						try {
 							Intent geolocationResultIntent = new Intent();
-							geolocationResultIntent.putExtra("latitude", latitude);
-							geolocationResultIntent.putExtra("longitude", longitude);
+							geolocationResultIntent.putExtra(IntentExtraIDs.LATITUDE, latitude);
+							geolocationResultIntent.putExtra(IntentExtraIDs.LONGITUDE, longitude);
 							setResult(GeolocationViewActivity.RESULT_OK, geolocationResultIntent);
 						} catch (Exception e) {
 							throw new RuntimeException(e);

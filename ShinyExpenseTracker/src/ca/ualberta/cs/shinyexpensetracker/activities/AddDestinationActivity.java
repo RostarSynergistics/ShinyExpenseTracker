@@ -10,17 +10,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.GeolocationRequestCode;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
+import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
 /**
  * Used for adding and editing destinations.
@@ -42,8 +44,7 @@ public class AddDestinationActivity extends Activity {
 	private UUID claimID;
 
 	private Destination destination;
-	private int destinationIndex;
-	
+
 	private Coordinate coord = null;
 	private UUID destinationID;
 
@@ -77,11 +78,10 @@ public class AddDestinationActivity extends Activity {
 		if (destination != null) {
 			// If we loaded a destination, load the values
 			coord = destination.getGeolocation();
-			
+
 			TextView dest = (TextView) findViewById(R.id.destinationEditText);
 			TextView reason = (TextView) findViewById(R.id.reasonEditText);
 			TextView coordValue = (TextView) findViewById(R.id.coordinatesValueTextView);
-			
 
 			dest.setText(destination.getName());
 			reason.setText(destination.getReasonForTravel());
@@ -94,6 +94,19 @@ public class AddDestinationActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.add_destination, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_help) {
+			InAppHelpDialog.showHelp(this, R.string.help_destination);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	/**
@@ -120,16 +133,13 @@ public class AddDestinationActivity extends Activity {
 			return false;
 		}
 		if (coord == null) {
-			dialog = new AlertDialog.Builder(this)
-			.setMessage("Destination requires a location")
-			.setNeutralButton(android.R.string.ok,
-					new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog,
-						int which) {
-					dialog.dismiss();
-				}
-			}).create();
+			dialog = new AlertDialog.Builder(this).setMessage("Destination requires a location")
+					.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					}).create();
 			dialog.show();
 			return false;
 		}
@@ -150,22 +160,21 @@ public class AddDestinationActivity extends Activity {
 	}
 
 	public void onGeolocationValueTextViewClick(View v) {
-		Intent geolocationViewIntent = new Intent(AddDestinationActivity.this,
-				GeolocationViewActivity.class);
+		Intent geolocationViewIntent = new Intent(AddDestinationActivity.this, GeolocationViewActivity.class);
 		startActivityForResult(geolocationViewIntent, GeolocationRequestCode.SET_GEOLOCATION);
 	}
-	
+
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// Check result is ok
 		if (resultCode == RESULT_OK) {
-			double latitude = data.getDoubleExtra("latitude", Coordinate.DEFAULT_COORDINATE.getLatitude());
-			double longitude = data.getDoubleExtra("longitude", Coordinate.DEFAULT_COORDINATE.getLongitude());
+			double latitude = data.getDoubleExtra(IntentExtraIDs.LATITUDE, Coordinate.DEFAULT_COORDINATE.getLatitude());
+			double longitude = data.getDoubleExtra(IntentExtraIDs.LONGITUDE, Coordinate.DEFAULT_COORDINATE.getLongitude());
 			coord = new Coordinate(latitude, longitude);
 			TextView coordValue = (TextView) findViewById(R.id.coordinatesValueTextView);
 			coordValue.setText(coord.toString() + "\n(tap here to change)");
 		}
 	}
-	
+
 	/**
 	 * Called when the done button is pressed. Attempts to create the
 	 * destination. If it fails, stops and warns the user. Otherwise, the

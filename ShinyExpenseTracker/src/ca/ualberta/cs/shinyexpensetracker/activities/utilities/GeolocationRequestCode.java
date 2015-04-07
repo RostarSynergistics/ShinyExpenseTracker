@@ -1,4 +1,4 @@
-package ca.ualberta.cs.shinyexpensetracker.models;
+package ca.ualberta.cs.shinyexpensetracker.activities.utilities;
 
 public class GeolocationRequestCode {
 

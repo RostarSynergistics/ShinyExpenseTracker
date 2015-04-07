@@ -1,161 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
-    <TextView
-        android:id="@+id/expenseItemNameTextView"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:labelFor="@+id/expenseItemNameEditText"
-        android:text="Name:"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:gravity="fill"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin" >
 
-    <EditText
-        android:id="@+id/expenseItemNameEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/expenseItemNameTextView"
-        android:layout_marginStart="5dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:inputType="textCapWords" />
-    
-	<TextView
-	    android:id="@+id/expenseItemDateTextView"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_below="@+id/expenseItemNameEditText"
-	    android:layout_marginStart="5dp"
-	    android:labelFor="@+id/expenseItemDateEditText"
-	    android:text="Date:"
-	    android:textAppearance="?android:attr/textAppearanceMedium" />
+        <TextView
+            android:id="@+id/expenseItemNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:labelFor="@+id/expenseItemNameEditText"
+            android:text="Name:"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <EditText
-        android:id="@+id/expenseItemDateEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/expenseItemDateTextView"
-        android:layout_marginStart="5dp"
-        android:focusable="false"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:inputType="date" />
-    
-    <TextView
-        android:id="@+id/expesenItemCategoryTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/expenseItemDateEditText"
-        android:layout_marginStart="5dp"
-        android:labelFor="@+id/expenseItemCategorySpinner"
-        android:text="Category:"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <EditText
+            android:id="@+id/expenseItemNameEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/expenseItemNameTextView"
+            android:layout_marginStart="5dp"
+            android:inputType="textCapWords"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <Spinner
-        android:id="@+id/expenseItemCategorySpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_below="@+id/expesenItemCategoryTextView"
-        android:layout_marginStart="5dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:entries="@array/expenseItemCategories" />
-    
-    <TextView
-        android:id="@+id/expenseItemAmountTextView"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/expenseItemCategorySpinner"
-        android:layout_marginStart="5dp"
-        android:labelFor="@+id/expenseItemAmountEditText"
-        android:text="Amount Spent:"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <TextView
+            android:id="@+id/expenseItemDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/expenseItemNameEditText"
+            android:layout_marginStart="5dp"
+            android:labelFor="@+id/expenseItemDateEditText"
+            android:text="Date:"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <EditText
-        android:id="@+id/expenseItemAmountEditText"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_below="@+id/expenseItemAmountTextView"
-        android:layout_marginStart="5dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:inputType="numberDecimal" />
+        <EditText
+            android:id="@+id/expenseItemDateEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/expenseItemDateTextView"
+            android:layout_marginStart="5dp"
+            android:focusable="false"
+            android:inputType="date"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <TextView
-        android:id="@+id/expenseItemCurrencyTextView"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/expenseItemCategorySpinner"
-        android:layout_toEndOf="@id/expenseItemAmountTextView"
-        android:labelFor="@+id/expenseItemCurrencySpinner"
-        android:text="Currency:"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <TextView
+            android:id="@+id/expesenItemCategoryTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/expenseItemDateEditText"
+            android:layout_marginStart="5dp"
+            android:labelFor="@+id/expenseItemCategorySpinner"
+            android:text="Category:"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-	<Spinner
-	    android:id="@id/expenseItemCurrencySpinner"
-	    android:layout_width="150dp"
-	    android:layout_height="50dp"
-	    android:layout_below="@+id/expenseItemCurrencyTextView"
-	    android:layout_toEndOf="@+id/expenseItemAmountEditText"
-	    android:entries="@array/expenseItemCurrencies" />
+        <Spinner
+            android:id="@+id/expenseItemCategorySpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_below="@+id/expesenItemCategoryTextView"
+            android:layout_marginStart="5dp"
+            android:entries="@array/expenseItemCategories"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-	<TextView
-        android:id="@+id/expenseItemCoordinatesTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/expenseItemAmountTextView"
-        android:layout_below="@+id/expenseItemAmountEditText"
-        android:text="@string/geolocationTitle"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <TextView
+            android:id="@+id/expenseItemAmountTextView"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/expenseItemCategorySpinner"
+            android:layout_marginStart="5dp"
+            android:labelFor="@+id/expenseItemAmountEditText"
+            android:text="Amount Spent:"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
-        android:id="@+id/expenseItemCoordinatesValueTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/expenseItemCoordinatesTextView"
-        android:layout_below="@+id/expenseItemCoordinatesTextView"
-        android:layout_marginStart="18dp"
-        android:clickable="true"
-        android:onClick="onCoordinatesValueTextViewClick"
-        android:text="@string/geolocationValueDefault"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-	
-    <TextView
-        android:id="@+id/expenseItemDescriptionTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/expenseItemCoordinatesValueTextView"
-        android:layout_marginStart="5dp"
-        android:labelFor="@+id/expenseItemDescriptionEditText"
-        android:text="Description:"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <EditText
+            android:id="@+id/expenseItemAmountEditText"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/expenseItemAmountTextView"
+            android:layout_marginStart="5dp"
+            android:inputType="numberDecimal"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <EditText
-        android:id="@+id/expenseItemDescriptionEditText"
-        android:layout_width="320dp"
-        android:layout_height="100dp"
-        android:layout_above="@+id/expenseItemDoneButton"
-        android:layout_below="@+id/expenseItemDescriptionTextView"
-        android:layout_marginStart="5dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:gravity="top"
-        android:inputType="textMultiLine" />
+        <TextView
+            android:id="@+id/expenseItemCurrencyTextView"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/expenseItemCategorySpinner"
+            android:layout_toEndOf="@id/expenseItemAmountTextView"
+            android:labelFor="@+id/expenseItemCurrencySpinner"
+            android:text="Currency:"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <ImageButton
-        android:id="@+id/expenseItemReceiptImageButton"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_below="@+id/expenseItemDescriptionEditText"
-        android:layout_marginStart="20dp"
-        android:onClick="takePicture"
-        android:src="@android:drawable/ic_menu_camera" />
+        <Spinner
+            android:id="@id/expenseItemCurrencySpinner"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/expenseItemCurrencyTextView"
+            android:layout_toEndOf="@id/expenseItemAmountEditText"
+            android:entries="@array/expenseItemCurrencies" />
 
-    <Button
-        android:id="@+id/expenseItemDoneButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:onClick="doneExpenseItem"
-        android:text="Done" />
+        <TextView
+            android:id="@+id/expenseItemCoordinatesTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/expenseItemAmountTextView"
+            android:layout_below="@id/expenseItemAmountEditText"
+            android:text="@string/geolocationTitle"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/expenseItemCoordinatesValueTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/expenseItemCoordinatesTextView"
+            android:layout_below="@+id/expenseItemCoordinatesTextView"
+            android:layout_marginStart="18dp"
+            android:clickable="true"
+            android:onClick="onCoordinatesValueTextViewClick"
+            android:text="@string/geolocationValueDefault"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/expenseItemDescriptionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/expenseItemCoordinatesValueTextView"
+            android:layout_marginStart="5dp"
+            android:labelFor="@+id/expenseItemDescriptionEditText"
+            android:text="Description:"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <EditText
+            android:id="@+id/expenseItemDescriptionEditText"
+            android:layout_width="320dp"
+            android:layout_height="100dp"
+            android:layout_below="@+id/expenseItemDescriptionTextView"
+            android:layout_marginStart="5dp"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <ImageButton
+            android:id="@+id/expenseItemReceiptImageButton"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@id/expenseItemDescriptionEditText"
+            android:layout_marginStart="20dp"
+            android:onClick="takePicture"
+            android:src="@android:drawable/ic_menu_camera" />
+
+        <Button
+            android:id="@+id/expenseItemDoneButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/expenseItemReceiptImageButton"
+            android:onClick="doneExpenseItem"
+            android:text="Done" />
+    </RelativeLayout>
+
+</ScrollView>

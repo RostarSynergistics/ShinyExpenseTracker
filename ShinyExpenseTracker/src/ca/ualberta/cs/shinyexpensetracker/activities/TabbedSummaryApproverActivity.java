@@ -17,6 +17,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
+import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
 /**
  * Creates Approver specific menu items (Approve Claim, Return Claim and
@@ -40,6 +41,19 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 		return true;
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_help) {
+			InAppHelpDialog.showHelp(this, R.string.help_tabbed_summary);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
 	/**
 	 * Called on MenuItem "Approve Claim" click Checks if claim has a comment
 	 * attached to it. If so, claim is approved, otherwise, user is warned that
@@ -53,8 +67,7 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 
 		final ExpenseClaim claim = controller.getExpenseClaimByID(claimID);
 
-		if (claim
-				.getComments().size() == 0) {
+		if (claim.getComments().size() == 0) {
 			adb.setMessage("You must comment on a claim before you can approve it");
 
 			adb.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
@@ -113,6 +126,11 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 				String comment = commentTextBox.getText().toString();
 				comment = comment + " — " + Application.getUser().getUserName();
 				controller.getExpenseClaimByID(claimID).addComment(comment);
+				try {
+					controller.addCommentToClaim(claimID, comment);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
 			}
 		});
 

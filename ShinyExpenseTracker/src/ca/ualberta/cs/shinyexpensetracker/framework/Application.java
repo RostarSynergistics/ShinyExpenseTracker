@@ -98,8 +98,9 @@ public class Application extends android.app.Application {
 	}
 	
 	/**
-	 * Sets the application's state (claimant or approver) when the user logs in
-	 * @param state
+	 * Sets the application's user type (claimant or approver) when
+	 * the user logs in
+	 * @param type The user type to set. 
 	 */
 	public static void setUserType(Type type) {
 		getUser().setUserType(type);

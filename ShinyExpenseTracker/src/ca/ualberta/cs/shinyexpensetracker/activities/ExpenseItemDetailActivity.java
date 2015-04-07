@@ -146,9 +146,6 @@ public class ExpenseItemDetailActivity extends Activity implements IView<Expense
 
 	/**
 	 * Opens the activity responsible for editing a claim
-	 * 
-	 * @param position
-	 *            the position in the listview to edit.
 	 */
 	public void editExpense() {
 		// Create an intent to edit an expense item

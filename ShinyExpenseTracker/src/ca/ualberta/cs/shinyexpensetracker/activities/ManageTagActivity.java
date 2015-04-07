@@ -253,8 +253,8 @@ public class ManageTagActivity extends Activity implements IView<TagList> {
 	 * Extracted method from the listview onLongItemClickListener dialog to
 	 * delete a tag if the tag is long pressed from the listview
 	 * 
-	 * @param pos
-	 *            of the list view clicked
+	 * @param position
+	 *            position in the list view that was clicked
 	 */
 	@SuppressLint("InflateParams")
 	public void deleteTagFromDialog(final int position) {

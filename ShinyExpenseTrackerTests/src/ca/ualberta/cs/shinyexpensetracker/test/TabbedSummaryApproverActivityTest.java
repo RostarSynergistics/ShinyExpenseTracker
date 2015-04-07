@@ -143,8 +143,6 @@ public class TabbedSummaryApproverActivityTest extends ActivityInstrumentationTe
 
 	/**
 	 * Test if claim is not approved when there is no comment on it
-	 * 
-	 * @throws InterruptedException
 	 */
 	public void testApproveUncommentedClaim() {
 		// make sure the claim has no comments

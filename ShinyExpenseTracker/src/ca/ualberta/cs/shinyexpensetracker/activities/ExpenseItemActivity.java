@@ -327,7 +327,6 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 	 * Gets inputed data from text fields and spinners, saving them in an
 	 * expenseItem object.
 	 * 
-	 * @param v
 	 * @throws ParseException
 	 * @throws IOException
 	 */

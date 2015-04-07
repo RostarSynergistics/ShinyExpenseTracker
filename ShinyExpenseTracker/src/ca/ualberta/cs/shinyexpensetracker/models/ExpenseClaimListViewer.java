@@ -7,7 +7,7 @@ public interface ExpenseClaimListViewer {
 	/**
 	 * Returns a claim from the claimList based on index passed in
 	 * 
-	 * @param index
+	 * @param position The position of the claim to get
 	 * @return
 	 */
 	abstract public ExpenseClaim getClaimAtPosition(int position);

@@ -386,7 +386,7 @@ public class ExpenseClaimController {
 	 * Removes the tag given to all claim's taglists. Used when a tag is deleted
 	 * from the tag controller
 	 * 
-	 * @param tagController
+	 * @param tag The tag to remove
 	 */
 	public void removeTag(Tag tag) {
 

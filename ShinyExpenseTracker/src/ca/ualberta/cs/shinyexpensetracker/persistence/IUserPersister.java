@@ -22,7 +22,7 @@ public interface IUserPersister {
 	/**
 	 * Saves an User to file.
 	 * 
-	 * @param list The TagList to save;
+	 * @param user The user to save
 	 * @throws IOException 
 	 */
 	public abstract void saveUser(User user) throws IOException;

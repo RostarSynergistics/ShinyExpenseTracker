@@ -94,7 +94,6 @@ public class ClaimSummaryFragment extends Fragment implements
 	 * totals of any expense items in the summary view.
 	 * 
 	 * @param view
-	 * @throws IOException
 	 */
 	public void setClaimInfo(View view) {
 		// make sure that it is a valid claim

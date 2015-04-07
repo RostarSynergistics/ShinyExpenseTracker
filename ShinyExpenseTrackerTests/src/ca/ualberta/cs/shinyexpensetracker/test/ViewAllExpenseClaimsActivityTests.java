@@ -432,8 +432,7 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 
 		// Monitor for ExpenseItemActivity
 		ActivityMonitor expenseMonitor = getInstrumentation().addMonitor(ExpenseItemActivity.class.getName(),
-				null,
-				false);
+				null, false);
 
 		// Press the "Add Expense" button
 		getInstrumentation().invokeMenuActionSync(summaryActivity, R.id.addExpenseItem, 0);

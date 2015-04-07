@@ -36,18 +36,19 @@ public class TabbedSummaryClaimantActivity extends TabbedSummaryActivity {
 		getMenuInflater().inflate(R.menu.tabbed_summary_claimant, menu);
 		m = menu;
 		
+		// disable ability of claimant to edit or resubmit approved claim
 		if (controller.getExpenseClaimByID(claimID).getStatus().equals(Status.APPROVED)) {
-			menu.getItem(0).setEnabled(false);
-			menu.getItem(3).setEnabled(false);
-			menu.getItem(4).setEnabled(false);
-			menu.getItem(5).setEnabled(false);
+			menu.findItem(R.id.editClaim).setEnabled(false);
+			menu.findItem(R.id.addExpenseItem).setEnabled(false);
+			menu.findItem(R.id.addDestination).setEnabled(false);
+			menu.findItem(R.id.submitClaim).setEnabled(false);
 		}
 		
 		if (controller.getExpenseClaimByID(claimID).getStatus().equals(Status.SUBMITTED)) {
-			menu.getItem(0).setEnabled(false);
-			menu.getItem(3).setEnabled(false);
-			menu.getItem(4).setEnabled(false);
-			menu.getItem(5).setEnabled(false);
+			menu.findItem(R.id.editClaim).setEnabled(false);
+			menu.findItem(R.id.addExpenseItem).setEnabled(false);
+			menu.findItem(R.id.addDestination).setEnabled(false);
+			menu.findItem(R.id.submitClaim).setEnabled(false);
 		}
 		
 		return true;
@@ -165,10 +166,10 @@ public class TabbedSummaryClaimantActivity extends TabbedSummaryActivity {
 
 			// set menu items to false, so claim cannot be edited or submitted
 			// again
-			m.getItem(0).setEnabled(false);
-			m.getItem(3).setEnabled(false);
-			m.getItem(4).setEnabled(false);
-			m.getItem(5).setEnabled(false);
+			m.findItem(R.id.editClaim).setEnabled(false);
+			m.findItem(R.id.addExpenseItem).setEnabled(false);
+			m.findItem(R.id.addDestination).setEnabled(false);
+			m.findItem(R.id.submitClaim).setEnabled(false);
 		}
 	}
 

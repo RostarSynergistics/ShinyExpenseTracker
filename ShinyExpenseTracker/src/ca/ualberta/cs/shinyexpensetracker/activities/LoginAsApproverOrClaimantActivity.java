@@ -70,14 +70,9 @@ public class LoginAsApproverOrClaimantActivity extends Activity {
 		Intent intent;
 		
 		saveUserType(v);
-		
-		if (user.getUserType().equals(Type.Claimant)) {
-			intent = new Intent(LoginAsApproverOrClaimantActivity.this,
-					ExpenseClaimListActivity.class);
-		} else {
-			// will go to approver claim view
-			intent = new Intent(LoginAsApproverOrClaimantActivity.this, ExpenseClaimListActivity.class);
-		}
+	
+		intent = new Intent(LoginAsApproverOrClaimantActivity.this,
+				ExpenseClaimListActivity.class);
 		
 		startActivity(intent);
 

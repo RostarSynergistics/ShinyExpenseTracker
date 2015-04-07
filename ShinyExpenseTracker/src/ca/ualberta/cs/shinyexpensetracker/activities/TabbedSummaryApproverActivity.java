@@ -78,8 +78,7 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 			alertDialogApproveClaim.show();
 
 			// disable ability to return a claim
-			m.getItem(2).setEnabled(false);
-			
+			m.findItem(R.id.returnClaim).setEnabled(false);
 		}
 	}
 
@@ -155,8 +154,7 @@ public class TabbedSummaryApproverActivity extends TabbedSummaryActivity {
 			alertDialogReturnClaim.show();
 
 			// disable ability to approve claim
-			m.getItem(0).setEnabled(false);
-			
+			m.findItem(R.id.approveClaim).setEnabled(false);
 		}
 	}
 

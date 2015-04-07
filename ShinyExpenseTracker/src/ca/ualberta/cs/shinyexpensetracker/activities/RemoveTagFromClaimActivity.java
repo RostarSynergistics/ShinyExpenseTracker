@@ -29,6 +29,11 @@ import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
+/**
+ * Activity for removing tags from an existing claim.
+ * Requires an intent containing the UUID of the claim
+ * being edited.
+ */
 public class RemoveTagFromClaimActivity extends Activity implements IView<TagList> {
 
 	private ListView manageTags;
@@ -147,7 +152,9 @@ public class RemoveTagFromClaimActivity extends Activity implements IView<TagLis
 		return true;
 	}
 
-	// Adds the check marked tags to the current claim
+	/**
+	 * Removes the check marked tags from the current claim
+	 */
 	private void removeTagsFromClaim() {
 		if (manageTags.getCheckedItemCount() == 0) {
 			Toast.makeText(RemoveTagFromClaimActivity.this, "No items selected", Toast.LENGTH_LONG).show();
@@ -172,7 +179,6 @@ public class RemoveTagFromClaimActivity extends Activity implements IView<TagLis
 		try {
 			expenseClaimController.removeTagsFromClaim(claimID, tagsToRemove);
 		} catch (IOException e) {
-
 			e.printStackTrace();
 		}
 
@@ -184,7 +190,6 @@ public class RemoveTagFromClaimActivity extends Activity implements IView<TagLis
 
 	@Override
 	public void update(TagList m) {
-
 	}
 
 }

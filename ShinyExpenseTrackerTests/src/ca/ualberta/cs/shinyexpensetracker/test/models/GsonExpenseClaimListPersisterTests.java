@@ -12,6 +12,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+import ca.ualberta.cs.shinyexpensetracker.models.Status;
 import ca.ualberta.cs.shinyexpensetracker.persistence.GsonExpenseClaimListPersister;
 import ca.ualberta.cs.shinyexpensetracker.persistence.IExpenseClaimListPersister;
 import ca.ualberta.cs.shinyexpensetracker.persistence.IPersistenceStrategy;
@@ -50,7 +51,7 @@ public class GsonExpenseClaimListPersisterTests extends TestCase {
 		Date startDate = new Date(5000);
 		Date endDate = new Date(6000);
 
-		ExpenseClaim claim = new ExpenseClaim("test", startDate, endDate, ExpenseClaim.Status.IN_PROGRESS);
+		ExpenseClaim claim = new ExpenseClaim("test", startDate, endDate, Status.IN_PROGRESS);
 
 		int[] colors = new int[] { 1, 2, 3, 4 };
 

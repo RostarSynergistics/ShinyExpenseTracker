@@ -2,6 +2,10 @@ package ca.ualberta.cs.shinyexpensetracker.models;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
+/**
+ * Represents a GPS coordinate on a map.
+ * Contains a latitude and a longitude.
+ */
 public class Coordinate extends Model<Coordinate> {
 	private double latitude;
 	private double longitude;

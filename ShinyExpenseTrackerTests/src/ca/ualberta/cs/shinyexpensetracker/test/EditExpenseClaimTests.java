@@ -18,6 +18,7 @@ import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
+import ca.ualberta.cs.shinyexpensetracker.models.Status;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 /**
@@ -118,7 +119,7 @@ public class EditExpenseClaimTests extends ActivityInstrumentationTestCase2<Expe
 		Date startDate = sdf.parse("2015-01-01");
 		Date endDate = sdf.parse("2015-01-02");
 
-		return new ExpenseClaim("test", startDate, endDate, ExpenseClaim.Status.IN_PROGRESS);
+		return new ExpenseClaim("test", startDate, endDate, Status.IN_PROGRESS);
 	}
 
 	private Date getDate(EditText dateField) throws ParseException {

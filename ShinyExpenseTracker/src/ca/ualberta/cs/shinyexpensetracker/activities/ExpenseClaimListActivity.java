@@ -49,15 +49,17 @@ import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
+import ca.ualberta.cs.shinyexpensetracker.models.Status;
 import ca.ualberta.cs.shinyexpensetracker.models.User;
-import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
+import ca.ualberta.cs.shinyexpensetracker.models.UserType;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
-
+/**
+ * Displays a list of claims available to the user, providing
+ * summary details.
+ */
 public class ExpenseClaimListActivity extends Activity implements IView<ExpenseClaimList> {
-
 
 	private ExpenseClaimController controller;
 	private ClaimListAdapter adapter;
@@ -86,7 +88,7 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 
 		// if the user is an approver filter the claims so only the submitted
 		// claims are shown
-		if (Application.getUserType().equals(Type.Approver)) {
+		if (Application.getUserType().equals(UserType.Approver)) {
 			adapter.applyFilter(new ExpenseClaimSubmittedFilter());
 		}
 
@@ -106,7 +108,7 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 
 				Intent intent;
 
-				if (Application.getUserType().equals(Type.Claimant)) {
+				if (Application.getUserType().equals(UserType.Claimant)) {
 					intent = new Intent(ExpenseClaimListActivity.this, TabbedSummaryClaimantActivity.class);
 				} else {
 					intent = new Intent(ExpenseClaimListActivity.this, TabbedSummaryApproverActivity.class);
@@ -140,7 +142,7 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.expense_claims_view, menu);
 
-		if (Application.getUserType().equals(Type.Approver)) {
+		if (Application.getUserType().equals(UserType.Approver)) {
 			menu.getItem(0).setEnabled(false);
 		}
 
@@ -219,7 +221,6 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 	 * 
 	 * @return
 	 */
-
 	public AlertDialog disableSubmittedClaimDeletion() {
 		AlertDialog dialog = new AlertDialog.Builder(this).setTitle("Not availble")
 				.setMessage("You cannot delete a Submitted claim")
@@ -278,6 +279,12 @@ public class ExpenseClaimListActivity extends Activity implements IView<ExpenseC
 		return dialog;
 	}
 
+	/**
+	 * Get the home location in the activity. This is loaded
+	 * from the user on startup.
+	 * @return Coordinate pointing to the lat/long position of
+	 * the user's home location.
+	 */
 	public Coordinate getHomeGeolocation() {
 		return homeGeolocation;
 	}

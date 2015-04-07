@@ -7,6 +7,13 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimListViewer;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 
+/**
+ * Filters the expense claim by tags. Should be constructed
+ * using an existing TagList object.
+ * 
+ * Example:
+ * 		new ExpenseClaimFilter(myTagFilters).decorate(filteredExpenseList);
+ */
 public class ExpenseListTagFilter extends ExpenseClaimFilter implements ExpenseClaimListViewer {
 
 	private ArrayList<ExpenseClaim> cachedClaims;

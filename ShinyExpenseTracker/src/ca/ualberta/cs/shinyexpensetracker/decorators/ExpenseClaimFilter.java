@@ -15,6 +15,8 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimListViewer;
  * Subclasses must implement the getters for claims and count of claims.
  * Subclasses have access to the source object which they can use to get the
  * data from the thing they're decorating.
+ * Specifically, they should override the getClaims() method,
+ * and optionally the getClaim(index) and getCount().
  */
 
 public class ExpenseClaimFilter extends ExpenseClaimList
@@ -31,6 +33,12 @@ public class ExpenseClaimFilter extends ExpenseClaimList
 		return this;
 	}
 
+	/**
+	 * Decorates an ExpenseClaimFilter object with this object.
+	 * Once decorated, this method cannot be called again.
+	 * @param source The source object to decorate
+	 * @return this object post decoration.
+	 */
 	public final ExpenseClaimFilter decorate(ExpenseClaimFilter source) {
 		if (this.source != null) {
 			throw new RuntimeException("Cannot replace the decorator source");

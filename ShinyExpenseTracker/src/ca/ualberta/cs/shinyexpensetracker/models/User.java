@@ -14,14 +14,9 @@ import ca.ualberta.cs.shinyexpensetracker.persistence.IUserPersister;
  */
 public class User {
 
-	public enum Type {
-		Approver(),
-		Claimant();
-	}
-	
 	private UUID id;
 	private String name;
-	private Type type;
+	private UserType type;
 	private Coordinate homeGeolocation;
 	
 	public User() {
@@ -52,11 +47,11 @@ public class User {
 		return name;
 	}
 	
-	public void setUserType(Type type) {
+	public void setUserType(UserType type) {
 		this.type = type;
 	}
 	
-	public Type getUserType() {
+	public UserType getUserType() {
 		return type;
 	}
 

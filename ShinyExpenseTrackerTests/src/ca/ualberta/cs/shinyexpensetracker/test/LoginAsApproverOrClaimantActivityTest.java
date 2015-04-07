@@ -6,7 +6,7 @@ import android.widget.RadioButton;
 import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimListActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.LoginAsApproverOrClaimantActivity;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
-import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
+import ca.ualberta.cs.shinyexpensetracker.models.UserType;
 
 public class LoginAsApproverOrClaimantActivityTest extends
 		ActivityInstrumentationTestCase2<LoginAsApproverOrClaimantActivity> {
@@ -56,14 +56,14 @@ public class LoginAsApproverOrClaimantActivityTest extends
 				getInstrumentation()
 						.checkMonitorHit(expenseClaimListMonitor, 1));
 
-		assertEquals("User State was not set to Approver", Type.Approver,
+		assertEquals("User State was not set to Approver", UserType.Approver,
 				Application.getUserType());
 
 		expenses.finish();
 
 		getInstrumentation().waitForIdleSync();
 		
-		assertEquals("User State was not set to Approver", Type.Approver ,Application.getUserType());
+		assertEquals("User State was not set to Approver", UserType.Approver ,Application.getUserType());
 
 	}
 
@@ -101,12 +101,12 @@ public class LoginAsApproverOrClaimantActivityTest extends
 
 		expenses.finish();
 
-		assertEquals("User State was not set to Claimant", Type.Claimant,
+		assertEquals("User State was not set to Claimant", UserType.Claimant,
 				Application.getUserType());
 
 		getInstrumentation().waitForIdleSync();
 		
-		assertEquals("User State was not set to Claimant", Type.Claimant ,Application.getUserType());
+		assertEquals("User State was not set to Claimant", UserType.Claimant ,Application.getUserType());
 		
 	}
 

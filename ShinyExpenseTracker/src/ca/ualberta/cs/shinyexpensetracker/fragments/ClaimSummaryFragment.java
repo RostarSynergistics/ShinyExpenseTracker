@@ -1,6 +1,5 @@
 package ca.ualberta.cs.shinyexpensetracker.fragments;
 
-import java.io.IOException;
 import java.util.UUID;
 
 import android.app.Fragment;
@@ -134,6 +133,11 @@ public class ClaimSummaryFragment extends Fragment implements
 		setClaimInfo(view);
 	}
 
+	/**
+	 * Sets or resets the visibility of the ExpenseTotalsList
+	 * and the associated hint. 
+	 * @param claim The claim to check for expenses.
+	 */
 	private void updateExpenseTotals(ExpenseClaim claim) {
 		ListView expenseTotals = (ListView) view
 				.findViewById(R.id.claimExpenseTotalsListView);

@@ -17,6 +17,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
+import ca.ualberta.cs.shinyexpensetracker.models.Status;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.persistence.ElasticSearchExpenseClaimListPersister;
 import ca.ualberta.cs.shinyexpensetracker.persistence.FilePersistenceStrategy;
@@ -153,7 +154,7 @@ public class ExpenseClaimController {
 	 * @throws IOException
 	 * @throws ValidationException
 	 */
-	public ExpenseClaim updateExpenseClaimStatus(UUID id, ExpenseClaim.Status status) throws IOException,
+	public ExpenseClaim updateExpenseClaimStatus(UUID id, Status status) throws IOException,
 			ValidationException {
 		ExpenseClaim claim = claimList.getClaimByID(id);
 		claim.setStatus(status);

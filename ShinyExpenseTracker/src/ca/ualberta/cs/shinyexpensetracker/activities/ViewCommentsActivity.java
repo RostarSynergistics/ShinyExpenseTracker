@@ -17,6 +17,11 @@ import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
+/**
+ * Displays a list of all comments associated with a given claim.
+ * Must be passed an intent including the UUID of the relevant
+ * claim.
+ */
 public class ViewCommentsActivity extends Activity {
 
 	private ExpenseClaimController controller;

@@ -1,6 +1,11 @@
 package ca.ualberta.cs.shinyexpensetracker.activities.utilities;
 
-public class IntentExtraIDs {
+/**
+ * Static class exposing constants for intent IDs.
+ * Provides convenient names for activity intents.
+ *
+ */
+public final class IntentExtraIDs {
 	public static final String CLAIM_ID = "claimID";
 	public static final String DESTINATION_ID = "destinationID";
 	public static final String EXPENSE_ITEM_ID = "expenseID";

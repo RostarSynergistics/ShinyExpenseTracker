@@ -2,8 +2,8 @@ package ca.ualberta.cs.shinyexpensetracker.es.data;
 
 import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
+import ca.ualberta.cs.shinyexpensetracker.models.Status;
 
 /**
  * This class will sync any changes the user made with any changes the in the

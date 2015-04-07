@@ -100,7 +100,7 @@ public class ESClaimManager {
 
 			String json = getEntityContent(response);
 
-			Type elasticSearchResponseType = new TypeToken<ElasticSearchResponse<ExpenseClaimList>>() {
+			UserType elasticSearchResponseType = new TypeToken<ElasticSearchResponse<ExpenseClaimList>>() {
 			}.getType();
 
 			ElasticSearchResponse<ExpenseClaimList> esResponse = gson.fromJson(json, elasticSearchResponseType);

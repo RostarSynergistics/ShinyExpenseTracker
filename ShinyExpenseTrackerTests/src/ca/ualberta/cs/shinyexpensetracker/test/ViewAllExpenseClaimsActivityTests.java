@@ -47,9 +47,10 @@ import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
+import ca.ualberta.cs.shinyexpensetracker.models.Status;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
-import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
+import ca.ualberta.cs.shinyexpensetracker.models.UserType;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
 
 public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTestCase2<ExpenseClaimListActivity> {
@@ -138,7 +139,7 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	 */
 	public void testLongPressDialog() {
 
-		Application.setUserType(Type.Claimant);
+		Application.setUserType(UserType.Claimant);
 
 		activity = getActivity();
 
@@ -160,7 +161,7 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	 * Adds a claim and ensures that it is visible in the listview.
 	 */
 	public void testAddedClaimIsVisible() {
-		Application.setUserType(Type.Claimant);
+		Application.setUserType(UserType.Claimant);
 
 		activity = getActivity();
 		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
@@ -188,7 +189,7 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	 * all 6 permutations of {new, mid, old}.
 	 */
 	public void testClaimsSorted() throws Exception {
-		Application.setUserType(Type.Claimant);
+		Application.setUserType(UserType.Claimant);
 
 		activity = getActivity();
 		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
@@ -268,7 +269,7 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	 */
 	public void testEqualSorted() throws ValidationException {
 
-		Application.setUserType(Type.Claimant);
+		Application.setUserType(UserType.Claimant);
 
 		activity = getActivity();
 		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
@@ -297,7 +298,7 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	 */
 	public void testDeleteVisibleClaim() throws ValidationException {
 
-		Application.setUserType(Type.Claimant);
+		Application.setUserType(UserType.Claimant);
 
 		activity = getActivity();
 		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
@@ -308,14 +309,14 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 		ExpenseClaim claim1 = addClaim(new ExpenseClaim("Delete Claim 1",
 				new Date(100),
 				new Date(200),
-				ExpenseClaim.Status.IN_PROGRESS,
+				Status.IN_PROGRESS,
 				tags1));
 		TagList tags2 = new TagList();
 		tags2.addTag(new Tag("Test 2"));
 		ExpenseClaim claim2 = addClaim(new ExpenseClaim("Delete Claim 2",
 				new Date(100),
 				new Date(200),
-				ExpenseClaim.Status.IN_PROGRESS,
+				Status.IN_PROGRESS,
 				tags2));
 		ExpenseClaim visibleClaim;
 
@@ -338,7 +339,7 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	 */
 
 	public void testMenuClickNewActivity() {
-		Application.setUserType(Type.Claimant);
+		Application.setUserType(UserType.Claimant);
 
 		activity = getActivity();
 		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
@@ -366,7 +367,7 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 
 		// TabbedSummary has split in 2. We need a way
 		// to specify which one we're looking for.
-		Application.setUserType(Type.Claimant);
+		Application.setUserType(UserType.Claimant);
 
 		activity = getActivity();
 		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
@@ -510,7 +511,7 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 
 	public void testSetHomeGeolocation() {
 
-		Application.setUserType(Type.Claimant);
+		Application.setUserType(UserType.Claimant);
 
 		activity = getActivity();
 		claimListView = (ListView) activity.findViewById(R.id.expense_claim_list);
@@ -532,7 +533,7 @@ public class ViewAllExpenseClaimsActivityTests extends ActivityInstrumentationTe
 	 * has been disabled
 	 */
 	public void testNewClaimMenuItemDisabledForApprover() {
-		Application.setUserType(Type.Approver);
+		Application.setUserType(UserType.Approver);
 
 		activity = getActivity();
 

@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
+import ca.ualberta.cs.shinyexpensetracker.models.Status;
 
 /**
  * Tests that verify that ExpenseClaim.equals(...) works. ExpenseClaims are
@@ -21,7 +22,7 @@ public class ExpenseClaimEqualsTests extends TestCase {
 		Date startDate = new Date(5000);
 		Date endDate = new Date(6000);
 
-		return new ExpenseClaim(id, "test", startDate, endDate, ExpenseClaim.Status.IN_PROGRESS);
+		return new ExpenseClaim(id, "test", startDate, endDate, Status.IN_PROGRESS);
 	}
 
 	private ExpenseItem getTestExpenseItem() throws ValidationException {
@@ -70,7 +71,7 @@ public class ExpenseClaimEqualsTests extends TestCase {
 	}
 
 	public void testThatTwoClaimsWithDifferentStatusesAreNotEqual() throws ValidationException {
-		claim2.setStatus(ExpenseClaim.Status.SUBMITTED);
+		claim2.setStatus(Status.SUBMITTED);
 
 		assertNotEqual();
 	}

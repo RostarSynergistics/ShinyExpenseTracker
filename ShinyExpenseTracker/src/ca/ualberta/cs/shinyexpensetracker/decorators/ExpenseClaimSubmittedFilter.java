@@ -3,10 +3,9 @@ package ca.ualberta.cs.shinyexpensetracker.decorators;
 import java.util.ArrayList;
 
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
-import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
+import ca.ualberta.cs.shinyexpensetracker.models.Status;
 
 /**
- * 
  * Filters out just submitted claims so that they can be displayed for approvers
  *
  */

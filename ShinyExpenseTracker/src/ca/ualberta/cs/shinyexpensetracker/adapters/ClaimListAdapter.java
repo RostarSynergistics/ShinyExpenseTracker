@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.decorators.ExpenseClaimFilter;
@@ -94,6 +95,9 @@ public class ClaimListAdapter extends BaseAdapter {
 		// Name and status can't be null
 		name.setText(claim.getName());
 		status.setText(claim.getStatus().getText());
+				
+		LinearLayout background = (LinearLayout) convertView.findViewById(R.id.claimListItemBackground);
+		background.setBackgroundColor(claim.getColor());
 
 		// Start date can't be null, but end date might be.
 		if (claim.getEndDate() == null) {

@@ -25,6 +25,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.ValidationErrorAlertDialog;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
@@ -37,7 +38,7 @@ import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
  * http://androidopentutorials.com/android-datepickerdialog
  * -on-edittext-click-event
  */
-public class ExpenseClaimActivity extends Activity implements OnClickListener {
+public class ExpenseClaimActivity extends Activity implements OnClickListener, IView<ExpenseClaim> {
 	private ExpenseClaimController controller;
 
 	private EditText startDate, endDate;
@@ -65,6 +66,7 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 
 		if (claimID != null) {
 			claim = controller.getExpenseClaimByID(claimID);
+			claim.addView(this);
 			displayExpenseClaim(claim);
 		}
 	}
@@ -237,5 +239,11 @@ public class ExpenseClaimActivity extends Activity implements OnClickListener {
 
 	public DatePickerDialog getEndDatePickerDialog() {
 		return endDatePickerDialog;
+	}
+
+	@Override
+	public void update(ExpenseClaim m) {
+		claim = m;
+		displayExpenseClaim(claim);
 	}
 }

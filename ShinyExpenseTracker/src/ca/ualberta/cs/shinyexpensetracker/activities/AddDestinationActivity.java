@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,8 +15,10 @@ import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.GeolocationRequestCode;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.ValidationErrorAlertDialog;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.Destination;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
@@ -120,40 +120,20 @@ public class AddDestinationActivity extends Activity {
 		destinationEditText = (EditText) findViewById(R.id.destinationEditText);
 		reasonForTravelEditText = (EditText) findViewById(R.id.reasonEditText);
 
-		if (destinationEditText.getText().length() == 0) {
-			// Display an error prompt.
-			dialog = new AlertDialog.Builder(this).setMessage("Destination requires a name")
-					.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							dialog.dismiss();
-						}
-					}).create();
-			dialog.show();
-			return false;
-		}
-		if (coord == null) {
-			dialog = new AlertDialog.Builder(this).setMessage("Destination requires a location")
-					.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							dialog.dismiss();
-						}
-					}).create();
-			dialog.show();
-			return false;
-		}
 		String dest = destinationEditText.getText().toString();
 		String reason = reasonForTravelEditText.getText().toString();
 
-		if (destination == null) {
-			// If new, create a new one
-
-			destination = controller.addDestinationToClaim(claimID, dest, reason, coord);
-		} else {
-			// If old, update the data.
-			destination = controller.updateDestinationOnClaim(claimID, destinationID, dest, reason, coord);
-
+		try {
+			if (destination == null) {
+				// If new, create a new one
+				destination = controller.addDestinationToClaim(claimID, dest, reason, coord);
+			} else {
+				// If old, update the data.
+				destination = controller.updateDestinationOnClaim(claimID, destinationID, dest, reason, coord);
+			}
+		} catch (ValidationException e) {
+			new ValidationErrorAlertDialog(this, e).show();
+			return false;
 		}
 
 		return true;

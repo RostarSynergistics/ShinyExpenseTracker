@@ -1,5 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+import java.util.Date;
+
 import android.app.AlertDialog;
 import android.app.Instrumentation;
 import android.content.DialogInterface;
@@ -40,7 +42,7 @@ public class AddTagToExpenseClaimActivityTest extends ActivityInstrumentationTes
 		super.setUp();
 
 		ExpenseClaimList claimList = new ExpenseClaimList();
-		ExpenseClaim claim = new ExpenseClaim("TEST");
+		ExpenseClaim claim = new ExpenseClaim("TEST", new Date(1000), new Date(2000));
 		claimList.addClaim(claim);
 
 		// Setting up the controllers

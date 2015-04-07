@@ -1,5 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.test;
 
+import java.util.Date;
+
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
@@ -48,7 +50,7 @@ public class AddDestinationTests extends ActivityInstrumentationTestCase2<AddDes
 
 		ExpenseClaimList claimList = new ExpenseClaimList();
 
-		claim = new ExpenseClaim("Example name");
+		claim = new ExpenseClaim("Example name", new Date(1000), new Date(2000));
 		claimList.addClaim(claim);
 
 		persister = new MockExpenseClaimListPersister(claimList);

@@ -41,14 +41,8 @@ public class TabbedSummaryApproverActivityTest extends ActivityInstrumentationTe
 	String claimName = "test claim name";
 	Date startDate = new Date(1000);
 	Date endDate = new Date(2000);
-	ExpenseClaim.Status status = ExpenseClaim.Status.SUBMITTED;
 	BigDecimal amount = new BigDecimal(10);
-	final ExpenseItem expense = new ExpenseItem("expenseItemName",
-			new Date(1000),
-			Category.ACCOMODATION,
-			amount,
-			Currency.CAD,
-			"expenseItemDescription");
+	ExpenseItem expense;
 
 	ExpenseClaimController controller;
 
@@ -60,13 +54,21 @@ public class TabbedSummaryApproverActivityTest extends ActivityInstrumentationTe
 	 */
 	public void setUp() throws Exception {
 		super.setUp();
+
+		expense = new ExpenseItem("expenseItemName",
+				new Date(1000),
+				Category.ACCOMODATION,
+				amount,
+				Currency.CAD,
+				"expenseItemDescription");
+
 		ExpenseClaimList list = new ExpenseClaimList();
 		controller = new ExpenseClaimController(new MockExpenseClaimListPersister(list));
 		Application.setExpenseClaimController(controller);
 
-		// Add an expense claim to the expenseClaimController
+		// Add a submitted expense claim to the model
 		claim = new ExpenseClaim(claimName, startDate, endDate);
-		claim.setStatus(status);
+		claim.setStatus(Status.SUBMITTED);
 		claim.addExpenseItem(expense);
 		list.addClaim(claim);
 
@@ -100,7 +102,7 @@ public class TabbedSummaryApproverActivityTest extends ActivityInstrumentationTe
 			@Override
 			public void run() {
 				EditText commentTextBox = (EditText) activity.getCommentDialog()
-						.findViewById(R.id.EditTextDialogComment);
+																.findViewById(R.id.EditTextDialogComment);
 				commentTextBox.setText("test comment");
 				activity.getCommentDialog().getButton(DialogInterface.BUTTON_POSITIVE).performClick();
 			}
@@ -145,19 +147,16 @@ public class TabbedSummaryApproverActivityTest extends ActivityInstrumentationTe
 	 * Test if claim is not approved when there is no comment on it
 	 */
 	public void testApproveUncommentedClaim() {
-		// make sure the claim has no comments
-		controller.getExpenseClaimByID(claim.getID()).setComments(new ArrayList<String>());
-
 		// invoke the approve claim menu item
 		getInstrumentation().invokeMenuActionSync(activity, R.id.approveClaim, 0);
 
 		getInstrumentation().waitForIdleSync();
 
-		assertTrue("No dialog to tell user they need to add a comment appeared", activity
-				.getCommentApproveNeededDialog().isShowing());
+		assertTrue("No dialog to tell user they need to add a comment appeared",
+				activity.getCommentApproveNeededDialog().isShowing());
 
 		assertEquals("claim status was changed", Status.SUBMITTED, controller.getExpenseClaimByID(claim.getID())
-				.getStatus());
+																				.getStatus());
 	}
 
 	/**
@@ -179,7 +178,7 @@ public class TabbedSummaryApproverActivityTest extends ActivityInstrumentationTe
 
 		// make sure the claim status was changed to returned
 		assertEquals("claim status is not Returned", Status.RETURNED, controller.getExpenseClaimByID(claim.getID())
-				.getStatus());
+																				.getStatus());
 
 		// make sure 'Approve claim' menu item is disabled
 		assertFalse("'Approve Claim' menu item still enabled",
@@ -200,12 +199,12 @@ public class TabbedSummaryApproverActivityTest extends ActivityInstrumentationTe
 
 		// make sure the dialog that warns the user they need to comment on the
 		// claim before returning it is showing
-		assertTrue("No dialog to tell user they need to comment on claim first", activity
-				.getCommentNeededReturnDialog().isShowing());
+		assertTrue("No dialog to tell user they need to comment on claim first",
+				activity.getCommentNeededReturnDialog().isShowing());
 
 		// make sure the claim status didn't change
 		assertEquals("claim status was changed", Status.SUBMITTED, controller.getExpenseClaimByID(claim.getID())
-				.getStatus());
+																				.getStatus());
 
 	}
 
@@ -216,16 +215,18 @@ public class TabbedSummaryApproverActivityTest extends ActivityInstrumentationTe
 	public void testViewCommentsMenuItem() {
 
 		// Monitor for AddTagsActivity
-		ActivityMonitor viewCommentsActivityMonitor = getInstrumentation()
-				.addMonitor(ViewCommentsActivity.class.getName(), null, false);
+		ActivityMonitor viewCommentsActivityMonitor = getInstrumentation().addMonitor(
+				ViewCommentsActivity.class.getName(),
+				null,
+				false);
 
 		// invoke 'View Comments' menu item click
 		getInstrumentation().invokeMenuActionSync(activity, R.id.viewComments, 0);
 		getInstrumentation().waitForIdleSync();
 
 		// Get the view comments activity
-		final ViewCommentsActivity viewCommentsActivity = (ViewCommentsActivity) getInstrumentation()
-				.waitForMonitorWithTimeout(viewCommentsActivityMonitor, 1000);
+		final ViewCommentsActivity viewCommentsActivity = (ViewCommentsActivity) getInstrumentation().waitForMonitorWithTimeout(viewCommentsActivityMonitor,
+				1000);
 
 		assertEquals(true, getInstrumentation().checkMonitorHit(viewCommentsActivityMonitor, 1));
 

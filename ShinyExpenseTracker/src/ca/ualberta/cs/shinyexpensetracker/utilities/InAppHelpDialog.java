@@ -1,11 +1,11 @@
 package ca.ualberta.cs.shinyexpensetracker.utilities;
 
-import ca.ualberta.cs.shinyexpensetracker.R;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import ca.ualberta.cs.shinyexpensetracker.R;
 
 /**
  * This class builds an in-app help dialog.

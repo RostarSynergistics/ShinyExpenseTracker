@@ -33,17 +33,12 @@ public class GsonExpenseClaimListPersister implements IExpenseClaimListPersister
 	public ExpenseClaimList loadExpenseClaims() throws IOException {
 		String travelClaimsListData = persistenceStrategy.load();
 
-		ExpenseClaimList localList;
-
 		// Loading local data
 		if (travelClaimsListData.equals("")) {
-			localList = new ExpenseClaimList();
+			return new ExpenseClaimList();
 		} else {
-			localList = gson.fromJson(travelClaimsListData, ExpenseClaimList.class);
+			return gson.fromJson(travelClaimsListData, ExpenseClaimList.class);
 		}
-
-		return localList;
-
 	}
 
 	@Override

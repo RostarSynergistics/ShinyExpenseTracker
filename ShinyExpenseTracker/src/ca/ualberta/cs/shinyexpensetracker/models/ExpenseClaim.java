@@ -46,7 +46,7 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 	private ArrayList<Destination> destinations = new ArrayList<Destination>();
 	private TagList tagList = new TagList();
 
-	private int color = 0x00000000;
+	private int color;
 	private ArrayList<ExpenseItem> expenseItems = new ArrayList<ExpenseItem>();
 	private ArrayList<String> comments = new ArrayList<String>();
 
@@ -331,11 +331,11 @@ public class ExpenseClaim extends Model<ExpenseClaim> implements Comparable<Expe
 		// get distance in km from first destination to home
 		double distance = firstDestinationCoordinate.distanceTo(home);
 		
-		// 32 shades of red
+		// 256 shades of red
 		// new shade for every 80 or so kilometers of distance
-		int shadeOfRed = (int) (Math.floor(256*distance/Coordinate.LONGEST_DISTANCE_BETWEEN_POINTS));
+		int level = (int) (Math.floor(256*distance/Coordinate.LONGEST_DISTANCE_BETWEEN_POINTS));
 		
-		this.color = 0xffff0000 + shadeOfRed<<8 + shadeOfRed;
+		this.color = 0xffffffff - level - (level<<8);
 	}
 	
 	public int getColor() {

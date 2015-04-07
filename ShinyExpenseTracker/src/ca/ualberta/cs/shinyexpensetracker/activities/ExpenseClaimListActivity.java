@@ -39,6 +39,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.GeolocationRequestCode;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.adapters.ClaimListAdapter;
 import ca.ualberta.cs.shinyexpensetracker.decorators.ExpenseClaimSortFilter;
@@ -48,7 +49,6 @@ import ca.ualberta.cs.shinyexpensetracker.framework.IView;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
-import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
 import ca.ualberta.cs.shinyexpensetracker.models.User;
 import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
 
@@ -155,7 +155,7 @@ public class ExpenseClaimListActivity
 		case R.id.display_geolocations_on_map:
 			Intent geolocationMapViewIntent = new Intent(ExpenseClaimListActivity.this,
 					MapViewActivity.class);
-			geolocationMapViewIntent.putExtra("requestCode", GeolocationRequestCode.DISPLAY_GEOLOCATIONS);
+			geolocationMapViewIntent.putExtra(IntentExtraIDs.REQUEST_CODE, GeolocationRequestCode.DISPLAY_GEOLOCATIONS);
 			startActivity(geolocationMapViewIntent);
 			return true;
 		}
@@ -171,8 +171,8 @@ public class ExpenseClaimListActivity
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// Check result is ok
 		if (resultCode == RESULT_OK) {
-			double latitude = data.getDoubleExtra("latitude", Coordinate.DEFAULT_COORDINATE.getLatitude());
-			double longitude = data.getDoubleExtra("longitude", Coordinate.DEFAULT_COORDINATE.getLongitude());
+			double latitude = data.getDoubleExtra(IntentExtraIDs.LATITUDE, Coordinate.DEFAULT_COORDINATE.getLatitude());
+			double longitude = data.getDoubleExtra(IntentExtraIDs.LONGITUDE, Coordinate.DEFAULT_COORDINATE.getLongitude());
 			homeGeolocation.setLatitude(latitude);
 			homeGeolocation.setLongitude(longitude);
 			TextView homeGeolocationValue = (TextView) findViewById(R.id.homeGeolocationValueTextView);

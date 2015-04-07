@@ -37,6 +37,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import ca.ualberta.cs.shinyexpensetracker.R;
+import ca.ualberta.cs.shinyexpensetracker.activities.utilities.GeolocationRequestCode;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
@@ -45,7 +46,6 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Category;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
-import ca.ualberta.cs.shinyexpensetracker.models.GeolocationRequestCode;
 
 /**
  * Covers Issues 5, 15, and 29
@@ -463,8 +463,8 @@ public class ExpenseItemActivity extends Activity implements OnClickListener {
 		}
 		if (requestCode == GeolocationRequestCode.SET_GEOLOCATION) {
 			if (resultCode == RESULT_OK) {
-				double latitude = data.getDoubleExtra("latitude", Coordinate.DEFAULT_COORDINATE.getLatitude());
-				double longitude = data.getDoubleExtra("longitude", Coordinate.DEFAULT_COORDINATE.getLongitude());
+				double latitude = data.getDoubleExtra(IntentExtraIDs.LATITUDE, Coordinate.DEFAULT_COORDINATE.getLatitude());
+				double longitude = data.getDoubleExtra(IntentExtraIDs.LONGITUDE, Coordinate.DEFAULT_COORDINATE.getLongitude());
 				expenseItemGeolocation = new Coordinate(latitude, longitude);
 				TextView coordValue = (TextView) findViewById(R.id.expenseItemCoordinatesValueTextView);
 				coordValue.setText(expenseItemGeolocation.toString() + "\n(tap here to change)");

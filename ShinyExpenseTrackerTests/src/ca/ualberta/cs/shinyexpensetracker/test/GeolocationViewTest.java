@@ -23,9 +23,6 @@ package ca.ualberta.cs.shinyexpensetracker.test;
 
 import android.app.Instrumentation;
 import android.app.Instrumentation.ActivityMonitor;
-import android.content.Context;
-import android.location.Location;
-import android.location.LocationManager;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import ca.ualberta.cs.shinyexpensetracker.activities.GeolocationViewActivity;
@@ -56,23 +53,6 @@ public class GeolocationViewTest extends
 		instrumentation = getInstrumentation();
 		setGeolocationAutomatically = (Button)geolocationViewActivity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.automaticGeolocationSetupButton);
 		setGeolocationUsingMap = (Button)geolocationViewActivity.findViewById(ca.ualberta.cs.shinyexpensetracker.R.id.mapAssistedGeolocationSetupButton);
-	}
-
-	/**
-	 * Test if the text view contains correct values after pressing Set Automatically Using GPS
-	 */
-	public void testGeolocationFetch() {
-		LocationManager lm = (LocationManager) instrumentation.getTargetContext().getSystemService(Context.LOCATION_SERVICE);
-		Location loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		assertNotNull("there is no last known location", loc);
-		
-		instrumentation.runOnMainSync(new Runnable() {
-			public void run() {
-				setGeolocationAutomatically.performClick();
-			}
-		});
-		instrumentation.waitForIdleSync();
-		assertTrue("did not finish activity", geolocationViewActivity.isFinishing());
 	}
 	
 	/**

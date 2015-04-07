@@ -93,7 +93,7 @@ public class ExpenseItemAdapter extends BaseAdapter implements ListAdapter {
 			}
 		});
 
-		expenseItemFlagCheckBox.setChecked(expense.getIsMarkedIncomplete());
+		expenseItemFlagCheckBox.setChecked(expense.isMarkedIncomplete());
 
 		// Fill in the values
 

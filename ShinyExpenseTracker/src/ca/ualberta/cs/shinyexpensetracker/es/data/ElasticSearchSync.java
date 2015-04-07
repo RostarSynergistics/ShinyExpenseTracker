@@ -1,5 +1,6 @@
 package ca.ualberta.cs.shinyexpensetracker.es.data;
 
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim.Status;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
@@ -7,7 +8,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 /**
  * This class will sync any changes the user made with any changes the in the
  * server
- *
+ * 
  */
 public class ElasticSearchSync {
 	ExpenseClaimList localList;
@@ -31,11 +32,15 @@ public class ElasticSearchSync {
 				localClaim.setComments(claim.getComments());
 
 				if (localClaim.getStatus() == Status.SUBMITTED) {
-					localClaim.setStatus(claim.getStatus());
+					try {
+						localClaim.setStatus(claim.getStatus());
+					} catch (ValidationException e) {
+						throw new RuntimeException(e);
+					}
 				}
-
 			}
 		}
+
 		return localList;
 	}
 }

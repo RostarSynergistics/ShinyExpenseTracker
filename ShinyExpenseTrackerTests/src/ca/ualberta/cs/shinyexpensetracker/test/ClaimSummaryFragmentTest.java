@@ -24,6 +24,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseItem.Currency;
 import ca.ualberta.cs.shinyexpensetracker.models.Tag;
 import ca.ualberta.cs.shinyexpensetracker.models.TagList;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
+import ca.ualberta.cs.shinyexpensetracker.utilities.GlobalDateFormat;
 
 //Source: http://stackoverflow.com/questions/21156463/junit-testing-for-android-app-with-fragments
 //On March 12
@@ -101,7 +102,7 @@ public class ClaimSummaryFragmentTest extends ActivityInstrumentationTestCase2<T
 	 * 
 	 * @throws IOException
 	 */
-	public void testSetClaimInfo() throws IOException {
+	public void testSetClaimInfo() throws Exception {
 		final TagList tagList = new TagList();
 		Tag tag = new Tag("testTag");
 		tagList.addTag(tag);
@@ -141,11 +142,11 @@ public class ClaimSummaryFragmentTest extends ActivityInstrumentationTestCase2<T
 		assertEquals("claim name not set correctly", claimName, claimNameText.getText().toString());
 
 		TextView claimStartDateText = (TextView) frag.getView().findViewById(R.id.claimStartDateTextView);
-		assertEquals("claim Start date not set correctly", "Start Date: " + startDate.toString(), claimStartDateText
+		assertEquals("claim Start date not set correctly", "Start Date: " + GlobalDateFormat.format(startDate), claimStartDateText
 				.getText().toString());
 
 		TextView claimEndDateText = (TextView) frag.getView().findViewById(R.id.claimEndDateTextView);
-		assertEquals("claim end date not set correctly", "End Date: " + endDate.toString(), claimEndDateText.getText()
+		assertEquals("claim end date not set correctly", "End Date: " + GlobalDateFormat.format(endDate), claimEndDateText.getText()
 				.toString());
 
 		TextView statusText = (TextView) frag.getView().findViewById(R.id.claimStatusTextView);
@@ -196,7 +197,7 @@ public class ClaimSummaryFragmentTest extends ActivityInstrumentationTestCase2<T
 	 * 
 	 * @throws IOException
 	 */
-	public void testExpenseTotals() throws IOException {
+	public void testExpenseTotals() throws Exception {
 		Date startDate = new Date(1000);
 
 		BigDecimal amount = new BigDecimal(10);

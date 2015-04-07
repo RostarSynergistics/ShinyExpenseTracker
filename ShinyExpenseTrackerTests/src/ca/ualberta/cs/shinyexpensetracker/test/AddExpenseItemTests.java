@@ -23,6 +23,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseItemActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
@@ -104,7 +105,7 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 		controller = new ExpenseClaimController(persister);
 		Application.setExpenseClaimController(controller);
 
-		claim = new ExpenseClaim("Test Claim");
+		claim = new ExpenseClaim("Test Claim", new Date(1000), new Date(2000));
 		list.addClaim(claim);
 		Intent intent = new Intent();
 		intent.putExtra(IntentExtraIDs.CLAIM_ID, claim.getID());
@@ -156,14 +157,21 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 				Bitmap bitmap = null;
 				c = new Coordinate(1.0, -1.0);
 
-				ExpenseItem expense = new ExpenseItem("name",
-						date,
-						Category.ACCOMODATION,
-						amount,
-						Currency.CAD,
-						"description",
-						bitmap,
-						c);
+				ExpenseItem expense = null;
+
+				try {
+					expense = new ExpenseItem("name",
+							date,
+							Category.ACCOMODATION,
+							amount,
+							Currency.CAD,
+							"description",
+							bitmap,
+                            c);
+				} catch (ValidationException e) {
+					e.printStackTrace();
+					fail();
+				}
 
 				assertEquals("name != name", "name", expense.getName());
 				assertEquals("date != date", date, expense.getDate());
@@ -239,7 +247,6 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 		instrumentation.waitForIdleSync();
 
 		assertNotNull("no name dialog", activity.alertDialog);
-		assertTrue("Name dialog is not showing", activity.alertDialog.isShowing());
 	}
 
 	/**
@@ -256,7 +263,6 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 		instrumentation.waitForIdleSync();
 
 		assertNotNull("no date dialog", activity.alertDialog);
-		assertTrue("Date dialog is not showing", activity.alertDialog.isShowing());
 	}
 
 	/**
@@ -273,7 +279,5 @@ public class AddExpenseItemTests extends ActivityInstrumentationTestCase2<Expens
 		instrumentation.waitForIdleSync();
 
 		assertNotNull("no amount spent dialog", activity.alertDialog);
-		assertTrue("Dialog amount spent is not showing", activity.alertDialog.isShowing());
 	}
-
 }

@@ -13,6 +13,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.ExpenseClaimActivity;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
+import ca.ualberta.cs.shinyexpensetracker.framework.ValidationException;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.test.mocks.MockExpenseClaimListPersister;
@@ -109,7 +110,7 @@ public class EditExpenseClaimTests extends ActivityInstrumentationTestCase2<Expe
 		assertTrue("Persister's .save() was never called", persister.wasSaveCalled());
 	}
 
-	private ExpenseClaim getStartingClaim() throws ParseException {
+	private ExpenseClaim getStartingClaim() throws ParseException, ValidationException {
 		Date startDate = GlobalDateFormat.makeDate(2015, 01, 01);
 		Date endDate = GlobalDateFormat.makeDate(2015, 01, 02);
 

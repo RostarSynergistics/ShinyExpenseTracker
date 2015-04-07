@@ -1,6 +1,7 @@
 package ca.ualberta.cs.shinyexpensetracker.models;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import android.content.Context;
 import ca.ualberta.cs.shinyexpensetracker.persistence.FilePersistenceStrategy;
@@ -18,31 +19,28 @@ public class User {
 		Claimant();
 	}
 	
-	private int id;
+	private UUID id;
 	private String name;
 	private Type type;
 	private Coordinate homeGeolocation;
 	
 	public User() {
-		
+		id = UUID.randomUUID();
 	}
 	
 	public User(Context context) throws IOException {
-		
 		this (new GsonUserPersister( new FilePersistenceStrategy(context, "user")));
 	}
 
-	
 	public User(IUserPersister gsonUserPersister) throws IOException {
 		gsonUserPersister.loadUser();
 	}
 
-
-	public void setUserId(int id) {
+	public void setUserId(UUID id) {
 		this.id = id;
 	}
 	
-	public int getUserId() {
+	public UUID getUserId() {
 		return id;
 	}
 	

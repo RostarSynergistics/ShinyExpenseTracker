@@ -11,6 +11,7 @@ import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.models.User;
 import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
+import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
 public class LoginAsApproverOrClaimantActivity extends Activity {
 
@@ -20,8 +21,6 @@ public class LoginAsApproverOrClaimantActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sign_in_as_approver_or_claimant);
-		
-		user.setUserId(1);
 		
 	}
 
@@ -38,7 +37,8 @@ public class LoginAsApproverOrClaimantActivity extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		if (id == R.id.action_help) {
+			InAppHelpDialog.showHelp(this, R.string.help_login);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -55,10 +55,8 @@ public class LoginAsApproverOrClaimantActivity extends Activity {
 		boolean checked = ((RadioButton) findViewById(R.id.approverRadioButton)).isChecked();
 		
 		if (checked) {
-			user.setUserType(Type.Approver);
 			Application.setUserType(Type.Approver);
 		} else {
-			user.setUserType(Type.Claimant);
 			Application.setUserType(Type.Claimant);
 		}
 	}

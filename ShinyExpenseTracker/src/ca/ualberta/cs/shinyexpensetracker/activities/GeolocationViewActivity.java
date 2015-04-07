@@ -40,6 +40,7 @@ import ca.ualberta.cs.shinyexpensetracker.R;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.GeolocationRequestCode;
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.models.Coordinate;
+import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
 public class GeolocationViewActivity extends Activity {
 
@@ -75,7 +76,8 @@ public class GeolocationViewActivity extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		if (id == R.id.action_help) {
+			InAppHelpDialog.showHelp(this, R.string.help_geolocation);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

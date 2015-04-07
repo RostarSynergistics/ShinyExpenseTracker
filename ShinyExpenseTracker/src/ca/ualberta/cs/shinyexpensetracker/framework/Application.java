@@ -88,9 +88,10 @@ public class Application extends android.app.Application {
 	public static User getUser() {
 		if (user == null) {
 			try {
-				setUser(new User(context));
+				//setUser(new User(context));
+				throw new IOException();
 			} catch (IOException e) {
-				throw new RuntimeException(e);
+				user = new User();
 			}
 		}
 		return user;

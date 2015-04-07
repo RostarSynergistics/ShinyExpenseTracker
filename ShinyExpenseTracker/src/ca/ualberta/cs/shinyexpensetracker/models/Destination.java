@@ -1,8 +1,9 @@
 package ca.ualberta.cs.shinyexpensetracker.models;
 
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
 import java.util.UUID;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
 
 
 /**

@@ -43,6 +43,7 @@ import ca.ualberta.cs.shinyexpensetracker.activities.utilities.GeolocationReques
 import ca.ualberta.cs.shinyexpensetracker.activities.utilities.IntentExtraIDs;
 import ca.ualberta.cs.shinyexpensetracker.adapters.ClaimListAdapter;
 import ca.ualberta.cs.shinyexpensetracker.decorators.ExpenseClaimSortFilter;
+import ca.ualberta.cs.shinyexpensetracker.decorators.ExpenseClaimSubmittedFilter;
 import ca.ualberta.cs.shinyexpensetracker.framework.Application;
 import ca.ualberta.cs.shinyexpensetracker.framework.ExpenseClaimController;
 import ca.ualberta.cs.shinyexpensetracker.framework.IView;
@@ -51,6 +52,7 @@ import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaim;
 import ca.ualberta.cs.shinyexpensetracker.models.ExpenseClaimList;
 import ca.ualberta.cs.shinyexpensetracker.models.User;
 import ca.ualberta.cs.shinyexpensetracker.models.User.Type;
+import ca.ualberta.cs.shinyexpensetracker.utilities.InAppHelpDialog;
 
 
 public class ExpenseClaimListActivity 
@@ -82,6 +84,11 @@ public class ExpenseClaimListActivity
 		// Ensure the adapter is sorted.
 		adapter.applyFilter(new ExpenseClaimSortFilter());
 		
+		// if the user is an approver filter the claims so only the submitted claims are shown
+		if (Application.getUserType().equals(Type.Approver)) {
+			adapter.applyFilter(new ExpenseClaimSubmittedFilter());
+		} 
+		
 		claim_list.setAdapter(adapter);
 		
 		if (user.getHomeGeolocation() != null) {
@@ -93,7 +100,7 @@ public class ExpenseClaimListActivity
 		claim_list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				ExpenseClaim claim = controller.getExpenseClaimAtPosition(position);
+				ExpenseClaim claim = adapter.getItem(position);
 				Intent intent;
 
 				if (Application.getUserType().equals(Type.Claimant)) {
@@ -127,6 +134,11 @@ public class ExpenseClaimListActivity
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.expense_claims_view, menu);
+		
+		if (Application.getUserType().equals(Type.Approver)) {
+			menu.getItem(0).setEnabled(false);
+		}
+		
 		return true;
 	}
 
@@ -157,6 +169,8 @@ public class ExpenseClaimListActivity
 					MapViewActivity.class);
 			geolocationMapViewIntent.putExtra(IntentExtraIDs.REQUEST_CODE, GeolocationRequestCode.DISPLAY_GEOLOCATIONS);
 			startActivity(geolocationMapViewIntent);
+		case R.id.action_help:
+			InAppHelpDialog.showHelp(this, R.string.help_claim_list);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
